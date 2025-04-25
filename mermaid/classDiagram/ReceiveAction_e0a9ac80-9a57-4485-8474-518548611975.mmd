@@ -1,0 +1,15 @@
+classDiagram
+  ReceiveAction -- Person
+  ReceiveAction -- Audience
+  ReceiveAction -- Organization
+  ReceiveAction -- DeliveryMethod
+
+
+class ReceiveAction {
+
+  Person sender
+  Audience sender
+  Organization sender
+  DeliveryMethod deliveryMethod
+
+ }

@@ -1,0 +1,82 @@
+erDiagram
+  User {
+      int id PK
+      string email UK
+      string crypted_password
+      string salt
+      string name
+      text message_template
+      string token UK
+      string reset_password_token
+      datetime reset_password_token_expires_at
+      datetime reset_password_email_sent_at
+      uuid uuid UK
+      enum role
+      datetime created_at
+      datetime updated_at
+  }
+  Item {
+      int id PK
+      string title
+      text description
+      string item_url
+      int user_id FK
+      datetime created_at
+      datetime updated_at
+  }
+  SendList {
+      int id PK
+      int item_id FK
+      int user_id FK
+      string phone_number
+      datetime send_at
+      string sender
+      boolean send_as_test
+      datetime created_at
+      datetime updated_at
+  }
+  SharedSendList {
+      int id PK
+      int item_id FK
+      string phone_number "NOT NULL"
+      datetime send_at "NOT NULL"
+      string sender "NOT NULL"
+      boolean send_as_test
+      int created_by FK
+      datetime created_at
+      datetime updated_at
+  }
+  DemoItemSelection {
+      int id PK
+      int item_id FK
+      datetime created_at
+      datetime updated_at
+  }
+  Tag {
+      int id PK
+      string name UK
+      int taggings_count
+      datetime created_at
+      datetime updated_at
+  }
+  Tagging {
+      int id PK
+      int tag_id FK
+      string taggable_type
+      int taggable_id
+      string tagger_type
+      int tagger_id
+      string context
+      string tenant
+      datetime created_at
+  }
+  User ||--o{ Item : "creates"
+  User ||--o{ SendList : "has"
+  User ||--o{ SharedSendList : "creates as admin"
+  Item ||--o{ SendList : "included in"
+  Item ||--o{ SharedSendList : "included in"
+  Item ||--o{ DemoItemSelection : "selected for demo"
+  Tag ||--o{ Tagging : "has"
+  Item ||--o{ Tagging : "tagged with"
+  User ||--o{ Tagging : "tags"
+  

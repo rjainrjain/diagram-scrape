@@ -1,0 +1,36 @@
+classDiagram
+  class axios {
+    +version: 1.7.7
+  }
+  axios --> form-data
+  axios --> proxy-from-env
+  axios --> follow-redirects
+  class form-data {
+    +version: 4.0.1
+  }
+  form-data --> asynckit
+  form-data --> combined-stream
+  form-data --> mime-types
+  class asynckit {
+    +version: 0.4.0
+  }
+  class combined-stream {
+    +version: 1.0.8
+  }
+  combined-stream --> delayed-stream
+  class delayed-stream {
+    +version: 1.0.0
+  }
+  class mime-types {
+    +version: 2.1.35
+  }
+  mime-types --> mime-db
+  class mime-db {
+    +version: 1.53.0
+  }
+  class proxy-from-env {
+    +version: 1.1.0
+  }
+  class follow-redirects {
+    +version: 1.15.9
+  }

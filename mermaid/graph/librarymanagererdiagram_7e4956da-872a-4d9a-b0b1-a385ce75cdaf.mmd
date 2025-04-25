@@ -1,0 +1,38 @@
+erDiagram
+    BOOKDETAILS ||..|{ BOOKAUTHORS : "One book can map to one or more authors"
+    BOOKDETAILS {
+        uuid bookId PK
+        string authorName
+        string bookName
+        string shortDescription
+        string review
+    }
+    AUTHORDETAILS ||..|{ BOOKAUTHORS : "One Author can map to one or more books"
+    AUTHORDETAILS {
+        uuid authorId PK
+        string authorName
+        string shortBiography
+        string imageId
+    }
+    OWNER ||..|{ BOOKDETAILS : "One owner can map to one or more books"
+    OWNER {
+        uuid ownerId PK
+        string ownerName
+    }
+    OWNER ||..|{ LOCATION : "One owner can map to one or more location"
+    LOCATION ||..|{ BOOKDETAILS : "One Location Maps to manyone or more books"
+    LOCATION {
+        uuid locationId PK
+        string country
+        string state
+        string city
+        string street
+        int houseNumber
+        int floor
+        int room
+        string locationNickName
+    }
+    BOOKAUTHORS {
+        uuid bookId FK
+        uuid authorId FK
+    }

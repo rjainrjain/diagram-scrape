@@ -1,0 +1,70 @@
+flowchart TB
+    subgraph Userland [ ]
+        User(User)
+        Developer(Developer)
+    end
+    subgraph Az [Azure]
+        subgraph Subs [Subscription]
+            subgraph RG [Resource Group]
+                subgraph ACR [Azure Container Registery]
+                    subgraph repo [Container Repo]
+                        i1(image tag:4f925d7)
+                        i2(image tag:29a727c):::fa
+                    end
+                end
+                subgraph k8s [Azure Kubernetes Service]
+                    subgraph subgraph_padding1 [ ]
+                        subgraph cn [Namespace: higgins]
+                            direction TB
+                            subgraph subgraph_padding2 [ ]
+                            NPS2(LoadBalancer: prediction-service):::nodes
+                            subgraph PD [Python Deployment]
+                                direction TB
+                                IC1(Init Container: verify-redis-dns)
+                                IC2(Init Container: verify-redis-ready)
+                                FA(Fast API Container):::fa
+
+                                IC1 --> IC2 --> FA
+                            end
+                            NPS1(ClusterIP: redis-service):::nodes
+                            RD(Redis Deployment)
+
+                            NPS1 <-->|Port 6379| PD
+                            NPS1 <-->|Port 6379| RD
+                            NPS2 <-->|Port 8000| PD
+
+                        end
+                    end
+                end
+                i2 -.- FA
+            end
+        end
+    end
+end
+
+User <----> NPS2
+
+Developer -.->|az login| Az
+Developer -.->|az account set| Subs
+Developer -.->|az acr login| ACR
+Developer -.->|az aks get-credentials| k8s
+Developer -->|docker push| repo
+
+classDef nodes fill:#68A063
+classDef subgraph_padding fill:none,stroke:none
+classDef inits fill:#cc9ef0
+classDef fa fill:#00b485
+
+style cn fill:#B6D0E2,stroke:#B6D0E2;
+style RD fill:#e6584e,stroke:#e6584e;
+style PD fill:#FFD43B,stroke:#FFD43B;
+style k8s fill:#b77af4,stroke:#b77af4;
+style Az fill:#00aaff,stroke:#00aaff;
+style Subs fill:#ffbf14,stroke:#ffbf14;
+style RG fill:#9debff,stroke:#9debff;
+style ACR fill:#cccccc,stroke:#cccccc;
+style repo fill:#e7e7e7,stroke:#e7e7e7;
+style Userland fill:none,stroke:none;
+
+class subgraph_padding1,subgraph_padding2 subgraph_padding
+class IC1,IC2 inits

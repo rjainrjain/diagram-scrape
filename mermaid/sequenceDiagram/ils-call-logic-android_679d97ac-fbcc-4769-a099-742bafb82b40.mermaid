@@ -1,0 +1,30 @@
+sequenceDiagram
+    participant User
+    participant Video_SDK as Video SDK
+    participant Agora
+    participant SD_RTN as SD-RTN
+    
+    User->>+Video_SDK: Open App
+    User-->>-Video_SDK: Close app
+
+    subgraph SDK Operations
+        Video_SDK->>+Agora: Initiate the Agora Video SDK engine: agoraEngine = RtcEngine.create
+        Video_SDK->>Agora: Enable the video module: agoraEngine.enableVideo()
+        Video_SDK->>Agora: Set the channel profile: agoraEngine.setChannelProfile(CHANNEL_PROFILE_LIVE_BROADCASTING)
+        Video_SDK->>Agora: Retrieve authentication token to join channel
+        Video_SDK->>Agora: Set the role as host: agoraEngine.setClientRole(Constants.CLIENT_ROLE_BROADCASTER)
+        Video_SDK->>Agora: Setup local video: agoraEngine.setupLocalVideo(VideoCanvas)
+        Video_SDK->>Agora: Start local preview: agoraEngine.startPreview()
+        Video_SDK->>Agora: Join a channel as host: agoraEngine.joinChannel
+        Video_SDK->>Agora: Send data stream
+        Video_SDK->>Agora: Leave the channel: agoraEngine.leaveChannel()
+        Video_SDK->>Agora: Clean up local resources: agoraEngine.destroy()
+    end
+
+    subgraph Audience Actions
+        Video_SDK->>Agora: Retrieve authentication token to join channel
+        Video_SDK->>Agora: Set the user role as audience: agoraEngine.setClientRole(CLIENT_ROLE_AUDIENCE)
+        Video_SDK->>Agora: Join the channel: agoraEngine.joinChannel
+        Video_SDK->>Agora: Retrieve streaming from the hosts: agoraEngine.setupRemoteVideo
+        Video_SDK-->>Agora: Receive data stream
+    end

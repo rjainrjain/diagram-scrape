@@ -1,0 +1,12 @@
+classDiagram
+namespace m2gui {
+  class Model
+  class SignalIlcStatus
+}
+
+Model *-- SignalIlcStatus : emit()
+
+TabDefault *-- Model
+TabDefault <|-- TabIlcStatus
+
+TabIlcStatus --> SignalIlcStatus : connect()

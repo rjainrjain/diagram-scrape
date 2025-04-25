@@ -1,0 +1,15 @@
+classDiagram
+  AuthorizeAction -- Person
+  AuthorizeAction -- Audience
+  AuthorizeAction -- ContactPoint
+  AuthorizeAction -- Organization
+
+
+class AuthorizeAction {
+
+  Person recipient
+  Audience recipient
+  ContactPoint recipient
+  Organization recipient
+
+ }

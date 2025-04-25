@@ -1,0 +1,141 @@
+classDiagram
+    direction TB
+
+%% Top-Level Directories
+    class cmd {
+        +main.go
+    }
+
+    class internal {
+        +domain/
+        +usecase/
+        +interface/
+        +infra/
+    }
+
+    class pkg {
+        +utility packages (e.g., logger, config)
+    }
+
+%% Domain Layer
+    class domain {
+        +chat/
+        +user/
+    }
+
+    class chat {
+        +entity.go
+        +service.go
+        +repository.go
+    }
+
+    class user {
+        +entity.go
+        +service.go
+        +repository.go
+    }
+
+%% Use Case Layer
+    class usecase {
+        +chat/
+        +user/
+    }
+
+    class chatUseCase {
+        +sendMessage.go
+        +createChannel.go
+        +startVoiceCall.go
+    }
+
+    class userUseCase {
+        +registerUser.go
+        +authenticateUser.go
+    }
+
+%% Interface Adapters Layer
+    class interface {
+        +http/
+        +websocket/
+        +cli/
+    }
+
+    class http {
+        +handler.go
+        +router.go
+    }
+
+    class websocket {
+        +handler.go
+        +connection.go
+    }
+
+    class cli {
+        +command.go
+    }
+
+%% Infrastructure Layer
+    class infra {
+        +persistence/
+        +network/
+        +security/
+    }
+
+    class persistence {
+        +boltDB.go
+    }
+
+    class network {
+        +libp2p.go
+        +webrtc.go
+    }
+
+    class security {
+        +encryption.go
+        +keypair.go
+    }
+
+%% Relationships
+    cmd --> internal : Uses
+    internal --> domain : Contains Domain Logic
+    internal --> usecase : Contains Application Logic
+    internal --> interface : Adapts Interfaces
+    internal --> infra : Implements Infrastructure
+
+    domain --> chat : Defines Entities, Repositories, Services
+    domain --> user : Defines Entities, Repositories, Services
+
+    usecase --> chatUseCase : Implements Chat Use Cases
+    usecase --> userUseCase : Implements User Use Cases
+
+    interface --> http : Implements HTTP Handlers
+    interface --> websocket : Implements WebSocket Handlers
+    interface --> cli : Implements CLI Commands
+
+    infra --> persistence : Implements Persistence (e.g., BoltDB)
+    infra --> network : Implements Networking (e.g., LibP2P, WebRTC)
+    infra --> security : Implements Security (e.g., Encryption, KeyPair)
+
+    chatUseCase --> chat : Uses Chat Domain Logic
+    userUseCase --> user : Uses User Domain Logic
+
+    http --> chatUseCase : Calls Chat Use Cases
+    websocket --> chatUseCase : Calls Chat Use Cases
+    cli --> chatUseCase : Calls Chat Use Cases
+
+    http --> userUseCase : Calls User Use Cases
+    websocket --> userUseCase : Calls User Use Cases
+    cli --> userUseCase : Calls User Use Cases
+
+    persistence --> chat : Implements Chat Repository
+    persistence --> user : Implements User Repository
+    network --> chat : Implements Chat Networking
+    security --> chat : Implements Chat Encryption
+
+%% Additional Notes
+    class Notes {
+        +cmd: contains the entry point of the application, such as main.go, which sets up the server and orchestrates the initialization of other layers.
+        +domain: domain contains the core business logic. Each subdirectory (e.g., chat, user) represents a different domain or subdomain.
+        +usecase: usecase contains application-specific business rules, organized by feature or module (e.g., chat, user). Each use case corresponds to a specific application service or operation.
+        +interface: interface contains the code that adapts the input/output for different interfaces, such as HTTP, WebSocket, and CLI.
+        +infra: infra contains the implementations of infrastructure concerns like databases, networking, and security.
+    }

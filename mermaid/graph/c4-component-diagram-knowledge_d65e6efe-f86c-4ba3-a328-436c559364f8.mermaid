@@ -1,0 +1,5 @@
+graph TD
+    MA[Mobile App] -->|Requests| RH[Request Handling Component]
+    RH -->|Content retrieval| CD[Content Delivery Component]
+    CD -->|Stores/retrieves data| CDB[Content Database Component]
+    CDB -->|Stores content| MDB[(MongoDB)]

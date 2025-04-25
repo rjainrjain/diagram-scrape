@@ -1,0 +1,33 @@
+sequenceDiagram
+    actor Player 1
+    actor Player 2
+
+    participant API Proxy
+    participant MatchmakingService
+    participant LoadBalancer
+    participant RealTimeCommunicationService1
+
+    Player 1-->>MatchmakingService: Create match
+    activate MatchmakingService
+
+    Player 2->>MatchmakingService: Get nearby matches
+    MatchmakingService->>Player 2: List of nearby matches
+
+    Player 2-->>MatchmakingService: Join match
+    MatchmakingService-->>Player 1: Player 2 has joined
+    Note over MatchmakingService: Other players join
+    Note over MatchmakingService: Match is ready
+
+    par Players receive routing key in parallel 
+        MatchmakingService-->>Player 1: Routing key
+        MatchmakingService-->>Player 2: Routing key
+    end
+
+    deactivate MatchmakingService
+
+    par Players establish connections to RealTimeCommunicationService
+        Player 1-->>LoadBalancer: Create connection (includes routing key)
+        LoadBalancer-->>RealTimeCommunicationService1: Relay connection to correct<br>instance based on routing key
+        Player 2-->>LoadBalancer: Create connection (includes routing key)
+        LoadBalancer-->>RealTimeCommunicationService1: Relay connection to correct<br>instance based on routing key
+    end

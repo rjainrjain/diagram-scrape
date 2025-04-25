@@ -1,0 +1,15 @@
+graph TD
+    A[main.py] --> B[src/file_processor.py]
+    B --> C[src/file_readers/excel_reader.py]
+    B --> D[src/file_readers/word_reader.py]
+    B --> E[src/file_readers/powerpoint_reader.py]
+    B --> F[src/file_readers/text_reader.py]
+    B --> G[src/file_readers/zip_reader.py]
+    B --> H[src/file_readers/csv_reader.py]
+    B --> I[src/utils/error_handler.py]
+    A --> J[src/utils/config_loader.py]
+    A --> K[src/utils/logger.py]
+    G --> C
+    G --> D
+    G --> E
+    G --> F

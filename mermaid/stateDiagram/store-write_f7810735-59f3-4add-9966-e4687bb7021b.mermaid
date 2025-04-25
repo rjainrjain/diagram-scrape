@@ -1,0 +1,27 @@
+stateDiagram-v2
+    [*] --> username/password 
+    [*] --> horcrux
+    horcrux --> XOR
+    username/password --> BN: SHA()
+    BN --> POW: 1000ms > pow > 100ms
+    BN --> SHA
+    POW --> SHA
+    SHA --> ECDSA
+    state ECDSA {
+        [*] --> pKey
+        [*] --> privateKey
+    }
+    SHA --> Horcrux.create(...)
+    privateKey --> XOR
+    XOR --> base64 
+    base64 --> Horcrux.create(...)
+
+    state Horcrux.create(...) {                
+        [calldata] --> store[key]
+        [key] --> require 
+        require --> reject : storage must be empty 
+        require --> store[key]
+        store[key] --> [*] 
+    
+    }
+    Horcrux.create(...) --> EthTX

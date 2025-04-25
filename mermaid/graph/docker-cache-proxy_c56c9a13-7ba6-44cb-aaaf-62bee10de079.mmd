@@ -1,0 +1,31 @@
+---
+title: Docker Cache Proxy
+---
+
+flowchart LR
+    classDef cluster fill:#ffffff00,stroke:#aabbccff,stroke-width:3px,rx:8px,ry:8px;
+    classDef node fill:#ffffff00,stroke:#aabbccff,stroke-width:2px,rx:5px,ry:5px;
+    classDef dashed_border stroke-dasharray:10 6;
+
+    home_network["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.1em'><img src='../../../../icons/network.png' style='min-width:80px;max-width:80px' /></div>Home<br />Network"]
+    class home_network dashed_border
+    other_devices["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/servers.png' style='min-width:80px;max-width:80px' /></div>Other<br />Devices"]
+    class other_devices dashed_border
+
+    subgraph app_wrapper[" "]
+        socket_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/ingress.png' style='min-width:80px;max-width:80px' /></div>Socat")
+        http_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /></div>Apache<br />proxy")
+        certificate_manager("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certificate<br />Manager")
+        docker_registry("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.25em'><img src='../../../../icons/docker.png' style='min-width:80px;max-width:80px' /></div>Docker<br />Registry")
+
+        socket_proxy <--->|:80,443| http_proxy <--->|:80| docker_registry
+        http_proxy -..-|fs| certificate_manager
+    end
+
+    dockerhub["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/cloud.png' style='min-width:80px;max-width:80px' /><img src='../../../../icons/docker.png' style='min-width:50px;max-width:50px;position:absolute;bottom:0;right:0' /></div>Public<br />container<br />registry"]
+    class dockerhub dashed_border
+
+    home_network <--->|:80,443| socket_proxy
+    other_devices -..->|use| app_wrapper
+    other_devices ~~~~ socket_proxy
+    docker_registry -..->|use| dockerhub

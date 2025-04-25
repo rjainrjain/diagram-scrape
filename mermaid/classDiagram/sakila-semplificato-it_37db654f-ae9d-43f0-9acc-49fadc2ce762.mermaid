@@ -1,0 +1,35 @@
+```mermaid
+classDiagram
+class attore {
+	attore_id: INTEGER
+	nome: TEXT
+	cognome: TEXT
+}
+
+class categoria {
+	categoria_id: INTEGER
+	nome: TEXT
+}
+
+class film {
+	film_id: INTEGER
+	titolo: TEXT
+	descrizione: TEXT
+	anno: TEXT
+}
+
+class film_attore {
+	attore_id: INTEGER
+	film_id: INTEGER
+}
+
+class film_categoria {
+	film_id: INTEGER
+	categoria_id: INTEGER
+}
+
+film_attore "*" -- "1" film : film_id
+film_attore "*" -- "1" attore : attore_id
+film_categoria "*" -- "1" categoria : categoria_id
+film_categoria "*" -- "1" film : film_id
+```

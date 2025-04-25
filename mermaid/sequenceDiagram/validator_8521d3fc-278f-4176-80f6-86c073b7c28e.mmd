@@ -1,0 +1,60 @@
+sequenceDiagram
+    participant Validator
+    participant ValidatorDevice
+    participant ValidatorBill
+    participant CashIn
+    participant CashInBill
+
+    ValidatorDevice->>Validator: StatusRequest
+    ValidatorDevice->>Validator: StatusRequest
+    ValidatorDevice->>Validator: StatusRequest
+    Validator->>ValidatorDevice: PowerUp
+    ValidatorDevice->>Validator: Reset
+    Validator->>ValidatorDevice: ACK
+    ValidatorDevice->>Validator: StatusRequest
+    Validator->>ValidatorDevice: Initialize
+    ValidatorDevice->>Validator: Inhibit
+    ValidatorDevice->>Validator: StatusRequest
+    Validator->>ValidatorDevice: Disabled
+    CashIn->>ValidatorDevice: StartSession
+    ValidatorDevice->>Validator: UnInhibit
+    Validator->>ValidatorDevice: UnInhibit
+    ValidatorDevice->>Validator: StatusRequest
+    Validator->>ValidatorDevice: Enabled
+    ValidatorDevice->>CashIn: ReadyForBill
+    ValidatorDevice->>ValidatorBill: Run
+    Validator->>ValidatorBill: ENQ
+    ValidatorBill->>Validator: StatusRequest
+    Validator->>ValidatorBill: Accepting
+    ValidatorBill->>CashInBill: Accepting
+    Validator->>ValidatorBill: ENQ
+    ValidatorBill->>Validator: StatusRequest
+    Validator->>ValidatorBill: Escrow + Denomination
+    ValidatorBill->>CashInBill: ReadBill + Denomination
+    CashInBill->>ValidatorBill: EscrowAccept
+    ValidatorBill->>Validator: Stack1
+    Validator->>ValidatorBill: ENQ
+    ValidatorBill->>Validator: StatusRequest
+    Validator->>ValidatorBill: Stacking
+    Validator->>ValidatorBill: ENQ
+    ValidatorBill->>Validator: StatusRequest
+    Validator->>ValidatorBill: VendValid
+    ValidatorBill->>CashInBill: VendValid
+    Validator->>ValidatorBill: ENQ
+    ValidatorBill->>Validator: StatusRequest
+    Validator->>ValidatorBill: Stacked
+    Validator->>ValidatorBill: ENQ
+    ValidatorDevice->>Validator: StatusRequest
+    Validator->>ValidatorDevice: Enabled
+
+
+
+
+
+
+
+
+
+
+
+

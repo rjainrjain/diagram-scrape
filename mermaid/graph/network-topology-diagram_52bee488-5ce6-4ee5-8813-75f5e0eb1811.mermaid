@@ -1,0 +1,23 @@
+graph TD
+    Internet((Internet)) --- ISP[ISP]
+    subgraph Lima
+    ISP --- RL[Router Lima]
+    RL --- SML[Switch Multicapa Lima]
+    SML --- SAL1[Switch Acceso 1]
+    SML --- SAL2[Switch Acceso 2]
+    SML --- APL[Access Point Lima]
+    end
+    subgraph Arequipa
+    RL --- RA[Router Arequipa]
+    RA --- SMA[Switch Multicapa Arequipa]
+    SMA --- SAA1[Switch Acceso 1]
+    SMA --- SAA2[Switch Acceso 2]
+    SMA --- APA[Access Point Arequipa]
+    end
+    subgraph Piura
+    RL --- RP[Router Piura]
+    RP --- SMP[Switch Multicapa Piura]
+    SMP --- SAP1[Switch Acceso 1]
+    SMP --- SAP2[Switch Acceso 2]
+    SMP --- APP[Access Point Piura]
+    end

@@ -1,0 +1,10 @@
+graph LR
+    A[나이 입력]
+    A --> |0, 1, 2| B[초반]
+    A --> |3, 4, 5, 6| E[중반]
+    A --> |default| I[후반]
+    B --> |break| L[종료]
+    B --> E
+    E --> |break| L
+    E --> I
+    I --> |break| L

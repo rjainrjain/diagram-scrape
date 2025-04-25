@@ -1,0 +1,13 @@
+sequenceDiagram
+    participant U as User
+    participant F as Frontend (LoginPage)
+    participant B as Backend (AuthController)
+    participant AD as Azure AD
+
+    U->>F: Enter credentials and click login
+    F->>B: Send login request
+    B->>AD: Validate credentials
+    AD-->>B: Return authentication token
+    B-->>F: Send token
+    F->>F: Store token
+    F->>U: Redirect to SearchPatients page

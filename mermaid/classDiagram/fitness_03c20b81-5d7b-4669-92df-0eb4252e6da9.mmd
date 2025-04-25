@@ -1,0 +1,91 @@
+classDiagram
+direction LR
+  class Cuenta{
+    nombre
+    apellido
+    email
+    nroDocumento
+    tipoDocumento: tipoDocumento
+    fechaNacimiento
+    altura
+    sexo: sexo
+    peso
+    pais: paisOrigen
+    metaEntrenamiento: metasEntrenamiento
+    }
+  
+
+  class tipoDocumento{
+    nombre
+    descripcion
+    }
+  Cuenta --> "1" tipoDocumento
+  
+  class Pais{
+    nombre
+    descripcion
+    }
+  Cuenta --> "1" Pais
+  
+  class Sexo{
+    nombre
+    descripcion
+    }
+  Cuenta --> "1" Sexo
+
+  class tipoActividad{
+    nombre
+    descripcion
+    }
+  class tipoObjetivo{
+    nombre
+    descripcion
+    }
+  
+  class metaEntrenamiento{
+    tipoActividad: tipoActividad
+    tipoObjetivo: tipoObjetivo
+    periodoDias
+    fechaInicio
+    fechaCreacion
+    meta
+    descripcion
+
+    }
+    metaEntrenamiento --> "1" tipoActividad
+    metaEntrenamiento --> "1" tipoObjetivo
+    metaEntrenamiento --> "*" cambioEstadoMeta
+    Cuenta --> "*"metaEntrenamiento
+    
+    class cambioEstadoMeta{
+      fechaInicio
+      fechaFin
+      EstadoMeta: estadoMeta
+      }
+    cambioEstadoMeta --> "1" EstadoMeta
+    
+    class EstadoMeta{
+      nombre
+      descripcion
+      }
+
+    class Entrenamiento{
+      fechaHoraInicio
+      fechaHoraFin
+      metaEntrenamiento: metaEntrenamiento
+      tipoActividad: tipoActividad
+      velocidad
+      elevacionSuelo
+      ritmo
+      }
+    Entrenamiento --> "1" tipoActividad
+    Entrenamiento --> "0..1" metaEntrenamiento
+    Entrenamiento --> "1" RutaRecorrida
+    Entrenamiento --> "1" Cuentaimage.png
+    class RutaRecorrida{
+      ubicacionInicial
+      ubicacionFinal
+      fechaHora
+      distanciaRecorrida
+      duracionRecorrido
+      }

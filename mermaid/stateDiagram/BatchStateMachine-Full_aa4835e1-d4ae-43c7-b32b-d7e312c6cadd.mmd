@@ -1,0 +1,18 @@
+stateDiagram-v2
+    [*] --> Batch.Received.Event
+    Batch.Received.Event --> Batch.Started.State
+    Batch.Started.State --> Job.Received.Event
+    Job.Received.Event --> Job.Received.State
+    Job.Received.State --> Job.Completed.Event
+    Job.Completed.Event --> Job.Completed.State
+    Job.Completed.State --> Batch.Job.Done.Event
+    Batch.Job.Done.Event --> Batch.Finished.State
+    Batch.Finished.State --> [*]
+    Job.Received.State --> Job.Failed.Event
+    Job.Failed.Event --> Job.Failed.State
+    Job.Failed.State --> Batch.Job.Done.Failed.Event
+    Batch.Job.Done.Failed.Event --> Batch.Failed.State
+    Batch.Failed.State --> [*]
+    [*] --> Batch.Received.Failed.Event
+    Batch.Received.Failed.Event --> Batch.Failed.State
+    

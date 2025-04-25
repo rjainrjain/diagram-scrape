@@ -1,0 +1,13 @@
+%%{init: {'themeVariables': { 'clusterBkg': '#A9A9A9', 'clusterBorder': '#FFFFFF'}}}%%
+graph TB
+    H{{"Hast du bereits (1) eine conda environment erstellt?"}}
+    H --nein--> I["Environment erstellen (2)"]
+    I --> J["Environment aktivieren (3)"]
+    J --> V["Working directory setzen (4)"]
+    H --Ja--> J
+    subgraph G[" "]
+    V --> K["Hast du in deiner Environment (!) jupyter lab installiert (5)?"]
+    K --ja--> L["Jupyter Lab starten (7)"]
+    K --nein--> M["Jupyter Lab installieren (6)"]
+    M --> L
+    end

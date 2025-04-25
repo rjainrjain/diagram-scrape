@@ -1,0 +1,12 @@
+
+flowchart TB
+subgraph  old[旧]
+  direction TB
+  REL_15_1-->doc_ja_15
+  doc_ja_15 -. 抽出 .-> 英語-日本語
+end
+subgraph new[新]
+  direction TB
+  REL_16_0-->doc_ja_16
+  英語-日本語 -. 適用 .->doc_ja_16
+end

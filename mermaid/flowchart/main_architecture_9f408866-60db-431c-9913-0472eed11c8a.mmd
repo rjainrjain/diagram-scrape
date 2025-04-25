@@ -1,0 +1,29 @@
+
+flowchart TB
+    subgraph Data_Sources ["Sources de Données"]
+        direction LR
+        A1[ecommerce-data.csv]
+        A2[ccdata.csv]
+        A3[amazon-product-listing-data.csv]
+    end
+
+    subgraph Data_Storage ["Stockage des Données"]
+        B[HDFS]
+    end
+
+    subgraph Processing ["Traitement"]
+        C1[Spark Cluster]
+        C2[DataFusion Pipelines]
+    end
+
+    subgraph Data_Warehouse ["Entrepôt de Données"]
+        D[PostgreSQL]
+    end
+
+    A1 -->|Stocker les Données Brutes| B
+    A2 -->|Stocker les Données Brutes| B
+    A3 -->|Stocker les Données Brutes| B
+
+    B -->|Charger les Données| C1
+    C1 -->|Traiter les Données| C2
+    C2 -->|Stocker les Résultats| D

@@ -1,0 +1,31 @@
+sequenceDiagram
+    participant U as User
+    participant F as Frontend (Next.js)
+    participant B as Backend (Node.js)
+    participant P as Python Script
+    participant D as Database
+
+    U->>F: Login
+    F->>B: Authentifizierungsanfrage
+    B->>D: Überprüfe Anmeldedaten
+    D->>B: Bestätige Authentifizierung
+    B->>F: Login erfolgreich
+
+    U->>F: Formular ausfüllen & CSV hochladen
+    F->>B: Sende Daten & CSV
+    B->>D: Speichere Formulardaten
+    B->>P: Starte Python-Script
+
+    P->>P: Verarbeite CSV mit Selenium
+    P->>P: Generiere PDF
+    P->>B: Sende Statusupdates
+
+    B->>F: Übermittle Echtzeit-Updates
+    F->>U: Zeige Bearbeitungsstand
+
+    P->>B: Script abgeschlossen
+    P->>B: Speichere Ergebnisse
+    B->>F: Benachrichtige über Fertigstellung
+    F->>U: Zeige Fertigstellung
+    B->>F: Stelle Download Bereit.
+    F->>U: User führ Download durch

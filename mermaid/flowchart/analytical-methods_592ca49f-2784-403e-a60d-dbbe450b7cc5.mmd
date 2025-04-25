@@ -1,0 +1,81 @@
+%%{init: {'theme': 'default', "flowchart" : { "curve" : "bumpX" } } }%%
+
+flowchart TD
+    images[(Overview + close-up images)]
+    targets[(Case # and diagnosis)]
+    cc[(Locations per case)]
+
+    subgraph splits[Create folds]
+        filter_data[Filter medulloblastoma and pilocytic astrocytoma]
+
+        create_splits[Create 5 folds and stratify on case #]
+
+        filter_data --> create_splits
+    end
+
+    subgraph pretraining[Pre-training]
+        SimCLR(ImageNet + SimCLR)
+        ImageNet(ImageNet)
+    end
+
+    subgraph train[Training]
+        features[(Features)]
+
+        subgraph hps[Hyperparameter search]
+            sh[Successive Halving fold 1]
+
+            sh_bv{{Lowest loss}}
+
+            sh --> sh_bv
+        end
+
+        VarMIL(VarMIL)
+        CCMIL(CCMIL)
+
+        train_bv{{Lowest loss}}
+
+        features --> VarMIL & CCMIL
+
+        VarMIL & CCMIL --> hps
+
+        sh_bv --> train_with_conf[Train]
+
+        train_with_conf --> train_bv
+    end
+
+    subgraph test[Testing]
+        AUC([AUC])
+        AUPR([AUPR])
+        AUPRG([AUPRG])
+
+        best_model{{Highest AUPRG}}
+
+        %%style ph1 fill:#FFFFFF00, stroke:#FFFFFF00;
+        %%style ph2 fill:#FFFFFF00, stroke:#FFFFFF00;
+        %%AUC ~~~ ph1[ ]
+        %%AUPR ~~~ ph2[ ]
+
+        AUPRG --> best_model
+
+    end
+
+    subgraph xai[XAI]
+        subgraph pretrained_model[Pre-trained model]
+            tsne[t-SNE]
+            nn[Nearest neighbours]
+            tsne ~~~ nn
+        end
+
+        subgraph final[Final model]
+            direction LR
+            A[Attention map]
+        end
+    end
+
+    create_splits --> pretraining
+    images & targets --> splits
+    SimCLR & ImageNet --> features
+    pretraining ---> xai
+    train_bv ---> test
+    best_model --> xai
+    cc ------> CCMIL

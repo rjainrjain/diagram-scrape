@@ -1,0 +1,22 @@
+sequenceDiagram
+
+%% diagram created with https://mermaidjs.github.io/ feel free to use the live editor at https://mermaidjs.github.io/mermaid-live-editor/ to modify
+
+participant Alice
+participant Bob
+participant Keystore
+participant Vault
+
+
+Note over Alice,Vault: Bob reads share from Alice
+
+
+Bob->>Vault: (24) Request all items (including shared incoming items) [GET /items]
+Vault->>Bob: (25) Return encrypted items 
+Bob->>Vault: (26) Request share for the shared item [GET /incoming_shares/{id}/item]
+Vault->>Bob: (27) Return share with encrypted_dek and keypair_external_id
+Bob->>Keystore: (28) Bob requests the keypair using the keypair_external_id [GET /keypairs]
+Keystore->>Bob: (29) Keystore returns encrypted private_key
+Bob->>Bob: (28) Decrypt the encrypted private_key with his private DEK
+Bob->>Bob: (28) Decrypt the encrypted_dek with his connection private key
+Bob->>Bob: (29) Decrypt the slots with the decrypted DEK

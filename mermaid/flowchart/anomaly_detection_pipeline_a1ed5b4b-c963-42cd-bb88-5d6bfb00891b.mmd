@@ -1,0 +1,10 @@
+
+%%{init: {'themeVariables': {'primaryColor': '#ffcc00', 'edgeLabelBackground':'#ffffff', 'tertiaryColor': '#ffffff', 'fontSize': 24}}}%%
+
+flowchart LR
+    A([Chargement des Données Clients])
+    B([Filtrer: CASH_ADVANCE > 0 ET BALANCE > CREDIT LIMIT])
+    C([Sélectionner: CustomerID, BALANCE, CREDIT LIMIT, CASH ADVANCE])
+    D([Sortie: Anomalies Détectées])
+
+    A -->|Charger les Données| B -->|Appliquer le Filtre| C -->|Préparer les Données| D

@@ -1,0 +1,91 @@
+flowchart LR
+    classDef native fill:#f96;
+
+    subgraph "Ethereum"
+    eth-eth[eth]:::native
+    eth-wbtc[wbtc]
+    eth-renbtc[renbtc]
+    eth-dai[dai]
+    eth-ust[ust]
+    eth-luna[luna]
+    eth-matic[matic]
+    eth-avax[avax]
+    eth-ftm[ftm]
+    end
+
+    subgraph "Polygon"
+    polygon-matic[matic]:::native
+    end
+
+    subgraph Binance_Smart_Chain
+    bsc-bnb[bnb]:::native
+    bsc-eth[eth]
+    bsc-ust[ust]
+    end
+
+    subgraph "Terra"
+    terra-ust[ust]:::native
+    terra-luna[luna]:::native
+    end
+
+    subgraph "Solana"
+    solana-sol[sol]:::native
+    solana-renbtc[renbtc]
+    end
+
+    subgraph "Bitcoin"
+    bitcoin-btc[btc]:::native
+    end
+
+    subgraph "Optimism"
+    optimism-eth[eth]:::native
+    end
+    
+    subgraph "Arbitrum"
+    arbitrum-eth[eth]:::native
+    end
+
+    subgraph "Arbitrum"
+    arbitrum-eth[eth]:::native
+    end
+
+    subgraph "xDAI"
+    xdai-xdai[xdai]:::native
+    end
+
+    subgraph "Avalanche"
+    avalanche-avax[avax]:::native
+    end
+
+    subgraph "Fantom"
+    fantom-ftm[ftm]:::native
+    end
+
+    eth-ust ---|"bridge.terra.money"| terra-ust
+    eth-luna ---|"bridge.terra.money"| terra-luna
+    terra-ust ---|"bridge.terra.money"| bsc-ust
+
+    eth-eth -->|"sollet.io"| solana-sol
+
+    eth-eth ---|"gateway.optimism.io"| optimism-eth
+    
+    eth-eth ---|"bridge.arbitrum.one"| arbitrum-eth
+
+    eth-eth ---|"bridge.arbitrum.one"| arbitrum-eth
+
+    eth-avax[avax] ---|"bridge.avax.network"| avalanche-avax
+
+    eth-ftm[ftm] ---|"multichain.xyz"| fantom-ftm
+    eth-ftm[ftm] ---|"anyswap.exchange/bridge"| fantom-ftm
+    
+    eth-dai ---|"bridge.xdaichain.com"| xdai-xdai
+
+    eth-eth ---|"binance.org/en/bridge"| bsc-bnb
+    eth-eth ---|"binance.org/en/bridge"| bsc-eth
+
+    eth-matic ---|"wallet.matic.network/bridge"| polygon-matic
+    
+    bitcoin-btc ---|"bridge.renproject.io"| solana-renbtc
+    bitcoin-btc ---|"bridge.renproject.io"| eth-renbtc
+    bitcoin-btc ---|"wbtc"| eth-wbtc
+

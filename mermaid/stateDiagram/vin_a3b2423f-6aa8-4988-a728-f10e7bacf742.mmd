@@ -1,0 +1,8 @@
+stateDiagram-v2
+ direction LR
+ [*] --> Init
+ Init --> OK: Two Seconds
+ Init --> VLow: Voltage In Low
+ OK --> VLow: Voltage In Low
+ OK --> VLow: Modbus Timeout
+ VLow --> Init: Voltage In Normal

@@ -1,0 +1,17 @@
+---
+title: class
+---
+classDiagram
+	class ClassA["Class A"] {
+		+type attr
+		+public_method(arg)
+		-private_method(arg) return_type
+	}
+	class ClassA1
+	class ClassA2
+	class ClassB["ClassB"]
+    ClassB : +type attr
+
+    ClassA <|-- ClassA1
+    ClassA <|-- ClassA2
+

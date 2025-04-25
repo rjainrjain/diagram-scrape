@@ -1,0 +1,13 @@
+flowchart LR
+    API(API Gateway)
+    LA(Authorizer Lambda)
+    UM(External User Service)
+    L1(Lambda 1)
+    L2(Lambda 2)
+    L3(Lambda 3)
+
+    API --> LA
+    LA --get authorization context--> UM
+    LA --Role=admin---> L1
+    LA --Role=Admin---> L2
+    LA --Role=Admin---> L3

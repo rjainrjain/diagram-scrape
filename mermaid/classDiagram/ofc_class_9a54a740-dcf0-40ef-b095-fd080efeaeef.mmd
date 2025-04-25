@@ -1,0 +1,20 @@
+classDiagram
+namespace ofc_data {
+  class OFCData
+  class BaseOFCData
+}
+
+class OFC
+StateEstimator *-- OFCData
+BaseController *-- OFCData
+OICController "1" *-- "2" BendModeToForce
+BendModeToForce *-- OFCData
+OFC *-- OFCData
+OFC *-- SensitivityMatrix
+OFC *-- StateEstimator
+OFC *-- OICController
+OFC *-- PIDController
+OFC ..> Correction
+BaseOFCData <|-- OFCData
+BaseController <|-- OICController
+BaseController <|-- PIDController

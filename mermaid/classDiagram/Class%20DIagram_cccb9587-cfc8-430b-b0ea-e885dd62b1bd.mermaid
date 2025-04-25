@@ -1,0 +1,34 @@
+classDiagram
+    class User {
+        -Long id
+        -String username
+        -String password
+        -String firstName
+        -String lastName
+        -String email
+        -ManagerRole managerRole
+%%        +getId() Long
+%%        +setId(Long id) void
+%%        +getUsername() String
+%%        +setUsername(String username) void
+%%        +getPassword() String
+%%        +setPassword(String password) void
+%%        +getFirstName() String
+%%        +setFirstName(String firstName) void
+%%        +getLastName() String
+%%        +setLastName(String lastName) void
+%%        +getEmail() String
+%%        +setEmail(String email) void
+%%        +getManagerRole() ManagerRole
+%%        +setManagerRole(ManagerRole role) void
+    }
+
+    class ManagerRole {
+        <<enumeration>>
+        EMPLOYEE
+        TEAM_LEAD
+        MANAGER
+        DIRECTOR
+    }
+
+    User "1" -- "1" ManagerRole

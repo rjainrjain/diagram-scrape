@@ -1,0 +1,27 @@
+classDiagram
+    class Publisher{
+        <<interface>>
+        +subscribe(Subscriber subscriber)
+        +unSubscribe(Subscriber subscriber)
+        +notifySubscribers()
+    }
+
+    class Subscriber{
+        <<interface>>
+        +update()
+    }
+
+    class Amazon{
+        -List ~Subscriber~ subscribers
+    }
+
+    Publisher <|.. Amazon: implements
+    Amazon "1" o-- "*" Subscriber: has
+
+Subscriber <|.. EmailService: implements
+Subscriber <|.. PushNotificationsService: implements
+Subscriber <|.. SMSService: implements
+Subscriber <|.. InventoryService: implements
+
+
+

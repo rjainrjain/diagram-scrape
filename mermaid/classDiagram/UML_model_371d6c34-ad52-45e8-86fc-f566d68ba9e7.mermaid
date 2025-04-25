@@ -1,0 +1,554 @@
+classDiagram
+    Card <|-- PlaceableCard
+    Card <|-- ObjectiveCard
+    PlaceableCard <|-- DrawableCard
+    DrawableCard <|-- GoldCard
+    Deck~T~ o-- Card
+    Deck~T~ <|-- PlayingDeck~T~
+    PlayingDeck~T~ <|-- DrawableDeck~T~
+    Condition <|-- LayoutCondition
+    Condition <|-- ItemsCondition
+    Condition <|-- CornerCoverageCondition
+    GameItem <|.. GameResource
+    GameItem <|.. GameObject
+    Chat o-- Message
+    Message <|-- PrivateMessage
+    LayoutCondition --> GameResource
+    ItemsCondition --> GameItem
+    GameField --> PlaceableCard
+    Player --> TokenColor
+    ScoreTrackBoard --> Player
+    GameView --> ChatView
+    GameView --> DeckView
+    GameView --> GameFieldView
+    GameView --> PlayerView
+    GameView --> ScoreTrackBoardView
+
+
+    %%-----------------------------------------------------
+    %% MODEL
+    %%-----------------------------------------------------
+
+    %% --------------------------------
+    %% cards
+    %% --------------------------------
+    class Card {
+        <<abstract>>
+        - ID: int
+        - TYPE: CardType
+        + Card (id: int, type: CardType)
+        + getId() int
+        + getType() CardType
+    }
+    class DrawableCard {
+        - PLACEMENTSCORE: int
+        + DrawableCard(cardID: int, cardType: CardType, \nfrontCorners: boolean [4], frontCornersContent: GameItem [4],\nbackCorners: boolean [4], backCornersContent: GameItem [4],\n placementScore: int,\n permanentResources: List~GameResource~)
+    }
+    class GoldCard {
+        - PLACEMENTCONDITION: Condition
+        - SCORINGCONDITION: Condition
+        + GoldCard(cardID: int, cardType: CardType,\n frontCorners: boolean[4], frontCornersContent: GameItem[4],\n backCorners: boolean[4], backCornersContent: GameItem[4], \nplacementScore: int, permanentResources: List~GameResource~, \nplacementCondition: Condition, scoringCondition: Condition)
+    }
+    class ObjectiveCard {
+        - SCORINGCONDITION: Condition
+        - OBJECTIVESCORE: int
+        + ObjectiveCard(cardID int,\n scoringCondition: Condition, objectiveScore: int)
+        + getScoringCondition() Condition
+        + getPoints() int
+        + getObjectiveScore(gameField GameField) int
+        + numTimesScoringConditionMet(gameField GameField) int
+    }
+    class PlaceableCard {
+        - PERMANENTRESOURCES: List~GameResource~
+        - FRONTCORNERS: boolean [4]
+        - FRONTCORNERSCONTENT: GameItem [4]
+        - BACKCORNERS: boolean [4]
+        - BACKCORNERSCONTENT: GameItem [4]
+        + PlaceableCard (cardID: int, cardType: CardType,\n frontCorners: boolean [4], \n frontCornersContent: GameItem [4],\n backCorners: boolean [4], \n backCornersContent: GameItem [4],\n permanentResources: List~GameResource~)
+        + getFrontCorners() boolean [4]
+        + getFrontCornersContent() GameItem[4]
+        + getBackCorners() boolean [4]
+        + getBackCornersContent() GameItem [4]
+        + getPermanentResources() List~GameResource~
+        + isPlaceable(gameField: Gamefield, x : int, y: int, \nway : boolean) PlacementResult
+        + getPlacementScore(gameField: Gamefield, x : int, y: int) int
+        + getPlacementCondition() Condition
+        + getScoringCondition() Condition
+        + getPoints() int
+    }
+    %% --------------------------------
+    %% chat
+    %% --------------------------------
+    class Chat {
+        - chatMessages: List~ChatMessage~
+        - chatListeners: List~ChatListener~
+        + Chat()
+        + addListener(chatListener: ChatListener)
+        + removeListener(chatListener: ChatListener)
+        + addPublicMessage(content: String, sender: String)
+        + addPrivateMessage(content: String, sender: String,receiver: String)
+        + getLastMessage(receiver: String) ChatMessage
+        + getContent(receiver: String) List~ChatMessage~
+    }
+    class ChatMessage{
+        - CONTENT: String
+        - SENDERNICKNAME: String
+        - dateTime: Date
+        - ISPUBLIC: boolean
+        + ChatMessage(content: String, senderNickname: String, isPublic: boolean)
+        + getContent() String
+        + getSender() String
+        + getDateTime() Date
+        + getIsPublic() boolean
+        + isForReceiver(receiver: String)
+        + getReceiver() String
+    }
+    class PrivateMessage{
+        - RECEIVERNICKNAME: String
+        + PrivateMessage(content: String, senderNickname: String, isPublic: boolean, \n receiverNickname: String)
+    }
+
+    %% --------------------------------
+    %% Conditions
+    %% --------------------------------
+    class Condition {
+        <<interface>>
+        + numTimesMet(gameField: GameField) int
+    }
+    class CornerCoverageCondition {
+    }
+    class ItemsCondition {
+        - NEEDEDITEMS: List~GameItem~
+        + ItemsCondition(neededItems: List~GameItem~)
+        + getNeededItems() List~GameItem~
+    }
+    class LayoutCondition {
+        - CARDSCOLOR: GameResource[4][3]
+        - MAXLAYOUTROWS: int$
+        - MAXLAYOUTCOLUMNS: int$
+        - myGamefield: GameField
+        + LayoutCondition(cardsColor: GameResource[3][3])
+        + getRows() int
+        + getColumns() int
+        + getCardsColor() GameResource[3][3]
+    }
+
+    %% --------------------------------
+    %% Decks
+    %% --------------------------------
+    class Deck~T~{
+        - TYPE: CardType
+        - Stack~T~ content
+        + Deck(type : CardType, content : Stack~T~ )
+        + Deck(existingDeck : Deck~T~)
+        + getContent() Stack~T~
+        + drawCard() ~T~
+        + shuffle()
+    }
+    class DrawableDeck~T~{
+        + DrawableDeck(type : CardType, content : Stack~T~)
+        + DrawableDeck( existingDeck : DrawableDeck~T~)
+        + drawFaceUpCard(cardPos: int) ~T~
+        + revealTopCard() ~T~
+    }
+    class PlayingDeck~T~{
+        - faceUpCards: List~T~
+        + PlayingDeck(type : CardType, content : Stack~T~)
+        + PlayingDeck(existingDeck : PlayingDeck~T~)
+        + setUpDeck()
+        + setFaceUpCards(faceUpCards: List~T~)
+        + getFaceUpCards() List~T~
+        + addFaceUpCard(faceUpCard: ~T~)
+        + removeFaceUpCard(pos: int) ~T~
+        + revealFaceUpCard(cardPos: int) ~T~
+    }
+    %% --------------------------------
+    %% Enumerations
+    %% --------------------------------
+    class CardType {
+        <<enumeration>>
+        RESOURCE_CARD
+        GOLD_CARD
+        STARTER_CARD
+        OBJECTIVE_CARD
+    }
+    class CommandResult{
+        <<enumeration>>
+        SUCCESS
+        SET_SERVER_GAME
+        CREATE_SERVER_GAME
+        WRONG_STATE
+        WRONG_SENDER
+        WRONG_RECEIVER
+        PLAYER_NOT_PRESENT
+        PLAYER_ALREADY_CONNECTED
+        PLAYER_ALREADY_DISCONNECTED
+        WRONG_PLAYER
+        WRONG_CARD_TYPE
+        CARD_NOT_PRESENT
+        NO_COVERED_CORNER
+        NOT_LEGIT_CORNER
+        MULTIPLE_CORNERS_COVERED
+        CARD_ALREADY_PRESENT
+        INDEXES_OUT_OF_GAME_FIELD
+        PLACING_CONDITION_NOT_MET
+        PLAYER_ALREADY_PRESENT
+        GAME_FULL
+        TOKEN_COLOR_ALREADY_TAKEN
+        GAME_NOT_PRESENT
+        WRONG_PLAYERS_NUMBER
+        NOT_PLACED_YET
+        CARD_ALREADY_PLACED
+        DISPLAY_GAMES
+        - resultMessage: String
+        ~ CommandResult(resultMessage: String)
+        + getResultMessage() String
+    }
+    class GameObject {
+        <<enumeration>>
+        QUILL
+        INKWELL
+        MANUSCRIPT
+    }
+    class GameResource {
+        <<enumeration>>
+        PLANT
+        ANIMAL
+        FUNGI
+        INSECT
+    }
+    class TokenColor {
+        <<enumeration>>
+        BLUE
+        GREEN
+        RED
+        YELLOW
+    }
+
+    class Board {
+        - playersScore: Map~String, Integer~
+        - boardListeners List~BoardListener~
+        + ScoreTrackBoard()
+        + addListener(boardListener: BoardListener)
+        + removeListener(boardListener: BoardListener)
+        + addPlayer(nickname: String)
+        + getScore(nickname: String) int
+        + setScore(nickname: String, newScore: int)
+        + incrementScore(nickname: String, deltaScore: int)
+    }
+
+    class GameField {
+        - cardsContent: PlaceableCard[][]
+        - cardsFace: Boolean [][]
+        - DIM: int$
+        - cardsOrder: int[][]
+        - numPlayedCards: int
+        - starterCard: PlaceableCard
+        - gameFieldListeners List~GameFieldListener~
+        + GameField()
+        + GameField(existingGameField: GameField)
+        + addListener (gameFieldListener: GameFieldListener)
+        + removeListener (gameFieldListener: GameFieldListener)
+        + getListeners() List~GameFieldListener~
+        + getDim() int
+        + setStarterCard(nickname: String, starterCard: PlaceableCard)
+        + getStarterCard() Placeablecard
+        + placeCard(card: PlaceableCard, x: int, y: int, way: boolean) CommandResult
+        + isCardPresent(x: int, y: int) boolean
+        + getPlacedCard(x: int, y: int) PlaceableCard
+        + removePlacedcard(x: int, y: int)
+        + getCardWay(x: int, y: int) Boolean
+        + getCardsOrder() int[81][81]
+        + getNumPlayedCards() int
+    }
+
+    class GameItem {
+        <<interface>>
+    }
+    class GameModel{
+        - id: int
+        - playersNumber: int
+        - state: GameState
+        - players: List~Player~
+        - winners: List~String~
+        - currPlayer: int
+        - hasCurrPlayerPlaced: boolean
+        - scoreTrackBoard: ScoreTrackBoard
+        - resourceCardsDeck: DrawableDeck~DrawableCard~
+        - goldCardsDeck: DrawableDeck~GoldCard~
+        - objectiveCardsDeck: PlayingDeck~ObjectiveCard~
+        - starterCardsDeck: Deck~PlaceableCard~
+        - penultimarteRound: boolean
+        - additionalRound: boolean
+        - chat: Chat
+        - commandResult: CommandResult
+        - gameListeners: List~GameListener~
+        - emptyDecks: boolean
+        + GameModel(id: int,playersNumber: int,resourceCardsDeck: DrawableDeck~DrawableCard~,\ngoldCardsDeck: DrawableDeck~GoldCard~,objectiveCardsDeck: PlayingDeck~ObjectiveCard~, \nstarterCardsDeck: Deck~PlaceableCard~)
+        + getId() int
+        + getPlayersNumber() int
+        + setState(state: GameState)
+        + getState() GameState
+        + getPlayers() List~Player~
+        + getPlayersNicknames() List~String~
+        + getWinners() List~String~
+        + setCurrPlayer(currPlayer: int)
+        + getCurrPlayer() int
+        + getHasCurrPlayerPlaced() boolean
+        + setHasCurrPlayerPlaced(hasCurrPlayerPlaced: boolean)
+        + getScoreTrackBoard() ScoreTrackBoard
+        + getResourceCardsDeck() DrawableDeck~DrawableCard~
+        + getGoldCardsDeck() DrawableDeck~GoldCard~
+        + getObjectiveCardsDeck() PlayingDeck~ObjectiveCard~
+        + getStarterCardsDeck() Deck~PlaceableCard~
+        + getPenultimateRound() boolean
+        + setPenultimateRount(penultimateRound: boolean)
+        + getAdditionalRound() boolean
+        + setAdditionalRound(additionalRound boolean)
+        + getTakenTokenColors() List~TokenColor~
+        + setCommandResult(nickname: String, commandResult: CommandResult)
+        + getCommandResult() CommandResult
+        + setEmptyDecks(value: boolean)
+        + getEmptyDecks() boolean
+        - sendGameModelUpdate()
+        - sendDeckUpdate()
+        - sendPlayersUpdate()
+        - sendWinnerUpdate()
+        + setUpResourceCardsDeck()
+        + setUpGoldCardsDeck()
+        + setUpObjectiveCardsDeck()
+        + drawResourceCard() DrawableCard
+        + drawGoldCard() GoldCard
+        + drawObjectiveCard() ObjectiveCard
+        + drawStarterCard() PlaceableCard
+        + drawFaceUpResourceCard(pos: int) DrawableCard
+        + drawFaceUpGoldCard(pos: int) GoldCard
+        + addFaceUpResourceCard(card: DrawableCard)
+        + addFaceUpGoldCard(card: GoldCard)
+        + revealFaceUpResourceCard(pos: int) DrawableCard
+        + revealFaceUpGoldCard(pos: int) GoldCard
+        + addPlayer(newPlayer: Player)
+        + addListener(client: VirtualView)
+        + sendModelViewUpdate(nickname:String, client: VirtualView)
+        + removeListener(client: VirtualView)
+        + addChatPublicMessage(content: String,sender: String)
+        + addChatPrivateMessage(content: String,sender: String, receiver: String)
+        + getScore(nickname: String) int
+        + setScore(nickname: String, newScore: int)
+        + incrementScore(nickname: String, deltaScore: int)
+        + getNumPlayersConnected() int
+        + hasPlayer(nickname: String) boolean
+        + hasPlayerWithTokenColor(tokenColor: TokenColor) boolean
+        + computeWinner()
+        + setWinner(nickname: String)
+        + addPoints(player: Player, x:int,y:int)
+    }
+
+    class Player {
+        - nickname: String
+        - gameField: GameField
+        - tokenColor: TokenColor
+        - isFirst: boolean
+        - connectionType: boolean
+        - interfaceType: boolean
+        - isConnected: boolean
+        - currentHand: List ~DrawableCard~
+        - secretObjectve: List~ObjectiveCard~
+        - isStalled : boolean
+        - playerListeners: List~PlayerListener~
+        + Player(nickname: String, connectionType: boolean,\n interfaceType: boolean)
+        + addListener(playerListener: PlayerListener)
+        + removeListener(playerListener: PlayerListener)
+        + getListeners() List~PlayerListener~
+        + getNickname() String
+        + getGameField() GameField
+        + setStarterCard(starterCard: PlaceableCard)
+        + setTokenColor(tokenColor: TokenColor)
+        + getTokenColor() TokenColor
+        + setFirst()
+        + isFirst() boolean
+        + getConnectionType() boolean
+        + getInterfaceType() boolean
+        + getIsStalled() boolean
+        + setIsStalled(isStalled : boolean)
+        + isConnected() boolean
+        + setIsConnected(isConnected: boolean)
+        + getCurrentHand() List~DrawableCard~
+        + removeCardHand(card: DrawableCard)
+        + addCardHand(card: DrawableCard)
+        - sendCardHandUpdate()
+        + setSecretObjective(secrectObjective: List~ObjectiveCard~)
+        + chooseSecretObjective(chosenSecretObjective: boolean)
+        + getSecretObjetive() ObjectiveCard
+        + getStarterCard() PlaceableCard
+        + placeCard(card: PlaceableCard, x: int, y: int, way:boolean ) CommandResult
+    }
+
+    class Board {
+        - playersScore: Map~String, Integer~
+        - boardListeners List~BoardListener~
+        + ScoreTrackBoard()
+        + addListener(boardListener: BoardListener)
+        + removeListener(boardListener: BoardListener)
+        + addPlayer(nickname: String)
+        + getScore(nickname: String) int
+        + setScore(nickname: String, newScore: int)
+        + incrementScore(nickname: String, deltaScore: int)
+    }
+
+
+%% -----------------------------
+%% MODEL_VIEW
+%% -----------------------------
+
+    class BoardView{
+        - playersScore: Map~String,Integer~
+        - playerTokenColors: Map~String, TokenColor~
+        - boardViewListeners: List~BoardViewListener~
+        + BoardView()
+        + addListener(boardViewListener: BoardViewListener)
+        + addPlayerToBoard(nickname:String)
+        + setNewScore(nickname:String, newScore: int)
+        + updateListeners()
+    }
+
+    class ChatView {
+        - chatMessages: List~ChatMessage~
+        - chatViewListeners: List~ChatViewListener~
+        + ChatView()
+        + addListener(chatViewListener: ChatViewListener)
+        + addMessage(chatMessage: ChatMessage)
+        + setChatMessages(chatMessages: List~ChatMessage~)
+        + getMessages() List~ChatMessage~
+    }
+    class DeckView {
+        - topResourceDeck: DrawableCard
+        - topGoldDeck: GoldDeck
+        - faceUpResourceCard: List~DrawableCard~
+        - faceUpGoldCard: List~GoldCard~
+        - commonObjective: List~ObjectiveCard~
+        - deckViewListeners: List~DeckViewListener~
+        + DeckView()
+        + addListener(deckViewListeners: DeckViewListener)
+        - sendDecksUpdate()
+        + setTopResourceDeck(topResourceDeck:DrawableCard)
+        + setTopGoldDeck(topGoldDeck:GoldCard)
+        + setFaceUpResourceDeck(faceUpResourceCard: List~DrawableCard~)
+        + setFaceUpGoldDeck(faceUpGoldCard: List~GoldCard~)
+        + setCommonObjective(commonObjective: List~ObjectiveCard~)
+        + getTopResourceDeck() DrawableCard
+        + getTopGoldDeck() GoldCard
+        + getFaceUpResourceCard() List~DrawableCard~
+        + getFaceUpGoldCard() List~GoldCard~
+        + getCommonObjective() List~ObjectiveCard~
+        + getNumFaceUpCards(cardType: CardType)
+    }
+    class GameFieldView {
+        - starterCard: PlaceableCard
+        - cardsContent: PlaceableCard[][]
+        - cardsFace: Boolean[][]
+        - cardsOrder: int[][]
+        - dim: int
+        - gameFieldViewListeners: List~GameFieldViewListener~
+        + GameFieldView()
+        + GameFieldView(gameFieldView: GameFieldView)
+        + setFullGameField(nickname: String, starterCard: PlaceableCard\n,cardsContent:PlaceableCard[][] , cardsFace: Boolean[][] \n, cardsOrder: int[][])
+        + addListener(gameFieldViewListener:GameFieldViewListener)
+        + getCardsContent() PlaceableCard[][]
+        + getCardsFace() Boolean[][]
+        + getCardsOrder() int[][]
+        + notifyListeners(nickname: String)
+        + setStarterCard(starterCard: PlaceableCard)
+        + getDim()
+        + addCard(card: PlaceableCard,x: int,y:int,way: boolean, orderPosition: int)
+    }
+    class GameView {
+        - ownerNickname: String
+        - id: int
+        - state: GameState
+        - playersNumber: int
+        - winners: List~String~
+        - currPlayer: int
+        - twentyPointsReached: boolean
+        - additionalRound: boolean
+        - commandResult: CommandResult
+        - scoreTrackBoardView: ScoreTrackBoardView
+        - deckView: DeckView
+        - chatView: ChatView
+        - playersView: List~PlayerView~
+        - gameViewListeners: List~GameViewListener~
+        + GameView()
+        + addViewListener(uiListener: Ui)
+        + getId() int
+        + getGameState() GameState
+        + getCurrentPlayerNickname() String
+        + getOwnerNickname() String
+        + getCommonObjective() List~ObjectiveCard~
+        + getTopResourceDeck() DrawableCard
+        + getTopGoldDeck() GoldCard
+        + getFaceUpResourceCard() List~DrawableCard~
+        + getFaceUpGoldCard() List~GoldCard~
+        + getOwnerMessages() List~ChatMessage~
+        + setGameModel(id: int, state: GameState, currPlayer: int\n, penultimateRound:boolean,additionalRound:boolean)
+        + setWinners(winners: List~String~)
+        + addMessage(chatMessage: ChatMessage)
+        + setChatMessages(chatMessages: List~ChatMessage~)
+        + setDeck(topResourceCard: DrawableCard, topGoldCard: GoldCard\n, resourceFaceUpCards:List~DrawableCard~, goldFaceUpCards: List~GoldCard~\n ,  commonObjective:List~ObjectiveCard~)
+        + setStarterCard(nickname: String, starterCard: PlaceableCard)
+        + setSecretObjectives(nickname: String, objectiveCards: List~ObjectiveCard~)
+        + addCard(nickname: String,card: PlaceableCard,x: int, y:int, way: boolean, orderPosition: int)
+        + setNewScore(nickname: String, newScore: int)
+        + setIsStalled(nickname: String,isStalled: boolean)
+        + setIsConnected(nickname: String, isConnected: boolean)
+        + setCardHand(nickname: String,newHand: List~DrawableCard~)
+        + setPlayersView(playersViews: List~PlayerView~)
+        + setCommandResult(nickname: String,commandResult: CommandResult)
+        + displayExistingGame(existingGames: Map~Integer,Integer~)
+        + checkPlayerPresent(nickname: String) boolean
+        + isCurrentPlayer(nickname: String) boolean
+        + getNumFaceUpCards( cardType:CardType) int
+        + getCurrHandSize() int
+        + getGameFieldDim() int
+        + getGameField(nickname:String) GameFieldView
+    }
+    class PlayerView{
+        - nickname: String
+        - gameField: GameFieldView
+        - tokenColor: TokenColor
+        - secretObjective: ObjectiveCard
+        - isConnected: boolean
+        - isStalled: boolean
+        - currentHand: List~DrawableCard~
+        - playerViewListeners: List~PlayerViewListener~
+        + PlayerView(nickname: String,tokenColor: TokenColor,secretObjective: ObjectiveCard)
+        + isConnected() boolean
+        + isStalled() boolean
+        + addListener(playerViewListener: PlayerViewListener)
+        + addGameFieldListener(gameFieldViewListener: GameFieldViewListener)
+        + getNickname() String
+        + getTokenColor() TokenColor
+        + setIsStalled(isStalled: boolean)
+        + setIsConnected(isConnected: boolean)
+        + setSecretObjectives(nickname: String, secretObjectives: List~ObjectiveCard~ )
+        + setCardHand(currentHand: List~DrawableCard~)
+        + setStarterCard(starterCard: PlaceableCard)
+        + addCard(card:Placeablecard,x:int,y:int,way: boolean,orderPosition: int)
+        + getCurrHandSize() int
+        + getGameField() GameFieldView
+        + setFullGameField( nickname:String, starterCard:PlaceableCard,cardsContent: PlaceableCard[][]\n, cardsFace:  Boolean[][], cardsOrder:int[][])
+    }
+
+    class DecksBuilder{
+        <<abstract>>
+        - extractFrontCorners(cardJsonObject : JsonObject) boolean[4]
+        - extractFrontCornersContent(cardJsonObject : JsonObject) GameItem[4]
+        - extractBackCorners(cardJsonObject : JsonObject) boolean[4]
+        - extractBackCornersContent(cardJsonObject : JsonObject) GameItem[4]
+        - extractPermanentResources(cardJsonObject : JsonObject) List~GameResource~
+        - extractLayoutCondition(conditionObject : JsonObject) GameResource[4][3]
+        - extractItemsCondition(conditionObject : JsonObject) List~GameItem~
+        + buildStarterCardsDeck() Deck~PlaceableCard~
+        + buildObjectiveCardsDeck() PlayingDeck~ObjectiveCard~
+        + buildResourceCardsDeck() ResourceCardsDeck
+        + buildGoldCardsDeck() GoldCardsDeck
+    }

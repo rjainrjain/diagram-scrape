@@ -1,0 +1,9 @@
+graph TD
+    A[Start] --> B[Initialize Scanner input]
+    B --> C[Prompt user for subtotal and gratuity rate]
+    C --> D[Read subtotal from input]
+    D --> E[Read gratuity rate from input]
+    E --> F[Calculate gratuity = subtotal * (gratuityRate / 100)]
+F --> G[Calculate total = subtotal + gratuity]
+G --> H[Print gratuity and total]
+H --> I[End]

@@ -1,0 +1,10 @@
+flowchart TD
+    classDef yellow fill:yellow
+    A["Obrázek: 224(šířka) x 224(výška) x 3(RGB kanály)"]:::yellow -->|přeskládání do vektoru| B
+    B[Vstupní vrstva: 128 neuronů, ReLU aktivace] --> C
+    C[1. skrytá vrstva: 64 neuronů, ReLU aktivace] --> D
+    D[2. skrytá vrstva: 32 neuronů, ReLU aktivace] --> E
+    E[3. skrytá vrstva: 16 neuronů, ReLU aktivace] --> F 
+    F[4. skrytá vrstva: 8 neuronů, ReLU aktivace] --> G
+    G[Výstupní vrstva: 3 neurony, Softmax aktivace] --> H
+    H[Výstup - predikce modelu]:::yellow

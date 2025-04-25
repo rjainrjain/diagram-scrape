@@ -1,0 +1,50 @@
+%%{
+	init: {
+		"theme": "base",
+		"themeVariables": {
+			"background": "#ffffffff",
+			"primaryColor": "#ffffffff",
+			"primaryBorderColor": "#000000",
+			"clusterBkg": "#ffffffff",
+			"clusterBorder": "#000000",
+			"nodeTextColor": "#000000"
+		}
+	}
+}%%
+
+flowchart TD
+    subgraph Einleitung
+        A[Einleitung] --> B[Imperative Programmierung] --> Q[Mathematische Operatoren]
+    end
+    subgraph Variablen
+        direction LR
+        C{{Variablen}} <--> D[Erstellung von Variablen]
+        C <--> E[Veränderung von Variablen]
+        C <--> F[Zugriff auf Variablen]
+    end
+    Einleitung --> Variablen
+    Variablen <--> G[Zwischenfragen]
+    subgraph Verzweigungen
+        direction LR
+        H{{Verzweigungen}} <--> I[if-else] <--> J[Operatoren]
+        H <--> K[Beispiel]
+    end
+    G --> Verzweigungen
+    Verzweigungen <--> L[Zwischenfragen]
+    subgraph Schleifen
+        direction LR
+        M{{Schleifen}} <--> N[for]
+        M <--> O[while]
+        N --> P[Beispiel]
+        P & R ---> S[ ]
+		O --> R[Beispiel]
+        M --- S
+    end
+    L --> Schleifen
+    Schleifen <--> T[Zwischenfragen]
+    subgraph Funktionen
+        direction LR
+        U{{Funktionen}} <--> V[Beispiel]
+    end
+    T --> Funktionen
+    Funktionen --> W(((Ende)))

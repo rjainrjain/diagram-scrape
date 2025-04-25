@@ -1,0 +1,115 @@
+```mermaid
+classDiagram
+class settore {
+	settore_id: INTEGER
+	nome: varchar(20)
+}
+
+class filiale {
+	filiale_id: INTEGER
+	nome: varchar(20)
+	indirizzo: varchar(30)
+	citta: varchar(20)
+	stato: varchar(2)
+	cap: varchar(12)
+}
+
+class dipendente {
+	dipendente_id: INTEGER
+	nome: varchar(20)
+	cognome: varchar(20)
+	data_assunzione: date
+	data_fine_rapporto: date
+	superiore_id: INTEGER
+	settore_id: INTEGER
+	titolo: varchar(20)
+	filiale_id: INTEGER
+}
+
+class tipo_prodotto {
+	tipo_prodotto_cd: varchar(10)
+	nome: varchar(50)
+}
+
+class prodotto {
+	prodotto_cd: varchar(10)
+	nome: varchar(50)
+	tipo_prodotto_cd: varchar(10)
+	data_proposta: date
+	data_cessazione: date
+}
+
+class cliente {
+	cliente_id: INTEGER
+	codice_fiscale: varchar(12)
+	tipo_cliente: TEXT
+	indirizzo: varchar(30)
+	citta: varchar(20)
+	stato: varchar(20)
+	codice_postale: varchar(10)
+}
+
+class privato {
+	cliente_id: INTEGER
+	nome: varchar(30)
+	cognome: varchar(30)
+	data_nascita: date
+}
+
+class societa {
+	cliente_id: INTEGER
+	nome: varchar(40)
+	stato_id: varchar(10)
+	data_costituzione: date
+}
+
+class funzionario {
+	funzionario_id: INTEGER
+	cliente_id: INTEGER
+	nome: varchar(30)
+	cognome: varchar(30)
+	titolo: varchar(20)
+	data_assunzione: date
+	data_fine_rapporto: date
+}
+
+class conto {
+	conto_id: INTEGER
+	prodotto_cd: varchar(10)
+	cliente_id: INTEGER
+	data_apertura: date
+	data_chiusura: date
+	data_ultima_attivita: date
+	stato: TEXT
+	filiale_apertura_id: INTEGER
+	dipedente_apertura_id: INTEGER
+	saldo_disponibile: float(10,2)
+	saldo_contabile: float(10,2)
+}
+
+class movimento {
+	movimento_id: INTEGER
+	data_movimento: datetime
+	conto_id: INTEGER
+	tipo_movimento_cd: TEXT
+	importo: REAL
+	cassiere_dipendente_id: INTEGER
+	filiare_esecuzione_id: INTEGER
+	data_disponibilita: datetime
+}
+
+dipendente "*" -- "1" filiale : filiale_id
+dipendente "*" -- "1" settore : settore_id
+dipendente "*" -- "1" dipendente : superiore_id
+prodotto "*" -- "1" tipo_prodotto : tipo_prodotto_cd
+privato "*" -- "1" cliente : cliente_id
+societa "*" -- "1" cliente : cliente_id
+funzionario "*" -- "1" societa : cliente_id
+conto "*" -- "1" dipendente : dipedente_apertura_id
+conto "*" -- "1" filiale : filiale_apertura_id
+conto "*" -- "1" cliente : cliente_id
+conto "*" -- "1" prodotto : prodotto_cd
+movimento "*" -- "1" filiale : filiare_esecuzione_id
+movimento "*" -- "1" dipendente : cassiere_dipendente_id
+movimento "*" -- "1" conto : conto_id
+```

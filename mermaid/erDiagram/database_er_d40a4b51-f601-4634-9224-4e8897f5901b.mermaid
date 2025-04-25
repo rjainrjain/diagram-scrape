@@ -1,0 +1,30 @@
+erDiagram
+    USER {
+        BIGINT id PK
+        VARCHAR(64) username
+        VARCHAR(255) email
+        TIMESTAMP created
+        TIMESTAMP updated
+    }
+
+    POST {
+        BIGINT id PK
+        VARCHAR(512) title
+        LONGTEXT content
+        BIGINT author_id FK
+        TIMESTAMP created
+        TIMESTAMP updated
+    }
+
+    COMMENT {
+        BIGINT id PK
+        LONGTEXT content
+        BIGINT post_id FK
+        BIGINT author_id FK
+        TIMESTAMP created
+        TIMESTAMP updated
+    }
+
+    USER ||--o{ POST: "is author of"
+    USER ||--o{ COMMENT: "is author of"
+    COMMENT }o--|| POST: has_author

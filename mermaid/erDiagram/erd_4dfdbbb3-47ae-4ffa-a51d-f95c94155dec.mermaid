@@ -1,0 +1,31 @@
+erDiagram
+    users {
+        uuid id
+        string first_name
+        string last_name
+        string email
+        text password
+        timestamp created_at
+        timestampt updated_at
+    }
+
+    posts {
+        uuid id
+        string title
+        text content
+        timestamp created_at
+        timestampt updated_at
+    }
+
+    comments {
+        uuid id
+        text comments
+        uuid user_id
+        uuid post_id
+        timestamp created_at
+        timestampt updated_at
+    }
+
+    users ||--|{ posts: ""
+    posts ||--|{ comments: ""
+    users ||--|{ comments: ""

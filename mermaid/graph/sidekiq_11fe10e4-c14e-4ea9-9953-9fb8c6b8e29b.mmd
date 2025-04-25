@@ -1,0 +1,22 @@
+graph TD
+    A[User] 
+    B[Web App]
+    C[Cache]
+    D[Sidekiq Worker]
+    E[Customer DB]
+    F["Job Queue\n(Ruby/PostgreSQL)\nhandle business queuing logic"]
+
+    A-->|"1. Request"| B
+    B-->|"2. Push to Job Queue"| F
+    F-->|"4. Push to Sidekiq for execution"| D
+    D-->|"5. Run Query"| E
+    E-->|"6.1 Results Returned"| D
+    D-->|"6.2 Write Results to Cache"| C
+    C-->|"7. Read from Cache"| B
+    B-->|"8. Return to End Users"| A
+
+    style A fill:#8dd;
+    style B fill:#f96;
+    style C fill:#fd6;
+    style D fill:#6cf;
+    style E fill:#ef9;

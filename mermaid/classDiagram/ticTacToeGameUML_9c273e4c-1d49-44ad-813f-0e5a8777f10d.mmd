@@ -1,0 +1,89 @@
+classDiagram
+    class Board {
+        -int dimension
+        -List~List~Cell~~ board
+        Board(int dimension)
+        +void printBoard()
+    }
+
+    class Cell {
+        -int row
+        -int col
+        -CellState cellState
+        -Player player
+        Cell(int row, int col)
+    }
+
+    class CellState {
+    }
+    CellState : +EMPTY
+    CellState : +FILLED
+    CellState : +BLOCKED
+
+    class Game {
+        -List~Player~ players
+        -Board board
+        -Player winner
+        -List~Move~ moves
+        -GameState gameState
+        -int nextPlayerIndex
+        -List~WinningStrategy~ winningStrategies
+        Game(List~Player~, List~WinningStrategy~)
+        +static Builder builder()
+    }
+
+    class GameState {
+    }
+    GameState : +IN_PROGRESS
+    GameState : +ENDED
+    GameState : +DRAW
+
+    class Move {
+        -Player player
+        -Cell cell
+        Move(Player player, Cell cell)
+    }
+
+    class Player {
+        -String name
+        -Symbol symbol
+        -PlayerType playerType
+        Player(String name, Symbol symbol, PlayerType playerType)
+        +Cell makeMove(Board board)
+    }
+
+    class PlayerType {
+    }
+    PlayerType : +HUMAN
+    PlayerType : +BOT
+    PlayerType : +ALIEN
+
+    class Symbol {
+        -char symbol
+        Symbol(char symbol)
+    }
+
+    class Bot extends Player {
+-BotDifficultyLevel botDifficultyLevel
+Bot(String name, Symbol symbol, BotDifficultyLevel botDifficultyLevel)
++Cell makeMove(Board board)
+}
+
+class BotDifficultyLevel {
+    }
+BotDifficultyLevel : +EASY
+BotDifficultyLevel : +MEDIUM
+BotDifficultyLevel : +HARD
+
+%% Relationships
+Board "1" *-- "0..*" Cell : composition
+Game "1" o-- "1" Board : aggregation
+Game "1" *-- "0..*" Player : composition
+Game "1" *-- "0..*" Move : composition
+Game "1" --> "1" GameState : association
+Move "1" --> "1" Player : association
+Move "1" --> "1" Cell : association
+Cell "1" --> "1" CellState : association
+Player "1" --> "1" Symbol : association
+Player "1" --> "1" PlayerType : association
+Bot "1" --> "1" BotDifficultyLevel : association

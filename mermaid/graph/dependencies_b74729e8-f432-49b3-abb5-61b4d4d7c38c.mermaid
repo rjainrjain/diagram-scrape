@@ -1,0 +1,53 @@
+```mermaid {theme: 'neutral', scale: 0.6}
+graph TD
+osgearth[osgEarth] --> gdal[GDAL]
+osgearth[osgEarth] --> osg[OpenSceneGraph]
+
+gdal --> zlib[zlib]
+gdal --> jpeg[jpeg]
+gdal --> png[png]
+gdal --> webp[webp]
+gdal --> libtiff[libtiff]
+gdal --> libgeotiff[libgeotiff]
+gdal --> proj[proj]
+gdal --> geos[geos]
+gdal --> sqlite[sqlite]
+gdal --> spatialite[spatialite]
+
+spatialite --> sqlite
+spatialite --> geos
+spatialite --> proj
+spatialite --> zlib
+
+sqlite --> zlib
+
+libgeotiff --> libtiff
+libgeotiff --> proj
+libgeotiff --> zlib
+libgeotiff --> jpeg
+
+libtiff --> webp
+libtiff --> zlib
+libtiff --> jpeg
+
+webp --> zlib
+webp --> jpeg
+webp --> png
+
+osg --> libtiff
+osg --> zlib
+osg --> jpeg
+
+osgearth --> png
+osgearth --> sqlite
+osgearth --> geos
+osgearth --> proj
+osgearth --> zlib
+osgearth --> jpeg
+
+png --> zlib
+
+proj --> libtiff
+proj ---> sqlite
+
+```

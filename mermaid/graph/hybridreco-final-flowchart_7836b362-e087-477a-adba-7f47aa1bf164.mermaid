@@ -1,0 +1,36 @@
+graph TD
+    A[Start] --> B[Prepare Training Data]
+    B --> C[Preprocess Data]
+    C --> D[Create Hybrid Recommender]
+    D --> E[Train and Evaluate Model]
+    E --> F[Optimize Hyperparameters]
+    F --> G[Generate Recommendations]
+    G --> H[Evaluate Recommendations]
+    H --> I[Save Model and Results]
+    I --> J[End]
+
+    subgraph Data Preparation
+        B1[Fetch Data] --> B2[Process Temporal Features]
+        B2 --> B3[Extract Text Features]
+        B3 --> B4[Handle Categorical Variables]
+        B4 --> B5[Create Word Embeddings]
+    end
+
+    subgraph Model Creation
+        D1[User Embedding] --> D4[Concatenate Features]
+        D2[Word Embedding] --> D4
+        D3[Additional Features] --> D4
+        D4 --> D5[Dense Layers]
+        D5 --> D6[Output Layer]
+    end
+
+    subgraph Hyperparameter Optimization
+        F1[Define Search Space] --> F2[Optuna Optimization]
+        F2 --> F3[Select Best Model]
+    end
+
+    subgraph Recommendation Generation
+        G1[Get User Level] --> G2[Predict Word Scores]
+        G2 --> G3[Adjust Predictions]
+        G3 --> G4[Select Diverse Words]
+    end

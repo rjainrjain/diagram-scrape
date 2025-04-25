@@ -1,0 +1,38 @@
+sequenceDiagram
+    participant H5
+    participant uinvoice_gateway
+    participant uinvoice_user_support_backend
+    H5->>+uinvoice_gateway:title/add(user_from,user_uid,terminal_sn,...)
+    uinvoice_gateway->>+uinvoice_user_support_backend:title/add(user_from,user_uid,terminal_sn,...)
+    uinvoice_user_support_backend-->>-uinvoice_gateway:success
+    uinvoice_gateway-->>-H5:success
+
+    H5->>+uinvoice_gateway:title/update(user_from,user_uid,terminal_sn,...)
+    uinvoice_gateway->>+uinvoice_user_support_backend:title/update(user_from,user_uid,terminal_sn,...)
+    uinvoice_user_support_backend-->>-uinvoice_gateway:success
+    uinvoice_gateway-->>-H5:success
+    
+    H5->>+uinvoice_gateway:title/delete(user_from,user_uid,terminal_sn,...)
+    uinvoice_gateway->>+uinvoice_user_support_backend:title/delete(user_from,user_uid,terminal_sn,...)
+    uinvoice_user_support_backend-->>-uinvoice_gateway:success
+    uinvoice_gateway-->>-H5:success
+
+    H5->>+uinvoice_gateway:search:all_titles(user_from,user_uid,terminal_sn,...)
+    uinvoice_gateway->>+uinvoice_user_support_backend:search/all_title(user_from,user_uid,terminal_sn,...)
+    uinvoice_user_support_backend-->>-uinvoice_gateway:all_titles
+    uinvoice_gateway-->>-H5:all_titles
+
+    H5->>+uinvoice_gateway:search/default_title(user_from,user_uid,terminal_sn,...)
+    uinvoice_gateway->>+uinvoice_user_support_backend:search/default_title(user_from,user_uid,terminal_sn,...)
+    uinvoice_user_support_backend-->>-uinvoice_gateway:default_title
+    uinvoice_gateway-->>-H5:default_title
+
+    H5->>+uinvoice_gateway:search/latest_titles(user_from,user_uid,terminal_sn,...)
+    uinvoice_gateway->>+uinvoice_user_support_backend:search/latest_titles(user_from,user_uid,terminal_sn,...)
+    uinvoice_user_support_backend-->>-uinvoice_gateway:title_list
+    uinvoice_gateway-->>-H5:title_list
+
+    H5->>+uinvoice_gateway:search/hot_titles(user_from,user_uid,terminal_sn,...)
+    uinvoice_gateway->>+uinvoice_user_support_backend:search/hot_titles(user_from,user_uid,terminal_sn,...)
+    uinvoice_user_support_backend-->>-uinvoice_gateway:title_list
+    uinvoice_gateway-->>-H5:title_list

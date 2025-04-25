@@ -1,0 +1,51 @@
+flowchart TB
+    %% Title
+    title["Architecture Diagram for Chat Service API"]
+    
+    %% Define styles
+    classDef person fill:#ffdddd,stroke:#333,stroke-width:2px;
+    classDef database fill:#ddeeff,stroke:#333,stroke-width:2px,stroke-dasharray: 5;
+    classDef container fill:#ddffdd,stroke:#333,stroke-width:2px;
+    classDef boundary stroke:#999,stroke-width:2px,stroke-dasharray: 3;
+    
+    %% Define elements
+    user["User\n\nA user of the chat service"]:::person
+    database["Database\n\nPostgreSQL\nStores chat data"]:::database
+    
+    subgraph Application_Boundary["Application"]
+        subgraph Front_End["Front End"]
+            web_app["Web Application\n\nFront End Page\nProvides chat interface"]:::container
+            mobile_app["Mobile Application\n\nFront End Page\nProvides chat interface"]:::container
+        end
+        subgraph FastAPI_Service["FastAPI Service"]
+            api_service["Entrypoint\n\nAPI Gateway\nHandles HTTP requests"]:::container
+            message_bus["Message Bus\n\nStores event and command"]:::container
+            subgraph Core["Core"]
+                core_factory["Factory\n\nCreates core components"]:::container
+                core_repository["Repository\n\nHandles database operations"]:::container
+            end
+            domains["Domains\n\nContains domain model"]:::container
+            subgraph Adapter["Adapter"]
+                redis["Redis\n\nHandles caching"]:::container
+                sqlalchemy["SQLAlchemy\n\nORM for database"]:::container
+            end
+            service["Service\n\nHandles business logic"]:::container
+        end
+    end
+    
+ 
+    %% Define relationships
+    user -->|Browser| web_app
+    user -->|Phone| mobile_app
+    web_app -->|HTTP| api_service
+    mobile_app -->|HTTP| api_service
+    api_service -->|Routes to| message_bus
+
+    message_bus -->|Publishes to| service
+    service -->|Uses| core_factory
+    service -->|Uses| core_repository
+    service -->|Uses| domains
+    domains -->|publish events| message_bus
+    service -->|Uses| redis
+    core_repository -->|Uses| sqlalchemy
+    sqlalchemy -->|Reads from and writes to| database

@@ -1,0 +1,33 @@
+erDiagram
+    ReportingContext }|--|| Patient : contains
+    ReportingContext ||--|{ ImagingStudy : contains
+    ReportingContext ||--|| ReportText : contains
+    ReportingContext ||--|| PriorImagingStudy : contains
+    ReportingContext }|--|{ ObservationSequence : contains
+    ReportingContext ||--|{ Observation : contains
+    ObservationSequence |o--|{ Observation : lists
+    Patient {
+        string ID
+        string MRN
+        enum sex
+        date dateOfBirth
+    }
+    ImagingStudy }|--|| ImagingStudyType : instance
+    ImagingStudy ||--|| Order : contains
+    ImagingStudy {
+        string ID
+        string accessionNumber
+        datetime timestamp
+        enum laterality
+    }
+    ImagingStudyType }|--|{ BodyPart : covers  
+    ImagingStudyType {
+        string loincId
+        string commonName
+        enum Modality
+        bool isLateralityApplicable
+    }
+    BodyPart {
+        string radlexId
+        string accDescription
+    }

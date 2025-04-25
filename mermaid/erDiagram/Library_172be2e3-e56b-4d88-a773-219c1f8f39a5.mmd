@@ -1,0 +1,39 @@
+erDiagram
+
+    Book ||--|{ BookAuthor : has
+    BookAuthor }|--|| Author : writes
+    Book ||--|{ CheckOuts : "is checked"
+    Book ||--|{ Reservations : "is reserved"
+
+    Book {
+        int Id PK
+        string BookId
+        string(100) Name
+        string(100) Description
+    }
+
+    BookAuthor {
+        int AuthorId PK,FK
+        int BookId PK,FK
+    }
+
+    Author {
+        int Id PK
+        string(100) Name
+        DateTime BirthDate
+    }
+
+    CheckOuts {
+        int Id PK
+        int BookId FK
+        int StudentId FK
+        DateTime DueDate
+    }
+
+    Reservations {
+        int Id PK
+        int BookId FK
+        int StudentId FK
+        DateTime ReservationDate
+    }
+    

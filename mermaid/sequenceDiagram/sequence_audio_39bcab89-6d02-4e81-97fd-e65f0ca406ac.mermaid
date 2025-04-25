@@ -1,0 +1,51 @@
+sequenceDiagram
+
+    participant WatcherVerticle;
+    participant ConverterVerticle;
+    participant FFmpeg;
+    participant PairtreeVerticle;
+    participant File System;
+    participant WaveformVerticle;
+    participant audiowaveform;
+    participant Amazon S3;
+
+    activate WatcherVerticle
+
+    par Converts audio to MP4 and inserts into Pairtree
+        WatcherVerticle->>ConverterVerticle: Sends audio file for conversion to MP3
+        activate ConverterVerticle
+
+        ConverterVerticle->>FFmpeg: Invokes FFmpeg
+        activate FFmpeg
+
+        FFmpeg->>File System: Writes temporary MP4 audio file
+        FFmpeg-->>ConverterVerticle: FFmpeg exits
+        deactivate FFmpeg
+
+        ConverterVerticle->>PairtreeVerticle: Sends converted audio file for insertion into Pairtree
+        activate PairtreeVerticle
+
+        PairtreeVerticle->>File System: Reads temporary MP4 audio file
+        PairtreeVerticle-->>ConverterVerticle: Notifies of successful Pairtree insertion
+        deactivate PairtreeVerticle
+
+        ConverterVerticle->>File System: Deletes temporary MP4 audio file
+        ConverterVerticle-->>WatcherVerticle: Notifies of successful conversion and insertion
+        deactivate ConverterVerticle
+    and Generates waveform data and stores on Amazon S3
+        WatcherVerticle->>WaveformVerticle: Sends audio file for waveform generation
+        activate WaveformVerticle
+
+        WaveformVerticle->>audiowaveform: Invokes audiowaveform
+        activate audiowaveform
+
+        audiowaveform-->>WaveformVerticle: audiowaveform exits
+        deactivate audiowaveform
+
+        WaveformVerticle->>WaveformVerticle: Compresses waveform data to GZIP format
+        WaveformVerticle->>Amazon S3: Stores compressed waveform data on Amazon S3
+        WaveformVerticle-->>WatcherVerticle: Notifies of successful waveform generation and storage
+        deactivate WaveformVerticle
+    end
+
+    deactivate WatcherVerticle

@@ -1,0 +1,129 @@
+Title:      Report ELT131 LAB 08
+Author:     Del Basso, Manuel
+Date:       28-06-2017
+Location:   WHZ
+Footicon:   ./pics/whz.png
+
+ELT131 - Lab 08 report
+==============================
+[TOC]
+
+## Introduction ##
+
+__Used components:__
+
+ - Hardware
+     - TI TMS320F28335 Explorer Kit for TI C2000™ F28x family of microprocessors, controller card Delfino
+     - Oscilloscope: PC-USB Scope _PCSU1000, velleman_
+ - Software
+     - Code Composer Studio Version: 7.1.0.00015 (CCS7)
+     - Board support via ti's [__controlSUITE__](http://www.ti.com/tool/controlsuite?DCMP=mcu_controlsuite&HQS=controlsuite) v3.4.5
+     - SYS/BIOS
+         + Version: 6.33.4.39
+     - TI-RTOS for C2000
+         + Version: 2.16.1.14
+ - Development Plattform
+     + ```lsb_release -d``` <span style="margin-left: 1em;">Linux Mint 18 Sarah (LinuxMint)</span>
+     + ```uname -rpo``` <span style="margin-left: 1em;">4.4.0-57-generic x86_64 GNU/Linux</span>
+
+## Part 1 (TI-RTOS project) ##
+>Add the code of file "ELT131_08_01.c" to your report.
+
+<details markdown=1>
+<summary><h4 class="sp foldable"><span class="codehd">ELT131_08_01.c</span></h4></summary>
+@codeimport: "./ELT131_LAB_08/ELT131_08_01.c"
+</details>
+<div style="height: 1em;"></div>
+
+>Add the script-code of file "app.cfg" without comments to your report.
+
+<details markdown=1>
+<summary><h4 class="sp foldable"><span class="codehd">app1.cfg</span></h4></summary>
+```java
+@codeimport: "./ELT131_LAB_08/app1.cfg"
+@codeimport_nocomments
+```
+</details>
+<div style="height: 1em;"></div>
+
+>Add the oscilloscope screenshot for GPIO0 to your report.
+
+<figure class="oszi" markdown=1> <img src="./pics/lab08_01_05Hz.png" title="RTOS clock_500ms task on GPIO0" class="noborder"><figcaption>RTOS clock_500ms task on GPIO0</figcaption> </figure>
+
+## Part 2 (2 Tasks, Mailbox, Semaphore) ##
+>Add the modified code of file "ELT131_08_01.c" to your report.
+
+<details markdown=1>
+<summary><h4 class="sp foldable"><span class="codehd">ELT131_08_02.c</span></h4></summary>
+@codeimport: "./ELT131_LAB_08/ELT131_08_02.c"
+</details>
+<div style="height: 1em;"></div>
+
+>Add the new script-code of file "app.cfg" after adding semaphore, mailbox and 2 tasks to your report.
+
+<details markdown=1>
+<summary><h4 class="sp foldable"><span class="codehd">app2.cfg</span></h4></summary>
+```java
+@codeimport: "./ELT131_LAB_08/app2.cfg"
+@codeimport_nocomments
+```
+</details>
+<div style="height: 1em;"></div>
+
+>Add the screenshots for the Mailbox and Task states (Procedure steps 11 and 12) and answer the questions at page 8-7.
+
+<figure class="oszi" markdown=1> <img src="./pics/rov_mailbox_02.png" title="Breakpoint @ Mailbox_post - ROV" class="noborder"><figcaption>Breakpoint @ Mailbox_post - ROV</figcaption> </figure>
+<figure class="oszi" markdown=1> <img src="./pics/rov_mailbox_02_pend.png" title="Breakpoint @ Mailbox_pend - ROV" class="noborder"><figcaption>Breakpoint @ Mailbox_pend - ROV</figcaption> </figure>
+<figure class="oszi" markdown=1> <img src="./pics/rov_mailbox_02_tasks.png" title="Breakpoint @ Mailbox_pend - ROV viewing tasks" class="noborder"><figcaption>Breakpoint @ Mailbox_pend - ROV viewing tasks</figcaption> </figure>
+
+>(...) Which task is running, which is ready? Are there any blocked tasks?
+
+Consumer_tsk.
+Producer_tsk and BIOS idle task.
+No.
+
+## Part 3 (Priority swap) ##
+>Add the new script-code of file "app.cfg" after changing the priorities of Consumer and Producer to your report.
+
+<details markdown=1>
+<summary><h4 class="sp foldable"><span class="codehd">app3.cfg</span></h4></summary>
+```java
+@codeimport: "./ELT131_LAB_08/app3.cfg"
+@codeimport_nocomments
+```
+</details>
+<div style="height: 1em;"></div>
+
+>Add the screenshots for the Mailbox and Task states (Procedure steps 11 and 12) and answer the questions at page 8-8.
+
+<figure class="oszi" markdown=1> <img src="./pics/rov_mailbox_03.png" title="Breakpoint @ Mailbox_post - ROV" class="noborder"><figcaption>Breakpoint @ Mailbox_post - ROV</figcaption> </figure>
+<figure class="oszi" markdown=1> <img src="./pics/rov_mailbox_03_pend.png" title="Breakpoint @ Mailbox_pend - ROV" class="noborder"><figcaption>Breakpoint @ Mailbox_pend - ROV</figcaption> </figure>
+<figure class="oszi" markdown=1> <img src="./pics/rov_mailbox_03_tasks.png" title="Breakpoint @ Mailbox_pend - ROV viewing tasks" class="noborder"><figcaption>Breakpoint @ Mailbox_pend - ROV viewing tasks</figcaption> </figure>
+
+>Does the filling status of the mailbox change? Why is it still empty?
+
+No because the message object has allready been flushed from message buffer as pointed out in section 11.
+
+>Why is “Producer_tsk” blocked?
+
+Not sure about that. The yellow rendered Swi (clock_500ms_fxn) is definitely not Taks-preemtible (hierarchic priority structure: Hwi->Swi->Task->Idle). The Semaphore post ```Semaphore_post(time_500ms);``` at the center of the yellow Swi has the ```Producer_tsk``` as pending task (last column). Since Producer_tsk has higher priority (in part 3), the result of the ```Semaphore_post(time_500ms);``` is, that Producer_tsk and Consumer_tsk are not stackable, i.e. Consumer cannot preempt Producer. But why is Producer_tsk marked as blocked in this case? 
+
+<a href="./pics/analyze_03_via_04_execGraph.png" style="width: 180%" target="_blank"><figure class="oszi" markdown=1> <img src="./pics/analyze_03_via_04_execGraph.png" title="Execution graph of part 3 - Consumer_tsk:1, Producer_tsk:3" class="noborder"><figcaption>Execution graph of part 3 - Consumer_tsk:1, Producer_tsk:3</figcaption> </figure></a>
+
+## Part 4 (Execution Graph) ##
+>Add the new script-code of file "app.cfg" after adding logging and instrumentation commands to your report.
+
+<details markdown=1>
+<summary><h4 class="sp foldable"><span class="codehd">app4.cfg</span></h4></summary>
+```java
+@codeimport: "./ELT131_LAB_08/app4.cfg"
+@codeimport_nocomments
+```
+</details>
+<div style="height: 1em;"></div>
+
+>Add the execution graph and the Task Load summary to your report.
+
+<figure class="oszi" markdown=1> <img src="./pics/execGraph_04.png" title="Execution graph and task load summary" class="noborder"><figcaption>Execution graph and task load summary</figcaption> </figure>
+
+>Answer all questiona at page 8-9 and 10.

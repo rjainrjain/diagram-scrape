@@ -1,0 +1,20 @@
+sequenceDiagram
+    participant browser
+    participant server
+    
+    Note left of browser: The app is already loaded
+    Note right of browser: 304 no need to refresh CSS and JS 
+
+    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note
+    activate server
+    server-->>browser: 302 found
+    deactivate server
+
+    Note right of browser: 304 no need to refresh CSS and JS 
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+    activate server
+    server-->>browser: get updated note list
+    deactivate server
+
+    Note right of browser: The browser executes the callback function that renders the notes

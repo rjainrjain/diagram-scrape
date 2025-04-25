@@ -1,0 +1,41 @@
+```mermaid
+erDiagram
+Device {
+    string name  
+    string type  
+    date since  
+    date until  
+    string active  
+    string purpose  
+    string manufacturer  
+    string model  
+    string serial  
+    string location  
+    string ip  
+    string mac  
+    string website  
+    string driver  
+    uri support  
+    string comment  
+}
+Computer {
+    string os  
+    string osversion  
+    string vm  
+}
+Harddisk {
+    double size  
+    string formfactor  
+    string rpm  
+}
+Monitor {
+    string resolution  
+}
+Printer {
+
+}
+
+Device ||--|o Computer : "computer"
+
+```
+

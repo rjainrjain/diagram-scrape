@@ -1,0 +1,13 @@
+sequenceDiagram
+Note over Server: generate challenge
+Server ->> Browser: challenge,app id,handle
+Browser ->> U2F device: challenge,origin,app id,handle
+Note over U2F device: lookup private key for (app id,handle)
+Note over U2F device: increment counter
+Note over U2F device: sign (challenge,origin, app id,counter) with private key
+U2F device ->> Browser: signature(challenge,origin,app id,counter),counter
+Browser ->> Server: signature(challenge,origin,app id,counter),counter,origin
+Note over Server: lookup public key for handle
+Note over Server: validate signature with public key
+Note over Server: validate counter
+Note over Server: validate origin

@@ -1,0 +1,22 @@
+erDiagram
+    nba_player_info {
+        STRING player_id
+        STRING first_name
+        STRING last_name
+        STRING team_name
+        STRING position
+        STRING height
+        STRING weight
+    }
+
+    COMMON_PLAYER_INFO {
+        STRING person_id
+        STRING first_name
+        STRING last_name
+        STRING team_name
+        STRING position
+        STRING height
+        STRING weight
+    }
+
+    COMMON_PLAYER_INFO ||--o{ nba_player_info : "player_id -> person_id"

@@ -1,0 +1,57 @@
+erDiagram
+    USERS ||--o{ BOOKS : "owns\nuploads"
+    USERS ||--o{ BOOK_COMMENTS : "comments"
+    USERS ||--o{ DRIFTING_REQUEST : "requests\nuploads\nowns"
+
+    BOOKS ||--o{ BOOK_COMMENTS : "has"
+    BOOKS ||--o{ DRIFTING_REQUEST : "listed in"
+
+    USERS {
+        bigint id PK "auto_increment"
+        varchar username
+        varchar email
+        varchar password
+        varchar avatar
+        varchar bio
+        varchar location
+        datetime created_at
+        datetime updated_at
+        double latitude
+        double longitude
+    }
+
+    BOOKS {
+        bigint id PK "auto_increment"
+        varchar title
+        varchar author
+        varchar isbn
+        bigint owner_id FK
+        bigint uploader_id FK
+        text description
+        varchar cover_url
+        double longitude
+        double latitude
+        varchar status
+        datetime created_at
+        datetime updated_at
+    }
+
+    BOOK_COMMENTS {
+        bigint id PK "auto_increment"
+        bigint book_id FK
+        bigint user_id FK
+        text content
+        datetime created_at
+        datetime updated_at
+    }
+
+    DRIFTING_REQUEST {
+        bigint id PK "auto_increment"
+        bigint book_id FK
+        bigint requester_id FK
+        bigint uploader_id FK
+        bigint owner_id FK
+        varchar status
+        datetime created_at
+        datetime updated_at
+    }

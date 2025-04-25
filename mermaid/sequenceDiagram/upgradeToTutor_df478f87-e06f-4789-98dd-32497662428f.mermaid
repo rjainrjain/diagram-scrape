@@ -1,0 +1,36 @@
+sequenceDiagram
+    actor Learner
+    participant Frontend
+    participant System
+    participant Database
+
+    Learner->>Frontend: Click on "Upgrade To Tutor" button
+    activate Learner
+    activate Frontend
+    Learner->>Frontend: Fill in tutor-specific fields
+    Frontend->>System: upgradeToTutor(tutorDetails)
+    deactivate Frontend
+    activate System
+    System->>Database: checkUserRole(learnerId)
+    activate Database
+    Database-->>System: User role returned
+    deactivate Database
+
+    alt Current role is Learner
+        System->>Database: updateUserRole(newRole)
+        activate Database
+        System->>Database: initializeTutorFields(tutorDetails)
+        Database-->>System: Role update confirmed
+        deactivate Database
+        System-->>Frontend: Upgrade successful
+        deactivate System
+        activate Frontend
+        Frontend-->>Learner: Display success message
+    else Current role is Tutor
+        System-->>Frontend: User already a Tutor
+        activate System
+        deactivate System
+        Frontend-->>Learner: Display info message
+    end
+    deactivate Learner
+    deactivate Frontend

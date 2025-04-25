@@ -1,0 +1,29 @@
+%%{ init: { 'flowchart': { 'curve': 'stepAfter' } } }%%
+graph TD
+subgraph usernameCheck
+title(["usernameCheck()"])
+while{"True"} 
+userinput[/"userInput"/]
+for{"String[] s : credential"}
+ifNull{"s[0] is null"}
+ifExist{"s[0] is userInput"}
+ifRegister{"userInput is register"}
+ifQuit{"userInput is quit"}
+prompErr[/"Error code"/]
+return(["return userInput"])
+
+for --> |finish| prompErr 
+prompErr --> while
+ifNull --> |true| for
+title --> while 
+while --> userinput
+userinput --> for
+for --> ifNull
+ifNull --> |false| ifExist
+ifExist --> |false| ifRegister
+ifRegister --> |false| ifQuit
+ifQuit --> |false| for
+ifExist --> |true| return
+ifRegister --> |true| return
+ifQuit --> |true| return
+end

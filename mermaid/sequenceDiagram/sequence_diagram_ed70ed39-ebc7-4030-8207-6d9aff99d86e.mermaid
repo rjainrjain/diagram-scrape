@@ -1,0 +1,13 @@
+# http://knsv.github.io/mermaid/live_editor/
+
+sequenceDiagram
+    participant User
+    participant Web People service
+    participant People service
+    participant other service
+User->> Web People service: http JSON query
+Web People service->> People service: http post JSON query
+People service->> Web People service: JSON response
+Web People service->> User: fwd: response
+other service->> People service: http post JSON query
+People service->> other service: JSON response

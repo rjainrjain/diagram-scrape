@@ -1,0 +1,18 @@
+graph TD
+    OP["Pedido Realizado<br/>(Produtor)"]
+    KB["Kafka Message Bus"]
+    
+    PR["Processador de<br/>Pagamento"]
+    RE["Sistema de<br/>Restaurante"]
+    EN["Sistema de<br/>Entrega"]
+    NT["Sistema de<br/>Notificação"]
+    
+    OP --> KB
+    KB --> PR
+    KB --> RE
+    KB --> EN
+    KB --> NT
+    
+    PR --> KB
+    RE --> KB
+    EN --> KB

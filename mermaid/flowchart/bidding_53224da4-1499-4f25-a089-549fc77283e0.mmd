@@ -1,0 +1,111 @@
+flowchart LR
+  Open[Open]
+    Open -->|"NT (standard)"| NTRespond>"Respond to NT\n(standard)"]
+    Open -->|"NT (conventions)"| NTConventions>"Respond to NT\n(conventions)"]
+    Open -->|1 of a major| MajorRespond[Respond to Major opening]
+    Open -->|1 of a minor| MinorRespond[Respond to Minor opening]
+
+    subgraph NTOpensGraph [NT Opens and Responses]
+
+      NTRespond ---|"Sign off"| Spacer1{" "}
+        Spacer1 -->|"&nbsp;"| NTDone[[NT Done]]
+      NTRespond ---|"2NT"| SpacerNT2{" "}
+        SpacerNT2 ---|"&nbsp;"| SpacerNT4{" "}
+          SpacerNT4 -->|"&nbsp;"| NTInvitational([Rebid after NT invite])
+            NTInvitational -->|3NT or Pass| NTDone
+      NTRespond ---|"3 of a major\n(forcing)"| SpacerNT3{" "}
+        SpacerNT3 ---|"&nbsp;"| SpacerNT5{" "}
+          SpacerNT5 -->|"&nbsp;"| NTForcing([Rebid after NT->Suit force])
+            NTForcing -->|3NT or\n4 in the suit| NTDone
+
+      NTConventions -->|"2C (Stayman)"| Stayman([Required Stayman response])
+        Stayman -->|2D, 2S| StaymanNextBidSimple>Bid after Stayman]
+          StaymanNextBidSimple -->|Invitation| NTInvite([Respond to invite])
+            NTInvite -->|Game or Pass| NTDone
+          StaymanNextBidSimple -->|Game| NTDone
+
+        Stayman -->|2H| StaymanNextBidHearts>Bid after Stayman hearts bid]
+          StaymanNextBidHearts -->|2NT, 3NT| StaymanNoHeartFit([Bid after no heart fit])
+          StaymanNextBidHearts -->|3H| NTInvite
+          StaymanNextBidHearts -->|4H| NTDone
+            StaymanNoHeartFit -->|4S, 3NT, or Pass| NTDone
+
+      NTConventions -->|"2D or 2H\n(Transfer to major)"| TransferResponse([Required transfer response])
+      NTConventions -->|"2S\n(Transfer to minor)"| TransferResponse
+
+        TransferResponse -->|2 of major, 3C| TransferBid[Bid after transfer]
+          TransferBid -->|2NT| TransferSuitAndGameInvite[Maybe the major invite]
+            TransferSuitAndGameInvite -->|3 or 4 of the major,\n3NT, or Pass| NTDone
+
+          TransferBid -->|3NT| TransferSwitchToMajor[Maybe the major]
+            TransferSwitchToMajor -->|4 of the major\nor Pass| NTDone
+
+          TransferBid -->|3 of the major| NTInvite([Respond to invite])
+          TransferBid -->|4 of the major, 3D, or Pass| NTDone
+
+          TransferBid ---|The other major| SpacerNT6{" "}
+
+      NTConventions -->|"2NT"| SpacerNT2
+      NTConventions -->|"Game or Pass"| Spacer1
+
+    end
+
+    subgraph SuitOpensGraph [Suit Opens and Responses]
+      MajorRespond ---|Pass| Spacer4{" "}
+        Spacer4 ---|"&nbsp;"| Done[[Suit Done]]
+
+      MajorRespond -->|Same suit| SuitSupported>Rebid after support]
+        SuitSupported ---|Sign off| Spacer2{" "}
+          Spacer2 -->|"&nbsp;"| Done
+        SuitSupported -->|"Invitation"| Invitational([Respond to invite])
+          Invitational -->|Sign off| Done
+
+      MajorRespond -->|"New suit (forcing)"| NewSuit[Rebid after new suit]
+
+      MajorRespond -->|NT| NTResponse>Rebid after NT]
+        NTResponse ---|"Sign off"| Spacer3{" "}
+          Spacer3 -->|"&nbsp;"| Done
+        NTResponse -->|"Invitation"| Invitational
+        NTResponse ---|Third suit| RespondMulti([Respond to multiple suits])
+
+      MinorRespond ---|Pass| Spacer4
+      MinorRespond -->|Same suit| SuitSupported
+      MinorRespond -->|"New suit (forcing)"| NewSuit
+      MinorRespond -->|NT| NTResponse
+
+      NewSuit ---|"Support, sign off"| Spacer5{" "}
+        Spacer5 -->|"&nbsp;"| Done
+      NewSuit -->|"Support, invitation"| Invitational
+      NewSuit ---|"All other bids"| RespondMulti
+    end
+
+  Overcall[Overcall]
+    Overcall -->|Suit| OvercallAdvance[Respond to suit Overcall]
+    Overcall -->|Double| TakeoutAdvance[Respond to Takeout Double]
+    Overcall -->|"NT (standard)"| NTRespond
+    Overcall -->|"NT (conventions)"| NTConventions
+
+    subgraph OvercallsGraph [Overcalls and Advances]
+      OvercallAdvance ---|Pass| SpacerOvercallPass{" "}
+        SpacerOvercallPass -->|"&nbsp;"| OvercallDone[[Overcall Done]]
+      OvercallAdvance -->|Support| OvercallRebid>Overcall Rebid]
+        OvercallRebid -->|Any bid| OvercallDone
+      OvercallAdvance -->|NT| OvercallRebid
+      OvercallAdvance -->|New suit| OvercallRebid
+      OvercallAdvance ---|Cue bid| Cue([Respond to Cue bid])
+
+      TakeoutAdvance -->|Pass| TakeoutRebid>Takeout Rebid]
+        TakeoutRebid -->|Any bid| OvercallDone
+      TakeoutAdvance -->|New suit| TakeoutRebid
+      TakeoutAdvance -->|NT| TakeoutRebid
+      TakeoutAdvance ---|Cue bid| Cue
+
+      Cue ---|Any bid| Spacer8{" "}
+    end
+
+      subgraph ToolsGraph [Bidding tools]
+        RespondMulti --> Tools{{Use the bidding tools until done}}
+        Spacer8 --> Tools
+        SpacerNT6 --> Tools
+      end
+

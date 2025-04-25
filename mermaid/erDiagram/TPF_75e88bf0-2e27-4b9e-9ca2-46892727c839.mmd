@@ -1,0 +1,66 @@
+```mermaid
+erDiagram
+    Sucursal{
+    string direccion PK
+    }
+    Empleado{
+    int IdLegajo FK
+    int IdEmpleado PK
+    date FechaIngreso
+    string direccion FK
+    string matricula
+    string cargo
+    }
+    Legajo{
+    int IdLegajo PK
+    int dni
+    string TipoDni
+    string nombre
+    string apellido
+    }
+    Raza{
+    string denominacion PK
+    string cuidadosEsp
+    string genero
+    string pesoMin
+    string pesoMax
+    string altMin
+    string altMax
+    }
+    Perro{
+    int HistClinica PK
+    string nombre
+    date FechaNacimiento
+    int peso
+    int altura
+    string nombreDuenio
+    int telDuenio
+    }
+    CarnetVacuna{
+    int IdCarnet PK
+    int HistClinica FK
+    int nombreVacuna FK
+    date FechaVacunacion
+    date FechaVacunacionReal
+    int IdEmpleado FK
+    int dosis
+    }
+    Vacuna{
+    string nombreVacuna PK
+    string laboratorio
+    }
+    Consulta{
+    int NumeroOrden PK
+    int HistClinica FK
+    int IdEmpleado FK
+    date fechaIngrso
+    date fechaSalida
+    }
+    Sintoma{
+    string nombreSintoma PK
+    string descripcion
+    }
+    Diagnostico{
+    string nombreDiagnos PK
+    string descripcion
+    }

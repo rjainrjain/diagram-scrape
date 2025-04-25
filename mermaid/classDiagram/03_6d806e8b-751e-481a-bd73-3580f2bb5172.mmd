@@ -1,0 +1,33 @@
+classDiagram 
+    전자기기 <|-- 휴대폰:implements
+    통신기기 <|-- 휴대폰:extends
+    게임기 <|-- 휴대폰:implements
+    카메라 <|-- 휴대폰:implements
+    필기도구 <|-- 휴대폰:implements
+    나침반 <|-- 휴대폰:implements
+    
+    <<interface>> 전자기기
+    <<interface>> 게임기
+    <<interface>> 카메라
+    <<interface>> 필기도구
+    <<interface>> 나침반
+
+    class 전자기기 {
+        +전원()
+    }
+    class 통신기기 {
+        +통화()
+    }
+    class 게임기 {
+        +이동()
+    }
+    class 카메라 {
+        +사진촬영()
+    }
+    class 필기도구 {
+        +메모()
+    }
+    class 나침반 {
+        +방향확인()
+    }
+

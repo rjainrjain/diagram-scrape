@@ -1,0 +1,40 @@
+graph LR
+subgraph PréparationDonnées
+    A[Fichier de données]
+    C[Question de recherche]
+    D[Précision du langage d'analyse]
+end
+
+subgraph AgentAnalyste
+B{Modèle de langage} <--> H{Interprète de données}
+
+end
+
+subgraph Métaprompt
+    E[Métaprompt avec exemples] --> F
+    F[Génération d'une instruction adaptée] --> G
+    G[Extraction de l'instruction générée]
+end
+
+Métaprompt --> AgentAnalyste
+PréparationDonnées --> AgentAnalyste
+
+subgraph AnalysesDonnées
+I[Réflexions initiales<br>et observations]
+J[Analyse avec code et résultats]
+K[Interprétation des<br>résultats clés] 
+L[Résumé des<br>principales conclusions]
+M[Suggestions pour<br>des recherches futures]
+end
+
+I --> N[Texte extrant]
+J --> N
+K --> N
+L --> N 
+M --> N
+
+AgentAnalyste --> I
+AgentAnalyste --> J
+AgentAnalyste --> K
+AgentAnalyste --> L
+AgentAnalyste --> M

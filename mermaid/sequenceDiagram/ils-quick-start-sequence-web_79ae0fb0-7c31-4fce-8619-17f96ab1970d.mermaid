@@ -1,0 +1,47 @@
+sequenceDiagram
+    participant App
+    participant Video_SDK as Video SDK
+    participant Agora_SD_RTN as Agora SD-RTN
+
+    App->>App: Create a local client
+    Note over App: AgoraRTC.createClient
+    Note over App: Set mode to 'live'
+    App->>App: Set user role
+    Note over App: Set the role to 'host' or 'audience'
+    Note over App: AgoraRTCClient.setClientRole
+    App->>Agora_SD_RTN: Join channel
+    Note over App: AgoraRTCClient.join
+
+    rect rgb(238, 238, 238)
+    Note over App: Create and publish local audio and video tracks
+    App->>App: Create local audio track
+    Note over App: AgoraRTC.createMicrophoneAudioTrack
+    App->>App: Create local video track
+    Note over App: AgoraRTC.createCameraVideoTrack
+    App->>Video_SDK: Publish local audio and video tracks
+    Note over App: AgoraRTCClient.publish
+    end
+
+    rect rgb(238, 238, 238)
+    Note over App: Subscribe to remote users
+    App->>App: Remote users publish audio and video tracks
+    Note over App: client.on('user-published')
+    App->>App: Get remote user object
+    Note over App: AgoraRTCClient.remoteUsers
+    App->>App: Subscribe to remote user object
+    Note over App: AgoraRTCClient.subscribe
+    App->>App: Get remote audio object
+    Note over App: AgoraRTCRemoteUser.audioTrack
+    App->>App: Get remote video object
+    Note over App: AgoraRTCRemoteUser.videoTrack
+    end
+
+    rect rgb(238, 238, 238)
+    Note over App: Leave the channel
+    App->>App: Turn off the local audio track
+    Note over App: MicrophoneAudioTrack.close
+    App->>App: Turn off the local video track
+    Note over App: CameraVideoTrack.close
+    App->>Agora_SD_RTN: Leave the channel
+    Note over App: AgoraRTCClient.leave
+    end

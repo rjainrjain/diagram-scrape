@@ -1,0 +1,33 @@
+stateDiagram-v2
+    [*] --> InitiateFetch
+    InitiateFetch --> AttemptFetch
+
+    state AttemptFetch {
+        [*] --> FetchFromTemplateManager
+        FetchFromTemplateManager --> CheckResult
+        CheckResult --> [*] : Template Found
+        CheckResult --> RetryFetch : Template Not Found
+        RetryFetch --> FetchFromTemplateManager : Retry < 5
+        RetryFetch --> [*] : Max Retries Reached
+    }
+
+    AttemptFetch --> HandleFetchResult
+    HandleFetchResult --> TemplateFound : Success
+    HandleFetchResult --> TemplateNotFound : Failure
+
+    TemplateFound --> [*] : Return Template
+    TemplateNotFound --> [*] : Return Error
+
+    note right of InitiateFetch
+        Start template fetch process
+    end note
+
+    note right of AttemptFetch
+        Uses exponential backoff
+        for retries
+    end note
+
+    note right of HandleFetchResult
+        Determines final outcome
+        of fetch attempt
+    end note

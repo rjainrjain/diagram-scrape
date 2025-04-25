@@ -1,0 +1,21 @@
+flowchart LR
+    classDef green fill:#28a745,stroke:#000,stroke-width:2px,color:#fff;
+    classDef blue fill:#2374f7,stroke:#000,stroke-width:2px,color:#fff;
+    classDef orange fill:#f28c28,stroke:#000,stroke-width:2px,color:#fff;
+    
+    lB("‡ TransformBlock<string, IEnumerable<Bitmap>>\nLoad Bitmaps"):::green
+    cCB("‡ TransformBlock<IEnumerable<Bitmap>, Bitmap>\nCreate Composite Bitmap"):::green
+    dCB("◊ ActionBlock<Bitmap>\nDisplay Composite Bitmap"):::green
+    oC("◊ ActionBlock<object>\nOperation Cancelled"):::green
+
+    subgraph main[ ]
+        lB
+        cCB
+        dCB
+    end
+
+    lB -.-> cCB
+    cCB -.-> dCB
+    cCB -.-> oC
+
+    style main fill:none,stroke:none

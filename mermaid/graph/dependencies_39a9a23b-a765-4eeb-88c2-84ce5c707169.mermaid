@@ -1,0 +1,60 @@
+graph LR
+    subgraph Core Contracts
+        WhaleLairContract["Whale Lair Contract"]
+        FeeCollectorContract["Fee Collector Contract"]
+        FeeDistributorContract["Fee Distributor Contract"]
+        IncentiveContract["Incentive Contract"]
+        IncentiveFactoryContract["Incentive Factory Contract"]
+        FrontendHelperContract["Frontend Helper Contract"]
+    end
+
+    subgraph TerraSwap Contracts
+        TerraSwapTokenContract["TerraSwap Token Contract"]
+        TerraSwapPairContract["TerraSwap Pair Contract"]
+        StableSwapContract["StableSwap Contract"]
+        TerraSwapFactoryContract["TerraSwap Factory Contract"]
+        TerraSwapRouterContract["TerraSwap Router Contract"]
+    end
+
+    subgraph Vault Contracts
+        VaultContract["Vault Contract"]
+        VaultFactoryContract["Vault Factory Contract"]
+        VaultRouterContract["Vault Router Contract"]
+    end
+
+    subgraph Utility Contracts
+        EpochManagerContract["Epoch Manager Contract"]
+        FeeDistributorMockContract["Fee Distributor Mock Contract"]
+    end
+
+    WhaleLairContract -->|bonding_assets| Client
+    WhaleLairContract -->|bonding_assets| Acc1
+
+    FeeDistributorContract -->|whaleLairAddr| WhaleLairContract
+    FeeDistributorContract -->|feeCollAddr| FeeCollectorContract
+    FeeDistributorContract -->|client.GetDenom| Client
+
+    IncentiveFactoryContract -->|feeCollAddr| FeeCollectorContract
+    IncentiveFactoryContract -->|feeDistAddr| FeeDistributorContract
+    IncentiveFactoryContract -->|incentiveCodeID| IncentiveContract
+    IncentiveFactoryContract -->|client.GetDenom| Client
+
+    FrontendHelperContract -->|incentiveFactoryAddr| IncentiveFactoryContract
+
+    TerraSwapTokenContract -->|acc1.Address| Acc1
+    TerraSwapTokenContract -->|client.GetDenom| Client
+
+    VaultFactoryContract -->|acc1.Address| Acc1
+    VaultFactoryContract -->|vaultCodeID| VaultContract
+    VaultFactoryContract -->|tokenCodeID| TerraSwapTokenContract
+    VaultFactoryContract -->|feeCollAddr| FeeCollectorContract
+
+    VaultRouterContract -->|acc1.Address| Acc1
+    VaultRouterContract -->|vaultFactoryAddr| VaultFactoryContract
+
+    TerraSwapFactoryContract -->|pairCodeID| TerraSwapPairContract
+    TerraSwapFactoryContract -->|stableSwapCodeID| StableSwapContract
+    TerraSwapFactoryContract -->|tokenCodeID| TerraSwapTokenContract
+    TerraSwapFactoryContract -->|feeCollAddr| FeeCollectorContract
+
+    TerraSwapRouterContract -->|factoryAddr| TerraSwapFactoryContract

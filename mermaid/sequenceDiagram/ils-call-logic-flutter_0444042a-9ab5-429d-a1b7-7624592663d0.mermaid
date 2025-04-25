@@ -1,0 +1,29 @@
+```mermaid
+sequenceDiagram
+    participant User
+    participant Video_SDK as Video SDK
+    participant Host
+    participant Audience
+    participant Agora
+    participant SD_RTN as SD-RTN
+
+    User->>Video_SDK: Open App
+    Video_SDK->>Host: Initialize
+    Host->>Agora: agoraEngine = createAgoraRtcEngine()
+    Host->>Host: agoraEngine.enableVideo()
+    Host->>Host: agoraEngine.registerEventHandler()
+    Host->>Host: agoraEngine.setClientRole(role: ClientRoleType.clientRoleBroadcaster)
+    Host->>Host: agoraEngine.setChannelProfile(ChannelProfileType.channelProfileLiveBroadcasting)
+    Host->>Host: agoraEngine.startPreview()
+    Host->>Host: Display local video using AgoraVideoView
+    Host->>Audience: Send Data Streams
+    Audience->>Agora: agoraEngine.setClientRole(role: ClientRoleType.clientRoleAudience)
+    Audience->>Audience: agoraEngine.setChannelProfile(ChannelProfileType.channelProfileLiveBroadcasting)
+    Audience-->>Host: Remote user joined: RtcEngineEventHandler onUserJoined
+    Audience->>Audience: Render remote video using AgoraVideoView
+    Audience->>Audience: Receive Data Streams
+    Audience-->>User: Join and View streaming event
+    User->>Video_SDK: Leave broadcast
+    Audience->>Host: agoraEngine.leaveChannel()
+    User->>Video_SDK: Close App
+```

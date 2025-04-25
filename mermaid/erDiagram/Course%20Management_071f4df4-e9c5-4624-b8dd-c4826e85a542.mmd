@@ -1,0 +1,25 @@
+erDiagram
+    Course ||--|{ InstructorCourse : "has"
+    Instructor ||--|{ InstructorCourse : "are in"
+
+    Course {
+        int Id PK
+        string Name 
+        string Description 
+    }
+
+    Instructor {
+        int Id PK
+        string(100) FirstName
+        string(100) LastName
+        string(200) Email
+        string(200) Phone
+        string(MAX) Address
+    }
+
+    InstructorCourse {
+        int InstructorId PK,FK
+        int CourseId PK,FK
+        DateTime StartDate
+        DateTime EndDate
+    }

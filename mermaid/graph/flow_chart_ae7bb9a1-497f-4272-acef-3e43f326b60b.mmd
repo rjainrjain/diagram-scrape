@@ -1,0 +1,35 @@
+flowchart LR
+
+    subgraph ROS节点
+        A[ros::init(argc, argv, "image_to_pointcloud_converter")];
+        B[ros::NodeHandle nh];
+        C[ros::Subscriber imageSub];
+        D[ros::Publisher pointCloudPub];
+    end
+
+    subgraph 图像处理
+        E[void imageCallback(const sensor_msgs::ImageConstPtr& msg)];
+        F[cv::Mat image];
+        G[cv::Mat grayImage];
+    end
+
+    subgraph 点云处理
+        H[open3d::geometry::PointCloud pointCloud];
+        I[open3d::geometry::Image depthImage];
+        J[sensor_msgs::PointCloud2 rosPointCloud];
+    end
+
+    subgraph 相机参数设置
+        K[cv::Mat cameraIntrinsic];
+    end
+
+    A --> B;
+    B --> C;
+    C --> E;
+    E --> F;
+    F --> G;
+    G --> H;
+    H --> I;
+    I --> J;
+    J --> D;
+    K --> E;

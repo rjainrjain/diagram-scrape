@@ -1,0 +1,13 @@
+sequenceDiagram
+    participant User
+    participant API
+    participant Business Logic
+    participant Database
+
+    User ->> API: GET /places?param1=param1&param2=param2...
+    API ->> Business Logic: validate_params(params) and get_places(params)
+    Business Logic ->> Database: get_places_by_criterias(params) : get the places based on criterias (SELECT)
+    Database -->> Business Logic : Return list of places that match criterias
+    Business Logic -->> API: Return list of places
+    API -->> User: Return Success (200) (with the list of places)
+

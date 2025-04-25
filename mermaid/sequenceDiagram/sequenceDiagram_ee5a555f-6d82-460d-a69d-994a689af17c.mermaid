@@ -1,0 +1,46 @@
+sequenceDiagram
+    actor User
+    participant app_facade
+    participant TODO|similar_name_generator
+    participant n8n|bach_domain_report
+    participant n8n|_1_domain
+    participant n8n|_detect_domain_warehouse
+    participant n8n|_detect_domain_warehouse
+    participant TODO|fw|_analise_site
+    
+    User ->> app_facade: star_analysis
+    activate app_facade
+        app_facade ->> TODO|similar_name_generator: TO decide?
+        activate TODO|similar_name_generator
+
+            TODO|similar_name_generator ->> n8n|bach_domain_report : start report (domain)
+            activate n8n|bach_domain_report
+
+            loop for all domains in the list
+                
+                n8n|bach_domain_report ->> n8n|_1_domain : create domain report 
+                activate n8n|_1_domain 
+
+                
+                    n8n|_1_domain ->> n8n|_detect_domain_warehouse: get warehouse report
+                    activate n8n|_detect_domain_warehouse
+                    n8n|_detect_domain_warehouse -->> n8n|_1_domain : return warehouse report
+                    deactivate n8n|_detect_domain_warehouse
+
+                    n8n|_1_domain ->> TODO|fw|_analise_site: get AI domain analysis report
+                    activate TODO|fw|_analise_site
+                    TODO|fw|_analise_site -->> n8n|_1_domain: return analysis report 
+                    deactivate TODO|fw|_analise_site
+
+                n8n|_1_domain -->> n8n|bach_domain_report : return domain report core
+                deactivate n8n|_1_domain
+
+            end
+
+            n8n|bach_domain_report -->> TODO|similar_name_generator : start report (domain)
+            deactivate n8n|bach_domain_report
+
+            TODO|similar_name_generator -->> app_facade : return reports
+        deactivate TODO|similar_name_generator
+        
+    deactivate app_facade

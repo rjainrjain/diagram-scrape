@@ -1,0 +1,64 @@
+erDiagram
+    USERS ||--|| DOCTORS : has
+    USERS ||--|| PATIENTS : has
+    USERS {
+        uuid id
+        string email
+        string password
+        string firstName
+        string lastName
+        string phone
+        string document
+        enum role "admin|doctor|patient"
+        boolean isActive
+        datetime createdAt
+        datetime updatedAt
+    }
+
+    DOCTORS ||--|{ DOCTOR_SCHEDULES : has
+    DOCTORS ||--|{ APPOINTMENTS : has
+    DOCTORS ||--|| SPECIALTIES : belongs_to
+    DOCTORS {
+        uuid id
+        uuid userId
+        uuid specialtyId
+        string licenseNumber
+        string consultingRoom
+        datetime createdAt
+        datetime updatedAt
+    }
+
+    SPECIALTIES ||--|{ DOCTORS : has
+    SPECIALTIES {
+        uuid id
+        string name
+        string description
+    }
+
+    DOCTOR_SCHEDULES {
+        uuid id
+        uuid doctorId
+        integer dayOfWeek "0-6 (Domingo-Sábado)"
+        time startTime
+        time endTime
+        boolean isAvailable
+    }
+
+    PATIENTS ||--|{ APPOINTMENTS : has
+    PATIENTS {
+        uuid id
+        uuid userId
+        datetime createdAt
+        datetime updatedAt
+    }
+
+    APPOINTMENTS {
+        uuid id
+        uuid patientId
+        uuid doctorId
+        datetime appointmentDate
+        enum status "scheduled|confirmed|completed|cancelled|noShow"
+        string reason "motivo de la consulta"
+        datetime createdAt
+        datetime updatedAt
+    }

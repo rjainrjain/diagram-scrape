@@ -1,0 +1,76 @@
+erDiagram
+%% Table: Users
+    Users {
+        INTEGER id PK
+        TEXT uername UK
+        TEXT email UK
+        TEXT password_hash "hashed password"
+        TEXT created_at "YYYY-MM-DD HH:MM:SS"
+    }
+
+%% Table: Roles
+    Roles {
+        INTEGER id PK
+        TEXT role_name UK "ENUM('owner', 'contributor', 'viewer', 'admin')"
+    }
+
+%% Table: Folders
+    Folders {
+        INTEGER id PK
+        string name
+        INTEGER parent_folder_id FK "Folders.id"
+        TEXT created_at "YYYY-MM-DD HH:MM:SS"
+        TEXT updated_at "YYYY-MM-DD HH:MM:SS"
+        INTEGER created_by FK "Users.id"
+        INTEGER updated_by FK "Users.id"
+    }
+
+%% Table: Files
+    Files {
+        INTEGER id PK
+        TEXT name
+        TEXT content_url "URL reference to the file"
+        JSON metadata "file metadata {size: int, extension: string, ...}"
+        INTEGER parent_folder_id FK "Folders.id"
+        TEXT created_at "YYYY-MM-DD HH:MM:SS"
+        TEXT updated_at "YYYY-MM-DD HH:MM:SS"
+        INTEGER created_by FK "Users.id"
+        INTEGER updated_by FK "Users.id"
+    }
+
+%% Table: User_Roles (for ownership and roles)
+    User_Roles {
+        INTEGER id PK
+        INTEGER user_id FK "Users.id"
+        INTEGER role_id FK "Roles.id"
+        INTEGER file_id FK "Files.id"
+    }
+
+%% Table: Permissions
+    Permissions {
+        INTEGER id PK
+        INTEGER user_id FK "Users.id"
+        INTEGER resource_id FK "Files.id or Folders.id"
+        TEXT resource_type "ENUM('file', 'folder')"
+        TEXT permission_type "ENUM('read', 'write', 'delete', 'manage')"
+    }
+
+%% Relationships
+%% Users to Roles (Many-to-Many)
+    Users ||--o{ User_Roles: "has role"
+    Roles ||--o{ User_Roles: "assigned to"
+%% Users to Files/Folders (ownership and creation)
+    Users ||--o{ Files: "created by"
+    Users ||--o{ Folders: "created by"
+    Users ||--o{ Permissions: "has permission"
+%% Folders to Files (parent-child relation)
+    Folders ||--o{ Files: "contains"
+    Folders ||--o{ Folders: "contains (nested)"
+%% Permissions on Files/Folders
+    Users ||--o{ Permissions: "has permission"
+    Files ||--o{ Permissions: "is resource"
+    Folders ||--o{ Permissions: "is resource"
+%% User_Roles relationship to Files/Folders
+    Users ||--o{ User_Roles: "assigned role on"
+    Files ||--o{ User_Roles: "is resource"
+    Folders ||--o{ User_Roles: "is resource"

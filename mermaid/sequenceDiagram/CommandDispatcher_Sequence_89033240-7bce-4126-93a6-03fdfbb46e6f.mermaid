@@ -1,0 +1,32 @@
+This was created using an online server at [mermaid](https://mermaid.js.org/). 
+
+sequenceDiagram
+    participant caller as Caller
+    box blue AIO Kubernetes Cluster
+        participant e4k as AIO MQ
+        participant psc as PubSubClient
+        participant md as CommandDispatcher
+        participant imr as ICommandRouter
+    end
+    participant opc as Device Adapter
+    participant dev as Device
+
+    title Handling Commands for Edge Devices in AIO
+    autonumber
+    caller-)e4k: Publish(topic, message)
+    e4k-)psc: MessageReceivedHandler(message)
+    psc-)md: DispatchMessage(topic, message)
+    loop foreach ICommandRouter.Topic == topic && ICommandRouter.MessageSelector(message) == true
+        md-)imr: RouteAsync(message)
+        imr-)opc: DoSomething(message.payload)
+        opc-)dev: DoSomething(data)
+        dev--)opc: result
+        opc--)imr: result
+        imr--)psc: Publish(responseTopic, responseMessage(result))
+        psc--)e4k: Publish(responseTopic, responseMessage)
+        e4k--)caller: responseMessage
+   end 
+   
+    
+   
+    

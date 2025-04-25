@@ -1,0 +1,45 @@
+---
+title: Oauth Flow - OauthManager
+---
+sequenceDiagram
+    participant L as Lambda
+    participant OM as OauthManager
+    participant PM as PkceManager
+    participant ACM as AuthCodeManager
+    participant SHM as StateHashManager
+    participant TRM as TokenRequestManager
+    participant SM as SessionManager
+    participant DM as DbManager
+
+    L ->>+ OM: start auth
+    OM ->> OM: set state: INITIAL
+    OM ->>+ PM: get code challenge and code verifier
+    PM -->>- OM: code challenge, code verifier
+    OM ->>+ SHM: get state hash
+    SHM -->>- OM: state hash
+    OM ->>+ SM: get session id
+    SM -->>- OM: session id
+    OM ->>+ DM: store (session id, code verifier, state hash)
+    DM -->>- OM: success
+    OM ->>+ ACM: get auth url (code challenge, state hash)
+    ACM -->>- OM: auth url
+    OM ->> OM: set state: USER REDIRECTED
+    OM -->>- L: auth url
+    L ->>+ OM: receive auth (url, session id)
+    note right of OM: Extract state hash <br> and auth code
+    OM ->>+ DM: get stored state hash, code verifier from previous step (session id)
+    DM -->>- OM: state hash, code verifier
+    OM ->>+ SHM: check if state hash is valid
+    SHM -->> OM: is valid
+    OM ->> OM: set state: AUTH_RECEIVED
+    OM ->>+ TRM: send token request(auth code, code verifier)
+    TRM -->>- OM: access token
+    OM ->> OM: set state: TOKENS_RECEIVED
+    OM ->>+ SM: get session id for Axel client
+    SM -->>- OM: app session id
+    OM ->>+ DM: store app session id, access token
+    DM -->>- OM: success
+    OM ->> OM: set state: SESSION_ESTABLISHED
+    OM -->>- L: app session id
+
+

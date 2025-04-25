@@ -1,0 +1,30 @@
+sequenceDiagram
+    participant User
+    participant YourApp as Your app
+    participant VideoSDK as Video SDK
+    participant Agora
+    participant SDRTN
+
+    User->>YourApp: agoraEngine = AgoraRtcEngineKit.sharedEngine
+    activate YourApp
+    YourApp->>VideoSDK: Open app
+    activate VideoSDK
+    VideoSDK->>VideoSDK: Start a call
+    VideoSDK->>VideoSDK: agoraEngine.setClientRole(.broadcaster)
+    VideoSDK->>VideoSDK: agoraEngine.setupLocalVideo(videoCanvas)
+    VideoSDK->>Agora: agoraEngine?.joinChannel
+    activate Agora
+    Agora->>SDRTN: Process stream
+    activate SDRTN
+    SDRTN-->>Agora: Stream processed
+    deactivate SDRTN
+    Agora-->>VideoSDK: Channel joined
+    deactivate Agora
+    VideoSDK->>VideoSDK: agoraEngine.setupRemoteVideo(videoCanvas)
+    VideoSDK->>VideoSDK: Receive and send data streams
+    VideoSDK->>VideoSDK: agoraEngine.stopPreview()
+    VideoSDK->>VideoSDK: agoraEngine.leaveChannel(nil)
+    VideoSDK->>YourApp: Close app
+    deactivate VideoSDK
+    YourApp->>YourApp: Clean up local resources: AgoraRtcEngineKit.destroy()
+    deactivate YourApp

@@ -1,0 +1,192 @@
+%%{
+  init: {
+    'theme': 'dark',
+    'themeVariables': {
+      'primaryColor': '#000000',
+      'primaryTextColor': '#FFFFFF',
+      'primaryBorderColor': '#7C0000',
+      'lineColor': '#F8B229',
+      'secondaryColor': '#006100',
+      'tertiaryColor': '#fff',
+      'titleColor': '#00C853',
+      'darkMode': 'true',
+      'mainBkg': '#000000'
+    }
+  }
+}%%
+
+flowchart TD
+    subgraph SG_DA [DIRT AGE]
+        A(Die)
+        B(Make Mob Spawning Platform/Farm)
+        subgraph SG_IM [INFERNAL MOBS]
+            C("Elite Mob Drops\n(20% spawn chance)")
+            D("Ultra Mob Drops\n(2% spawn chance)")
+            E("Inferno Mob Drops\n(0.14% spawn chance)")
+        end
+        F(Common Thaumcraft Lootbag)
+        G(Convert Zombie Villager)
+        subgraph SG_VG [VILLAGERS]
+            H("Farmer or Lumberjack\n(Sapling Trade)")
+            I("Heretic\n(Profane Wand Trade)")
+            J("Librarian\n(Glass Trade)\n(Bookshelf Trade)")
+            K("Beekeeper\n(Simmering Comb Trade)")
+            AB("Apothecary\n(Clay Trade)")
+        end
+        subgraph SG_PC [PECH TRADING]
+            ZA(Pech Spawn\nMagical Forest Only)
+            ZB(Gold Coins\nThaum Lootbags)
+            ZC(Pech Trading)
+            ZD(Silverwood + Greatwood Saplings)
+        end
+        ZA --> ZC
+        ZB --> ZC
+        ZC --> ZD
+    end
+    A --> B --> SG_IM --> F
+    D -->|Unenchanted Golden Apple| G
+    F -->|Splash Weakness Potion| G
+    G --> SG_VG
+    H --> SG_WA
+
+    subgraph SG_WA [WOOD AGE]
+        L(Crafting Table)
+        M(Drowning Creeper)
+        N(Cobblestone)
+        O(Furnace)
+        Q(Earliest GT Crafting Tools)
+        subgraph SG_CR [CROPS]
+            R(Copper Oreberry\nor Cyprium)
+            S(Tin Oreberry\nor Stagnium)
+            W("Grass\n(Spread From IC2 Weeds)")
+        end
+        U(Tinker's Construct Tools)
+        V("Paper\n(Wood Pulp + Water)\n(Paperbark)")
+        X(Passive Mob Spawning)
+        Y("Skip Night (Bed)")
+        subgraph SG_IT [HARD/OLD ROUTE]
+            P(Smelt Stone)
+            T(Craft Mortar)
+            Z(Mix and Smelt Bronze)
+            AA(Railcraft Iron Tank)
+        end
+        P --> T --> Z --> AA
+        subgraph SG_NW [NEW/EASY ROUTE]
+            AD("Gravel\nSand\n(Hammer Cobble)")
+            AC(Craft Seared Tank)
+            BC("Apothecary Villager\n(Clay Trade)")
+        end
+        AD --> AC
+        AE(XP Storage)
+        AF(XP Drain)
+        AG(XP Bucket)
+        BV("Vanilla Wood\n(If villagers do not\ncooperate, try IC2\ncrops or QB trade)")
+        BW(Part Builder)
+    end
+    L -->|Flint GT Tools| N
+    M --> N --> O --> P
+    L --> Q --> SG_CR
+    Q --> U
+    V --> U
+    W --> X -->|Wool| Y
+    S --> Z
+    R --> Z
+    N --> SG_NW
+    AC --> AE
+    AA --> AE
+    AF --> AE --> AG --> SG_XP
+    O --> AC
+    AB --> BC --> AC
+    BV --> BW --> U
+
+    subgraph SG_XP [XP AGE]
+        AH(XP Bucket Crafting)
+        AK(Coke Oven)
+        AL(Rubber Bar)
+        AM(Steam Alloy Smelter)
+        AN(BC Tank)
+        AO(Piston)
+        AR(Steam Compressor)
+        AS("Bricked Blast Furnace (BBF)")
+        AT(LV Motors)
+        AU(Forestry Centrifuge)
+        AV(Forestry Squeezer)
+        AW("(Placeholder)")
+        subgraph SG_THAUM [THAUMCRAFT]
+            AP(Scribing Tools)
+            AQ("Glass Bottle (Witch, Rare Drops)\nFeather (Chicken, Sniper Skeleton)\nInk Sac (Various Mobs)")
+            AX(Research Table)
+            AY(Bookshelf)
+            AZ(Perform Thaumcraft Research)
+            BA("Research Points\n(Bonus Points)\n(Elder Wisdom)\n(Mob Drops)")
+            BB("Librarian Villager\n(Glass Trade)\n(Bookshelf Trade)")
+            BD(Research Lazullia)
+        end
+        AQ --> AP
+        AX --> AZ
+        AP --> AZ
+        AY --> AZ
+        BA --> AZ
+        BB --> AY
+        AZ --> BD
+        BD --> BK -->|Steam Macerator| BL --> BE
+        AN --> AV
+
+        BE(Obtain Lapis Lazuli Plates)
+        BF(Hobbyist's Steam Engine)
+        BG(Simmering Comb -> Phosphor)
+        BH(Process Phosphor into Lava)
+        BI(TC Smeltery)
+        BJ(Ball Mold)
+        BK(Obtain Lapis Lazuli)
+        BL(Obtain Lapis Dust)
+
+        subgraph SG_QB [Questbook]
+            BM(Get 24 Leather)
+            BN("8 Lapis Lazuli\n(Quest: Leather Armor)")
+            BO(Quest: Divine Rod of the Gods)
+            BP(Quest: Can't Find Those Ores)
+            BQ(Lapis Ore)
+        end
+        BM --> BN
+        BN --> BK
+        BO --> BP --> BQ -->|Lucky Drop| BL
+
+        BR("Earliest Bees\n(Steam Quest -> Scoop\n-> Hive)")
+        AH --> BR
+
+        BS(Simmering Comb)
+        BT("Beekeeper Villager\n(Simmering Comb Trade)")
+        BU(Breed Transmuting Bees\n-> Simmering Comb)
+        BS --> BG
+        BT --> BS
+        BU --> BS
+        BR --> BU
+    end
+    AH -->|Hard Route| AK
+    AH -->|Sulfur\nRaw Rubber| AL --> AP
+    AH -->|Redstone| AM -->|Red Alloy| AO --> AR -->|Firebrick| AS
+    AM -->|Obsidian Glass| AN
+    AH -->|Gypsum\nCalcite\nQuartz Sand\nClay Dust\nStone Dust| AS
+    AL --> AT
+    AS --> AW
+    AT --> AW
+    AW --> AU
+    AW --> AV
+    BE --> BF
+    AW --> BF
+    BF -->|RF Power| AU
+    AU --> BG
+    AV --> BH
+    BG --> BH
+    BH -->|Lava| BI
+    BI --> BJ
+    ZD --> SG_WA
+
+    %% Styling
+    classDef gate color:#000000, fill:#00C853
+    
+    class H gate
+    class AG gate
+    class BJ gate
+    class ZD gate

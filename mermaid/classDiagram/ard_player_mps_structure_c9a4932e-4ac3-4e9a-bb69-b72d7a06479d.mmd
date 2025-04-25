@@ -1,0 +1,102 @@
+classDiagram
+    direction LR
+
+    class PlayerConfig {
+        string name
+        string path
+    }
+
+    class GenericConfig
+
+    class WebConfig
+
+    class EmbeddedConfig
+
+    class PluginConfig {
+        PluginPlatformTarget platform
+        string plugin
+    }
+
+    class ImageTemplateConfig {
+    }
+
+    class ImageTemplateWidthConfig
+    class ImageTemplateNamedSizeConfig
+
+    namespace JSON {
+        class JSONValue
+        class JSONArray
+        class JSONObject
+        class JSONObjectEntry {
+            string key
+        }
+        class JSONNumber
+
+        class JSONInteger {
+            int value
+        }
+
+        class JSONDouble {
+            int integer
+            int decimal
+        }
+        class JSONBoolean {
+            bool value
+        }
+
+        class JSONString {
+            string value
+        }
+
+        class JSONNullValue
+    }
+
+    <<abstract>> JSONNumber
+    <<abstract>> JSONValue
+    JSONObject --|> JSONValue
+    JSONArray --|> JSONValue
+    JSONNullValue --|> JSONValue
+    JSONBoolean --|> JSONValue
+    JSONString --|> JSONValue
+    JSONNumber --|> JSONValue
+    JSONInteger --|> JSONNumber
+    JSONDouble --|> JSONNumber
+    JSONObject "1" o-- "0..n" JSONObjectEntry
+    JSONObjectEntry "1" o-- "1" JSONValue
+    JSONArray "1" o-- "0..n" JSONValue
+    PlayerConfig "1" o-- "0..1" GenericConfig: generic
+    PlayerConfig "1" o-- "0..1" WebConfig: web
+    PlayerConfig "1" o-- "0..1" EmbeddedConfig: android
+    PlayerConfig "1" o-- "0..1" EmbeddedConfig: ios
+    PlayerConfig "1" o-- "0..n" PluginConfig: plugin
+    GenericConfig "1" o-- "0..1" JSONBoolean: isTimeRemainingDisplay
+    GenericConfig "1" o-- "0..1" JSONBoolean: isShowSubtitleAtStart
+    GenericConfig "1" o-- "0..1" JSONBoolean: isAutoplay
+    GenericConfig "1" o-- "0..1" JSONBoolean: isMuted
+    GenericConfig "1" o-- "0..1" JSONDouble: vodStartSeconds
+    GenericConfig "1" o-- "0..1" JSONDouble: vodEndSeconds
+    GenericConfig "1" o-- "0..1" JSONDouble: vodInitialPlayheadSeconds
+    GenericConfig "1" o-- "0..1" JSONBoolean: isDvrEnabled
+    GenericConfig "1" o-- "0..1" JSONDouble: volumePercent
+    GenericConfig "1" o-- "0..1" ImageTemplateConfig: imageTemplateConfig
+    ImageTemplateConfig "1" o-- "1" ImageTemplateWidthConfig: width
+    ImageTemplateConfig "1" o-- "1..n" ImageTemplateNamedSizeConfig: size
+    ImageTemplateWidthConfig "1" o-- "1" JSONDouble: min
+    ImageTemplateWidthConfig "1" o-- "1" JSONDouble: max
+    ImageTemplateWidthConfig "1" o-- "1" JSONDouble: stepSize
+    ImageTemplateNamedSizeConfig "1" o-- "1" JSONDouble: minWidth
+    ImageTemplateNamedSizeConfig "1" o-- "1" JSONString: value
+    WebConfig "1" o-- "0..1" JSONString: baseUrl
+    WebConfig "1" o-- "0..1" JSONDouble: forcedVolumePercentag
+    WebConfig "1" o-- "0..1" JSONBoolean: isForcedAutoplay
+    WebConfig "1" o-- "0..1" JSONBoolean: enablePostMessage
+    WebConfig "1" o-- "0..1" JSONBoolean: enableMaturityLogin
+    WebConfig "1" o-- "0..1" JSONBoolean: disablePosterImage
+    WebConfig "1" o-- "0..1" JSONBoolean: enableBackButton
+    WebConfig "1" o-- "0..1" JSONBoolean: disableBackButtonTitle
+    WebConfig "1" o-- "0..1" JSONBoolean: isAudioSticky
+    WebConfig "1" o-- "0..1" JSONBoolean: isForcedVideoView
+    EmbeddedConfig "1" o-- "0..1" JSONString: baseUrl
+    EmbeddedConfig "1" o-- "0..1" JSONBoolean: allowAutoplay
+    PluginConfig "1" o-- "0..1" JSONObject: config
+

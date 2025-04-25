@@ -1,0 +1,13 @@
+flowchart TD
+  using_python_packages[Using Python packages]
+  installed_with_python[Installed with Python module?]
+  use_python[1.Done]
+  installed_with_module[Installed with Python package module?]
+  use_module[2.Load Python module]
+  install_yourself[3.Install it yourself]
+
+  using_python_packages --> installed_with_python
+  installed_with_python -->|yes|use_python
+  installed_with_python -->|no|installed_with_module
+  installed_with_module -->|yes|use_module
+  installed_with_module -->|no|install_yourself

@@ -1,0 +1,9 @@
+sequenceDiagram
+    A->>B: Request
+    B-->>B: Promise
+    B->>A: Future
+    loop Statuscheck
+        A->>A: Check a future's state
+    end
+    B-->>B: Update Promise
+    A-->>A: Get a value from future

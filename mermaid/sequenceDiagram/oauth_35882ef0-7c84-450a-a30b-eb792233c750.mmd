@@ -1,0 +1,11 @@
+sequenceDiagram
+    Resource owner->>Client: Access Resource
+    Client->>Resource owner: redirect to Authorization server
+
+    Resource owner->>Authorization server: authorization request
+    Authorization server->>Resource owner: access token
+
+    Resource owner->>Client: access token
+    Client->>Resource server: access token
+    Resource server->>Client: Resource
+    Client->>Resource owner: Resource

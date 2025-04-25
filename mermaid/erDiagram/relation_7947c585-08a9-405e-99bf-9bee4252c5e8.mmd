@@ -1,0 +1,17 @@
+erDiagram
+    users ||--o| athletas : is
+    users ||--o{ invites: make
+    users }o--o{ teams: has
+    user }o--o{ equipment: register
+    users }o--o{ food: register
+    athlete }|--|{ teams: participates
+    athletas }o--o{ equipment: use
+    athletas }o--o{ food: use
+
+    teams ||--o{ race: participates
+    organizer }|--|{ race: has
+    race
+    equipment
+    food
+    SMART
+    SWOT

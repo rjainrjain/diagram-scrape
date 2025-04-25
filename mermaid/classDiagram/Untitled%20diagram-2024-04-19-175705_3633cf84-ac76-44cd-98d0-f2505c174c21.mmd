@@ -1,0 +1,33 @@
+classDiagram
+
+    Pessoa <|-- Usuario
+    Usuario "1" --> "0..*"Carro
+    Usuario ..|> Parqueamento: Realiza
+    Parqueamento ..> Carro
+
+    class Carro{
+        -String placa
+    }
+
+    class Pessoa{
+        -String CPF
+        -String email
+        -String telefone
+    }
+
+    class Usuario{
+        -String senha
+        -Carro carros[]
+        +Estacionar(Carro carro)
+    }
+
+    class Parqueamento{
+        -Date duração
+        -Date inicio
+        -String Rua
+        -String Bairro
+        -Car carro
+
+        +Date getHoraVencimento()
+        +void aumentarVencimento()
+    }

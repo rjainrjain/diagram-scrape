@@ -1,0 +1,17 @@
+classDiagram
+Prototype --|> Ski
+Prototype --|> Board
+Application o-- Prototype
+class Prototype{
+    <<abstract>>
+Clone()*
+}
+class Ski{
+Clone()*
+}
+class Board{
+Clone()*
+}
+class Application {
+    DoSomething()
+}

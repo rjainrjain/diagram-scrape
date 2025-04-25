@@ -1,0 +1,37 @@
+graph TD
+    A[Client] -->|1. HTTP Request| B[Load Balancer<br>Nginx/HAProxy]
+    B -->|2. Route Request| C[Symfony 6.x Application<br>PHP 8.1+]
+    C -.->|3. Authenticate| D[Auth Service<br>Symfony Security Bundle<br>LexikJWTAuthenticationBundle]
+    C -.->|4. Manage Users| E[User Service<br>Symfony Security Bundle<br>Doctrine ORM]
+    C -.->|5. Handle Pricing| F[Pricing Service<br>Custom Symfony Bundle<br>Doctrine ORM]
+    C -.->|6. Manage API| G[API Management<br>API Platform<br>Nelmio API Doc Bundle]
+    C -->|7. Process Request| H[Request Handler<br>Symfony Messenger]
+    H ==>|8. Queue Job| I[Message Queue<br>RabbitMQ]
+    J[Python Worker<br>Python 3.9+<br>Pika<br>Flask/FastAPI] ==>|9. Consume Job| I
+    J -->|10. Generate Schedule| K[OR-Tools CP Model<br>Google OR-Tools]
+    J ==>|11. Store Result| L[Result Cache<br>Redis<br>Predis Bundle]
+    C ==>|12. Retrieve Result| L
+    C -.->|13. Log Events| M[Logging Service<br>ELK Stack<br>Monolog Bundle]
+    C -.->|14. Track Metrics| N[Monitoring Service<br>Prometheus<br>Grafana<br>Symfony Prometheus Bundle]
+    O[Admin Dashboard<br>EasyAdmin Bundle] -.->|Manage System| C
+    P[Database<br>PostgreSQL<br>Doctrine ORM] <-.->|Store/Retrieve Data| C
+    Q[Cron Jobs<br>Symfony Console<br>Supervisor] -.->|Periodic Tasks| C
+++
+    classDef mainFlow fill:#f9f,stroke:#333,stroke-width:4px;
+    classDef dataFlow fill:#bbf,stroke:#333,stroke-width:2px;
+    classDef asyncFlow fill:#bfb,stroke:#333,stroke-width:2px;
+    classDef supportFlow fill:#fbb,stroke:#333,stroke-width:2px;
+
+    class A,B,C,H,J,K mainFlow;
+    class D,E,F,G,P dataFlow;
+    class I,L asyncFlow;
+    class M,N,O,Q supportFlow;
+
+    subgraph Additional Tools
+        R[Docker & Docker Compose]
+        S[Composer]
+        T[Webpack Encore]
+        U[PHPUnit & Behat]
+        V[Symfony Mailer]
+        W[Stripe/PayPal SDK]
+    end

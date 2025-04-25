@@ -1,0 +1,40 @@
+graph TD
+    A[Source Code] --> B[Lexical Analysis]
+    B --> C[Syntax Analysis]
+    C --> D[Abstract Syntax Tree AST]
+    D --> E[Semantic Analysis]
+    E --> F[IR Generation]
+    F --> G[Intermediate Representation IR]
+    G --> H[IR Optimization]
+    H --> I[Optimized IR]
+    I --> J[MIMD-PU Code Generation]
+    J --> K[MIMD-PU Code]
+
+    subgraph Lexer
+    B --> B1[Tokenization]
+    end
+
+    subgraph Parser
+    C --> C1[Parse Tokens]
+    C1 --> D
+    end
+
+    subgraph SemanticAnalyzer
+    E --> E1[Type Checking]
+    E1 --> E2[Scope Analysis]
+    end
+
+    subgraph IRGenerator
+    F --> F1[Generate IR Instructions]
+    end
+
+    subgraph IROptimizer
+    H --> H1[Constant Folding]
+    H1 --> H2[Dead Code Elimination]
+    H2 --> H3[Common Subexpression Elimination]
+    end
+
+    subgraph MIMDPUCodeGenerator
+    J --> J1[Configure Processing Unit]
+    J1 --> J2[Generate MIMD-PU Instructions]
+    end

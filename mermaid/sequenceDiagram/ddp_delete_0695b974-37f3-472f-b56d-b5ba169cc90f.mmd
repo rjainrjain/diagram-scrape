@@ -1,0 +1,19 @@
+sequenceDiagram
+  participant B as Bridge
+  participant C as Intermediary Service
+  participant D as DDP
+
+  C ->> B: GET /delete
+  B -->> C: json
+
+  alt is object
+    C -x D: Delete object
+    Note right of D: DDP delete<br/>workflow
+    D -->> C: Object is deleted
+  else is file
+    C -x D: Delete file from object
+    Note right of D: Follow package format<br/>recommendations
+    D -->> C: File removed
+  end
+
+  C ->> B: POST /deposit/delete-id

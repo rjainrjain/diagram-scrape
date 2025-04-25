@@ -1,0 +1,11 @@
+sequenceDiagram
+    Client -->> Server: Post https://studies.cs.helsinki.fi/exampleapp/new_note
+    Server -->> Client: 302/Found Redirect /exampleapp/notes
+    Client -->> Server: Get https://studies.cs.helsinki.fi/exampleapp/notes
+    Server -->> Client: Html Document
+    Client -->> Server: Get https://studies.cs.helsinki.fi/exampleapp/main.css
+    Server -->> Client: The CSS File
+    Client -->> Server: Get https://studies.cs.helsinki.fi/exampleapp/main.js
+    Server -->> Client: The JS File
+    Client -->> Server: Get https://studies.cs.helsinki.fi/exampleapp/data.json
+    Server -->> Client: Get JSON file

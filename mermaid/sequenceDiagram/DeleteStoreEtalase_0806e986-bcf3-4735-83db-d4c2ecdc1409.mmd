@@ -1,0 +1,41 @@
+
+sequenceDiagram
+  actor Penjual
+  participant V_ACP as View #10095; SellerStoreCategoryPage
+  participant P_DC as Pop-up #10095; DeleteStoreCategory
+  participant C_C as Controller #10095; StoreCategoryController
+  participant M_C as Model #10095; StoreCategory
+  
+  Penjual->>V_ACP: klik icon sampah di salah satu data
+  
+  activate Penjual
+
+  activate V_ACP
+
+  V_ACP->>P_DC: setIsModalDeleteOpen(true)
+
+  activate P_DC
+
+  Penjual->>P_DC: klik tombl "Hapus"
+  P_DC->>C_C: destroy()
+
+  activate C_C
+
+  C_C->>M_C: delete()
+  
+  activate M_C
+  
+  M_C-->>C_C: return
+
+  deactivate M_C
+
+  C_C-->>V_ACP: return view
+
+  deactivate C_C
+  
+  V_ACP->>P_DC: setIsModalDeleteOpen(false)
+
+  deactivate P_DC
+  deactivate V_ACP
+
+  deactivate Penjual

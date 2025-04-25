@@ -1,0 +1,14 @@
+sequenceDiagram
+    participant Web Services
+    participant Backend
+    participant Oracle
+    participant Blockchain Gateway
+    Oracle->>Backend: Project Milestone trigger
+    activate Oracle
+    Backend-->>Web Services: Notify Milestone
+    Note over Web Services,Backend: Project management period
+    Note over Oracle: Check votes
+    Oracle->>Blockchain Gateway: Withdraw funds/Refund
+    Blockchain Gateway-->>Oracle: Confirmation
+    Oracle->>Backend: Fund withdrawn    
+    deactivate Oracle

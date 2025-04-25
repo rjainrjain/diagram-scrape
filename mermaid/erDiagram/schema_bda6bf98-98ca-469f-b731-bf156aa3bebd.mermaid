@@ -1,0 +1,29 @@
+erDiagram
+    Book {
+        int id PK "책 ID"
+        string title "서적제목"
+        string publisher "출판사"
+        date publisherDate "출판일"
+    }
+
+    Author{
+        int id PK "저자 ID"
+        string name "저자 이름"
+    }
+
+    Review {
+        int id PK "리뷰 ID"
+        int bookId FK "서적ID"
+        string content "리뷰 내용"
+        float rating "평점"
+        date createdDate "작성일"
+    }
+
+    BookAuthor {
+        int bookId FK "서적ID"
+        int member FK "저자 ID"
+    }
+
+    Book || --o{Review : "has"
+    Book || --|{BookAuthor : "has"
+    Author || --|{BookAuthor: "writes"

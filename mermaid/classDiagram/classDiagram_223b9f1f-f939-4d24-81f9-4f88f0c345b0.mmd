@@ -1,0 +1,24 @@
+classDiagram
+    %%I am just testing out various markdown things
+    %%A class diagram is unfit for this project
+    CSV *-- Dimensions
+    CSV *-- CSVSettings
+    CSV : char *filename
+    CSV : char *rows
+    CSV: openCSV() CSV
+    CSV: closeCSV()
+    CSV: displayCSV()
+
+    class Dimensions{
+        DMakeBlankCSV() CSV
+        int rCount
+        int cCount
+        int maxEntrySize
+    }
+    class CSVSettings{
+        char colDelin
+        char rowDelin
+        int colHeader
+        int rowHeader
+    }
+

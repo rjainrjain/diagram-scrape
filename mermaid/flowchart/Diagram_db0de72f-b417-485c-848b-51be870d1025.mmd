@@ -1,0 +1,33 @@
+flowchart TB
+
+subgraph Inicio
+    A(Definir objetivo y alcance del proyecto) --> B((Establecer metodología - Scrum))
+end
+
+subgraph Desarrollo del Modelo
+    B --> C(Definir variables y datos de entrada)
+    C --> D(Recopilar datos sobre estudiantes)
+    D --> E(Preprocesar y limpiar los datos)
+    E --> F(Seleccionar factores determinantes de vulnerabilidad económica)
+    F --> G(Dividir datos en conjuntos de entrenamiento y prueba)
+    G --> H(Entrenar modelo de aprendizaje automático)
+    H --> I(Evaluar el rendimiento del modelo)
+end
+
+subgraph Iteraciones
+    I -. Rendimiento óptimo .-> J(Analizar y diagnosticar problemas)
+    J --> K(Optimizar y ajustar el modelo)
+    K --> L(Validar el rendimiento del modelo optimizado)
+    L -. Rendimiento óptimo .-> M(Realizar predicciones con el modelo optimizado)
+    M -. Resultados no satisfactorios .-> J
+    M -. Resultados satisfactorios .-> N(Entregar modelo finalizado)
+end
+
+subgraph Fin
+    N --> O[Fin del proyecto]
+end
+
+style Inicio fill:#D6EAF8,stroke:#3498DB
+style Desarrollo del Modelo fill:#FDEBD0,stroke:#E67E22
+style Iteraciones fill:#D4EFDF,stroke:#27AE60
+style Fin fill:#D7DBDD,stroke:#808B96

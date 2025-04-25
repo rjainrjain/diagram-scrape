@@ -1,0 +1,24 @@
+erDiagram
+    PROGRAM {
+        int program_id PK
+        String name
+        int split
+    }
+
+    WORKOUT {
+        int workout_id PK
+        String name
+        String target_muscles
+    }
+
+    EXERCISE {
+        int exercise_id PK
+        String name
+        int sets
+        int reps
+        int current_weight
+        int starting_weight
+    }
+
+    PROGRAM ||--|{ WORKOUT : has
+    WORKOUT ||--|{ EXERCISE : has

@@ -1,0 +1,28 @@
+classDiagram
+
+Handler <|.. BaseHandler : Realization
+BaseHandler o--> Handler : Aggregation
+BaseHandler <|-- ConcreteHandler1 : Inheritance
+BaseHandler <|-- ConcreteHandler2 : Inheritance
+
+class Handler{
+    <<interface>>
+    +setNext(h: Handler)
+    +handle(request)
+}
+
+class BaseHandler{
+    -next: Handler
+    +setNext(h: Handler)
+    +handle(request)
+}
+
+class ConcreteHandler1{
+    ...
+    +handle(request)
+}
+
+class ConcreteHandler2{
+    ...
+    +handle(request)
+}

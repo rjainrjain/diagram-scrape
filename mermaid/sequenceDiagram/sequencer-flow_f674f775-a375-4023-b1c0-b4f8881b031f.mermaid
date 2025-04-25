@@ -1,0 +1,18 @@
+sequenceDiagram
+    participant SW as Sequencer Worker
+    participant IT as Inspect Tool
+    participant AT as Assignment Tool
+    participant WT as Worker Tool
+    participant W as New Worker
+
+    SW->>IT: Check current state
+    Note over IT: Gets overview of<br/>system state and progress
+    
+    SW->>AT: Determine next role
+    Note over AT: Decides which role<br/>should handle current workload
+    
+    SW->>WT: Create worker
+    Note over WT: Creates new worker<br/>with chosen role
+    
+    WT->>W: Initialize
+    Note over W: New worker starts with<br/>assigned role and toolset

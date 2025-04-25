@@ -1,0 +1,16 @@
+classDiagram
+class Configuration {
+<<Class>>
++ Any logger
++ Any config
++ Dict&lt;str,List&lt;Tuple&lt;str,str&gt;&gt;&gt; definition
++Constructor() None
++load(str path) bool
++defineConfig(str section, str name, str comment) None
++get(str section, str name) str
++getInt(str section, str name) int
++getFloat(str section, str name) float
++getBool(str section, str name) bool
++getList(str section, str name) List~Any~
++generateTemplate(str path) None
+}

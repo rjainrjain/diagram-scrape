@@ -1,0 +1,10 @@
+%% Diagram đăng ký
+graph TD
+    A[Bắt đầu] --> B[Nhập thông tin: email, tên, mật khẩu]
+    B --> C[Gửi yêu cầu đăng ký tới server]
+    C --> D{Thông tin hợp lệ?}
+    D -->|Có| E[Tạo tài khoản mới]
+    D -->|Không| F[Hiển thị lỗi]
+    F --> B
+    E --> G[Thông báo đăng ký thành công]
+    G --> H[Kết thúc]

@@ -1,0 +1,13 @@
+sequenceDiagram
+    participant CN as Control Node
+    participant R as Receptor
+    participant EE as Execution Environment
+    participant AP as Ansible Playbook
+
+    CN->>R: Dispatch Job
+    R->>EE: Orchestrate Job
+    EE->>AP: Execute Playbook
+    AP->>EE: Return Execution Results
+    EE->>R: Send Results
+    R->>CN: Provide Status and Results
+

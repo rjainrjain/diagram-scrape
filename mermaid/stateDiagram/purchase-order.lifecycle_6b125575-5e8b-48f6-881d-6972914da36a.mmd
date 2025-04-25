@@ -1,0 +1,35 @@
+---
+title: Purchase Order lifecycle
+---
+stateDiagram-v2
+  direction LR
+  [*] --> draft
+  [*] --> open
+  draft --> open
+  open --> completed
+  open --> cancelled
+  draft --> cancelled
+  open --> fulfillment
+  state fulfillment {
+    [*] --> unfullfilled
+    [*] --> scheduled
+    [*] --> on_hold
+    unfullfilled --> fulfilled
+    unfullfilled --> partially_fulfilled
+    scheduled --> fulfilled
+    scheduled --> unfullfilled
+    partially_fulfilled --> fulfilled
+    fulfilled
+    on_hold --> fulfilled
+    on_hold --> partially_fulfilled
+    on_hold --> unfullfilled
+  }
+  fulfillment --> completed
+  fulfillment --> cancelled
+  completed --> return
+  state return {
+    [*] --> requested
+    requested --> in_progress
+    in_progress --> returned
+    returned --> inspected
+  }

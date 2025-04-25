@@ -1,0 +1,67 @@
+classDiagram
+    User "1" --> "1" Profile : has
+    User "1" --> "*" Catch : owns
+    User "1" --> "*" Comment : writes
+    User "1" --> "*" Follower : follows
+    User "1" --> "*" Follower : is followed by
+    User "1" --> "*" Like : gives
+    User "1" --> "*" Notification : receives
+    Catch "1" --> "*" Comment : has
+    Catch "1" --> "*" Like : receives
+    class User{
+        +String username
+        +String email
+    }
+    class Profile{
+        +OneToOneField owner
+        +DateTimeField created_at
+        +DateTimeField updated_at
+        +CharField name
+        +TextField bio
+        +CharField location
+        +ImageField profile_picture
+        +URLField facebook_url
+        +URLField twitter_url
+        +URLField instagram_url
+    }
+    class Catch{
+        +ForeignKey owner
+        +DateTimeField created_at
+        +DateTimeField updated_at
+        +CharField caption
+        +ImageField image
+        +CharField species
+        +CharField method
+        +DecimalField weight
+        +DecimalField length
+        +CharField location
+        +FloatField latitude
+        +FloatField longitude
+        +TimeField time
+        +CharField weather
+        +CharField lure
+    }
+    class Comment{
+        +ForeignKey owner
+        +DateTimeField created_at
+        +DateTimeField updated_at
+        +ForeignKey catchId
+        +TextField content
+    }
+    class Follower{
+        +ForeignKey owner
+        +DateTimeField created_at
+        +ForeignKey followed
+    }
+    class Like{
+        +ForeignKey owner
+        +DateTimeField created_at
+        +ForeignKey catch
+    }
+    class Notification{
+        +ForeignKey user
+        +DateTimeField created_at
+        +CharField notification_type
+        +TextField notification_text
+        +BooleanField is_read
+    }

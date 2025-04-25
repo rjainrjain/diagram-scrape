@@ -1,0 +1,31 @@
+graph TD
+  subgraph Input data
+    A[Extant genomes]
+    B[Species tree]
+    C[Gene phylogenies]
+    D[Extant gene orders]
+  end
+  subgraph AGORA
+    E[Ancestral gene lists]
+    EE[Robust ancestral genes]
+    F{{Pairwise comparisons}}
+    FF{{Pairwise comparisons}}
+    G[Ancestral adjacency graph]
+    H{{Graph linearisation}}
+    subgraph Extension
+      L{{Fill-in}}
+      M{{Fusion}}
+      N{{Insertion}}
+    end
+    J{{Block assembly}}
+  end
+  subgraph Output
+    K[Ancestral Genomes]
+  end
+  A -.- B & C & D
+  C --> E
+  B --> J & F & FF
+  D --> FF & F & J
+  E --> EE --> FF --> G --> H --> L --> M --> N --> J --> K
+  L --> N
+  E --> F --> L & M & N

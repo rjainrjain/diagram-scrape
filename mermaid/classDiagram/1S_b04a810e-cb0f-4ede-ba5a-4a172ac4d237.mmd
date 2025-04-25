@@ -1,0 +1,81 @@
+classDiagram
+Student --> UI: 1. clickKUAllLogin()
+UI --> KUAllLogin: 2. redirectToKUAllLogin()
+KUAllLogin --> AuthController: 3. handelKUAllLoginCallback(userinfo)
+AuthController --> AuthRepository: 4. checkExistingStudent(username)
+AuthRepository --> DBConnector: 5. execute(Q1S.1, username)
+DBConnector --> AuthRepository: 6. queryResult()
+AuthRepository --> AuthController: 7. studentExist(boolean)
+AuthController --> UI: 8.1. redirectToMainPage()
+AuthController --> UI: 8.2 redirectToProfilePage()
+
+Student --> UI: 9. submitProfileForm(profileData)
+UI --> ValidationController: 10. validateProfileData(profileData)
+ValidationController --> ValidationController: 11. validateRequired(title, firstName, lastName)
+ValidationController --> ValidationController: 12. validateEmail(email)
+ValidationController --> ValidationController: 13. validatePhone(phoneNumber)
+ValidationController --> ValidationController: 14. validateBirthdate(birthdate)
+ValidationController --> ValidationController: 15. validateProfileImage(image)
+ValidationController --> AuthRepository: 16. checkDuplicateEmail(email)
+AuthRepository --> DBConnector: 17. execute(Q1S.2, email)
+DBConnector --> AuthRepository: 18. emailCount
+AuthRepository --> ValidationController: 19. emailExist(boolean)
+ValidationController --> UI : 20.1. displayValidationErrors()
+ValidationController --> UI: 20.2. displayEducationForm()
+
+Student --> UI: 21. submitEducationForm(educationData)
+UI --> ValidationController: 22. validateEducationData(educationData)
+ValidationController --> ValidationController: 23. validateRequired(faculty, major)
+ValidationController --> ValidationController: 24. validateGPAX(gpax)
+ValidationController --> UI : 25. displayValidationErrors()
+ValidationController --> AuthRepository: 26. saveUserData(profileData, educationData)
+AuthRepository --> DBConnector: 27. execute(Q1S.3_USER, userData)
+DBConnector --> AuthRepository: 28. userUpdated()
+AuthRepository --> DBConnector: 29. execute(Q1S.3_STUDENT, studentData)
+DBConnector --> AuthRepository: 30. studentUpdated()
+AuthRepository --> UI: 31. registrationComplete()
+UI --> UI: 32. redirectToMainPage()
+
+    class Student {
+
+    }
+
+    class UI {
+        +redirectToKUAllLogin()
+        +redirectToMainPage()
+        +redirectToProfilePage()
+        +displayValidationErrors()
+        +displayEducationForm()
+        +redirectToMainPage()
+    }
+
+    class ValidationController {
+        +validateRequired()
+        +validateEmail()
+        +validatePhone()
+        +validateBirthdate()
+        +validateProfileImage()
+        +validateGPAX()
+        +emailExist()
+    }
+
+    class AuthController {
+        +handleKUAllLogin()
+        +studentExist()
+    }
+
+    class AuthRepository {
+        +checkExistingStudent()
+        +checkDuplicateEmail()
+        +saveUserData()
+        +queryResult()
+        +userUpdated()
+        +studentUpdated()
+    }
+
+    class DBConnector {
+        +execute()
+    }
+
+    class KUAllLogin{
+    }

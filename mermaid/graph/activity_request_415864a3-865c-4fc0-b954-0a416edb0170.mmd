@@ -1,0 +1,12 @@
+graph TD
+    A[Receive HTTP Request from end-user] --> |Forward| B{Find origin}
+    subgraph ReverseProxy
+
+    B -->|Origin not found| D[Send error response]
+    B -->|Origin reachable| C[Pick engine]
+    end ReverseProxy
+    subgraph DetectionEngine
+    C -->|Delegate to engine| E{Is malicious?}
+    E --> |Blocking| I[Block request]
+    E --> |Otherwise| G[Forward request to origin]
+    end DetectionEngine

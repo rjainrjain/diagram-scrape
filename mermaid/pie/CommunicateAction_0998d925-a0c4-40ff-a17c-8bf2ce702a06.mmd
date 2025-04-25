@@ -1,0 +1,21 @@
+classDiagram
+  CommunicateAction -- Person
+  CommunicateAction -- Audience
+  CommunicateAction -- ContactPoint
+  CommunicateAction -- Organization
+  CommunicateAction -- Language
+  CommunicateAction -- Thing
+
+
+class CommunicateAction {
+
+  Person recipient
+  Audience recipient
+  ContactPoint recipient
+  Organization recipient
+  string inLanguage
+  Language inLanguage
+  Language language
+  Thing about
+
+ }

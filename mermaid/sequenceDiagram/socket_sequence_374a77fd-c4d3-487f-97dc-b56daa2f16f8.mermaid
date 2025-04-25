@@ -1,0 +1,38 @@
+sequenceDiagram
+    activate Backend
+    Frontend->>+Backend: Listen call
+    Backend-->>+Frontend: Return new socket
+    deactivate Backend
+
+    activate Backend
+    Frontend->>+Backend: List of Ids client wants updates
+    Backend->>+DB: Query changes where id in 'ids'
+    deactivate Backend
+    activate DB
+    DB-->>+Backend: Task values
+    deactivate DB
+    Backend-->>+Frontend: Immediate reply of new list
+    deactivate Backend
+     
+
+    Backend-)Backend: Poll for updates on given list
+    activate Backend
+    Backend->>+DB: Poll the given list
+    deactivate Backend
+    activate DB
+    DB-->>+Backend: Task values
+    deactivate DB
+    activate Backend
+    Backend-->>+Frontend: Return updated list
+    deactivate Backend
+
+    
+    Frontend->>+Backend: Change Id list
+    Backend->>+DB: Query changes where id in 'ids'
+    deactivate Backend
+    activate DB
+    DB-->>+Backend: Task values
+    deactivate DB
+    Backend->>+Frontend: Immediate reply of new list
+    deactivate Backend
+    Frontend-xBackend: Close connection

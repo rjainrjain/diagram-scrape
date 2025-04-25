@@ -1,0 +1,41 @@
+erDiagram
+    CHAT_MESSAGE {
+        string message_id PK
+        string conversation_id FK
+        string message
+        timestamp sent_at
+        bool is_image
+        enum sender
+        json citations
+        string additional_context
+    }
+    CONVERSATION_STATUS {
+        string conversation_id PK
+        enum conversation_status
+    }
+    WORK_ORDERS {
+        string order_id PK
+        string user_id
+        string conversation_id FK
+        string machine_id FK
+        string task_name
+        string task_desc
+        timestamp created_at
+    }
+    MACHINE {
+        string machine_id PK
+        string manufacturer
+        string model
+    }
+    PENDING_UPLOADS {
+        string upload_id PK
+        string filename
+        string username
+        string user_email
+        string machine_id FK
+        timestamp sent_at
+    }
+    CONVERSATION_STATUS ||--o{ CHAT_MESSAGE : ""
+    WORK_ORDERS ||--o{ CONVERSATION_STATUS : ""
+    MACHINE || --o{ WORK_ORDERS : ""
+    PENDING_UPLOADS }o-- || MACHINE : ""

@@ -1,0 +1,18 @@
+sequenceDiagram
+participant K as Linux Kernel
+participant LC as LibC
+participant LA as Lambaudit.so
+participant R as Runtime<br/>(Python, Node, etc.)
+participant H as Function Code<br/>(Handler)
+participant CW as CloudWatch Logs
+
+Note over LA,R: Lambaudit.so and the runtime are<br/> part of a custom Lambda<br/> runtime/bootstrap
+
+H->>R: open('/etc/passwd').read()
+R->>LA: read(fd, ...)
+LA->>LA: Lookup fd: readlink('/proc/self/fd/23',....)
+LA->>CW: {"type": "read", "path": "/etc/passwd", "args": ...}
+LA->>LC: read(fd, ...)
+LC->>K: syscall(read, ...)
+K-->>R: [data]
+R-->>H: [data]

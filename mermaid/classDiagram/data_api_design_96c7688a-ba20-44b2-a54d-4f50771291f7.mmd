@@ -1,0 +1,24 @@
+classDiagram
+    class TestCase{
+        +int id
+        +str name
+        +str description
+        +str status
+        +datetime created_at
+        +datetime updated_at
+        +__init__(self, name: str, description: str)
+        +run_test(self)
+        +upload_result(self, result: dict)
+        +get_report(self) : dict
+    }
+    class User{
+        +int id
+        +str username
+        +str password
+        +datetime created_at
+        +datetime updated_at
+        +__init__(self, username: str, password: str)
+        +upload_test_case(self, test_case: TestCase)
+        +get_test_cases(self) : List[TestCase]
+    }
+    User "1" -- "*" TestCase: uploads

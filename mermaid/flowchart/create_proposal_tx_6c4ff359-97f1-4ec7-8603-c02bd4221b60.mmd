@@ -1,0 +1,8 @@
+flowchart TD
+    A[Index_Validator]
+    B[Upgrade_Config_Validator]
+    B --"`References the UTXO at the script with the Config NFT to access the DynamicConfigDatum `"---C
+    C{Create_Proposal_Tx}
+    A -- "`Spends the UTXO with the Index NFT at the script`" ---C
+    C ==>|"`Pays the updated IndexNftDatum back to script with Index NFT`"| D[Index_Validator]
+    C ==>|"`Pays the initial TallyStateDatum and Tally NFT to the script`"| E[Tally_Validator]

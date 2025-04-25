@@ -1,0 +1,61 @@
+flowchart TD
+    subgraph "Main Memory (RAM)"
+        IndexesBatch(["
+            IndexesBatch
+            <i>
+            warped_indexes (max_idxs * 64)
+            warp_intervals (max_seqs * 64)
+            </i>
+        "])
+        SeqStatisticsBatch(["
+            SeqStatisticsBatch
+            <i>
+            found_indexes (max_seqs * 64)
+            not_found (max_seqs * 64)
+            invalid (max_seqs * 64)
+            seqs_before_newfile (max_seqs * 64)
+            colored_seq_id (max_seqs * 64)
+            </i>
+        "])
+        ColorsBatch(["
+            ColorsBatch
+            <i>
+            results (max_seqs * colors * 64)
+            </i>
+        "])
+        ColorsPrintBatch(["
+            ColorsPrintBatch
+            <i>
+            results ((20 + 1) * 8 * max_reads * num_colors)
+            </i>
+        "])
+        ColorResultsPrinter
+
+        subgraph IndexFileParser
+            IndexesBatchProducer
+            SeqStatisticsBatchProducer
+        end
+    end
+
+    subgraph "Gpu Memory (VRAM)"
+        ColorSearcher
+    end
+
+    subgraph Disk
+        Indexes{Indexes}
+        Colors{Colors}
+    end
+
+    Indexes --> IndexFileParser
+
+    IndexesBatchProducer --- IndexesBatch
+    SeqStatisticsBatchProducer --- SeqStatisticsBatch
+    ColorSearcher --- ColorsBatch
+
+    IndexesBatch --> ColorSearcher
+
+    SeqStatisticsBatch --> ColorResultsPrinter
+    ColorsBatch --> ColorResultsPrinter
+
+    ColorResultsPrinter --- ColorsPrintBatch
+    ColorsPrintBatch --> Colors

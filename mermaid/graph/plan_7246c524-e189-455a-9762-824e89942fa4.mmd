@@ -1,0 +1,114 @@
+flowchart BT
+  subgraph Sem1
+    direction LR
+      mat1_1
+      fys1_1
+      intro_mattek
+      diskret_1
+  end
+  subgraph Sem2
+      mat1_2
+      fys1_2
+      adv_lin_alg
+      intro_num_algo
+  end
+
+
+  adv_lin_alg --> mat1_1
+  mat1_2 --> mat1_1
+  fys1_2 --> fys1_1
+  intro_num_algo --> mat1_1
+  
+  subgraph Sem23w
+    mat_stat
+  end
+
+
+  mat_stat --> mat1_2
+  
+  subgraph Sem3
+    mat2
+    diskret_2
+    opti_data
+    pms
+    prob1
+  end
+
+  mat2 --> mat1_2
+  diskret_2 --> diskret_1
+  prob1 --> mat1_2
+  opti_data --> intro_num_algo
+
+  Sem3 -.- Sem23w
+
+  subgraph Sem4
+    mat_model;
+    mat3;
+    algo_data_1;
+    OR;
+    fag_projekt;
+  end
+
+  mat3 --> mat2;
+  mat_model --> mat2;
+  mat_model --> intro_num_algo;
+  mat_model --> intro_mattek;
+  mat_model --> fys1_2;
+  OR --> mat1_1;
+  algo_data_1 --> diskret_1;
+
+  subgraph Sem5
+    part_diff;
+    billedanalyse;
+    stat_model;
+    FP;
+  end
+
+  part_diff --> mat2;
+  billedanalyse --> mat1_2;
+  billedanalyse --> mat_stat;
+  stat_model --> mat_stat;
+  FP --> diskret_1;
+
+  Sem5 -.- Sem4
+
+  subgraph Sem6
+    bachelor;
+    data_model;
+  end
+
+  Sem6 -.- Sem5 
+
+  subgraph Sem63w
+    kemi_august;  
+  end
+
+  Sem63w -.- Sem6
+
+  subgraph Sem7
+    para_prog
+  end
+
+  Sem7 -.- Sem63w
+
+  para_prog --> diskret_1;
+  para_prog --> algo_data_1;
+  para_prog --> data_model;
+
+  subgraph Sem8
+
+  end
+
+  Sem8 -.- Sem7
+
+  subgraph Sem9
+
+  end  
+
+  Sem9 -.- Sem8
+
+  subgraph Sem10
+    speciale
+  end  
+
+  Sem10 -.- Sem9

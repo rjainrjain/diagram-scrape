@@ -1,0 +1,19 @@
+%%{init: {"flowchart": { "htmlLabels": false}} }%%
+stateDiagram-v2
+    idle: S_IDLE
+    start: S_START
+    pause: S_RCV_PAUSE
+    bit: S_RCV_BIT
+
+    [*] --> idle
+    idle --> start : ir=0
+
+    start --> pause : ir=1 && t∈[BASE4_MIN, BASE4_MAX]
+    start --> idle : ir=1 && t∉[BASE4_MIN, BASE4_MAX]
+
+    pause --> idle : t>BASE2_MAX
+    pause --> bit : ir=0 && t∈[BASE_MIN, BASE_MAX]
+    pause --> idle : ir=0 && t∉[BASE_MIN, BASE_MAX]
+
+    bit --> pause : ir=1 && t∈[BASE_MIN, BASE_MAX]∪[BASE2_MIN, BASE2_MAX]
+    bit --> idle : ir=1 && t∉[BASE_MIN, BASE_MAX]∪[BASE2_MIN, BASE2_MAX]

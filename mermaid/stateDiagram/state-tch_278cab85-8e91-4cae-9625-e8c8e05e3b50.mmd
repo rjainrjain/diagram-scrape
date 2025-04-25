@@ -1,0 +1,49 @@
+stateDiagram-v2
+direction LR
+    [*] --> 教师系统
+
+    教师系统 --> 班级管理总页面: 选择班级
+    教师系统 --> 创建新的班级: 选择新建班级
+    创建新的班级 --> 教师系统: 完成创建
+
+    state ChooseTab <<fork>>
+    班级管理总页面 --> ChooseTab: 选择标签页
+
+    state 学生管理 {
+        direction LR
+
+        [*] --> 添加学生: 选择添加学生
+        [*] --> 移除学生: 移除选中学生
+        
+        添加学生 --> [*]
+        移除学生 --> [*]
+    }
+    state 通知分发 {
+        direction LR
+
+        [*] --> 阅览通知
+        [*] --> 新建通知: 选择创建通知
+        新建通知 --> 编辑通知草稿: 创建并编辑
+
+        state MsgBranch <<choice>>
+        阅览通知 --> MsgBranch: 选中通知
+        MsgBranch --> 查看草稿细节: 是草稿
+        查看草稿细节 --> 编辑通知草稿: 选择编辑
+        查看草稿细节 --> 发布通知: 选择发布
+        编辑通知草稿 --> [*]: 保存
+        发布通知 --> [*]: 发布为终稿
+        查看草稿细节 --> [*]
+        MsgBranch --> 查看通知细节: 是终稿
+        查看通知细节 --> [*]
+        [*]
+    }
+
+    ChooseTab --> 学生管理
+    ChooseTab --> 通知分发
+
+    state FinalBranch <<choice>>
+    FinalBranch --> ChooseTab: 切换标签页
+    FinalBranch --> [*]: 退出系统
+
+    学生管理 --> FinalBranch
+    通知分发 --> FinalBranch

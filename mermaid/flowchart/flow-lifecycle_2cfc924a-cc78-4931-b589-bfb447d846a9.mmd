@@ -1,0 +1,38 @@
+flowchart LR
+classDef Green fill:#56AE89,stroke:#000000,stroke-width:2px;
+classDef Orange fill:#F8773D,stroke:#000000,stroke-width:2px;
+
+subgraph "Service"
+end
+class Service Green
+
+Service <-- "request\n decision" --> Selectors
+Selectors <-- "request\n decision" --> Components
+
+subgraph "Selectors"
+	Text("Match components")
+	class Text Orange
+end
+class Selectors Green
+
+
+subgraph Components
+    Classifiers --> FluxMeters("Flux Meters") --> Samplers
+    Samplers --"accept"--> RateLimiters("Rate Limiters")
+	Samplers --"accept"--> ConcurrencyLimiters("Concurrency Limiters")
+	RateLimiters("Rate Limiters") --"accept"--> ConcurrencySchedulers
+	ConcurrencyLimiters("Concurrency Limiters") --"accept"--> ConcurrencySchedulers
+    ConcurrencySchedulers --"accept"--> Caches
+    Caches --> LoadSchedulers("Load Schedulers")
+	Caches --> QuotaSchedulers("Quota Schedulers")
+class Classifiers Orange
+class FluxMeters Orange
+class Samplers Orange
+class RateLimiters Orange
+class ConcurrencyLimiters Orange
+class Caches Orange
+class ConcurrencySchedulers Orange
+class LoadSchedulers Orange
+class QuotaSchedulers Orange
+end
+class Components Green

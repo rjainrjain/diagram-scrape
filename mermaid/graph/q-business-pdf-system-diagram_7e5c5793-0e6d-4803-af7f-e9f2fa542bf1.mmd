@@ -1,0 +1,15 @@
+graph TD
+    User[User] -->|Uploads PDFs or Connects S3| AmazonQBusiness[Amazon Q Business]
+    AmazonS3[Amazon S3] -->|Connects| AmazonQBusiness
+    AmazonQBusiness -->|Indexes & Processes| Index[Amazon Q Business Index]
+    Index -->|Answers Queries & Generates Insights| AmazonQBusiness
+    AmazonQBusiness -->|Displays Results| User
+
+    subgraph AWS CLI Interaction
+        User[User] -->|BatchPutDocument API| AmazonQBusiness
+        User -->|ListDocuments API| AmazonQBusiness
+    end
+
+    subgraph Optional Components
+        OtherDataSources[Other Data Sources] -.->|Connectors| AmazonQBusiness
+    end

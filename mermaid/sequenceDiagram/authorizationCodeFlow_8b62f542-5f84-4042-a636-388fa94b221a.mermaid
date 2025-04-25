@@ -1,0 +1,11 @@
+sequenceDiagram
+    actor ResourceOwner
+    Client->>UserAgent: 1. do an authroization request
+    UserAgent->>AuthorizationServer: 2. send the authorization request
+    AuthorizationServer->>UserAgent: 3. request a user authentication
+    UserAgent->>ResourceOwner: 4. request the user authentication
+    ResourceOwner->>UserAgent: 5. provide the information for the user authentication
+    UserAgent->>AuthorizationServer: 6. send the information for the user authentication
+    AuthorizationServer->>Client: 7. return the authorization response
+    Client->>AuthorizationServer: 8. send a token issue request
+    AuthorizationServer->>Client: 9. return an access token issue response

@@ -1,0 +1,84 @@
+classDiagram
+
+    Game "4" *--> User
+    BTEGui ..|> ITargetGui
+
+    TargetApp *--> "1" Game
+    TargetApp *--> "1" 328TargetsHal
+    TargetApp *--> "1" BTEGui
+    
+    TestHal ..|> ITargetHal
+    TestGui ..|> ITargetGui
+    ConsoleTargets *--> "1" Game
+    ConsoleTargets *--> "1" TestGui
+    ConsoleTargets *--> "1" TestHal
+    ConsoleGun *--> "1" Gun
+    ConsoleGun *--> "1" TestHal
+
+    GunApp *--> "1" Gun
+    GunApp *--> "1" 328GunHal
+
+    328TargetsHal ..|> ITargetHal
+    328GunHal ..|> IGunHal
+
+    namespace ATMega328{
+        
+        class 328TargetsHal{
+        }
+
+        class 328GunHal{
+        }
+    }
+
+    namespace Domain {
+
+        class Game{
+        }
+
+        class User{
+        }
+
+        class BTEGui{
+        }
+
+        class Gun{
+        }
+
+        class ITargetHal{
+            <<interface>>
+        }
+
+        class IGunHal{
+            <<interface>>
+        }
+
+        class ITargetGui{
+            <<interface>>
+        }
+    }
+
+
+    namespace Native_Environment{
+
+        class ConsoleTargets{
+        }
+        class ConsoleGun{
+        }
+
+        class TestHal{
+
+        }
+
+        class TestGui{
+
+        }
+    }
+
+
+    namespace Cross_Environment {
+        class TargetApp{
+        }
+
+        class GunApp{
+        }
+    }

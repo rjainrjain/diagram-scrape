@@ -1,0 +1,21 @@
+graph TD
+    A[Image] --> B[GAN]
+    C[Text Prompt] --> B
+    B --> D[Consequent Frames]
+
+    subgraph GAN
+        B --> E[Discriminator]
+        B --> F[Generator]
+        E --> F
+    end
+
+    classDef inputClass fill: #F9D2F6, stroke: #333;
+    classDef ganClass fill: #F4E1F5, stroke: #333;
+    classDef processClass fill: #D8E9F5, stroke: #333;
+
+    class A inputClass;
+    class C inputClass;
+    class B ganClass;
+    class D processClass;
+    class E ganClass;
+    class F ganClass;

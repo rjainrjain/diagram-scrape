@@ -1,0 +1,43 @@
+stateDiagram-v2
+    [*] --> UserInput
+    UserInput --> ChatAgent
+    
+    state ChatAgent {
+        [*]  -->  Runner
+        state RetrievalTools {
+            state DocRetrievalTool
+            state CodeRetrievalTool
+            state ProjectRetrievalTool
+            state IssueRetrievalTool
+            [*] --> DocRetrievalTool
+            [*] --> CodeRetrievalTool
+            [*] --> ProjectRetrievalTool
+            [*] --> IssueRetrievalTool
+        }
+        Runner --> RetrievalTools
+        RetrievalTools --> Runner
+    }
+
+    state CoderAgent {
+        [*] -->  SearchCodeExamples
+        SearchCodeExamples --> ReadReferences
+        ReadReferences --> BuildLoop
+        state BuildLoop {
+            state WriteCode
+            state CodeBuildTool
+            [*] --> WriteCode
+            WriteCode --> CodeBuildTool
+            CodeBuildTool --> DocsAndIssues
+            DocsAndIssues --> DocumentationsAndRefs
+            DocumentationsAndRefs --> WriteCode
+            CodeBuildTool --> [*]
+        }
+        BuildLoop --> WriteTests
+    }
+    
+    ChatAgent --> CoderAgent
+    CoderAgent --> Output
+    ChatAgent --> Output
+    
+
+    Output --> [*]

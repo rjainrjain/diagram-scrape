@@ -1,0 +1,15 @@
+graph TD
+    id1[User inputs]
+    subgraph Incremental Prediction
+        id2(Predict next word)
+        id3(Autocomplete)
+        id4(Autocorrect)
+        id6[Show the word]
+        id4-->id2
+        id3-->id2
+        id2-->id6
+    end
+    id1-->|end with a space| id2
+    id1-->|not end with a space| id3
+    id1-->|no predictive word| id4
+    id6-->|- tap the predictive word<br>- press TAB key| id5[Apply]

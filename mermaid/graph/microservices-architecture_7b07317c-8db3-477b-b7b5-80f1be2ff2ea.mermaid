@@ -1,0 +1,22 @@
+graph TD
+    AG[API Gateway]
+    
+    ACC["Serviço de Contas<br/>- Criar Conta<br/>- Consultar Saldo"]
+    TRANS["Serviço de Transações<br/>- Transferências<br/>- Pagamentos"]
+    AUTH["Serviço de Autenticação<br/>- Login<br/>- 2FA"]
+    NOTIF["Serviço de Notificações<br/>- Emails<br/>- SMS<br/>- Push"]
+    
+    DB_ACC[(BD Contas<br/>MongoDB)]
+    DB_TRANS[(BD Transações<br/>PostgreSQL)]
+    DB_AUTH[(BD Usuários<br/>MySQL)]
+    DB_NOTIF[(BD Notificações<br/>Redis)]
+    
+    AG --> ACC
+    AG --> TRANS
+    AG --> AUTH
+    AG --> NOTIF
+    
+    ACC --> DB_ACC
+    TRANS --> DB_TRANS
+    AUTH --> DB_AUTH
+    NOTIF --> DB_NOTIF

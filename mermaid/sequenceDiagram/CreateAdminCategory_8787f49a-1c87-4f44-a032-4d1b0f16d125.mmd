@@ -1,0 +1,45 @@
+
+sequenceDiagram
+  actor Admin
+  participant V_ACP as View #10095; AdminCategoryPage
+  participant P_CC as Pop-up #10095; CreateCategory
+  participant C_CC as Controller #10095; CategoryController
+  participant M_C as Model #10095; Category
+
+  Admin->>V_ACP: klik tombol "Tambah Kategori"
+  
+  activate Admin
+
+  activate V_ACP
+
+  V_ACP->>P_CC: setIsModalCreateOpen(true)
+
+  activate P_CC
+
+  Admin->>P_CC: klik tombl "Submit"
+  P_CC->>C_CC: store()
+
+  activate C_CC
+
+  opt Invalid Input
+    C_CC-->>Admin: return validation message
+  end
+
+  C_CC->>M_C: create()
+  
+  activate M_C
+  
+  M_C-->>C_CC: return
+
+  deactivate M_C
+
+  C_CC-->>V_ACP: return view
+
+  deactivate C_CC
+  
+  V_ACP->>P_CC: setIsModalCreateOpen(false)
+
+  deactivate P_CC
+  deactivate V_ACP
+  
+  deactivate Admin

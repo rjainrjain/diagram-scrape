@@ -1,0 +1,55 @@
+stateDiagram
+    direction TB
+        classDef deny fill:#FF0000, color:white ,font-weight:bold,stroke-width:2px,stroke:green
+        classDef start fill:#0000FF, color:white ,font-weight:bold,stroke-width:2px,stroke:green
+        classDef accept fill:#55FF33, color:black ,font-weight:bold,stroke-width:2px,stroke:green
+        Start --> sign: +|-
+        Start --> Int : digit
+        Start --> Var : Letter
+        Var --> Var : Letter/ Digit
+        Var --> Operator : +,-,*,/,=
+        Var --> Spa : Space
+        Spa --> Spa : Space
+        Spa --> Operator : +,-,*,/,=
+        Operator --> Op_Space : +,-,*,/,=
+        Operator --> Int : Digit
+        Operator --> Var : Letter
+        Operator  --> sign : + | -
+        Op_Space --> Op_Space : Space
+        Op_Space --> Int : Digit
+        Op_Space --> sign : +|-
+        Op_Space --> Var : Letter
+        sign --> Int : Digit
+        Int --> Int : Digit
+        Int --> Operator : +,-,*,/,=
+        Int --> Spa : Space
+        Int --> E : e | E
+        Int --> Dot : (.)
+        Dot --> Float : Digit
+        Float --> Float : Digit
+        Float --> E : e | E
+        Float --> Operator : +,-,*,/,=
+        Float --> Spa : Space
+        E --> E_sign : +|-
+        E --> Exp : Digit
+        Exp --> Exp : Digit
+        E_sign --> Exp : Digit
+        Exp --> Operator : +,-,*,/,=
+        Class Start Start
+        Class Int accept
+        Class Var accept
+        Class Spa accept
+        Class Exp accept
+        Class Float accept
+        Class Op_Space deny
+        Class Operator deny
+        Class E deny
+        Class sign deny
+        Class Dot deny
+        Class E_sign deny
+
+
+        
+
+
+    

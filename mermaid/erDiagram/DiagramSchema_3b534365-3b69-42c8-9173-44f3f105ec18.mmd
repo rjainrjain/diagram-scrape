@@ -1,0 +1,130 @@
+---
+title: Portfolio DB
+---
+erDiagram
+    PRO_Projets }o--|{ PRO_ProjectLangages : ""
+    PRO_ProjectLangages }|--o{ DEV_Langages : ""
+    PRO_Projets ||--o{ PRO_ProjectAPIs : ""
+    PRO_ProjectAPIs ||--o{ DEV_APIs : ""
+    PRO_LinkProjects ||--o{ PRO_Projets : ""
+    PRO_Projets ||--o{ PRO_Companies : ""
+    PRO_ProjetImages ||--o{ PRO_Projets : ""
+    PRO_Projets ||--o{ PRO_Statut : ""
+    PRO_Competences ||--o{ PRO_CompetenceCategories : ""
+    PRO_Experiences ||--o{ PRO_Companies : ""
+    
+    PRO_Companies {
+        int id
+        string name
+        string logo
+        string logoBackgroundColor
+        string description
+        string website
+    }
+    
+    PRO_ProjectAPIs {
+        int id
+        int idProjet
+        int idAPI
+    }
+    
+    PRO_Experiences {
+        int id
+        string name
+        string description
+        datetime dateDebut
+        datetime dateFin
+        bool isCurrent
+        bool isActive
+    }
+    
+    PRO_CompetenceCategories {
+        int id
+        string name
+        string backgroundColor
+        string foregroundColor
+        bool isSoftwareSkill
+    }
+    
+    PRO_Competences {
+        int id
+        string name
+        string SVGIcon
+    }
+     
+    PRO_Projets {
+        int id
+        string name
+        string description
+        datetime dateDebut
+        datetim dateFin
+        string statut
+        string logo
+        bool isActive
+        int idCompany
+        string noteClient
+    }
+    
+    PRO_ProjectLangages {
+        int id
+        int idProjet
+        int idLangage
+        bool isMainForProject
+        bool isFrontEnd "Sinon back-end"
+    }
+    
+    DEV_Langages {
+        string name
+        bool isFramework
+    }
+    
+    PRO_Statut {
+        string name
+        bool isFinished
+        bool isStarted
+    }
+    
+    PRO_ProjetImages {
+        int id
+        int idProjet
+        string url
+        int x "Permettre de positionner l'image"
+        int y 
+        int width 
+        int height 
+        string description
+    }
+    
+    DEV_APIs {
+        int id
+        string name
+        string description
+        string website
+    }
+    
+    PRO_LinkProjects {
+        int id
+        int idProject
+        string nameLink
+        string url
+        string SVGIcon
+        string description 
+    }
+
+    USR_Contact {
+        int id
+        string name
+        string url "if mail : mailto:<email>"
+        string SVGIcon
+        string description
+    }
+    
+    SYS_Settings {
+        string name
+        string value
+    }
+    
+    SYS_NavBar {
+        string name
+        string url
+    }

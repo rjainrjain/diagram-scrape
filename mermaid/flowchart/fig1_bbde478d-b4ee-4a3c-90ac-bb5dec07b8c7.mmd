@@ -1,0 +1,12 @@
+flowchart LR
+    subgraph an [Analítico]
+        A(Axiomas) -- D --> $$T_1$$ & $$T_2$$ & $$T_3$$
+    end
+
+    subgraph si [Sintético]
+        $$T_1$$ --> $$O_1$$
+        $$T_2$$ --> $$O_2$$
+        $$T_3$$ --> $$O_3$$
+        
+        $$O_1$$ & $$O_2$$ & $$O_3$$  -. I .-> M((Mundo)) 
+    end

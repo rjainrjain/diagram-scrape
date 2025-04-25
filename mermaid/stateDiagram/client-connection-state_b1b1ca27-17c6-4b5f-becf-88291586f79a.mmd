@@ -1,0 +1,11 @@
+stateDiagram-v2
+    state "Wait for auth message" as wait
+    state "Connection proxied" as proxied
+    state "Disconnected" as disconnected
+
+    [*] --> wait: New connection
+    wait --> proxied: Auth message received
+    proxied --> disconnected: Websocket connection terminated
+    proxied --> proxied
+    wait --> disconnected: Time out after 10s
+    disconnected --> [*]

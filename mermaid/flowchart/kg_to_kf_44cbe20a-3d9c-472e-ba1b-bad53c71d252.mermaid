@@ -1,0 +1,18 @@
+%% Subcircuit KG to KF
+flowchart TD
+    b((broadcaster)) --> kg
+    kg[%kg] --> gm & pt
+    gm([&gm]) --> kg & kf & fq & nc & lf
+    kf([&kf]) --> gf
+    gf([&gf]) --> rx
+    fq[%fq] --> qn
+    qn[%qn] --> gm & bh
+    bh[%bh] --> vq & gm
+    vq[%vq] --> gm
+    nc[%nc] --> gb
+    gb[%gb] --> ls & gm
+    ls[%ls] --> lf & gm
+    lf[%lf] --> hr
+    hr[%hr] --> fq & gm
+    pt[%pt] --> gm & vv
+    vv[%vv] --> nc & gm

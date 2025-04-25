@@ -1,0 +1,21 @@
+graph LR
+  linkStyle default fill:#ffffff
+
+  subgraph diagram ["RIOPlatform - BackendService2 - Components"]
+    style diagram fill:#ffffff,stroke:#ffffff
+
+    5("<div style='font-weight: bold'>WebhookReciever</div><div style='font-size: 70%; margin-top: 0px'>[Container]</div>")
+    style 5 fill:#1168bd,stroke:#0b4884,color:#ffffff
+
+    subgraph 12 [BackendService2]
+      style 12 fill:#ffffff,stroke:#0b4884,color:#0b4884
+
+      15("<div style='font-weight: bold'>APIGateway2</div><div style='font-size: 70%; margin-top: 0px'>[Component]</div>")
+      style 15 fill:#1168bd,stroke:#0b4884,color:#ffffff
+      16("<div style='font-weight: bold'>Database 2</div><div style='font-size: 70%; margin-top: 0px'>[Component]</div>")
+      style 16 fill:#1168bd,stroke:#0b4884,color:#ffffff
+    end
+
+    15-. "<div>Reads from and writes to</div><div style='font-size: 70%'></div>" .->16
+    5-. "<div>Calls API to write to<br />database 2</div><div style='font-size: 70%'></div>" .->15
+  end

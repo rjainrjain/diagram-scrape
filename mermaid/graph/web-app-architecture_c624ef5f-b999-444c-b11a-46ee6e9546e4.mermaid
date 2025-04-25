@@ -1,0 +1,14 @@
+graph TD
+    subgraph "Frontend"
+        A[Pages] -->|Render| B[Components]
+        C[API Routes] -->|Fetch Data| B
+    end
+    subgraph "Backend"
+        C -->|Process Requests| D[Controllers]
+        D -->|Business Logic| E[Services]
+        E -->|Data Access| F[Models]
+    end
+    G[Database] <-->|Query/Store| F
+    H[Blockchain Adapter] <-->|Interact| E
+    I[Authentication Module] -->|Secure| C
+    J[Error Handling] -->|Manage| D

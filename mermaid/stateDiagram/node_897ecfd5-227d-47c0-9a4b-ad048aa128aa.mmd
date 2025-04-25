@@ -1,0 +1,24 @@
+stateDiagram-v2
+    direction LR
+    [*] --> Creation
+    state Creation {
+        state f0 <<fork>>
+        state j0 <<join>>
+        [*] --> f0: Preparation
+        f0 --> j0: Deployment
+        f0 --> j0: Service
+        f0 --> j0: NetworkPolicy
+        j0 --> [*]: Ready
+    }
+    Creation --> Running
+    Running --> Deletion
+    state Deletion {
+        state f1 <<fork>>
+        state j1 <<join>>
+        [*] --> f1: Cascading deletion
+        f1 --> j1: Deployment
+        f1 --> j1: Service
+        f1 --> j1: NetworkPolicy
+        j1 --> [*]
+    }
+    Deletion --> [*]

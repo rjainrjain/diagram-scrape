@@ -1,0 +1,13 @@
+classDiagram
+direction BT
+class PetBuyer {
+    +buyPet(string)
+}
+class Pet
+<<Abstract>> Pet
+class Cat
+Class Dog
+Cat --|> Pet
+Dog --|> Pet
+PetBuyer --> Cat
+PetBuyer --> Dog

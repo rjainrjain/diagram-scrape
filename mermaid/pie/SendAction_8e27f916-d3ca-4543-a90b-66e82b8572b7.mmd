@@ -1,0 +1,17 @@
+classDiagram
+  SendAction -- Person
+  SendAction -- Audience
+  SendAction -- ContactPoint
+  SendAction -- Organization
+  SendAction -- DeliveryMethod
+
+
+class SendAction {
+
+  Person recipient
+  Audience recipient
+  ContactPoint recipient
+  Organization recipient
+  DeliveryMethod deliveryMethod
+
+ }

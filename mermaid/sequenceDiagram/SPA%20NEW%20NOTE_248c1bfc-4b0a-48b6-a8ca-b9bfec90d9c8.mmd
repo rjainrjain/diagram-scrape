@@ -1,0 +1,27 @@
+sequenceDiagram
+    participant Browser
+    participant Server
+
+    Browser->>+Server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/spa
+    Server-->>Browser: HTML document
+    deactivate Server
+
+    Browser ->>+Server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.css
+    Server-->>Browser: CSS file
+    deactivate Server
+
+    Browser->>+Server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/spa.js
+    Server-->>Browser: Javascript file
+    deactivate Server
+
+    Note over Browser: The browser executes <br/>the JavaScript code<br/> to obtain the JSON<br/> from the server. 
+
+    Browser->>+Server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/data.json
+    Server-->>Browser: [{ "content": "HTML is easy", "date": "2024-29-02" }, ... ]
+    deactivate Server
+
+    Note over Browser: The request is made<br/> to the server with the new note
+
+    Browser->>+Server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note
+    Server-->>Browser: HTTP 201
+    deactivate Server

@@ -1,0 +1,22 @@
+sequenceDiagram
+participant browser
+participant server
+
+browser ->> server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note
+server -->> browser: 302 Found
+
+browser ->> server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/notes
+server -->> browser: html
+
+browser ->> server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.css
+server -->> browser: main.css
+
+browser ->> server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.js
+server -->> browser: main.js
+
+Note right of browser: The browser starts executing the JavaScript code that fetches the JSON from the server
+
+browser ->> server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/data.json
+server -->> browser: [{"content":"Hi","date":"2024-02-27T15:50:53.974Z"},...]
+
+Note right of browser: The browser executes the callback function that renders notes to display

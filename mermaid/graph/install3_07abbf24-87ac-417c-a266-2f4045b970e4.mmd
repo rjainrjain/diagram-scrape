@@ -1,0 +1,11 @@
+%%{init: {'theme': 'dark', 'themeVariables': { 'primaryTextColor': 'white'}}}%%
+graph LR
+    B[pandas] --> A[AGI-env]
+    C[matplotlib] --> A
+    D[jupyter notebook] --> A
+    E[geopandas] --> F[SA2-env]
+    B --> F
+    C --> F
+    A --> X[Project A]
+    A --> Y[Project B]
+    F --> Z[Projekt C]

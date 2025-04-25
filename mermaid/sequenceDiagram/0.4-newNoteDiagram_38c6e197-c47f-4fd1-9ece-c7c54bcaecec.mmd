@@ -1,0 +1,13 @@
+sequenceDiagram
+    participant Browser
+    participant Server
+    Browser->>Server: HTTP POST request to new_note
+    Server-->>Browser: HTTP status code 302
+    Browser->>Server: HTTP GET request to notes
+    Server-->>Browser: Notes page
+    Browser->>Server: HTTP GET request to main.css
+    Server-->>Browser: main.css
+    Browser->>Server: HTTP GET request to main.js
+    Server-->>Browser: main.js
+    Browser->>Server: HTTP GET request to data.json
+    Server-->>Browser: data.json

@@ -1,0 +1,30 @@
+stateDiagram-v2
+    [*] --> Inicio
+    Inicio --> CrearDiccionario
+    CrearDiccionario --> ImprimirCabecera
+
+    state ImprimirCabecera {
+        [*] --> MostrarCabecera
+        MostrarCabecera --> [*]
+    }
+
+    ImprimirCabecera --> IterarEstudiantes
+    state IterarEstudiantes {
+        [*] --> ObtenerDatosEstudiante
+        ObtenerDatosEstudiante --> CalcularPromedio
+        CalcularPromedio --> CalcularCalificacion
+        CalcularCalificacion --> ImprimirResultado
+        ImprimirResultado --> [*]
+    }
+
+    IterarEstudiantes --> FinIteracion
+
+    FinIteracion --> ImprimirFinal
+    state ImprimirFinal {
+        [*] --> MostrarMensajeFinal
+        MostrarMensajeFinal --> LeerEntrada
+        LeerEntrada --> [*]
+    }
+
+    ImprimirFinal --> Fin
+    Fin --> [*]

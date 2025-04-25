@@ -1,0 +1,43 @@
+erDiagram
+    CUSTOMER {
+        int id PK
+        string name
+        string email
+        string address
+    }
+
+    PRODUCT {
+        int id PK
+        string name
+        float price
+        string description
+    }
+
+    ORDER {
+        int id PK
+        int customer_id FK
+        date order_date
+        float total_amount
+    }
+
+    ORDER_ITEM {
+        int id PK
+        int order_id FK
+        int product_id FK
+        int quantity
+        float unit_price
+    }
+
+    REVIEW {
+        int id PK
+        int product_id FK
+        int customer_id FK
+        int rating
+        string comment
+    }
+
+    CUSTOMER ||--o{ ORDER : places
+    ORDER ||--o{ ORDER_ITEM : contains
+    PRODUCT ||--o{ ORDER_ITEM : included_in
+    CUSTOMER ||--o{ REVIEW : writes
+    PRODUCT ||--o{ REVIEW : receives

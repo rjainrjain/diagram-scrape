@@ -1,0 +1,23 @@
+classDiagram
+    class Game:
+        -int score
+        -str current_storyline
+        -List[str] choices
+        -Dict[str, str] endings
+        +start_game() -> None
+        +make_choice(choice: int) -> None
+        +end_game() -> None
+    
+    class Storyline:
+        -str text
+        -Dict[int, str] choices
+        +get_text() -> str
+        +get_choices() -> Dict[int, str]
+    
+    class Ending:
+        -str text
+        +get_text() -> str
+    
+    class NLPUtils:
+        +generate_text(choices: List[str]) -> str
+        +adapt_storyline(storyline: str, input: str) -> str

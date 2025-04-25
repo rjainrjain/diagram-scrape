@@ -1,0 +1,13 @@
+---
+title: ShortenURL ERD
+---
+erDiagram
+    HashedUrl {
+        long id PK "Primary Key"
+        string url UK "Full URL"
+        string(12) shorten_url UK "Shorted URL"
+        datetime created_at "Created Time"
+        datetime updated_at "Last Modified Time"
+        datetime expired_after "Available Time"
+        enum hash_type "Hash Type"
+    }

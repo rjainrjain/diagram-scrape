@@ -1,0 +1,54 @@
+erDiagram
+    CUSTOMER }|..|{ DELIVERY-ADDRESS : has
+    CUSTOMER ||--o{ ORDER : places
+    CUSTOMER ||--o{ INVOICE : "liable for"
+    p ||--o{ a : "tiene varias"
+    INVOICE ||--|{ ORDER : covers
+    ORDER ||--|{ ORDER-ITEM : includes
+    PRODUCT-CATEGORY ||--|{ PRODUCT : contains
+    PRODUCT ||--o{ ORDER-ITEM : "ordered in"
+    p ||--|| j : "exactamente un"
+    d ||--|| j : "exactamente un"
+    p ||--|| d : "exactamente un"
+
+    p[PROCESO] {
+        cantFilas            number
+        departamento         Departamento
+        despacho             string
+        esPrivado            boolean
+        fechaProceso         Date_string_null
+        fechaUltimaActuacion Date_string_null
+        idConexion           number
+        idProceso            number
+        llaveProceso         string
+        sujetosProcesales    string
+    }
+    d[DETALLE]{
+        string ClaseProceso
+        string contenidoRadicacion NL
+        string despacho
+        boolean esPrivado
+        Date fechaConsulta
+        Date fechaProceso
+        number idConexion
+        number idRegProceso
+        J juzgado
+        llaveProceso string
+        ponente string
+        string recurso null
+        subclaseProceso SubclaseProceso
+        tipoProceso TipoProceso
+        ubicacion null_string
+        ultimaActualizacion Date
+    }
+    j[JUZGADO]{
+        string tipo
+        string id
+        string url
+        string ciudad
+    }
+    a[ACTUACION]{
+        number idProceso
+        string llaveProceso
+        number idRegActuacion PK
+    }

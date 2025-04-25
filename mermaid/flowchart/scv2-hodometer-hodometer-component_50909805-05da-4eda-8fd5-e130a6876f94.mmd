@@ -1,0 +1,30 @@
+---
+title: Hodometer component architecture
+---
+
+flowchart TD
+  C["Collector"]
+  P["Publisher"]
+  T["Punctuator"]
+  S["Core v2 Scheduler"]
+  K["Kubernetes API"]
+  R["Metrics receiver"]
+
+  subgraph Hodometer
+    T --> |schedules next run| T
+    T --> |calls| C
+    T --> |calls| P
+  end
+  C --> |"queries\n[gRPC]"| S
+  C --> |"queries\n[HTTP]"| K
+  P --> |"pushes metrics to\n[HTTP]"| R
+
+  classDef focusSystem      fill:#1168bd,stroke:#0b4884,color:#ffffff
+  classDef supportingSystem fill:#666,stroke:#0b4884,color:#ffffff
+  classDef consumingSystem  fill:#08427b,stroke:#052e56,color:#ffffff
+  classDef systemBoundary   fill:#eee,stroke:#ccc,stroke-width:2px,stroke-dasharray: 5 5
+
+  class C,P,T focusSystem
+  class S,K supportingSystem
+  class R consumingSystem
+  class Hodometer systemBoundary

@@ -1,0 +1,64 @@
+erDiagram
+    PROVINCE {
+        string province_id PK "Mã định danh cho tỉnh"
+        string name "Tên tỉnh"
+        string polygon_id FK "Mã polygon liên kết"
+        xxx xxx "Các thuộc tính khác nếu có"
+    }
+
+    POLYGON {
+        string polygon_id PK "Mã định danh cho polygon"
+        geometry shape "Hình dạng polygon dưới định dạng Geometry"
+        string name "Tên polygon"
+    }
+
+    POINT {
+        int id PK "Mã định danh cho từng điểm"
+        float coordinate_x "Tọa độ X (kinh độ)"
+        float coordinate_y "Tọa độ Y (vĩ độ)"
+    }
+
+    TREATMENT_AREA {
+        string id PK "Mã khu vực điều trị"
+        string name "Tên khu vực điều trị"
+        int address_id FK "Mã địa chỉ liên kết"
+        int province_id FK "Mã Tỉnh, thành phố liên kết"
+        xxx xxx "Các thuộc tính khác nếu có"
+    }
+
+    ADDRESS {
+        int address_id PK "Mã định danh cho địa chỉ"
+        int point_id FK "Mã điểm tọa độ liên kết"
+        string street "Tên đường"
+        string city "Thành phố"
+        string province "Tỉnh"
+        string country "Quốc gia"
+    }
+
+    PATIENT {
+        int id PK "Mã định danh cho từng bệnh nhân"
+        int address_id FK "Mã địa chỉ liên kết"
+        string status "Tình trạng bệnh nhân"
+        datetime recorded_time "Thời gian ghi nhận"
+        int treatment_area_id "Nơi điều trị"
+        xxx xxx "Các thuộc tính khác nếu có"
+    }
+
+  %%  PATIENT_MOVEMENT {
+  %%      int movement_id PK "Mã định danh cho từng lần di chuyển"
+  %%      int patient_id FK "Mã bệnh nhân liên kết"
+  %%      int address_id FK "Mã address trong lần di chuyển"
+  %%      datetime movement_time "Thời gian di chuyển"
+  %%      xxx xxx "Các thuộc tính khác nếu có"
+  %%  }
+
+    POLYGON ||--|| PROVINCE : "có một polygon"
+    POINT ||--|| ADDRESS : "có một địa chỉ"
+    PATIENT ||--|| ADDRESS : "có một địa chỉ"
+    %%PATIENT ||--o{ PATIENT_MOVEMENT : "có nhiều lần di chuyển"
+    %%ADDRESS ||--o{ PATIENT_MOVEMENT : "được sử dụng trong"
+    ADDRESS ||--o{ TREATMENT_AREA : "có địa chỉ"
+    PATIENT ||--o{ TREATMENT_AREA : "điều trị tại"
+    TREATMENT_AREA o{--|| PROVINCE : "ở trong"
+    
+

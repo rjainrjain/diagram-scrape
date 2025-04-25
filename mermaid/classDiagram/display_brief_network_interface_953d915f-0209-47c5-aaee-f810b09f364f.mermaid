@@ -1,0 +1,96 @@
+classDiagram
+  class Appliance {
+    diagnostics
+    network_interfaces
+    node
+    routes
+    svi
+    system
+    vlan
+    arp() list[Arp]
+    connect()* Any
+    create_svi(vlan_id: str) NetworkInterface
+    delete_svi(vlan_id: str) list[NetworkInterface]
+    display(interface: Optional[str]) list[NetworkInterface]
+    display_interface_brief() list[NetworkInterfaceBrief]
+    display_vlan_brief() list[VlanBrief]
+    display_vlan_trunk() list[VlanTrunk]
+    no_shutdown(interface: str) NetworkInterface
+    ping(ping_command_fields: PingCommandFields) Ping
+    remove_vlan(interface: str | None, vlan_id: Union[int, str]) VlanResume
+    restart() Restart
+    routing_table() list[Route]
+    send_command(command: str)* Command
+    send_script(script: Script)* list[Command]
+    service_status()* bool
+    set_default_gateway(ip: str) list[Route]
+    set_description(interface: str, description: str) NetworkInterface
+    set_hostname(new_hostname: str) Hostname
+    set_ip(interface: str, ip_address: str) NetworkInterface
+    set_static_route(ip_and_mask_in_cidr: str, ip_next_hop: str) list[Route]
+    set_svi_ip(svi: str, ip_address: str) NetworkInterface
+    set_vlan_access(interface: str, vlan_id: int, encapsulation: str) list[VlanBrief]
+    set_vlan_native(interface: str, vlan_id: int, encapsulation: str) list[VlanTrunk]
+    set_vlan_trunk(interface: str, vlan_id: list[int], encapsulation: str) list[VlanTrunk]
+    shutdown(interface: str) NetworkInterface
+    trace_route(trace_route_command_fields: TraceRouteCommandFields) TraceRoute
+  }
+  class CiscoIosDisplayInterfaceBriefFormatter {
+    format(display_brief_text: str) list[NetworkInterfaceBrief]
+  }
+  class CiscoIosNetworkInterfaces {
+    connect : BaseConnection
+    display(interface: Optional[str]) list[NetworkInterface]
+    display_interface_brief() list[NetworkInterfaceBrief]
+    no_shutdown(interface: str) NetworkInterface
+    set_description(interface: str, description: str) NetworkInterface
+    set_ip(interface: str, ip_address_and_mask: str) NetworkInterface
+    shutdown(interface: str) NetworkInterface
+  }
+  class CiscoSwitchl3IosSsh {
+    connect
+    connection : BaseConnection
+    diagnostics : CiscoIosDiagnostics
+    network_interfaces
+    routes : CiscoIosStaticRoutes
+    svi : CiscoIosSvi
+    system : CiscoIosSystem
+    vlan : CiscoIosVlan
+    send_command(command: str) Command
+    send_script(script: Script) list[Command]
+    service_status() bool
+  }
+  class DisplayBriefNetworkInterface {
+    appliance
+    display_brief() list[NetworkInterfaceBrief]
+  }
+  class IApplianceFactory {
+    get_appliance(node: Node)* Appliance
+  }
+  class IDisplayBriefNetworkInterface {
+    display_brief()* list[NetworkInterfaceBrief]
+  }
+  class INetworkInterfaces {
+    display(interface: Optional[str])* list[NetworkInterface]
+    display_interface_brief()* list[NetworkInterfaceBrief]
+    no_shutdown(interface: str)* NetworkInterface
+    set_description(interface: str, description: str)* NetworkInterface
+    set_ip(interface: str, ip_address: str)* NetworkInterface
+    shutdown(interface: str)* NetworkInterface
+  }
+  class IdisplayBriefFormatter {
+    format(display_text: str)* list[NetworkInterfaceBrief]
+  }
+  class NetworkInterfaceBrief {
+    ipAddress : Optional[str]
+    name : str
+    protocol : str
+    status : str
+  }
+  DisplayBriefNetworkInterface --|> IDisplayBriefNetworkInterface
+  CiscoIosDisplayInterfaceBriefFormatter --|> IdisplayBriefFormatter
+  CiscoIosNetworkInterfaces --|> INetworkInterfaces
+  CiscoSwitchl3IosSsh --|> Appliance
+  CiscoIosNetworkInterfaces --* CiscoSwitchl3IosSsh : network_interfaces
+  INetworkInterfaces --* Appliance : _network_interfaces
+  Appliance --o DisplayBriefNetworkInterface : appliance

@@ -1,0 +1,20 @@
+graph TD
+A[Start] --> B[Check identifier_id]
+A --> C[Check url]
+B -- Yes --> D[Get PositionalData]
+B -- No --> E[Return empty list]
+D -- Found --> F[Get comments for position_id]
+D -- Not Found --> E
+F --> G[Iterate through comments]
+G --> H[Get User by user_id_id]
+H --> I[Remove password]
+I --> J[Add user to comment]
+J --> K[Continue Iterating]
+K -- More Comments --> G
+K -- No More Comments --> L[Return comments]
+E --> M[Return empty list]
+C -- Yes --> N[Get Urls]
+C -- No --> E
+N -- Found --> O[Get comments for url_id]
+N -- Not Found --> E
+O --> G

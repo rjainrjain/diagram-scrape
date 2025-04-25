@@ -1,0 +1,45 @@
+flowchart TB
+    User["User
+        [Person]
+
+        User who will use polar bookshop app"]
+
+
+    subgraph "Catalog Service"
+        Catalog["Catalog API
+                [Container: Spring Boot]
+
+                Catalog service that will greet the user
+                and provide book catalog"]
+
+        Config["Config Service
+                [Container: Spring Cloud Config]
+
+                Spring Config server providing
+                centralized configuration
+        "]
+
+        ConfigGit[("Config Repo
+                    [Container: Git repo]
+
+                    Git repo hosting the
+                    configuration values
+        ")]
+
+        Config --"Retrieves Config
+                  [HTTP/Git Sync]"-->ConfigGit
+
+        CatalogDB[("CatalogDb
+                    [Container: Postgresql]
+
+                    Postgresql DB storing \
+                    book catalog data")]
+
+        Catalog --"Retrieves Configurations
+                    [HTTP/REST]"-->Config
+
+        Catalog --"Read/Write Catalog data"-->CatalogDB
+    end
+
+    User --"Calls
+            [Http/REST]"--> Catalog

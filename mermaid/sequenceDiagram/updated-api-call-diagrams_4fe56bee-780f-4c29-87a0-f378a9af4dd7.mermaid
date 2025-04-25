@@ -1,0 +1,46 @@
+sequenceDiagram
+    participant Client
+    participant API
+    participant Database
+
+    Note over Client,API: 1. branch-summary-api
+    Client->>API: GET /api/branch-summary?branch_id=123
+    API->>Database: Query summary data for branch_id 123
+    Database-->>API: Return branch summary data
+    API-->>Client: JSON response with branch summary
+
+    Note over Client,API: 2. top-bottom-books-api
+    Client->>API: GET /api/top-bottom-books?branch_id=123&limit=5
+    API->>Database: Query top and bottom 5 books for branch_id 123
+    Database-->>API: Return top 5 and bottom 5 books data
+    API-->>Client: JSON response with top 5 and bottom 5 books
+
+    Note over Client,API: 3. all-publisher-chart-api
+    Client->>API: GET /api/all-publisher-chart?branch_id=123
+    API->>Database: Query chart data for all publishers in branch_id 123
+    Database-->>API: Return publisher chart data
+    API-->>Client: JSON response with publisher chart data
+
+    Note over Client,API: 4. publisher-distribution-api
+    Client->>API: GET /api/publisher-distribution?branch_id=123
+    API->>Database: Query publisher distribution data for branch_id 123
+    Database-->>API: Return publisher distribution data
+    API-->>Client: JSON response with publisher distribution data
+
+    Note over Client,API: 5. publisher-performance-api
+    Client->>API: GET /api/publisher-performance?branch_id=123
+    API->>Database: Query all publisher data for branch_id 123
+    Database-->>API: Return complete publisher performance data
+    API-->>Client: JSON response with all publisher data
+
+    Note over Client,API: 6. product-category-performance-api
+    Client->>API: GET /api/product-category-performance?branch_id=123
+    API->>Database: Query category data for both high school and middle school
+    Database-->>API: Return category performance data for both levels
+    API-->>Client: JSON response with category data for both levels
+
+    Note over Client,API: 7. product-detail-breakdown-api
+    Client->>API: GET /api/product-detail-breakdown?branch_id=123&category=soru_bankasi&level=lise
+    API->>Database: Query product details for branch_id 123, category 'soru_bankasi' and level 'lise'
+    Database-->>API: Return product detail data
+    API-->>Client: JSON response with product details

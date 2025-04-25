@@ -1,0 +1,27 @@
+```mermaid
+sequenceDiagram
+    participant User as "User"
+    participant Your_app as "Your app"
+    participant Video_SDK as "Video SDK"
+    participant Agora as "Agora"
+    participant SD_RTN as "SD-RTN"
+
+    rect rgb(255, 255, 255)
+        Video_SDK->>+Agora: Retrieve authentication token to join a channel
+        Video_SDK->>Agora: Join the channel
+        Video_SDK->>Agora: Publish camera and microphone tracks to the channel
+        Video_SDK->>Agora: Subscribe to tracks from other users
+        Video_SDK->>Agora: Unpublish the local video track
+        Video_SDK->>Agora: Publish the screen track
+        Video_SDK->>Video_SDK: Open App
+        Video_SDK->>Video_SDK: Use Video SDK to create an Agora Engine instance
+        Video_SDK->>Video_SDK: Create and play the local audio/video tracks
+        Video_SDK->>Video_SDK: Bypass autoplay block when onAutoplayFailed event occurs
+        Video_SDK->>Video_SDK: Manage local and remote audio/video tracks
+        Video_SDK->>Video_SDK: Bypass autoplay blocking
+        Video_SDK->>Video_SDK: Create a screen track
+        Video_SDK->>Your_app: Call API methods to adjust or mute the local or remote audio track
+        Video_SDK->>Your_app: Call the API method to mute or unmute the local video track
+        Video_SDK->>Agora: Leave the channel
+    end
+```

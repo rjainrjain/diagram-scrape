@@ -1,0 +1,80 @@
+---
+title: User
+---
+classDiagram
+    direction LR
+
+    class UserInterface {
+        <<Interface>>
+        +getRoles() array
+        +getUserIdentifier() string
+        +eraseCredentials()
+    }
+
+    class EntityInterface {
+        <<Interface>>
+    }
+
+    class TimestampableInterface {
+        <<Interface>>
+    }
+
+    class PasswordAuthenticatedUserInterface {
+        <<Interface>>
+        +getPassword() string
+    }
+
+    class User {
+        -string username
+        -string email
+        -string password
+        -string role
+        -bool enabled
+        -bool verified
+        -Collection~UserProperty~ properties
+        +getRoles() array
+        +getUserIdentifier() string
+        +eraseCredentials()
+        +getUsername() string
+        +setUsername(string)
+        +getEmail() string
+        +setEmail(string)
+        +getPassword() string
+        +setPassword(string)
+        +getRole() string
+        +setRole(string)
+        +isEnabled() bool
+        +setEnabled(bool)
+        +isVerified() bool
+        +setVerified(bool)
+        +addProperty(UserProperty)
+        +removeProperty(UserProperty)
+        +getProperties() Collection~UserProperty~
+    }
+
+    class UserProperty {
+        -User user
+        +getUser() User
+        +setUser(User)
+    }
+
+    class AbstractProperty {
+        <<Abstract>>
+    }
+
+    class AbstractEntity {
+        <<Abstract>>
+    }
+
+    EntityInterface <|.. AbstractEntity
+    AbstractEntity <|-- User
+    User ..|> UserInterface
+    User ..|> PasswordAuthenticatedUserInterface
+    User ..|> TimestampableInterface
+    User "0" --* "*" UserProperty
+    AbstractProperty <|-- UserProperty
+
+    click EntityInterface call nodeCallback()
+    click AbstractEntity call nodeCallback()
+    click AbstractProperty call nodeCallback()
+    click TimestampableInterface call nodeCallback()

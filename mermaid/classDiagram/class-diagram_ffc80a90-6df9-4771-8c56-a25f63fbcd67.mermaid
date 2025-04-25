@@ -1,0 +1,26 @@
+classDiagram
+    AbstractEmployee <|-- FullTimeEmployee : Extends
+    AbstractEmployee <|-- PartTimeEmployee : Extends
+    AbstractEmployee <|-- TemporaryEmployee : Extends
+    AbstractEmployee <|-- ContractorEmployee : Extends
+    EmployeeFactory ..> AbstractEmployee : Creates
+    class AbstractEmployee {
+        <<abstract>>
+        -hourly: double
+        +say() : String
+    }
+    class FullTimeEmployee {
+        +say() : String
+    }
+    class PartTimeEmployee {
+        +say() : String
+    }
+    class TemporaryEmployee {
+        +say() : String
+    }
+    class ContractorEmployee {
+        +say() : String
+    }
+    class EmployeeFactory {
+        +createEmployee(type: String, hourly: double) : AbstractEmployee
+    }

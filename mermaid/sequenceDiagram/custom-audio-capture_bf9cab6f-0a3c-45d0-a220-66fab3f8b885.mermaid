@@ -1,0 +1,13 @@
+sequenceDiagram
+    participant App as <img:mobile> App
+    participant SDK as <img:layers> SDK
+    participant Agora as <img:cloud> Agora SD-RTN
+
+    App ->> SDK : Create and initialize the engine
+    SDK ->> SDK : Set up an external audio source for use
+    App ->> SDK : Join a channel
+    SDK ->> SDK : Send the processed audio data
+    SDK ->> Agora : Request to join the channel
+    App ->> SDK : Leave the channel
+    SDK ->> Agora : Request to leave the channel
+    App ->> SDK : Destroy the engine

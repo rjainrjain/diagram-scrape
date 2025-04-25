@@ -1,0 +1,43 @@
+```mermaid
+sequenceDiagram
+participant User
+participant Video_SDK as Video SDK
+participant API
+
+rect rgb(255, 255, 255)
+    note right of User: Opening the app
+    User->>Video_SDK: Open App
+    Video_SDK->>Video_SDK: RTCEngine.create()
+end
+
+rect rgb(255, 255, 255)
+    note right of User: Joining the broadcast as a host
+    User->>Video_SDK: Start broadcast
+    Video_SDK->>Video_SDK: Engine.enableVideo()
+    Video_SDK->>Video_SDK: Engine.joinChannel()
+    Video_SDK->>API: API.joinBroadcast()
+    API-->>Video_SDK: API.onBroadcastJoin()
+    Video_SDK-->>User: onJoinChannelSuccess()
+    Video_SDK->>Video_SDK: Widget = RtcLocalView.SurfaceView()
+end
+
+rect rgb(255, 255, 255)
+    note right of User: Joining the broadcast as a user
+    User->>Video_SDK: Join broadcast
+    Video_SDK->>API: API.joinUser()
+    API-->>Video_SDK: API.onUserJoin()
+    Video_SDK-->>User: Engine.on("joinChannelSuccess")<br/>Subscribe<br/>Receive data stream
+    Video_SDK->>Video_SDK: Engine.on("userJoined")<br/>Widget = RzteRemoteView.SurfaceView()
+    Video_SDK-->>User: onUserJoined()
+end
+
+rect rgb(255, 255, 255)
+    note right of User: Leaving the broadcast
+    User->>Video_SDK: Leave broadcast
+    Video_SDK->>Video_SDK: Engine.leaveChannel()
+    Video_SDK->>API: API.leaveUserSession()
+    API-->>Video_SDK: API.onSessionLeft()
+    Video_SDK->>Video_SDK: Engine.on("leaveChannel")
+    Video_SDK-->>User: onLeaveChannel()
+end
+```

@@ -1,0 +1,21 @@
+ sequenceDiagram
+    participant Browser
+    participant Server
+    
+ Browser ->> Server: GET .../exampleapp/spa;
+    Server -->> Browser: HTML document
+
+ Browser->>Server: GET .../exampleapp/main.css
+    Server--> Browser: the css file
+
+ Browser ->> Server: .../exampleapp/spa.js;
+    Server -->> Browser: the JavaScript file
+    
+    Note right of Browser: The browser starts executing the JavaScript code that fetches the JSON from the server
+
+ Browser->>Server: GET .../exampleapp/data.json
+    
+    Server-->> Browser: [{ "content": "HTML is easy", "date": "2023-1-1" }, ... ]
+    
+
+    Note right of Browser: The browser executes the callback function that renders the Browser

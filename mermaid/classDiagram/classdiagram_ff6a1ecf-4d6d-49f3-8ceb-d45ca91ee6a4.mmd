@@ -1,0 +1,46 @@
+classDiagram
+    class Cell {
+        + row: number
+        + col: number
+    }
+
+    class Player {
+        + name: string
+    }
+
+    class Maze {
+        - robots: BasicRobot[]
+        - player: Player
+        - cells: [][]
+        + addRobot()
+        + addPlayer()
+    }
+
+    class BasicRobot {
+        - position: Cell
+        - direction: string
+        + move(): void
+    }
+
+    BasicRobot <|-- MazeRobotLeft
+    BasicRobot <|-- MazeRobotRight
+    BasicRobot <|-- MazeRobotTremaux
+    BasicRobot <|-- MazeRobotBacktracking
+    Maze *-- Cell
+    Maze o-- BasicRobot
+    Maze o-- Player
+    class MazeRobotLeft {
+        + move(): void
+    }
+
+    class MazeRobotRight {
+        + move(): void
+    }
+
+    class MazeRobotTremaux {
+        + move(): void
+    }
+
+    class MazeRobotBacktracking {
+        + move(): void
+    }

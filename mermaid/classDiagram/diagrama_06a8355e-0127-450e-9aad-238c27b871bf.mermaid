@@ -1,0 +1,16 @@
+classDiagram
+    class AlgoritmoBase {
+        + arrayDesordenado: String[]
+        + pivote: String
+        + apuntador: String
+        + setArrayDesordenado(arrayDesordenado: String[]): void
+        + ordenar(): void
+    }
+
+    class OrdenamientoBurbuja {
+        + esNumero(elemento: String): boolean
+        + ordenarNumeros(elementos: String[]): void
+        + ordenarLetras(elementos: String[]): void
+    }
+
+    AlgoritmoBase <|-- OrdenamientoBurbuja

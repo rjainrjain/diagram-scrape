@@ -1,0 +1,26 @@
+graph TD
+    U[User] -->|Uses| MA[Mobile App]
+    MA -->|API calls| MS[Microservices]
+    subgraph MS [Microservices]
+        RBAC[RBAC-Member Service]
+        KS[Knowledge Service]
+        RS[Recipe Service]
+        NS[Notification Service]
+        CS[Challenge Service]
+        GIS[Geographic Information Service]
+        MLS[Mail Service]
+    end
+    B[Broadcaster] -->|Publishes messages| NS
+    RBAC -->|Stores data| PG[(PostgreSQL)]
+    RBAC -->|Caches sessions| RD[(Redis)]
+    KS -->|Stores data| MDB[(MongoDB)]
+    RS -->|Stores data| MDB
+    RS -->|Stores comments| PG
+    NS -->|Stores data| MDB
+    CS -->|Stores data| PG
+    GIS -->|Stores data| OSM[(OSM PostgreSQL)]
+    MLS -->|Stores data| PG
+    G[Google] -->|Authentication| RBAC
+    FCM[Firebase Cloud Messaging] -->|Push notifications| NS
+    NATS[NATS] -->|Message queue| NS
+    NATS -->|Publishes messages| B

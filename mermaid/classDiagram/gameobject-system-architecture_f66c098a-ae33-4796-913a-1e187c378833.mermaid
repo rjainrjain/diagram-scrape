@@ -1,0 +1,25 @@
+classDiagram
+    class GameObject {
+        -components: List~Component~
+        +AddComponent(component: Component)
+        +GetComponent~T~(): T
+        +Update()
+    }
+    class Component {
+        <<abstract>>
+        +Initialize()
+        +Update()
+    }
+    class TransformComponent {
+        +Position: Vector3
+        +Rotation: Quaternion
+        +Scale: Vector3
+    }
+    class RenderComponent {
+        -mesh: Mesh
+        -material: Material
+        +Render()
+    }
+    GameObject "1" *-- "many" Component
+    Component <|-- TransformComponent
+    Component <|-- RenderComponent

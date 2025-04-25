@@ -1,0 +1,98 @@
+---
+title: Animal example
+---
+classDiagram
+    GameController <|-- IBoard
+    IBoard  <|-- Board
+    Board  <|-- IPiece
+    IPiece  <|-- Piece
+    IPlayer  <|-- Player
+    IPlayer  <|-- PieceType
+    Piece  <|-- PieceState
+    Board  <|-- PieceType
+    GameController <|-- IPlayer
+    GameController <|-- Coordinate
+    
+    class GameController{
+        +IBoard board
+        -IPlayer _player1
+        -IPlayer _player2
+        +IPlayer currentPlayer
+        List~IPlayer~ players
+        +List~Coordinate~ listCoordinateMove
+        +Dictionary ~IPlayer, List<Coordinate>~ movePlayerDict
+        -bool isRunning = false
+        -int maxScoreToWin=3
+
+        +GameController()
+        +void StartGame()
+        -void SwitchPlayer()
+        +void SetPlayerData(IPlayer user1, IPlayer user2)
+        +List~IPlayer~ GetPlayerData()
+        +void PrintScore()
+        +void CheckWinner()
+        +void SaveListCoordinate(Coordinate x,Coordinate y)
+        +List~Coordinate~ GetListCoordinate()
+        +void SaveDataPlayerMove(IPlayer player, List<Coordinate> coordinate)
+        +Dictionary ~IPlayer, List<Coordinate>~ GetPlayerMove()
+        +void SaveNewCoordinateToDict(IPlayer player, Coordinate coordinate)
+
+        
+    }
+    class IBoard{
+        <<interface>>
+        +void DisplayBoard()
+        bool MovePiece(Coordinate start, Coordinate end, PieceType pieceType, Player username)
+    }
+    class Board{
+        -const int _size
+        -IPiece[,] grid;
+        +List<Coordinate> listCoordinateMove;
+        + Dictionary<IPlayer, List<Coordinate>> movePlayer;
+        - void InitBoard()
+        + void DisplayBoard()
+        + bool MovePiece(Coordinate start, Coordinate end, PieceType pieceType, Player username)
+    }
+    class IPiece{
+        <<interface>>
+        PieceType Type ~get;set;~
+        PieceState State ~get;set;~
+        +bool Move(int startX,int startY, int endX, int endY)
+    }
+    class Piece{
+        PieceType Type ~get;set;~
+        PieceState State ~get;set;~
+        Piece(PieceType type)
+        bool Move(int startX, int startY, int endX, int endY) 
+    }
+    class IPlayer{
+        <<interface>>
+        string Username ~get;~
+        PieceType PieceType ~get;~
+        bool MakeMove(IBoard board,Coordinate start, Coordinate end)
+    }
+    class Player{
+        +string Username ~get; private set;~
+        +PieceType PieceType ~get; private set;~
+        +int Score ~get; private set;~
+        +Player(string username, PieceType pieceType)
+        +bool MakeMove(IBoard board, Coordinate start,  Coordinate end)
+        +void AddScore(int poin)
+    }
+    
+    class Coordinate{
+        +int X ~get;set;~
+        +int Y ~get;set;~
+        +Coordinate(int x, int y)
+    }
+    class PieceState{
+        <<enumeration>>
+        Normal,
+        King
+    }
+    class PieceType{
+        <<enumeration>>
+        Empty,
+        White,
+        Black
+    }

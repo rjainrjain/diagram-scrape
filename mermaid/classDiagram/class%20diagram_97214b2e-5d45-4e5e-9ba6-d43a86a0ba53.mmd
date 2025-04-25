@@ -1,0 +1,64 @@
+classDiagram
+   direction TB
+
+   SuperAdmin --|> Person: extends
+   MarketAdmin --|> Person: extends
+   %% DepertementManager --|> Person: extends
+   Promotion "0.*" --* "1.1" SubCategory: has a
+   MarketAdmin "1.1" -- "0.*" Promotion: creates a
+   Category "1.1" *-- "0.*" SubCategory: has many
+   DepertementManager "1.1" -- Category: manage
+   MarketAdmin -- Market: manage
+   DepertementManager -- Market
+
+   class Market{
+      -marketId: Integer
+      -city: String
+      -manager MarketAdmin
+   }
+
+   class Promotion{
+    -promotionId: Integer
+    -subCategory: SubCategory 
+    -percentage: Float 
+    -LoyaltyPoints: Integer 
+    -status: Enum 
+    -createdAt: Date
+    -availableUntil: Date 
+
+    +createPromotion() void
+    +listPromotions() void
+    +changePromotionStatus() void
+   }
+
+   class SubCategory{
+    -SubCatID: Integer 
+    -SubCategoryName: String 
+   }
+
+   class Category{
+    -catID: Integer 
+    -categoryName: String 
+    -subCats: SubCategory  
+   }
+   
+   class Person{
+    -id: Integer 
+    -email: String 
+    -username: String 
+    -password: String 
+
+    +login(credentials) void
+   }
+
+   class SuperAdmin{
+
+   }
+
+   class MarketAdmin{
+    +createAdminMarket() void
+   }
+
+   class DepertementManager{
+    +createDptManager() void
+   }

@@ -1,0 +1,56 @@
+erDiagram
+    LOCATIONS {
+        int location_id PK
+        varchar location_name
+        int location_root
+        varchar location_desc
+        decimal latitude
+        decimal longitude
+        int address_id
+    }
+    DEVICES {
+        int device_id PK
+        varchar device_type
+        int location_id FK
+        int device_serial_number
+        varchar description
+        varchar image_path
+    }
+    USERS {
+        int user_id PK
+        varchar use_group
+        varchar user_role
+        varchar user_rights
+        varchar user_name
+        varchar user_email
+    }
+    TAGS {
+        int tag_id PK
+        varchar description
+        varchar unit
+    }
+    DEVICE_TAGS {
+        int ID PK
+        int device_id FK
+        int tag_id FK
+    }
+    History_Data {
+        int ID PK
+        int tag_id FK
+        int Value
+        timestamp Time_Stamp
+    }
+    History_alerts {
+        int alert_id PK
+        int device_id FK
+        timestamp Time_Stamp
+        varchar Alert_status
+        int Action_id FK
+    }
+    Action_alert {
+        int Action_id PK
+        varchar action_desc
+        int alert_action
+    }
+    
+    

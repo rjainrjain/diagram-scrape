@@ -1,0 +1,49 @@
+flowchart TD
+    A["User"] -- Add New Fabric --> B("addNewFebric")
+    A -- View Projects --> C("projectFecther")
+    A -- View Project Details --> D("projectDetailsFetch")
+    A -- View Datasets --> E("datasetFecther")
+    A -- View Models --> F("modelFecther")
+    A -- Train Model --> G("modelTraining")
+    A -- Predict on Image --> H("modelPrediction")
+    A -- Start Realtime Prediction --> I("realtimePrediction")
+    A -- Toggle Realtime Prediction --> J("toggleRealtimePrediction")
+    A -- Manage Cameras --> K("cameraListFetcher")
+    A -- Engage Camera --> L("engageCamera")
+    A -- Disengage Camera --> M("disengageCamera")
+    A -- View System Info --> N("sysInfo")
+    A -- Assign Annotator --> O("AnnotatorAllocation")
+    A -- View Annotators --> P("AnnotatorDetails")
+    B --> Q{"Upload Dataset?"}
+    Q -- Yes --> R("extractFolder")
+    Q -- No --> S("Create Fabric without Dataset")
+    D --> T{"Select Dataset"}
+    T --> U("taskDetails")
+    F --> V("basemodelFecther")
+    G --> W("modelDetails")
+    H --> X{"Input Source"}
+    X -- Image --> Y("modelPrediction")
+    X -- Camera --> I
+    I --> Z("webcam or mainCam")
+    K --> AA("engageCamera") & AB("disengageCamera") & AC("CameraSetting")
+    O --> AD("AnnotatorDetails")
+    A --> n1["Untitled Node"]
+
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#333,stroke-width:2px
+    style C fill:#bbf,stroke:#333,stroke-width:2px
+    style D fill:#bbf,stroke:#333,stroke-width:2px
+    style E fill:#bbf,stroke:#333,stroke-width:2px
+    style F fill:#bbf,stroke:#333,stroke-width:2px
+    style G fill:#bbf,stroke:#333,stroke-width:2px
+    style H fill:#bbf,stroke:#333,stroke-width:2px
+    style I fill:#bbf,stroke:#333,stroke-width:2px
+    style J fill:#bbf,stroke:#333,stroke-width:2px
+    style K fill:#bbf,stroke:#333,stroke-width:2px
+    style L fill:#bbf,stroke:#333,stroke-width:2px
+    style M fill:#bbf,stroke:#333,stroke-width:2px
+    style N fill:#bbf,stroke:#333,stroke-width:2px
+    style O fill:#bbf,stroke:#333,stroke-width:2px
+    style P fill:#bbf,stroke:#333,stroke-width:2px
+
+

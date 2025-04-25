@@ -1,0 +1,122 @@
+```mermaid
+classDiagram
+    class Main {
+        -init()
+        -redraw()
+        -key(n, z)
+        -enc(n, d)
+        -cleanup()
+    }
+    class ClockManager {
+        -clock
+        +init(clock)
+        +bpm: int
+        +currentMeasure: int
+        +start()
+        +stop()
+        +tick()
+    }
+    class DisplayManager {
+        -screen
+        +init(screen)
+        +updateMeasureCount(count: int)
+        +updateBPM(bpm: int)
+        +updateSequencePage(page: string)
+        +showMetadataPage()
+        +refreshDisplay()
+    }
+    class InputHandler {
+        -params
+        -nornsModules
+        +init(params, nornsModules)
+        +handleKeyPress()
+        +handleEncoderRotation(encoderNumber, direction)
+        +handleGridPress(x, y, state)
+    }
+    class MIDIController {
+        -midi
+        +init(midi)
+        -DRUM_NOTE_MAP: int[]
+        +sendNote(channel: int, note: int, velocity: int)
+        +devices: MIDIDevice[]
+        +drumMachines: DrumMachine[]
+    }
+    class MIDIDevice {
+        +name: string
+        +connect()
+        +sendNote(note: int, velocity: int, channel: int)
+        +sendAllNotesOff(channel: int)
+    }
+    class DrumMachine {
+        +channel: int
+        +noteMap: int[]
+        +sendNote(sampleIndex: int, velocity: int)
+    }
+    class Sequence {
+        +steps: int[3][2][16][8]  // [device][page][step][sample]
+        +getStep(device: int, page: int, step: int, sample: int): int
+        +setStep(device: int, page: int, step: int, sample: int, volume: int)
+    }
+    class SequenceManager {
+        -params
+        -nornsModules
+        +init(params, nornsModules)
+        +currentSequence: Sequence
+        +currentPage: int
+        +loadSequence(name: string)
+        +saveSequence(name: string)
+        +modifyStep(device: int, page: int, step: int, sample: int, volume: int)
+        +nextPage()
+        +previousPage()
+    }
+    class Song {
+        +title: string
+        +bpm: int
+        +scenes: Scene[]
+    }
+    class Scene {
+        +drum1a: int[128]
+        +drum1b: int[128]
+        +drum2a: int[128]
+        +drum2b: int[128]
+        +drum3a: int[128]
+        +drum3b: int[128]
+    }
+    class SongManager {
+        -params
+        -sequenceManager
+        -xmlParser
+        -currentSong
+        -PATTERNS_DIRECTORY
+        +init(params, sequenceManager)
+        +loadSong(filename)
+        +saveSong()
+    }
+    class XMLParser {
+        +parse_song(content)
+        +serialize_song(song)
+    }
+    
+    Main --> InputHandler : creates
+    Main --> SequenceManager : creates
+    Main --> SongManager : creates
+    Main --> MIDIController : creates
+    Main --> ClockManager : creates
+    Main --> DisplayManager : creates
+    InputHandler --> SequenceManager : modifies
+    InputHandler --> SongManager : controls
+    SequenceManager --> Sequence : manages
+    SequenceManager --> MIDIController : triggers
+    SongManager --> Song : manages
+    Song --> Scene : contains
+    SongManager --> SequenceManager : controls
+    ClockManager --> SequenceManager : syncs
+    ClockManager --> DisplayManager : updates
+    SequenceManager --> DisplayManager : updates
+    SongManager --> DisplayManager : updates
+    SequenceManager --> XMLParser : uses
+    SongManager --> XMLParser : uses
+    MIDIController --> MIDIDevice : manages
+    MIDIController --> DrumMachine : manages
+    MIDIDevice --> DrumMachine : connects todo
+```

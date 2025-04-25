@@ -1,0 +1,67 @@
+---
+title: Automato UI Architecture
+---
+flowchart
+
+subgraph left-menu
+direction TB
+        language
+        login
+end
+
+subgraph footer
+ direction TB
+  id2(Report Abuse)
+  id3(Help Center)
+  id4(Site Map)
+  id5(About)
+  id6(Terms of Use)
+  id7(Privacy Policy)
+end
+
+subgraph header
+        direction TB
+        logo
+        left-menu
+end
+
+subgraph main-section
+ id10(What is dropshipping)
+ id11(How it works)
+ id12(How create one item sale site)
+end
+
+id1(Main page) --> header
+id1(Main page) --> main-section
+id1(Main page) --> footer
+
+subgraph login-section
+ direction TB
+ id13(Login with email)
+ id14(Login via social)
+ Restore
+end
+
+ id13(Login with email) --> Cabinet
+ id14(Login via social) --> Cabinet
+ Restore --> Cabinet
+
+Cabinet --> Dashboard
+Cabinet --> id18(My Sites)
+Cabinet --> id20(System Setup)
+
+Dashboard --> Activities
+Dashboard --> id21(Current Plan)
+
+subgraph Sites
+        Url
+        Template
+        Seo
+        Payments
+        Actions
+        Language
+        Analytics
+end
+
+id18(My Sites) --> Sites
+id20(System Setup)

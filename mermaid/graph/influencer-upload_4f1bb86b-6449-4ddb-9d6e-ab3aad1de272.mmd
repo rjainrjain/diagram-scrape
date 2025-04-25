@@ -1,0 +1,32 @@
+graph TD;
+    influStart((Influencer))
+    influInput[uploads video]
+    influAudio[extract audio from video]
+    influAText[pass audio through speech to text]
+    influATExtract[Extract entities through Natural Understanding]
+
+    influVExtract[extract images from video]
+    influVTag[retrieve tags from watson]
+
+    influATRetrieve[Retrieve and Rank Campaigns based on Entities]
+
+    influAdItemsFilter{Keep Ad Collector Items that are tagged}
+
+    influIndexVideo[Index Video with Retreive and Rank]
+
+    influStart-->influInput
+    influInput-- Video -->influVExtract
+    influVExtract-- Images -->influVTag
+
+    influInput-- Video -->influAudio
+    influAudio-- Audio -->influAText
+    influAText-- Text -->influATExtract
+
+    influVTag-- Entities -->influATRetrieve
+    influATExtract-- Entities -->influATRetrieve
+
+    influVTag-- Tags -->influAdItemsFilter
+    influATRetrieve-- Ad Campaign -->influAdItemsFilter
+    influAdItemsFilter-- Collector Items -->influIndexVideo
+
+    influATRetrieve-- Ad Campaign -->influIndexVideo

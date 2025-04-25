@@ -1,0 +1,39 @@
+stateDiagram-v2
+  direction LR
+
+  %%LEXER_CHAR_KEY_FIRST = UNDERSCORE|ALPHA
+  %%LEXER_CHAR_KEY = KEY_FIRST_CHAR|NUMERIC
+  
+  %%LEXER_TOKEN done
+  %%LEXER_TOKEN space
+  %%LEXER_TOKEN key
+  %%LEXER_TOKEN value
+  %%LEXER_TOKEN line_break
+
+  %%LEXER_ERROR unexpected_char
+
+  %% expecting_key state
+  [*] --> expecting_key
+  expecting_key --> end: EOS
+  expecting_key --> expecting_key: NL           %% yield line_break
+  expecting_key --> expecting_key: WHITE_SPACE  %% yield space
+  expecting_key --> key: KEY_FIRST              %% 
+  expecting_key --> expecting_key_error: ANY    %% raise unexpected_char
+  note right of expecting_key_error
+    Unexpected "."
+  end note
+
+  %% key state
+  key --> key: KEY
+  key --> value: EQUAL
+  note right of key
+    Unexpected "."
+  end note
+
+  %% value state
+  value --> expecting_key: NL
+  value --> end: EOS
+  value --> value: ANY
+
+  %% end state
+  end --> [*]

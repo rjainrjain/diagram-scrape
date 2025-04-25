@@ -1,0 +1,61 @@
+erDiagram
+  Resume ||--|| HeaderSection : contains
+  Resume ||--o| SummarySection : contains
+  Resume ||--o| SkillsSection : contains
+  Resume ||--|| EducationSection : contains
+  Resume ||--|| ExperienceSection : contains
+  Resume ||--o| ProjectSection : contains
+
+  HeaderSection {
+    string name
+  }
+
+  HeaderSection ||--|{ ContactMethod : includes
+
+  ContactMethod ||--|| Phone : "is one of"
+  ContactMethod ||--|| Email : "is one of"
+  ContactMethod ||--|| Link : "is one of"
+  Phone {
+    number country-code
+    number number
+  }
+  Email { string email-address }
+  Link {
+    string display
+    string href
+  }
+
+  SummarySection { string content }
+
+  SkillsSection ||--|{ Skill : includes
+  Skill ||--|| SkillCategory : "belongs to"
+  Skill { string name }
+  SkillCategory { string name }
+
+  EducationSection ||--|{ Degree : includes
+  Degree {
+    string level
+    string major
+    string minor
+    number gpa
+    string description
+  }
+  Degree ||--o{ Course : studied
+  Degree ||--o{ Skill : developed
+  Course ||--o{ Skill : developed
+
+  ExperienceSection ||--|{ Job : includes
+  Job {
+    string employer
+    string job-title
+    date start
+    date end
+  }
+  Job ||--|{ DescriptionItem : includes
+  DescriptionItem { string text }
+  Job ||--|{ Skill : practiced
+
+  ProjectSection ||--|{ Project : includes
+  Project { string name }
+  Project ||--|{ Skill : practiced
+  Project ||--|{ DescriptionItem : includes

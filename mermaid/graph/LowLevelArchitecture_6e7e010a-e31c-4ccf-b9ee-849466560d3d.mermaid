@@ -1,0 +1,68 @@
+graph TD
+    %% Main Entry
+    A[main.py] --> B1[Input Layer]
+    A --> C1[Processing Layer]
+    A --> D1[Verification Layer]
+    A --> E1[AI Models Layer]
+    A --> F1[Output Layer]
+    A --> G1[Feedback Layer]
+    A --> H1[Integration Layer]
+
+    %% Input Layer
+    B1 --> B2[text_input.py]
+    B1 --> B3[image_video_input.py]
+    B1 --> B4[audio_input.py]
+    B2 --> C1
+    B3 --> C1
+    B4 --> C1
+
+    %% Processing Layer
+    C1 --> C2[media_classifier.py]
+    C2 --> C3[text_processing.py]
+    C2 --> C4[image_processing.py]
+    C2 --> C5[audio_processing.py]
+
+    C3 --> D1
+    C4 --> D1
+    C5 --> D1
+
+    %% Verification Layer
+    D1 --> D2[source_basket.py]
+    D1 --> D3[text_verifier.py]
+    D1 --> D4[image_verifier.py]
+    D1 --> D5[audio_verifier.py]
+
+    %% AI Models Layer
+    E1 --> E2[veracity_scoring.py]
+    E1 --> E3[deepfake_detector.py]
+    E1 --> E4[anomaly_detector.py]
+
+    E2 --> D1
+    E3 --> D1
+    E4 --> D1
+
+    %% Output Layer
+    F1 --> F2[user_interface.py]
+    F1 --> F3[alert_logic.py]
+
+    F3 --> F2
+    F2 --> User[User Alerts/Warnings]
+
+    %% Feedback Layer
+    G1 --> G2[feedback_loop.py]
+    G1 --> G3[retrain_model.py]
+    G2 --> E1
+    G3 --> E1
+
+    %% Integration Layer
+    H1 --> H2[whatsapp_integration.py]
+    H1 --> H3[email_integration.py]
+    H1 --> H4[social_media_integration.py]
+
+    H2 --> B1
+    H3 --> B1
+    H4 --> B1
+
+    %% External Entities
+    User -->|Feedback| G2
+    User -->|Receives Alerts| F2

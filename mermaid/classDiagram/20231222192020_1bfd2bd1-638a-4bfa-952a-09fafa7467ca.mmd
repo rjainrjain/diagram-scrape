@@ -1,0 +1,28 @@
+classDiagram
+    class Game {
+        -grid: list
+        -score: int
+        -state: str
+        +move(direction: str)
+        +check_game_over(): bool
+        +add_new_tile()
+    }
+    class UI {
+        -game: Game
+        +start()
+        +update()
+        +get_user_input(): str
+    }
+    class Leaderboard {
+        -db_path: str
+        +add_score(player_name: str, score: int)
+        +get_top_scores(): list
+    }
+    class Difficulty {
+        -level: str
+        +adjust_difficulty(level: str)
+        +modify_gameplay(game: Game)
+    }
+    Game --> UI
+    UI --> Leaderboard
+    Game --> Difficulty

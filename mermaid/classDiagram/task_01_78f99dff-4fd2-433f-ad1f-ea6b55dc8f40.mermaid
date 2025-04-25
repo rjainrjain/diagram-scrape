@@ -1,0 +1,57 @@
+classDiagram
+%% User Class
+class User {
+    +uuid : UUID
+    +first_name : str
+    +last_name : str
+    +email : str
+    +password : str
+    +created_at : str
+    +updated_at : str
+    +createPlace()
+    +createReview()
+}
+
+%% Place Class
+class Place {
+    +UUID id
+    +name : str
+    +description : str
+    +city : str
+    +state : str
+    +price : float
+    +max_guests : int
+    +created_at : str
+    +updated_at : str
+    +addAmenity(Amenity)
+    +getAmenities() : List[Amenity]
+    +getReviews() : List[Review]
+}
+
+%% Review Class
+class Review {
+    +id : UUID
+    +rating : int
+    +comment : str
+    +created_at : str
+    +updated_at :str
+    +getUser() : User
+    +getPlace() : Place
+}
+
+%% Amenity Class
+class Amenity {
+    +id : UUID
+    +name : str
+    +created_at : str
+    +updated_at : str
+}
+
+%% Relationships
+User --> Place : "creates"
+User --> Review : "writes"
+Place --> Review : "has many"
+Place --> Amenity : "has many"
+Review --> Place : "about"
+Review --> User : "written by"
+

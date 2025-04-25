@@ -1,0 +1,37 @@
+graph TD
+    Users((Users)) --> Client
+    Client --> waf:waf1[WAF]
+    Client -->|1| cloudfront:cloudfront1[CloudFront]
+    cloudfront:cdn -->|2| cognito:cognito1[Cognito]
+    waf:service --> UI
+    cloudfront:cdn --> UI
+    cognito:auth --> UI
+    cloudfront:cdn --> s3:s31[UI bucket]
+    UI -->|3| apigateway:apigateway1[API Gateway]
+    apigateway:api -->|APIs| lambda:lambda1[Backing functions]
+    apigateway:api -->|APIs| lambda:lambda2[Workflow orchestrator]
+    lambda:backing -->|4| dynamodb:dynamodb1[Case management store]
+    lambda:orchestrator -->|4| dynamodb:case
+    lambda:orchestrator -->|11| dynamodb:dynamodb2[Configuration for orchestrating workflows]
+    lambda:backing --> s3:s32[/inferences bucket]
+    s3:inferences -->|12| 
+    kendra:search --> lambda:backing
+    lambda:backing -->|7| eventbridge:eventbridge1[Custom event bus]
+    lambda:orchestrator -->|7| eventbridge:custom
+    eventbridge:custom -->|8,10| Workflows
+    subgraph Workflows
+        lambda:lambda3[Text extraction workflow]
+        lambda:lambda4[Entity detection workflow]
+        lambda:lambda5[Redaction workflow]
+    end
+    Client -->|HTTP POST/GET| s3:s33[/upload bucket]
+    s3:upload -->|5,6 s3:PutObject| eventbridge:eventbridge2[Default event bus]
+    eventbridge:default --> lambda:orchestrator
+    Workflows --> sqs:sqs1[Dead-letter queue]
+    lambda:orchestrator --> lambda:lambda6[Notification manager]
+    lambda:notification --> sns:sns1[SNS]
+    sns:notify --> Email[Email notification]
+    cloudwatch:cloudwatch1[CloudWatch dashboard]
+    
+    classDef aws fill:#FF9900,stroke:#232F3E,stroke-width:2px,color:#232F3E;
+    class waf:service,cloudfront:cdn,cognito:auth,apigateway:api,lambda:backing,lambda:orchestrator,dynamodb:case,dynamodb:config,s3:inferences,s3:ui,s3:upload,kendra:search,eventbridge:custom,eventbridge:default,sns:notify,cloudwatch:dashboard,sqs:dlq aws;

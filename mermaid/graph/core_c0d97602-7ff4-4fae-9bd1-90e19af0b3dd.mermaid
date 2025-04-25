@@ -1,0 +1,19 @@
+graph LR;
+
+	StateStore;
+	Dispatcher((Dispatcher));
+	Scheduler;
+	Applications((Application Components));
+
+	StateStore -->|/state| Dispatcher
+    Dispatcher -->|/state/a| StatefulAppA
+	Dispatcher -->|/state/*| Scheduler
+    Dispatcher -->|/state/b| StatefulAppB
+	Scheduler --> Applications
+    SensorA --> StateStore
+    SensorB --> StateStore
+
+    classDef core fill:#C7F464,stroke:#333,stroke-width:2px;
+    classDef sensor fill:#4ECDC4,stroke:#333,stroke-width:2px;
+
+    class StateStore,Dispatcher,Scheduler core

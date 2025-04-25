@@ -1,0 +1,17 @@
+classDiagram
+  ImageObject -- MediaObject
+  ImageObject -- ImageObject
+  ImageObject -- PropertyValue
+
+
+class ImageObject {
+
+  string embeddedTextCaption
+  boolean representativeOfPage
+  string caption
+  MediaObject caption
+  ImageObject thumbnail
+  PropertyValue exifData
+  string exifData
+
+ }

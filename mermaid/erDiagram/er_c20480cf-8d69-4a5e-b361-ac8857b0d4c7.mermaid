@@ -1,0 +1,39 @@
+erDiagram
+    CUSTOMER {
+        id UUID PK
+        email VARCHAR(255) UK
+        first_name VARCHAR(200)
+        last_name VARCHAR(200)
+        gender CHAR(1)
+        address TEXT
+        birth_date DATE
+        phone VARCHAR(15)
+    }
+    CATEGORY {
+        id UUID PK
+        name VARCHAR(60) UK
+        path TEXT
+    }
+    ITEM {
+        id UUID PK
+        seller_id UUID FK 
+        name VARCHAR(60)
+        description TEXT
+        category_id UUID FK
+        price DECIMAL(10)(2)
+        status VARCHAR(10)
+        cancel_date TIMESTAMP
+    }
+    ORDER {
+        id UUID PK
+        customer_id UUID FK
+        item_id UUID FK
+        order_date TIMESTAMP
+        price DECIMAL(10)(2)
+        quantity INT
+    }
+
+    CUSTOMER ||--o{ ITEM : "sells"
+    ITEM }|--|| CATEGORY : "belongs to"
+    ORDER ||--|| ITEM : "contains"
+    ORDER }o--|| CUSTOMER : "places"

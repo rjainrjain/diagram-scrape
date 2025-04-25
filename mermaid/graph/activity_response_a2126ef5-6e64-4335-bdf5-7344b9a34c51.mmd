@@ -1,0 +1,8 @@
+graph TD
+    A[Receive HTTP Response from origin] --> |Inspect| B{Contains sensitive data}
+
+    B --> F{Running mode}
+    F --> |Blocking| G[Block response]
+
+    B --> |No|I[Pass response to end-user]
+    F --> |Otherwise|I

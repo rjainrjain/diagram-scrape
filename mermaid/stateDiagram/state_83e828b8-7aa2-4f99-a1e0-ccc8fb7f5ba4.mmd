@@ -1,0 +1,14 @@
+%%{initialize: { 'logLevel': 'debug', "theme":'dark', 'startOnLoad': true } }%%
+stateDiagram-v2
+  state "Gather Data" as gd
+  gd --> Handle
+  state Handle {
+    Split --> Train
+    Train --> Evaluate
+  }
+  state Deploy
+  Handle --> Deploy
+  Deploy --> Production
+  state Production {
+    Serve --> Monitor
+  }

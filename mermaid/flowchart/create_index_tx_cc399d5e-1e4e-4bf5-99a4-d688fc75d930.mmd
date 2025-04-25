@@ -1,0 +1,5 @@
+flowchart TD
+    A[Initial_UTXO]
+    B{Create_Index_Tx}
+    A--"` Spends the UTXO referenced in its IndexNftConfig argument`"---B
+    B ==>|"`Pays the initial IndexDatum and Index NFT to the script`"| E[Index_Validator]

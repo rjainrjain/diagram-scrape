@@ -1,0 +1,104 @@
+
+sequenceDiagram
+  actor Pembeli
+  participant V_H as View #10095; HomePage
+  participant V_C as View #10095; CartPage
+  participant CTX_C as Context #10095; CartContext
+  participant LS_C as Local Storage #10095; Cart
+
+  Pembeli->>V_H: klik icon cart
+
+  activate Pembeli
+  activate V_H
+
+  V_H->>CTX_C: items
+
+  deactivate V_H
+
+  activate CTX_C
+
+  CTX_C->>LS_C: getItem()
+
+  activate LS_C
+
+  LS_C-->>CTX_C: data cart items
+
+  deactivate LS_C
+
+  activate V_C
+
+  CTX_C-->>V_C: return view cart items
+
+  deactivate CTX_C
+  deactivate V_C
+
+  opt Update Item Quantity
+    Pembeli->>V_C: klik icon plus atau minus di salah satu item
+
+    activate V_C
+
+    V_C->>CTX_C: updateItemQuantity()
+
+    activate CTX_C
+
+    CTX_C->>LS_C: setItem()
+
+    activate LS_C
+
+    LS_C-->>CTX_C: cart item updated
+    
+    deactivate LS_C
+
+    CTX_C-->>V_C: return view with updated item cart
+
+    deactivate V_C
+    deactivate CTX_C
+  end
+  
+  opt Remove Item
+    Pembeli->>V_C: klik icon sampah di salah satu item
+
+    activate V_C
+
+    V_C->>CTX_C: removeItem()
+
+    activate CTX_C
+
+    CTX_C->>LS_C: setItem()
+
+    activate LS_C
+
+    LS_C-->>CTX_C: cart item updated
+    
+    deactivate LS_C
+
+    CTX_C-->>V_C: return view with updated item cart
+
+    deactivate V_C
+    deactivate CTX_C
+  end
+  
+  opt Remove All Item Cart
+    Pembeli->>V_C: klik icon sampah di salah satu item
+
+    activate V_C
+
+    V_C->>CTX_C: emptyCart()
+
+    activate CTX_C
+
+    CTX_C->>LS_C: removeItem()
+
+    activate LS_C
+
+    LS_C-->>CTX_C: cart deleted
+    
+    deactivate LS_C
+
+    CTX_C-->>V_C: return view with updated cart
+
+    deactivate V_C
+    deactivate CTX_C
+  end
+
+  deactivate Pembeli

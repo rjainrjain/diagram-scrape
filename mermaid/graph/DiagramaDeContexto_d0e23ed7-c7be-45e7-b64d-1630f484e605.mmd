@@ -1,0 +1,7 @@
+graph TD
+    A[Usuario] -->|Pregunta sobre la API| B[Motor de Búsqueda de Documentación API]
+    B -->|Consulta a| C[Motor de AI]
+    C -->|Interpreta la Pregunta| D[Documentación OpenAPI]
+    D -->|Devuelve información relevante| C
+    C -->|Respuesta procesada| B
+    B -->|Devuelve la respuesta| A

@@ -1,0 +1,47 @@
+---
+title: Chromoo Algorithm
+---
+%%{init: 
+  { 'theme': 'neutral', 
+    'flowchart': 
+    {
+      'curve': 'basis',
+      'diagramPadding': 10,
+      'htmlLabels': false
+    }
+  }
+}%%
+flowchart TB
+%%{config: { 'fontFamily': 'Menlo', 'fontSize': 18, 'fontWeight': 400 } }%%
+eval[["`**Evaluate population**
+_parameter normalization | Cadet simulation | objective evaluation_`"]]
+init[["`**Initialize population**
+_Sobol sequence_`"]]
+genpop[["`**Generate population**
+_survival | selection | crossover | mutation_`"]]
+
+    callback[[Cache results]]
+    term{Terminate?}
+    res([Result])
+
+    subgraph SG_Inputs[Inputs]
+    inputs(["`**Optimization Inputs**
+            _Parameter bounds | Objectives | Scores_`"])
+    ref(["`**Reference Data**
+            _breakthrough curve | solute mass_`"])
+    rom{{"Reduced-order
+          model template
+          in Cadet"}}
+    end
+
+    init --> eval
+    SG_Inputs --> eval
+    term -- Yes --> res
+    eval --> callback --> term 
+    term -- No --> genpop --> eval
+
+    classDef data fill:#fff,stroke:#333
+    classDef process fill:#fff,stroke:#333
+    class deno,run,obj,cadet,eval,genpop,init,callback,term process
+    class res,ref,rom,inputs data
+    style SG_Inputs fill:#fff,stroke-dasharray: 5 5,stroke-width:1px,stroke:#333

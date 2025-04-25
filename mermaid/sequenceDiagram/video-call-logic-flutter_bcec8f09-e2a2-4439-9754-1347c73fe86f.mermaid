@@ -1,0 +1,21 @@
+sequenceDiagram
+    participant User
+    participant App as Your app/Video SDK
+    participant Agora as Agora/SD-RTN
+
+    User->>App: Open App
+    App->>App: agoraEngine = RtcEngine.create 
+    App->>App: agoraEngine.enableVideo
+    App->>App: Widget = RtcLocalView.SurfaceView()
+
+    User->>App: Join a call
+    App->>App: Retrieve authentication token to join channel
+    App->>Agora: agoraEngine.joinChannel
+    App->>App: Widget = RtcRemoteView.SurfaceView()
+    App->>App: Receive and send data stream
+
+    User->>App: Leave call
+    App->>Agora: agoraEngine.leaveChannel
+    App->>App: agoraEngine.destroy()
+
+    User->>App: Close app

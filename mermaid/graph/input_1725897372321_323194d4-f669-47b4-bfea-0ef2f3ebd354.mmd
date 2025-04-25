@@ -1,0 +1,8 @@
+graph LR
+A[const express = require('express');] --> B[const app = express();]
+B --> C[app.use(express.json());]
+C --> D[app.use(express.static('public'));]
+D --> E[const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });]
+E --> F[app.post('/generate-diagram', async (req, res) => {...})]
+F --> G[const PORT = process.env.PORT || 3000;]
+G --> H[app.listen(PORT, () => {...});]

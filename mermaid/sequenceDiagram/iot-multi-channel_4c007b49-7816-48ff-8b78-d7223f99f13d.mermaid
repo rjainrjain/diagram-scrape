@@ -1,0 +1,62 @@
+sequenceDiagram
+    participant Your_app as "Your app"
+    participant IoT_SDK as "IoT SDK"
+    participant Agora as "Agora"
+    participant SD_RTN as "SD-RTN"
+
+    rect rgb(255, 255, 255)
+        note over Your_app: Setup Agora engine
+        Your_app->>IoT_SDK: Instantiate the Agora engine
+        IoT_SDK->>Agora: Set engine options
+        Agora->>SD_RTN: Verify license and initialize
+        SD_RTN-->>Agora: Ack initialization
+        Agora-->>IoT_SDK: Engine ready
+        IoT_SDK-->>Your_app: Initialization complete
+    end
+
+    rect rgb(255, 255, 255)
+        note over Your_app: Create multiple connections
+        Your_app->>IoT_SDK: Create connection-1
+        IoT_SDK->>Agora: Establish connection-1
+        Agora-->>IoT_SDK: Connection-1 established
+        IoT_SDK-->>Your_app: Connection-1 ready
+        Your_app->>IoT_SDK: Create connection-2
+        IoT_SDK->>Agora: Establish connection-2
+        Agora-->>IoT_SDK: Connection-2 established
+        IoT_SDK-->>Your_app: Connection-2 ready
+    end
+
+    rect rgb(255, 255, 255)
+        note over IoT_SDK: Stream to multiple channels
+        IoT_SDK->>Agora: Join channel with connection-1
+        IoT_SDK->>Agora: Send audio data to channel 1
+        IoT_SDK->>Agora: Join channel with connection-2
+        IoT_SDK->>Agora: Send video data to channel 2
+    end
+
+    rect rgb(255, 255, 255)
+        note over IoT_SDK: Push multiple streams to a single channel
+        IoT_SDK->>Agora: Join single channel with multiple IDs
+        IoT_SDK->>Agora: Send multiple audio/video streams
+    end
+
+    rect rgb(255, 255, 255)
+        note over Your_app: Leave channel(s)
+        Your_app->>IoT_SDK: Leave channel using connection-1
+        IoT_SDK->>Agora: Disconnect connection-1
+        Agora-->>IoT_SDK: Channel-1 left
+        IoT_SDK-->>Your_app: Left channel-1
+        Your_app->>IoT_SDK: Leave channel using connection-2
+        IoT_SDK->>Agora: Disconnect connection-2
+        Agora-->>IoT_SDK: Channel-2 left
+        IoT_SDK-->>Your_app: Left channel-2
+    end
+
+    rect rgb(255, 255, 255)
+        note over Your_app: Clean up
+        Your_app->>IoT_SDK: Destroy connections
+        IoT_SDK->>Agora: Terminate all connections
+        Agora-->>IoT_SDK: Connections destroyed
+        IoT_SDK-->>Your_app: Cleanup completed
+        Your_app->>IoT_SDK: Call the finish method to release resources
+    end

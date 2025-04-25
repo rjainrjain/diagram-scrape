@@ -1,0 +1,15 @@
+erDiagram
+    Funcionarios ||--o{ Registros_de_Ponto : "tem"
+    Funcionarios {
+        int funcionario_id PK
+        string nome
+        string cargo
+        date data_contratacao
+    }
+    Registros_de_Ponto {
+        int registro_id PK
+        int funcionario_id FK
+        date data
+        time hora_entrada
+        time hora_saida
+    }

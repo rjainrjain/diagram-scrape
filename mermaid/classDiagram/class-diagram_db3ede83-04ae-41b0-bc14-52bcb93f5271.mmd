@@ -1,0 +1,89 @@
+---
+title: Class Diagram
+---
+classDiagram
+    Position "1" -- "1" Cell
+    Piece <.. Cell
+    
+    GameResult --> GameOutcome
+    GameResult ..> Player
+
+    TicTacToeGame --> Board
+    TicTacToeGame --> GameOutcomeResolver
+    TicTacToeGame "*" -- "2..*" Player
+    XInARowWins --|> GameOutcomeResolver
+    Board *-- Cell
+    Player "1" -- "1" Piece
+
+    class Board{
+        -Cell[][] board
+        -Set~String~ unoccupiedPositions
+        + fillCell(piece: Piece, position: Position)
+        + getRow(rowIndex: number): Cell[]
+        + getColumn(colIndex: number): Cell[]
+        + getDiagonals(position: Position): Cell[][]
+        + getUnoccupiedPositions(): Position[]
+        + getColsCount(): number
+        + getRowsCount(): number
+
+        - positionIsOutOfBoard(position: Position): boolean
+        - rowIndexIsOutOfBounds(rowIndex: number): boolean
+        - colIndexIsOutOfBounds(columnIndex: number): boolean
+    }
+    class Player{
+        +Piece piece
+    }
+
+    class TicTacToeGame{
+        -Board board
+        -Queue~Player~ players
+        -Set~Piece~ allowedPieces
+        -boolean isInProgress
+        - getNextTurnPlayer(): Player
+        + create(rowsCount: number, colsCount: number, gameOutcomeResolver: GameOutcomeResolver, allowedPieces: Set~Piece~)$
+        + addPlayer(player: Player): void
+        + startGame(): void
+        + play(position: Position): GameResult
+    }
+
+    class Cell {
+        +Position position
+        + setPiece(piece)
+        + getPiece(): Piece
+        + isOccupied(): boolean
+    }
+
+    class Position {
+        + row
+        + col
+    }
+
+    class Piece {
+        <<enumeration>>
+        X
+        O
+        Z...
+    }
+
+    class GameOutcomeResolver {
+        <<interface>>
+        getResult(board, lastPlayedPiece, lastPlayedPosition): GameResult
+    }
+
+    class XInARowWins {
+        +number  count,
+        + getResult(board, lastPlayedPiece, lastPlayedPosition): GameResult
+        - hasXInARow(): boolean
+    }
+
+    class GameResult {
+        +Player? winner
+        +GameOutcome outcome
+    }
+
+    class GameOutcome {
+        <<enumeration>>
+        END
+        DRAW
+        NONE
+    }

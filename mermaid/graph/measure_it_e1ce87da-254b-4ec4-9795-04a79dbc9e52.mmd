@@ -1,0 +1,17 @@
+%%{init: {'theme':'dark', 'themeVariables': {'background': '#212121'}}}%%
+graph TD
+
+questions["<b>Questions</b> from your<br/>Instruction-tuning dataset<br/>(these questions are related to your brand)"]
+llm_answers["ChatGPT, Claude, Gemini, Llama, and other LLMs answer these questions"]
+count_brand_mentions["Our proprietary technology counts your competitors and brands related to you"]
+brand_ranking["Brand ranking"]
+competition_rag["In the <b>future</b>, you can ask your AI about your brand ranking.<br/>Example: 'Summarize why X is mentioned'"]
+
+questions --> llm_answers
+llm_answers --> count_brand_mentions
+count_brand_mentions --> brand_ranking
+brand_ranking --> competition_rag
+
+style questions stroke:#ffffff,stroke-width:4px,fill:#111111
+style brand_ranking stroke:#ffffff,stroke-width:4px,fill:#111111
+style competition_rag stroke-dasharray: 5, 5

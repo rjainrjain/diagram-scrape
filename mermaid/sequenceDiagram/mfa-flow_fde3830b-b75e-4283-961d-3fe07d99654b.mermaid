@@ -1,0 +1,17 @@
+sequenceDiagram
+    participant User
+    participant Client
+    participant Server
+    participant Database
+
+    User->>Client: Enter username/password
+    Client->>Server: Send credentials
+    Server->>Database: Validate credentials
+    Database-->>Server: Credentials valid
+    Server-->>Client: Request OTP
+    Client->>User: Prompt for OTP
+    User->>Client: Enter OTP
+    Client->>Server: Send OTP
+    Server->>Server: Validate OTP
+    Server-->>Client: Authentication complete
+    Client-->>User: Access granted

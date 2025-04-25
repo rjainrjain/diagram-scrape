@@ -1,0 +1,85 @@
+%% this is a comment
+%% syntax docs https://mermaid-js.github.io/mermaid/#/flowchart
+%% live editor https://mermaid.live
+
+graph TD	%% this sets flow to TOP DOWN
+
+%%%%%%%%%%%%%%%%  Setup Nodes  %%%%%%%%%%%%%%%%
+
+%% ------------ Many Branches ------------ %%
+classDef Game fill:#fff,stroke:#333,stroke-width:4px;
+
+game((gameplay))
+
+class game Game;
+
+%% ------------ Messages  ------------ %%
+classDef Messages fill:#f9f,stroke:#333,stroke-width:4px;
+
+intro[[intro message]]
+locked[[message about door locked]]
+
+ghostMsgIntro[[intro message from ghost]]
+ghostMsgBeforeKey[[ghost says to look for key]]
+ghostMsgAfterKey[[ghost says you found the key]]
+
+windowLockedMessage[[window can not be open message]]
+
+class intro,locked,ghostMsgIntro,ghostMsgBeforeKey,ghostMsgAfterKey,windowLockedMessage Messages
+
+%% ------------ State Modified  ------------ %%
+classDef State fill:#f66,stroke:#333,stroke-width:4px;
+
+unlock[door unlocks]
+finishedIntro[user finishes reading intro message]
+
+class unlock,finishedIntro State
+
+%% ------------ Verbs ------------ %%
+classDef Verb fill:#6f6,stroke:#333,stroke-width:4px;
+
+clickDoor{{"click on door"}}
+clickSkeleton{{"click on skeleton"}}
+clickWindow{{"click on Window"}}
+clickChest{{"click on Chest"}}
+clickBarrel{{"click on Barrel"}}
+getKey{{user pickes up key}}
+start{{start new game}}
+exit{{go to room 2}}
+
+class clickDoor,clickSkeleton,getKey,start,exit,clickWindow,clickBarrel,clickChest Verb;
+
+%% ------------ Conditionals ------------ %%
+classDef Conditional fill:#ffF,stroke:#333,stroke-width:4px;
+
+hasKeyForDoor{"user has key in inventory?"}
+hasKeyForGhost{"user has key in inventory?"}
+
+class hasKeyForDoor,hasKeyForGhost Conditional
+
+
+
+
+%%%%%%%%%%%%%%%%  Make Connections  %%%%%%%%%%%%%%%%
+
+start --> intro --> finishedIntro --> game
+
+game --> getKey --> clickDoor
+game --> clickDoor
+game --> clickBarrel
+game --> clickChest
+game --> clickWindow --> windowLockedMessage
+game --> clickSkeleton --> ghostMsgIntro --> hasKeyForGhost
+
+hasKeyForGhost --->|Yes| ghostMsgAfterKey
+hasKeyForGhost --->|No| ghostMsgBeforeKey
+
+
+
+clickDoor --> hasKeyForDoor
+
+hasKeyForDoor -->|Yes| unlock
+hasKeyForDoor -->|No| locked --> game
+
+unlock --> exit
+

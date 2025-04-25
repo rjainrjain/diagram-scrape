@@ -1,0 +1,29 @@
+flowchart TD
+
+    %% Diagram nodes
+    createPlayers(Create simulated players)
+    pickPlayers(Pick two players)
+    selectCharacters(Each player\nselects characters)
+    pickFirstPlayer(Randomly assign\nactive player)
+    turnP1(Active player\ntakes turn\nrandomly)
+    switchActive("Active" player\nlabel swaps)
+    decideDone{{Active player\nexhausted?}}
+    startGame((Start Game))
+    endGame((Game\nends))
+
+    startProc((Start))
+    endProc((End))
+    startProc-->createPlayers
+
+    %% Gameplay
+    createPlayers --> pickPlayers --> playGame
+    subgraph playGame [Play Game]
+        direction LR
+        startGame --> selectCharacters
+        selectCharacters -->  pickFirstPlayer --> turnP1 --> switchActive --> decideDone
+        decideDone -->|Yes| gameFinishes
+        decideDone -->|No| turnP1
+        gameFinishes-->endGame
+    end
+
+    playGame-->endProc

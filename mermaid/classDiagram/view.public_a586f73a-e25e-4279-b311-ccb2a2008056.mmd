@@ -1,0 +1,16 @@
+classDiagram
+    class Book {
+        +String ISBN
+        +String title
+        +String author
+    }
+
+    class BookService {
+        +addBook(book: Book)
+        +updateBook(book: Book)
+        +getAllBooks(): List<Book>
+        +findBookByISBN(ISBN: String): Book
+        +deleteBook(ISBN: String)
+    }
+
+    BookService --> Book: "manages"

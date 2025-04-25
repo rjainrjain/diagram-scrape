@@ -1,0 +1,99 @@
+classDiagram
+  direction LR
+
+  class Pose3d {
+    -Rotation3d rotation
+    -Translation3d translation
+    +Pose3d rotateBy()
+    +Pose3d transformBy()
+    +Pose3d plus()
+    +Pose2d toPose2D()
+  }
+
+
+  class Transform2d {
+    -Rotation2d rotation
+    -Translation2d translation
+    +Transform2d plus()
+    +Transform2d inverse()
+  }
+
+
+  class Transform3d {
+    -Rotation3d rotation
+    -Translation3d translation
+    +Transform3d plus()
+    +Transform3d inverse()
+  }
+
+  class Translation3d {
+    -double x
+    -double y
+    -double z
+    +Translation3d plus()
+    +Translation3d minus()
+    +Translation3d unaryMinus()
+    +Translation2d toTranslation2d()
+    +double getDistance()
+  }
+
+  class Pose2d {
+    -Translation2d translation
+    -Rotation2d rotation
+  }
+
+  class Translation2d {
+    -double x
+    -double y
+  }
+
+  class Rotation3d {
+    -Quarternion q
+    +Rotation3d plus()
+    +Rotation3d minus()
+    +Rotation3d unaryMinus()
+    +Rotation3d rotateBy()
+    +Rotation3d toRotation2D()
+    +double getX() --roll
+    +double getY() --pitch
+    +double getZ() --yaw
+  }
+
+  class Rotation2d {
+    -double value
+    -double cos
+    -double sin
+  }
+
+  class Quaternion {
+    -double w
+    -double x
+    -double y
+    -double z
+    +Quaternion times()
+    +Quaternion plus()
+    +Quaternion minus()
+    +Quaternion conjugate()
+    +Quaternion inverse()
+    +Quaternion normalize()
+    +double dot()
+    +double norm()
+  }
+
+Pose3d --> Translation3d:uses
+Pose3d --> Rotation3d:uses
+
+Pose2d --> Translation2d:uses
+Pose2d --> Rotation2d: uses
+
+Rotation3d --> Quaternion:uses
+
+Pose3d --> Pose2d: mapsTo
+Translation3d --> Translation2d: mapsTo
+Rotation3d --> Rotation2d:mapsTo
+
+Transform2d --> Rotation2d:uses
+Transform2d --> Translation2d:uses
+
+Transform3d --> Rotation3d:uses
+Transform3d --> Translation3d:uses

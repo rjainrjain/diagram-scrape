@@ -1,0 +1,32 @@
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#00b1c7', 'secondaryColor': '#414042', 'tertiaryColor': '#6c757d', 'primaryBorderColor': '#00c2db'}}}%%
+graph LR
+    subgraph Actores
+        M((Médico))
+        T((Técnico RX))
+        P((Paciente))
+        A((Administrador))
+    end
+    
+    subgraph Sistema
+        CU1[Solicitar Estudio]
+        CU2[Realizar Radiografía]
+        CU3[Clasificar Imagen]
+        CU4[Revisar Resultados]
+        CU5[Generar Informe]
+        CU6[Gestionar Usuarios]
+        CU7[Consultar Historial]
+    end
+    
+    M --> CU1
+    M --> CU4
+    M --> CU5
+    T --> CU2
+    T --> CU3
+    P --> CU7
+    A --> CU6
+    
+    classDef actor fill:#00b1c7,stroke:#00c2db,stroke-width:2px,color:#fff;
+    classDef usecase fill:#414042,stroke:#00c2db,stroke-width:2px,color:#fff;
+    
+    class M,T,P,A actor;
+    class CU1,CU2,CU3,CU4,CU5,CU6,CU7 usecase;

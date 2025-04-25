@@ -1,0 +1,205 @@
+classDiagram
+    class GameController {
+        - players: Dictionary~IPlayer, PlayerData~
+        - board: Board
+        - prison: Prison
+        - gameStatus: GameStatus
+        - currentPlayer: IPlayer
+        - FindKing(player: Player): King
+        - IsInCheck(king: King): Boolean
+        - HasValidMoves(player: IPlayer): Boolean
+        - Action~Piece, IPlayer~ FinishedGame
+        + GameController(): void
+        + MovePiece(piece: Piece, to: Coordinate): void
+        + CapturePiece(piece: Piece): void
+        + CheckAVictor(): IPlayer
+        + StopGame(): Boolean
+        + EndTurn(): Boolean
+        + GetPlayer(): PlayerData
+        + PlayerTurn(): IPlayer
+        + PromoteFromPrisoner(board: Board, prison: Prison): void
+        + AssignColor(player: IPlayer, color: Color): void
+        + UpdatePieceStatus(piece: Piece, status: PieceStatus): void
+    }
+    %% MovePiece() to move pieces based on abstract class movement for each unique piece
+    %% CheckAVictor() will check for a victor when the king is checkmated
+    %% StopGame() used when the game is Finished
+    %% GetPlayer() get the player data
+    %% AssignColor() assigns color to the player
+    %% PlayerTurn() assigns player their respective turn
+    %% MovePiece() allows each player to make a move
+    %% CapturePiece() allows each player to capture enemy pieces
+
+    class GameStatus {
+        <<enumeration>>
+        IsPlaying,
+        Finished
+    }
+    %% GameStatus contains status of the game
+
+    class Color {
+        <<enumeration>>
+        White,
+        Black
+    }
+    %% This is the color for each player's pieces
+
+    class Player {
+        - id: int <get; private set>
+        - name: string <get; private set>
+        - color: string <get; private set>
+        + Player(name: string, id: int, color: string)
+        + GetName(): string
+    }
+    %% id, name, color get player data and set it
+
+    class PlayerData {
+        List~Piece~ pieces
+    }
+    %% PlayerData holds the player-specific data and methods to retrieve it
+
+    class IPlayer {<<interface>>
+        + id: int <get; private set>
+        + name: string <get; private set>
+        + color: string <get; private set>
+        + GetName(): string
+    }
+    %% Interface to connect the player
+
+    class Board {
+        - coordinates: List~Coordinate~
+        - pieces: List~Piece~
+        + setupBoard(): void
+        + movePiece(piece: Piece, to: Coordinate): void
+        + getPieceAt(coordinate: Coordinate): Piece
+    }
+    %% Coordinates will give coordinate list
+    %% Pieces will give piece list
+    %% Please do add more methods and field variables
+
+    class Coordinate {
+        - x: int
+        - y: int
+        + isValid(): Boolean
+    }
+    %% The coordinate that will connect to the Board
+
+    class Prison {
+        - capturedPieces: List~Piece~
+        + addPiece(piece: Piece): void
+        + removePiece(piece: Piece): Piece
+    }
+    %% -capturedPieces lists all the captured pieces
+    %% Please add a unique array/list to the prison for each player color
+    %% addPiece() adds a piece to the prison
+    %% removePiece() removes a piece from the prison
+
+    class Piece {
+        <<abstract>>
+        - color: string
+        - position: Coordinate
+        + move(to: Coordinate): void
+        + capture(): void
+        + isValidMove(to: Coordinate): Boolean
+    }
+    %% Abstraction for each unique piece movement
+
+    class Pawn {
+        - status: PieceStatus
+        + move(to: Coordinate): void
+        + capture(): void
+        + moveTwice(Coordinate): void
+        + isValidMove(to: Coordinate): Boolean
+        + promote(): void
+        + onPromote: PawnPromoteHandler
+    }
+    %% Promote() is used when the pawn reaches the corner top of the board
+    %% Delegate event handling for when the pawn reaches the top
+    class PawnPromoteHandler {<<action>>
+        - Action~Pawn~ PawnPromoteHandler
+    }
+
+    class Knight {
+        - status: PieceStatus
+        + move(to: Coordinate): void
+        + leap(): void
+        + isValidMove(to: Coordinate): Boolean
+    }
+
+    class Bishop {
+        - status: PieceStatus
+        + move(to: Coordinate): void
+        + isValidMove(to: Coordinate): Boolean
+    }
+
+    class Queen {
+        - status: PieceStatus
+        + move(to: Coordinate): void
+        + isValidMove(to: Coordinate): Boolean
+    }
+
+    class King {
+        - status: PieceStatus
+        + move(to: Coordinate): void
+        + isValidMove(to: Coordinate): Boolean
+        + check(): void
+        + checkmate(): Boolean
+        + IsAbleToSwap(): Boolean
+        + SwapPiece(): void
+        + onCastle: CastleHandler
+    }
+
+    class Rook {
+        - status: PieceStatus
+        + move(to: Coordinate): void
+        + isValidMove(to: Coordinate): Boolean
+        + IsAbleToSwap(): Boolean
+        + SwapPiece(): void
+        + onCastle: CastleHandler
+    }
+
+    class ISwapper {<<interface>>
+        + IsAbleToSwap(): Boolean
+        + SwapPiece(): void
+    }
+    %% Rook and King can use ISwapper for when the tiles between them are empty (Castling)
+    %% Event delegate for when the tiles in-between are empty
+    class CastleHandler { <<action>>
+        + Action~King, Rook~ CastleHandler
+    }
+
+    class PieceStatus {
+        <<enumeration>>
+        OnPlay, Captured
+    }
+
+    GameController *-- PieceStatus
+    GameController *-- GameStatus
+    GameController *-- IPlayer
+    GameController *-- PlayerData
+    GameController *-- Color
+    GameController *-- Board
+    GameController *-- Prison
+
+    Board *-- Coordinate
+    Board *-- Piece
+    Board *-- Prison
+
+    Prison *-- Piece
+
+    Piece <|-- Pawn
+    Piece <|-- Knight
+    Piece <|-- Rook
+    Piece <|-- Bishop
+    Piece <|-- Queen
+    Piece <|-- King
+
+    King ..|> ISwapper
+    Rook ..|> ISwapper
+
+    Pawn --* PawnPromoteHandler
+    King --* CastleHandler
+    Rook --* CastleHandler
+
+    IPlayer <|.. Player
+    PlayerData *-- Piece

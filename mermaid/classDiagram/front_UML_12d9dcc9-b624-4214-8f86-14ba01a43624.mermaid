@@ -1,0 +1,67 @@
+classDiagram
+            
+    class Game{
+        +String name
+        +boolean with_suggestions
+    }
+
+    Game "1" o-- Difficulty
+    class Difficulty{
+        <<Enumeration>>
+        EASY
+        MEDIUM
+        HARD
+        VERY_HARD
+        INSANE
+        INHUMAN
+    }
+
+    Game "1" o-- Grid
+    class Grid{
+      +getValues() List~GridElement~
+      +getValue(int x, int y) GridElement
+    }
+    Grid "*" o-- GridElement
+    class GridElement{
+      -int value
+      -getSuggestions(Grid) List~int~
+    }
+
+
+    Game "1" o-- Leaderboard
+    class Leaderboard{
+        getScores() 
+    }
+
+    Leaderboard "*" o-- Score
+    Game "1" o-- Score
+    class Score{
+      +int value
+      +int rank
+      +String name
+      +calculate(Grid, History) int
+    }
+
+    Game "1" o-- History
+    class History{
+        -int turns
+
+        +undo() void
+        +redo() void
+        +do(Action a) void
+    }
+
+    History "1" o-- ActionTreeElement
+    class Action{
+        -int indice
+        -int num
+    }
+    ActionTreeElement "1" o-- Action
+    ActionTreeElement "*" o-- ActionTreeElement
+    class ActionTreeElement{
+        -boolean choiceMade
+    }
+
+    class AngularService{
+        TODO???????????
+    }

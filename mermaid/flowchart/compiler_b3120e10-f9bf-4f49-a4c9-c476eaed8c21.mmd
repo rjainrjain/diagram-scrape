@@ -1,0 +1,10 @@
+flowchart LR
+    code((Code))
+    input((Input))
+    output((Output))
+    compiler[Compiler]
+    program[Program]
+    code --> compiler
+    compiler --> program
+    input --> program
+    program --> output

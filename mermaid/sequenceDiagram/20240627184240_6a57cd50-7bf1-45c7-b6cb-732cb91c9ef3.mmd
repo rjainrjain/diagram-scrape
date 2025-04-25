@@ -1,0 +1,20 @@
+
+sequenceDiagram
+    participant UA as User
+    participant SA as SchedulerApp
+    participant EV as Event
+    participant EVDAO as EventDAO
+    participant RM as Reminder
+    participant RMS as ReminderService
+    UA->>SA: Request add event
+    SA->>EV: new Event(title, description, start_time, end_time)
+    EV-->>EVDAO: add_event()
+    EVDAO-->>SA: Event added
+    UA->>SA: Request schedule reminder
+    SA->>RM: new Reminder(event_id, send_time)
+    RM-->>RMS: schedule_reminder()
+    RMS-->>SA: Reminder scheduled
+    UA->>SA: Request view events
+    SA->>EVDAO: get_events_for_day(day)
+    EVDAO-->>SA: Return events list
+    SA-->>UA: Display events

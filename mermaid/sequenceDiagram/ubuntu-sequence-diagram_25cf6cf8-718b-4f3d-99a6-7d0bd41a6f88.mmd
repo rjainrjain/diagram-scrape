@@ -1,0 +1,40 @@
+sequenceDiagram
+
+  participant FS as Local filesystem
+  participant 1P as 1Password
+
+  participant SD as systemd
+  participant ER as exec-resticprofile
+  participant RP as resticprofile
+  participant RE as restic
+  participant RC as rclone
+
+  participant PC as pCloud
+  participant HC as Healthchecks.io
+
+  SD ->> ER: Execute
+  ER ->> FS: 1Password service account token?
+  FS ->> ER: 1Password service account token
+  ER ->> RP: Execute w/ 1P svc acct token in env
+  RP ->> 1P: Healthcheck endpoint UUID?
+  1P ->> RP: Healthcheck endpoint UUID
+  RP ->> HC: Ping healthcheck endpoint
+  RP ->> RE: Execute
+  RE ->> 1P: restic repo password?
+  1P ->> RE: restic repo password
+  RE ->> RC: Start HTTP server
+  RC ->> 1P: rclone config password?
+  1P ->> RC: rclone config password
+  RC ->> RE: HTTP connection established
+
+  loop Data transfer: backup, forget old snapshots
+    RE ->> RC: HTTP
+    RC ->> PC: HTTPS
+    PC ->> RC: HTTPS
+    RC ->> RE: HTTP
+  end
+
+  RE ->> RP: Return status
+  RP ->> 1P: Healthcheck endpoint UUID?
+  1P ->> RP: Healthcheck endpoint UUID
+  RP ->> HC: Ping healthcheck endpoint w/ status and log file

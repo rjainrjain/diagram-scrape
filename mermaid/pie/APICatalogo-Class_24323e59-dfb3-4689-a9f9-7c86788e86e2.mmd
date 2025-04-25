@@ -1,0 +1,335 @@
+classDiagram 
+	
+	class AplicationUser  {
+		+ RefreshToken : string?
+		+ RefreshTokenExpiryTime : DateTime
+	}
+	class QueryStringParameters  {
+		-int maxPageSize 
+		-int _pageSize 
+		+ PageNumber : int
+		+ PageSize : int
+	}
+	class CustomLoggerProviderConfiguration  {
+		+ LogLevel : LogLevel
+		+ EventId : int
+	}
+	class AjusteTabelas  {
+		-BuildTargetModel(ModelBuilder modelBuilder) void
+	}
+	class CategoriasParameters  {
+	}
+	class Categoria  {
+		+ CategoriaId : int
+		+ Nome : string?
+		+ ImagemUrl : string?
+		+ Produtos : ICollection<Produto>?
+	}
+	class LoginModelDTODTO  {
+		+ UserName : string
+		+ Password : string
+	}
+	class MigracaoInicial  {
+		-BuildTargetModel(ModelBuilder modelBuilder) void
+	}
+	class ProdutosParameters  {
+	}
+	class CriaTabelasIdentity  {
+		-BuildTargetModel(ModelBuilder modelBuilder) void
+	}
+	class ErrorDetails  {
+		+ StatusCode : int
+		+ Message : string?
+		+ Trace : string?
+		+ToString() string
+	}
+	class PagedList ~T~ {
+		+ CurrentPage : int
+		+ TotalPages : int
+		+ PageSize : int
+		+ TotalCount : int
+		+ HasPrevious : bool
+		+ HasNext : bool
+		+ToPagedList(IQueryable~T~ source, int pageNumber, int pageSize) PagedList~T~
+	}
+	class CategoriasFiltroNome  {
+		+ Nome : string?
+	}
+	class AppDbContextModelSnapshot  {
+		-BuildModel(ModelBuilder modelBuilder) void
+	}
+	class ICategoriaRepository  {
+		-GetCategoriasAsync(CategoriasParameters categoriasParams) Task~IPagedList~Categoria~~
+		-GetCategoriasFiltroNomeAsync(CategoriasFiltroNome categoriasParams) Task~IPagedList~Categoria~~
+	}
+	class ResponseDTO  {
+		+ Status : string?
+		+ Message : string?
+	}
+	class AjusteAplicationUser  {
+		-Up(MigrationBuilder migrationBuilder) void
+		-Down(MigrationBuilder migrationBuilder) void
+	}
+	class ProdutoDTO  {
+		+ ProdutoId : int
+		+ Nome : string?
+		+ Descricao : string?
+		+ Preco : decimal
+		+ ImagemUrl : string?
+		+ CategoriaId : int
+	}
+	class CustomLoggerProvider  {
+		-CustomLoggerProviderConfiguration loggerConfig 
+		-ConcurrentDictionary~string&#44&#32CustomerLogger~ loggers 
+		+CreateLogger(string categoryName) ILogger
+		+Dispose() void
+	}
+	class Produto  {
+		+ ProdutoId : int
+		+ Nome : string?
+		+ Descricao : string?
+		+ Preco : decimal
+		+ ImagemUrl : string?
+		+ Estoque : float
+		+ DataCadastro : DateTime
+		+ CategoriaId : int
+		+ Categoria : Categoria?
+	}
+	class AjusteAplicationUser  {
+		-BuildTargetModel(ModelBuilder modelBuilder) void
+	}
+	class TokenService  {
+		+GenerateAccessToken(IEnumerable~Claim~ claims, IConfiguration _config) JwtSecurityToken
+		+GenerateRefreshToken() string
+		+GetPrincipalFromExpiredToken(string token, IConfiguration _config) ClaimsPrincipal
+	}
+	class IProdutoRepository  {
+		-GetProdutosAsync(ProdutosParameters produtosParams) Task~PagedList~Produto~~
+		-GetProdutosFiltroPrecoAsync(ProdutosFiltroPreco produtosFiltroParams) Task~PagedList~Produto~~
+		-GetProdutosPorCategoriaAsync(int id) Task~IEnumerable~Produto~~
+	}
+	class PopulaCategorias  {
+		-BuildTargetModel(ModelBuilder modelBuilder) void
+	}
+	class ITokenService  {
+		-GenerateAccessToken(IEnumerable~Claim~ claims, IConfiguration _config) JwtSecurityToken
+		-GenerateRefreshToken() string
+		-GetPrincipalFromExpiredToken(string token, IConfiguration _config) ClaimsPrincipal
+	}
+	class AjusteTabelas  {
+		-Up(MigrationBuilder migrationBuilder) void
+		-Down(MigrationBuilder migrationBuilder) void
+	}
+	class PopulaCategorias  {
+		-Up(MigrationBuilder mb) void
+		-Down(MigrationBuilder mb) void
+	}
+	class RegisterModelDTO  {
+		+ UserName : string
+		+ Email : string
+		+ Password : string
+	}
+	class AuthController  {
+		-ITokenService _tokenService 
+		-UserManager~AplicationUser~ _userManager 
+		-RoleManager~IdentityRole~ _roleManager 
+		-IConfiguration _configuration 
+		-ILogger~AuthController~ _logger 
+		+CreateRole(string roleName) Task~IActionResult~
+		+AddUserToRole(string email, string roleName) Task~IActionResult~
+		+Login(LoginModelDTODTO model) Task~IActionResult~
+		+Register(RegisterModelDTO model) Task~IActionResult~
+		+RefreshToken(TokenModelDTO tokenModel) Task~IActionResult~
+		+Revoke(string username) Task~IActionResult~
+	}
+	class ProdutoRepository  {
+		+GetProdutosAsync(ProdutosParameters produtosParams) Task~PagedList~Produto~~
+		+GetProdutosFiltroPrecoAsync(ProdutosFiltroPreco produtosFiltroParams) Task~PagedList~Produto~~
+		+GetProdutosPorCategoriaAsync(int id) Task~IEnumerable~Produto~~
+	}
+	class MigracaoInicial  {
+		-Up(MigrationBuilder migrationBuilder) void
+		-Down(MigrationBuilder migrationBuilder) void
+	}
+	class ApiLoggingFilter  {
+		-ILogger~ApiLoggingFilter~ _logger 
+		+OnActionExecuting(ActionExecutingContext context) void
+		+OnActionExecuted(ActionExecutedContext context) void
+	}
+	class ProdutoDTOMappingProfile  {
+	}
+	class CategoriasController  {
+		-IUnitOfWork _uof 
+		-ILogger~CategoriasController~ _logger 
+		+Get() Task~ActionResult~IEnumerable~CategoriaDTO~~~
+		+Get(CategoriasParameters categoriasParameters) Task~ActionResult~IEnumerable~CategoriaDTO~~~
+		+GetCategoriasFiltradas(CategoriasFiltroNome categoriasFiltro) Task~ActionResult~IEnumerable~CategoriaDTO~~~
+		-ObterCategorias(IPagedList~Categoria~ categorias) ActionResult~IEnumerable~CategoriaDTO~~
+		+Get(int id) Task~ActionResult~CategoriaDTO~~
+		+Post(CategoriaDTO categoriaDto) Task~ActionResult~CategoriaDTO~~
+		+Put(int id, CategoriaDTO categoriaDto) Task~ActionResult~CategoriaDTO~~
+		+Delete(int id) Task~ActionResult~CategoriaDTO~~
+	}
+	class PopulaProdutos  {
+		-Up(MigrationBuilder mb) void
+		-Down(MigrationBuilder mb) void
+	}
+	class ProdutoDTOUpdateRequest  {
+		+ Estoque : float
+		+ DataCadastro : DateTime
+		+Validate(ValidationContext validationContext) IEnumerable~ValidationResult~
+	}
+	class UnitOfWork  {
+		-IProdutoRepository? _produtoRepo 
+		-ICategoriaRepository? _categoriaRepo 
+		+DbContext _context 
+		+ ProdutoRepository : IProdutoRepository
+		+ CategoriaRepository : ICategoriaRepository
+		+CommitAsync() Task
+		+Dispose() void
+	}
+	class PopulaProdutos  {
+		-BuildTargetModel(ModelBuilder modelBuilder) void
+	}
+	class TokenModelDTO  {
+		+ AccessToken : string?
+		+ RefreshToken : string?
+	}
+	class CustomerLogger  {
+		-string loggerName 
+		-CustomLoggerProviderConfiguration loggerConfig 
+		+BeginScope(TState state) IDisposable
+		+IsEnabled(LogLevel logLevel) bool
+		+Log(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func~TState&#44&#32Exception&#44&#32string~ formatter) void
+		-EscreverTextoNoArquivo(string mensagem) void
+	}
+	class ApiExceptionFilter  {
+		-ILogger~ApiExceptionFilter~ _logger 
+		+OnException(ExceptionContext context) void
+	}
+	class Repository ~T~ {
+		-DbContext _context 
+		+GetAllAsync() Task~IEnumerable~T~~
+		+GetAsync(Expression~Func~T&#44&#32bool~~ predicate) Task~T?~
+		+Create(T entity) T
+		+Update(T entity) T
+		+Delete(T entity) T
+	}
+	class CategoriaRepository  {
+		+GetCategoriasAsync(CategoriasParameters categoriasParams) Task~IPagedList~Categoria~~
+		+GetCategoriasFiltroNomeAsync(CategoriasFiltroNome categoriasParams) Task~IPagedList~Categoria~~
+	}
+	class IUnitOfWork  {
+		- ProdutoRepository : IProdutoRepository
+		- CategoriaRepository : ICategoriaRepository
+		-CommitAsync() Task
+	}
+	class GenericRepository ~T~ {
+		-DbContext _context 
+		+GetAllAsync() Task~IEnumerable~T~~
+		+GetAsync(Expression~Func~T&#44&#32bool~~ predicate) Task~T~
+		+Create(T entity) T
+		+Update(T entity) T
+		+Delete(T entity) T
+	}
+	class IRepository ~T~ {
+		-GetAllAsync() Task~IEnumerable~T~~
+		-GetAsync(Expression~Func~T&#44&#32bool~~ predicate) Task~T?~
+		-Create(T entity) T
+		-Update(T entity) T
+		-Delete(T entity) T
+	}
+	class MyRateLimitOptions  {
+		+string MyRateLimit 
+		+ PermitLimit : int
+		+ Window : int
+		+ ReplenishmentPeriod : int
+		+ QueueLimit : int
+		+ SegmentsPerWindow : int
+		+ TokenLimit : int
+		+ TokenLimit2 : int
+		+ TokensPerPeriod : int
+		+ AutoReplenishment : bool
+	}
+	class ProdutosController  {
+		-IUnitOfWork _uof 
+		-IMapper _mapper 
+		+GetProdutosCategoriaAsync(int id) Task~ActionResult~IEnumerable~ProdutoDTO~~~
+		+GetAsync(ProdutosParameters produtosParameters) Task~ActionResult~IEnumerable~ProdutoDTO~~~
+		+GetProdutosFilterPrecoAsync(ProdutosFiltroPreco produtosFiltroParams) Task~ActionResult~IEnumerable~ProdutoDTO~~~
+		+GetAsync() Task~ActionResult~IEnumerable~ProdutoDTO~~~
+		+GetAsync(int id) Task~ActionResult~ProdutoDTO~~
+		+PostAsync(ProdutoDTO produtoDto) Task~ActionResult~ProdutoDTO~~
+		+PatchAsync(int id, JsonPatchDocument~ProdutoDTOUpdateRequest~ patchProdutoDTO) Task~ActionResult~ProdutoDTOUpdateResponse~~
+		+PutAsync(int id, ProdutoDTO produtoDto) Task~ActionResult~ProdutoDTO~~
+		+DeleteAsync(int id) Task~ActionResult~ProdutoDTO~~
+		-ObterProdutos(PagedList~Produto~ produtos) ActionResult~IEnumerable~ProdutoDTO~~
+	}
+	class CategoriaDTO  {
+		+ CategoriaId : int
+		+ Nome : string?
+		+ ImagemUrl : string?
+	}
+	class ProdutoDTOUpdateResponse  {
+		+ ProdutoId : int
+		+ Nome : string?
+		+ Descricao : string?
+		+ Preco : decimal
+		+ ImagemUrl : string?
+		+ Estoque : float
+		+ DataCadastro : DateTime
+		+ CategoriaId : int
+	}
+	class ProdutosFiltroPreco  {
+		+ preco : decimal?
+		+ precoCriterio : string?
+	}
+	class CriaTabelasIdentity  {
+		-Up(MigrationBuilder migrationBuilder) void
+		-Down(MigrationBuilder migrationBuilder) void
+	}
+	class CategoriaDTOMappingExtensions  {
+		+ToCategoriaDTO(Categoria categoria) CategoriaDTO?
+		+ToCategoria(CategoriaDTO categoriaDto) Categoria?
+		+ToCategoriaDTOList(IEnumerable~Categoria~ categorias) IEnumerable~CategoriaDTO~
+	}
+	class DbContext  {
+		+ Categorias : DbSet~Categoria~
+		+ Produtos : DbSet~Produto~
+		-OnModelCreating(ModelBuilder builder) void
+	}
+	
+	AplicationUser --|> IdentityUser
+	CategoriasParameters --|> QueryStringParameters
+	ProdutosParameters --|> QueryStringParameters
+	PagedList --|> List
+	CategoriasFiltroNome --|> QueryStringParameters
+	AppDbContextModelSnapshot --|> ModelSnapshot
+	ICategoriaRepository --|> IRepository
+	AjusteAplicationUser --|> Migration
+	CustomLoggerProvider --|> ILoggerProvider
+	TokenService --|> ITokenService
+	IProdutoRepository --|> IRepository
+	AjusteTabelas --|> Migration
+	PopulaCategorias --|> Migration
+	AuthController --|> ControllerBase
+	ProdutoRepository --|> Repository
+	ProdutoRepository --|> IProdutoRepository
+	MigracaoInicial --|> Migration
+	ApiLoggingFilter --|> IActionFilter
+	ProdutoDTOMappingProfile --|> Profile
+	CategoriasController --|> ControllerBase
+	PopulaProdutos --|> Migration
+	ProdutoDTOUpdateRequest --|> IValidatableObject
+	UnitOfWork --|> IUnitOfWork
+	CustomerLogger --|> ILogger
+	ApiExceptionFilter --|> IExceptionFilter
+	Repository --|> IRepository
+	CategoriaRepository --|> Repository
+	CategoriaRepository --|> ICategoriaRepository
+	GenericRepository --|> IRepository
+	ProdutosController --|> ControllerBase
+	ProdutosFiltroPreco --|> QueryStringParameters
+	CriaTabelasIdentity --|> Migration
+	DbContext --|> IdentityDbContext
+	

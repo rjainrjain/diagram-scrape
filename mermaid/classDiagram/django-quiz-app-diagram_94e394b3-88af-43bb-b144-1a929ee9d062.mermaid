@@ -1,0 +1,66 @@
+classDiagram
+    class Model {
+        <<Django Model>>
+    }
+    class User {
+        <<Django Auth>>
+    }
+    
+    class Quiz {
+        CharField title
+        TextField description
+        CharField category
+        ForeignKey creator
+        DateTimeField created_at
+        DateTimeField updated_at
+    }
+    
+    class Question {
+        ForeignKey quiz
+        TextField text
+        IntegerField order
+    }
+    
+    class Answer {
+        ForeignKey question
+        CharField text
+        BooleanField is_correct
+    }
+    
+    class QuizAttempt {
+        ForeignKey quiz
+        ForeignKey user
+        IntegerField score
+        DurationField time_taken
+        DateTimeField started_at
+        DateTimeField completed_at
+    }
+    
+    class UserAnswer {
+        ForeignKey quiz_attempt
+        ForeignKey question
+        ForeignKey answer
+        BooleanField is_correct
+    }
+    
+    class UserProfile {
+        OneToOneField user
+        TextField bio
+        IntegerField quizzes_taken
+        IntegerField quizzes_created
+    }
+    
+    Model <|-- Quiz
+    Model <|-- Question
+    Model <|-- Answer
+    Model <|-- QuizAttempt
+    Model <|-- UserAnswer
+    Model <|-- UserProfile
+    
+    User "1" -- "1" UserProfile : has
+    User "1" -- "*" Quiz : creates
+    Quiz "1" -- "*" Question : contains
+    Question "1" -- "*" Answer : has
+    Quiz "1" -- "*" QuizAttempt : has
+    QuizAttempt "1" -- "*" UserAnswer : contains
+    User "1" -- "*" QuizAttempt : takes

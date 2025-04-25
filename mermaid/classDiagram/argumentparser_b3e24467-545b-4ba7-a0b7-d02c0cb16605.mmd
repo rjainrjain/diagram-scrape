@@ -1,0 +1,84 @@
+---
+title: ArgumentParser Architecture
+---
+classDiagram
+    note "<b>Note on visibility characters</b>:
+	+ : public
+	~ : package-protected
+	- : private"
+    ArgumentParser "has a map of" --> Argument
+    ArgumentBuilder "builds" --> Argument
+    ContinuousRange "implements" --> IRange
+    DiscreteValues "implements" --> IRange
+    ArgumentParser "uses during parsing" --> ArgToken
+    ArgToken  <-- "is a parameter for" TokenKind
+
+    class ArgumentParser {
+        - final HashMap<.String, Argument> namespace
+        + ArgumentParser(programName: String, description: String)
+        + void addArgument(argument: Argument)
+        + Argument getArgument(s: String) fetches argument from namespace
+        + void parse() Takes arguments passed into the program and parses them
+        - ArrayList<.ArgToken> lex(String rawArguments)
+        - String validate(ArrayList<.ArgToken>) Validates that tokens have the correct names and types
+    }
+
+    class TokenKind["enum TokenKind"] {
+        + POSITIONAL_ARG
+        + NAMED_ARG
+    }
+
+    class ArgToken["record ArgToken(TokenKind kind, String name, String value)"] {
+        + TokenKind kind
+        + String name
+        + String value
+    }
+
+    class ArgumentBuilder {
+        ~ String[] names
+        ~ String ref
+        ~ Type type
+        ~ IRange range
+        ~ String nargs
+        ~ String helpMessage
+        ~ String helpName
+        ~ boolean required
+        ~ boolean positional
+        + ArgumentBuilder(Type type, String ref, String... name)
+        + ArgumentBuilder setRange(IRange range)
+        + ArgumentBuilder setNargs(String nargs)
+        + ArgumentBuilder setHelpMessage(String helpMessage)
+        + ArgumentBuilder setHelpName(String helpName)
+        + ArgumentBuilder setRequired(boolean required)
+        + ArgumentBuilder setPositional(boolean positional)
+        + Argument build()
+    }
+
+    class Argument {
+        + Argument(ArgumentBuilder builder)
+        + final String[] names
+        + final String ref
+        + final Type type
+        + final IRange range
+        + final String nargs
+        + final String helpMessage
+        + final String helpName
+        + final boolean required
+        + final boolean positional
+        + String value
+        + String getValue()
+    }
+
+    class IRange["IRange (generic T extends Comparable)"] {
+        + boolean isInRange(T value)
+    }
+
+    class ContinuousRange["ContinuousRange (generic T extends Comparable)"] {
+        + ContinuousRange(T lowerBound, T upperBound)
+        + boolean isInRange(T value)
+    }
+
+    class DiscreteValues["DiscreteValues (generic T extends Comparable)"] {
+        + DiscreteValues(T... validValues)
+        + boolean isInRange(T value)
+    }

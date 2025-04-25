@@ -1,0 +1,9 @@
+sequenceDiagram
+User->>Server: login request
+Server-->>User: InvokeURL
+Server-->>Service: request user data
+User->>Service: login via OIDC/SAML
+Service->>IdP: OIDC/SAML login request
+IdP->>Service: auth token
+Service-->>Server: user data
+Server->>User: login ticket

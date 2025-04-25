@@ -1,0 +1,9 @@
+sequenceDiagram
+    participant M as Main
+    participant G as GUI
+    participant W as WordGenerator
+    M->>W: create WordGenerator
+    M->>G: create GUI with WordGenerator
+    G->>W: start word generation
+    W->>G: update word
+    G->>W: stop word generation

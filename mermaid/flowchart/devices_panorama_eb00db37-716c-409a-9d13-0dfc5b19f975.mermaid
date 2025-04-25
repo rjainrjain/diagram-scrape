@@ -1,0 +1,53 @@
+flowchart TD
+    A[Start] --> B[Initialize DeviceManager]
+    B --> C[getDevicesFromPanorama]
+    C --> D{Panorama config exists?}
+    D -->|No| E[Return Error]
+    D -->|Yes| F[Initialize Panorama Client]
+    F --> G[Send command to get connected devices]
+    G --> H{Response received?}
+    H -->|No| I[Return Error]
+    H -->|Yes| J[Unmarshal XML response]
+    J --> K{Unmarshal successful?}
+    K -->|No| L[Return Error]
+    K -->|Yes| M[Process device entries]
+    M --> N[Apply hostname filter]
+    N --> O[Return filtered device list]
+
+    subgraph Initialize-Panorama-Client
+        F1[Create PanosClient]
+        F2[Set client parameters]
+        F3[Initialize client]
+        F1 --> F2 --> F3
+    end
+
+    subgraph Process-device-entries
+        M1[Iterate through devices]
+        M2[Create device map]
+        M3[Add device to list]
+        M1 --> M2 --> M3
+    end
+
+    subgraph Apply-hostname-filter
+        N1{Hostname filter exists?}
+        N2[Call filterDevices function]
+        N3[Return original list]
+        N1 -->|Yes| N2
+        N1 -->|No| N3
+    end
+
+    subgraph filterDevices function
+        P[Start filterDevices]
+        Q[Iterate through devices]
+        R{Device matches filter?}
+        S[Add to filtered list]
+        T[Return filtered list]
+        P --> Q --> R
+        R -->|Yes| S --> Q
+        R -->|No| Q
+        Q --> T
+    end
+
+    C -.-> Initialize-Panorama-Client
+    M -.-> Process-device-entries
+    N -.-> Apply-hostname-filter

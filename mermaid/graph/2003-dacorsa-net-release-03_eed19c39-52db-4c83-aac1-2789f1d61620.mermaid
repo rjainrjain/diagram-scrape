@@ -1,0 +1,29 @@
+---
+title: version 3 - phpNuke online portal
+---
+
+%%{ init: {'theme': 'neutral'} }%%
+graph LR
+
+subgraph offline
+    gimp([Image editor]) --> source{{Original images}}
+end
+
+subgraph online
+    database[(database)]
+    images{{Uploaded images}}
+    editor[[phpNuke admin]]
+    cms[[phpNuke CMS]]
+end
+
+editor --> database
+editor --> images
+
+database --> cms
+images --> cms
+
+adminbrowser([Browser]) --> editor
+source --> editor
+
+cms -.-> browser(((WWW)))
+images -.-> browser

@@ -1,0 +1,54 @@
+classDiagram
+Student --> UI: 1. login()
+UI --> SelectionController: 2. checkSelectionResult(username)
+SelectionController --> SelectionRepository: 3. hasSelectionResult(username)
+SelectionRepository --> DBConnector: 4. execute(Q2S.1, username)
+DBConnector --> SelectionRepository: 5. return hasResult
+SelectionRepository --> SelectionController: 6. return hasResult
+SelectionController --> UI: 7. redirectToHome()
+SelectionController --> SelectionRepository: 8. getSelectionDetails(username)
+SelectionRepository --> DBConnector: 9. execute(Q2S.2)
+DBConnector --> SelectionRepository: 10. return selectionDetails[]
+SelectionRepository --> SelectionController: 11. selectionDetails[]
+SelectionController --> UI: 12. displaySelectionResults(selectionDetails)
+
+Student --> UI: 13. clickSelect()
+Student --> UI: 14. clickSave()
+Student --> UI: 15. confirmAction()
+UI --> SelectionController: 16. processRejection(username)
+SelectionController --> SelectionRepository: 17. validateSelections()
+SelectionController --> SelectionRepository: 18. updateRejectionStatus(username)
+SelectionRepository --> DBConnector: 19. execute(Q2S.3)
+DBConnector --> SelectionRepository: 20. updateSuccess
+SelectionRepository --> SelectionController: 21. updateSuccess
+SelectionController --> UI: 22. redirectToHome()
+
+    class Student {
+    
+    }
+
+    class UI {
+        +login()
+        +clickSelect()
+        +clickSave()
+        +confirmAction()
+
+        +redirectToHome()
+        +displaySelectionResults()
+    }
+
+    class SelectionController {
+        +checkSelectionResult()
+        +processRejection()
+    }
+
+    class SelectionRepository {
+        +hasSelectionResult()
+        +getSelectionDetails()
+        +validateSelections()
+        +updateRejectionStatus()
+    }
+
+    class DBConnector {
+        +executeQuery()
+    }

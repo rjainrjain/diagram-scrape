@@ -1,0 +1,73 @@
+sequenceDiagram
+    title Account Details
+
+    participant CNS as CreateNoteScreen
+    participant CTS as CreateTaskScreen
+    participant ADS as AccountDetailScreen
+    participant ADSVM as AccountDetailScreenViewModel
+    participant ADSR as AccountDetailScreenRepository
+    participant NDS as NoteDetailScreen
+    participant NDSVM as NoteDetailScreenViewModel
+    participant CT as CustomToast
+    participant NR as NoteRepository
+    participant TR as TaskRepository
+    participant S as Server
+
+
+    ADS->>ADSVM: Request to fetch Account Details with Account ID
+    ADSVM->>ADSR: Request to fetch Account Details 
+    ADSR-->>S: Send API Request
+    note right of ADSR: GET {api_base_url}/v1/accounts/{accountId}
+
+    ADSVM->>NR: Request to fetch Account Notes List
+    NR-->>S: Send API Request
+    note right of NR: GET {api_base_url}/v1/accounts/{accountId}/notes
+    
+    ADSVM->>TR: Request to fetch Account Tasks List
+    TR-->>S: Send API Request
+    note right of TR: GET {api_base_url}/v1/accounts/{accountId}/tasks
+
+    break If any of the request fails
+        S-->>NR: Error response
+        NR->>ADSVM: response
+        ADSVM->>CT: error message
+        CT->>ADS: error message is displayed
+    end
+    
+    S-->>NR: Success response
+    NR->>ADSVM: response
+    S-->>TR: Success response
+    TR->>ADSVM: response
+    ADSVM->>ADS: Propagates response
+    note over ADS: Displays account details, notes list and task list
+
+    alt if user clicks on any notes 
+        ADS ->> NDS: navigate to note detail screen with Note Id and Account Id
+        NDS ->> NDSVM: Request to Fetch Note Detail with Note Id
+        NDSVM ->> NR: Send API Request
+        note right of NR: GET {api_base_url}/v1/accounts/{accountId}/notes/{noteId}
+
+        break If any of the request fails
+            S-->>NR: Error response
+            NR->>NDSVM: response
+            NDSVM->>NDS: error message
+            note over NDS: display error message
+
+        end
+
+        S-->>NR: Success response
+        NR->>NDSVM: response
+        NDSVM->>NDS: Propagates response
+        note over NDS: Displays note details
+
+    end
+
+    alt if user clicks on add notes button
+        ADS ->> CNS: navigate to create note screen
+    else if user clicks on add task button
+        ADS ->> CTS: navigate to create task screen
+    else if user clicks on delete note button
+        ADS ->> ADS: Delete note flow
+    else if user clicks on delete task button
+        ADS ->> ADS: Delete task flow
+    end

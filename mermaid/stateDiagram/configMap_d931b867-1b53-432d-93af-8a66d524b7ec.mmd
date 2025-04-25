@@ -1,0 +1,8 @@
+stateDiagram-v2
+    [*] --> Developer
+    Developer --> Infrastructure
+    Developer --> configMap
+    Infrastructure --> configMap
+    configMap --> Kubernetes
+    Kubernetes --> Application
+    Application --> [*]

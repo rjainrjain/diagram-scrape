@@ -1,0 +1,19 @@
+sequenceDiagram
+
+participant dashboard as Dashboard
+participant sendlesvc as Sendle Svc
+participant sendle as Sendle API
+
+dashboard->>+sendlesvc: (1) POST /sendle/campaigns
+sendlesvc->>-dashboard: 200 {status: accepted}
+
+dashboard->>+sendlesvc: (2) GET /sendle/campaigns
+sendlesvc->>-dashboard: Responds with (new | inprogress) campaigns
+
+dashboard->>+sendlesvc: (3) GET /sendle/campaigns/:campaign_id
+sendlesvc->>-dashboard: 200 picking-list-data
+
+dashboard->>+sendlesvc: (4) POST /sendle/campaigns/:campaign_id/process
+sendlesvc->>+sendle: Sendle API /api/orders
+sendle->>-sendlesvc: Responds with order data.
+sendlesvc->>-dashboard: Responds with shipping and packing data.

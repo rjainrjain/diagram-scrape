@@ -1,0 +1,9 @@
+graph TD
+    A[Qualtrics Survey] -->|Trigger| B[Plugin Workflow]
+    B -->|Extract Data| C[Data Extractor]
+    C -->|Raw Data| D[Data Hasher]
+    D -->|Hashed Data| E[Data Sender]
+    E -->|Send to Server| F[Web Server]
+    G[Configuration Module] -->|Settings| B
+    H[Error Handler] -->|Manage Errors| B
+    I[Logging Module] -->|Log Activities| B

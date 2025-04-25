@@ -1,0 +1,37 @@
+flowchart TD
+    A[Start] --> B[DeviceManager.getDevicesFromInventory]
+    B --> C{Read Inventory File}
+    C -->|Success| D[Process Devices]
+    C -->|Error| E[Return Error]
+
+    D --> F[Initialize NGFW Clients]
+    F --> G[Collect Device Info]
+    G --> H[Return Device List]
+
+    subgraph getDevicesFromInventory
+        C --> I[readInventoryFile]
+        I --> J[Create Device List]
+        J --> K[Process Each Device]
+        K --> L{Initialize NGFW Client}
+        L -->|Success| M[Get Device Info]
+        L -->|Error| N[Log Error]
+        M -->|Success| O[Add to Device List]
+        M -->|Error| P[Log Error]
+    end
+
+    subgraph getNgfwDeviceInfo
+        Q[Send 'show system info' Command]
+        Q --> R{Parse XML Response}
+        R -->|Success| S[Extract Device Info]
+        R -->|Error| T[Return Error]
+        S --> U[Return Device Info Map]
+    end
+
+    subgraph defaultNgfwClientFactory
+        V[Create PanosClient]
+        V --> W[Return Firewall Client]
+    end
+
+    style getDevicesFromInventory fill:#f9f,stroke:#333,stroke-width:2px
+    style getNgfwDeviceInfo fill:#ccf,stroke:#333,stroke-width:2px
+    style defaultNgfwClientFactory fill:#cfc,stroke:#333,stroke-width:2px

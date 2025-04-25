@@ -1,0 +1,22 @@
+graph TD
+    subgraph Row1[Harvesting]
+        A[Direct Messages] 
+        B[Channels] 
+    end
+
+    subgraph Row2[Storage]
+        D[Direct Messages] 
+        E[Channels] 
+    end
+
+    subgraph Row3[Derived Measurements]
+        G[Who Do I talk to]
+        G --> H[Was I humble]
+        G --> I[Was I hungry]
+        G --> K[Was I smngrt]
+        Questions[Questions]
+        Questions --> to_me[Who ask me Questions?]
+        Questions --> from_me[Who do I ask Questions?]
+    end
+    Row1 --> Row2
+    Row2 --> Row3

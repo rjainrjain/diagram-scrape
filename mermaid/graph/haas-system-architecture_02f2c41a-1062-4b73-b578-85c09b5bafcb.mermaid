@@ -1,0 +1,20 @@
+graph TD
+    A[React Frontend] -->|HTTP Requests| B[Flask Backend]
+    B <-->|Queries/Updates| C[MongoDB]
+    B -->|Authentication| D[Token-based Auth]
+    B -->|Encryption| E[User Credential Encryption]
+    subgraph Frontend
+        A --> F[User Management]
+        A --> G[Project Management]
+        A --> H[Resource Management]
+    end
+    subgraph Backend
+        B --> I[User API]
+        B --> J[Project API]
+        B --> K[Resource API]
+    end
+    subgraph Database
+        C --> L[Users Collection]
+        C --> M[Projects Collection]
+        C --> N[Resources Collection]
+    end

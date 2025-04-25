@@ -1,0 +1,21 @@
+classDiagram
+    class Main {
+        -ScreenplayAnalysis screenplay_analysis
+        +main() str
+    }
+    class ScreenplayAnalysis {
+        -NlpEngine nlp_engine
+        -CharacterAnalysis character_analysis
+LocationAnalysis location_analysis
+SceneAnalysis scene_analysis
+DialogueAnalysis dialogue_analysis
+        +analyze(screenplay: dict) dict
+    }
+    class NlpEngine {
+        -tokenizer tokenizer
+        -parser parser
+        -generator generator
+        +process(input: str) dict
+    }
+    Main --> ScreenplayAnalysis
+    ScreenplayAnalysis --> NlpEngine

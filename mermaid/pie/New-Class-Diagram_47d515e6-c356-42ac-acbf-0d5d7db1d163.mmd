@@ -1,0 +1,152 @@
+classDiagram
+    CheckersBoard ..|> IBoard 
+    Player ..|> IPlayer
+    Piece --> PieceStatus
+    Piece --> PieceColor
+    CheckersBoard"1"..*"n"Piece
+    GameController"1" ..* "1"IBoard
+    GameController"1"..*"2" IPlayer
+    GameController --> GameStatus
+    GameController --> Position
+
+    class IPlayer{
+        <<Interface>>
+        +string NickName[+get;]
+        +int Id[+get;]
+    }
+    class IBoard{
+        <<Interface>>
+        +int Size [+get;]
+        +T?[,] Layout [+get;]
+    }
+
+    class PieceStatus{
+        <<Enumeration>>
+        Regular
+        King
+    }
+    class PieceColor{
+        <<Enumuration>>
+        Blue
+        Red
+    }
+    class GameStatus{
+        <<Enumeration>>
+        NotReady
+        Ready
+        OnGoing
+        GameOver
+    }
+
+    class Position{
+        +int Row [+get; +set]
+        +int Column [+get; +set]
+
+        +Position(int row, int column)
+        +Override ToString() string
+        +Override GetHashCode() int
+    }
+    class Piece{
+        +int Id [+get;]
+        +PieceColor Color [+get;]
+        +PieceStatus Status [+get; +set;]
+
+        +Piece(int id, PieceColor color, PieceStatus status = PieceStatus.Regular)
+        +Override Equals(object? obj) bool
+        +Override GetHashCode() int
+        +Override ToString() string
+    }
+    class Player{
+        +string Name[+get;]
+        +int Id[+get;]
+        
+        +Player(int id, string name)
+        +Override Equals(object? obj) bool
+        +Override GetHashCode() int
+        +Override ToString() string
+    }
+    class CheckersBoard{
+        +int Size [+get;]
+        +T?[,] Layout [+get; +set;]
+
+        +CheckersBoard(int size = 8)
+    }
+    class GameController{
+        -Readonly ILogger<GameController>? _logger
+        -Readonly Dictionary~IPlayer; HashSet~Piece~~ _playerPieces
+        -IBoard<Piece> _board
+        -GameStatus _status
+        -IPlayer? _currentPlayer
+        +Action~Piece~? PieceCaptured
+        +Action~Piece, Position~? PieceMoved
+        +Action~Piece~? PiecePromoted
+        +Action~IPlayer~? PlayerAdded
+        +Action~IPlayer~? CurrentPlayerChanged
+        +Action~GameStatus~? StatusChanged
+
+        +GameController(ILogger~GameController~? logger = null)
+        +GameController(IBoard~Piece~ board, IPlayer player1, IPlayer player2, ILogger~GameController~? logger = null)
+        
+        #virtual OnChangeStatus(GameStatus status) void
+        #virtual OnChangeCurrentPlayer(IPlayer player) void
+        #virtual OnAddPlayer(IPlayer AddPlayer) void
+        #virtual OnMovePiece(Piece piece, Position position) void
+        #virtual OnCapturePiece(Piece piece) void
+        #virtual OnPromotePiece(Piece piece) void
+        
+        +AddPlayer(IPlayer player) bool
+        +SetCurrentPlayer(IPlayer player) bool
+        +GetCurrentPlayer() IPlayer?
+        +GetActivePlayer() IEnumerable~IPlayer~
+        +RemoveAllPlayer() void
+        +SetPiecesPlayer(IPlayer player, HashSet~Piece~ pieces) bool
+        +GetPlayerPieces() Dictionary~IPlayer; HashSet~Piece~~
+        +GetPlayerPieces(IPlayer player) IEnumerable~Piece~
+        +GetPlayerByPieces(Piece piece) IPlayer?
+        -IsPlayerValid(IPlayer player) bool
+        
+        +GeneratePieces(PieceColor color, int quantity) IEnumerable~Piece~
+        +SetBoard(IBoard~Piece~ board) bool
+        +GetBoardSize() int
+        +GetBoardLayout() Piece?[,]
+        +SetPieceToBoard() bool
+        +SetPieceToBoard(IPlayer player) bool
+        -SetPieceToBoard(Piece piece, Position position) bool
+        -SetPieceToBoard(Piece piece, int row, int column) bool
+        +GetPieces() IEnumerable~Piece~
+        +GetPiece(IPlayer player, int id) Piece?
+        +GetPiece(Position position) Piece?
+        +GetPiece(int row, int column) Piece?
+        +RemovePiece(Piece piece) bool
+        -RemovePieceFromBoard(Position position) bool
+        -RemovePieceFromBoard(int row, int column) bool
+        -RemovePieceFromPlayer(IPlayer player, Piece piece) bool
+        +CountPieceOnBoard() int
+        +MaxPlayerPieces() int
+        
+        +GetPosition(Piece piece) Position?
+        +GetPossibleMoves(IPlayer player) IEnumerable~Position~
+        +GetPossibleMoves(Piece piece, in bool firstMove = true) IEnumerable~Position~
+        -CanMoveBackward(Piece piece) bool
+        -IsValidMove(int toRow, int toColumn) bool
+        -WithinBoundaries(int row, int column) bool
+        
+        +MovePiece(Position source, Position target, in bool firstMove = true) bool
+        +MovePiece(Piece piece, Position target, in bool firstMove = true) bool
+        -ValidateNewPosition(Piece piece, Position target, in bool firstMove = true) bool
+        -IsJumpMove(Position source, Position target) bool
+        -CapturePieceInBetween(Position source, Position target) bool
+        +PromotePiece(Piece piece) bool
+        -OnEndRow(Piece piece, Position position) bool
+        -PromotePieceFromPlayer(IPlayer player, Piece piece) bool
+        -PromotePieceFromBoard(Position position) bool
+        -PromotePieceFromBoard(int row, int column) bool
+        
+        +SetGamestatus(GameStatus status) bool
+        +GetStatus() GameStatus
+        +Start() bool
+        +GameOver() bool
+        +GetWinner() IPlayer?
+        +NextTurn() bool
+        +Resign(IPlayer player) bool
+    }

@@ -1,0 +1,32 @@
+sequenceDiagram
+    actor C as Client
+    participant S as Server
+
+    note over C,S: Assume the user has already logged in <br> and is in possession of the parent folder key and the folder key
+
+    C->>S: Ask the server for the list of users with access to the folder
+    S-->>C: Return the folder's users
+
+    C->>C: Change the folder's key nonce to a new random value
+
+    C->>C: Derive the new folder's key from the parent <br> folder's key and the new nonce
+
+    loop for each user to whom the folder is shared
+        C->>S: Ask the server for the user's public key
+        S-->>C: Return the user's public key
+        C->>C: Encrypt the folder's key with the user's <br> public key using X25519
+        C->>S: Send the user's encrypted folder's key to the server
+    end
+
+    loop for each file in the folder
+        C->>S: Ask the server for the file's metadata and data
+        C->>C: Derive the old file key from the folder key and the key nonce
+        C->>C: Decrypt file metadata and file data
+        C->>C: Generate new random key nonce
+        C->>C: Derive a new file key from the folder key <br> and the new key nonce
+        C->>C: Encrypt the file (data and metadata) <br> using the new file's key
+        C->>S: Send the new version of the file to the server
+    end
+
+
+    

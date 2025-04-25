@@ -1,0 +1,14 @@
+classDiagram
+  MedicalGuideline -- MedicalEvidenceLevel
+  MedicalGuideline -- MedicalEntity
+  MedicalGuideline -- date
+
+
+class MedicalGuideline {
+
+  MedicalEvidenceLevel evidenceLevel
+  string evidenceOrigin
+  MedicalEntity guidelineSubject
+  date guidelineDate
+
+ }

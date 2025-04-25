@@ -1,0 +1,12 @@
+flowchart TD
+    Q[Thoroughly read problem statement and divide into subproblems] --> A
+    A[Consider a problem & decide on an Approach] --> B[Implementation]
+    B --> C2{Test Changes}
+    C2 -- error? don't panic! --> EG
+    C2 -- working? well done! --> FG
+    EG[Commit to Git!] --> E
+    E[Consider error as new problem to solve] --> A
+    FG["Commit to Git!"]
+    FG --> S["Check Style/Redundant Code"]
+    S --> SG["Commit to Git!"]
+    SG --> G["Submit to Gradescope"]

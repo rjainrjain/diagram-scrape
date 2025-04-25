@@ -1,0 +1,37 @@
+flowchart LR
+    %% Actors/Entities
+    U["fa:fa-user User Account"]
+    Admin["fa:fa-user-cog Admin (Instance of User)"]
+
+    %% System components
+    C["fa:fa-users Channel"]
+
+    %% Admin actions (tied to the channel)
+    AdminAction1["fa:fa-plus-circle Create Protected Channel"]
+    AdminAction2["fa:fa-users Assign Roles in Channel"]
+    AdminAction3["fa:fa-tasks Assign Tasks"]
+    AdminAction4["fa:fa-check Close Task"]
+    AdminAction5["fa:fa-tools Manage Channels"]
+    AdminAction6["fa:fa-link Generate and Send Invite Link"]
+
+    %% Actions performed within the channel
+    ChannelAction1["fa:fa-envelope Send Message"]
+    ChannelAction2["fa:fa-file-upload Upload File"]
+    ChannelAction3["fa:fa-tasks Manage Tasks"]
+    ChannelAction4["fa:fa-edit Edit Message"]
+    ChannelAction5["fa:fa-poll-h Create Poll"]
+    ChannelAction6["fa:fa-comment-alt Private Chat"]
+    ChannelAction7["fa:fa-bell Manage Notification Settings"]
+    ChannelAction8["fa:fa-search Search in Channel"]
+
+    %% Relationships between entities and actions
+    U --> |Uses| C
+    C --> |Allows| ChannelAction1 & ChannelAction2 & ChannelAction3 & ChannelAction4 & ChannelAction5 & ChannelAction6 & ChannelAction7 & ChannelAction8
+
+    %% Admin uses, creates, and manages the channel
+    Admin --> |Uses, Creates, Manages| C
+    Admin --> AdminAction1 & AdminAction2 & AdminAction3 & AdminAction4 & AdminAction5 & AdminAction6
+    C --> |Admin Manages| AdminAction1 & AdminAction2 & AdminAction3 & AdminAction4 & AdminAction5 & AdminAction6
+
+    %% Admin manages users and their privileges
+    Admin --> |Manages & Grants Privileges to| U

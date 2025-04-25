@@ -1,0 +1,54 @@
+
+sequenceDiagram
+  actor Pembeli/Penjual/Admin
+  participant V_L as View #10095; LoginPage
+  participant C_A as Controller #10095; AuthController
+  participant M_U as Model #10095; User
+  participant V_H as View #10095; HomePage
+  participant V_DS as View #10095; DashboardSellerPage
+  participant V_DA as View #10095; DashboardAdminPage
+
+
+  Pembeli/Penjual/Admin->>V_L: Klik tombol "Login"
+  activate Pembeli/Penjual/Admin
+
+  activate V_L
+
+  V_L->>C_A: login(request)
+
+  deactivate V_L
+
+  activate C_A
+
+  opt Invalid Credential
+    C_A-->>Pembeli/Penjual/Admin: return validation message
+  end
+
+  C_A->>M_U: get()
+
+  activate M_U
+
+  M_U-->>C_A: data user
+  
+  deactivate M_U
+
+  opt Role User
+    C_A->>V_H: return view with token and user data
+    activate V_H
+    deactivate V_H
+  end
+
+  opt Role Seller
+    C_A->>V_DS: return view with token and user data
+    activate V_DS
+    deactivate V_DS
+  end
+
+  opt Role Admin
+    C_A->>V_DA: return view with token and user data
+    activate V_DA
+    deactivate V_DA
+  end
+
+  deactivate C_A
+  deactivate Pembeli/Penjual/Admin

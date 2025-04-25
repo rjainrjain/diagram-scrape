@@ -1,0 +1,57 @@
+sequenceDiagram
+    participant User
+    participant codeServerChatExtenstionView
+    participant chatSocket
+    participant chatController
+    participant Model
+
+    User->> codeServerChatExtenstionView: yeu cau hien thi 
+    codeServerChatExtenstionView->>chatSocket: ket noi
+    codeServerChatExtenstionView->>chatController: yeu cau message cua doan hoi thoai cu
+    chatController->>Model: GetMessages()
+    Model-->>chatController: Messages
+    chatController-->>codeServerChatExtenstionView: ShowMessages(Messages)
+    codeServerChatExtenstionView->> User: hien thi
+    alt Successful Case
+       Model-->>chatController: Messages
+        chatController-->>codeServerChatExtenstionView: ShowMessages(Messages)
+        codeServerChatExtenstionView->> User: hien thi
+    else Exception Case
+        Model-->>chatController: failed to get messages
+        chatController-->>codeServerChatExtenstionView: ShowError()
+        codeServerChatExtenstionView->> User: hien thi loi
+    end
+
+    loop
+
+    alt Successful Case
+            User-->>codeServerChatExtenstionView: send message
+            codeServerChatExtenstionView->>chatSocket: emit message
+            chatSocket->>chatController: send message
+            chatController->>Model: SaveMessage()
+            Model-->>chatController: success
+            chatController-->>chatSocket: success
+            chatSocket-->>codeServerChatExtenstionView: success
+            codeServerChatExtenstionView->>User: hien thi
+    else Exception Case: SaveMessage Failure
+            User-->>codeServerChatExtenstionView: send message
+            codeServerChatExtenstionView->>chatSocket: emit message
+            chatSocket->>chatController: send message
+            chatController->>Model: SaveMessage()
+            Model-->>chatController: failed
+            chatController-->>chatSocket: failed
+            chatSocket-->>codeServerChatExtenstionView: failed
+            codeServerChatExtenstionView->>User: hien thi loi
+    else Exception Case: Emit Message Failure
+            User-->>codeServerChatExtenstionView: send message
+            codeServerChatExtenstionView->>chatSocket: emit message
+            chatSocket->>chatController: failed
+            chatController-->>codeServerChatExtenstionView: ShowError()
+            codeServerChatExtenstionView->>User: hien thi loi
+    end
+           
+    end
+
+
+
+    

@@ -1,0 +1,18 @@
+classDiagram
+class PresentationLayer {
+    	<<Interface>>
+	+ServiceAPI
+	+UserInterface()
+}
+class BusinessLogicLayer {
+	+UserModel()
+	+PlaceModel()
+	+ReviewModel()
+	+AmenityModel()
+}
+class PersistenceLayer {
+	+DatabaseAccess
+	+DAO()
+}
+PresentationLayer --> BusinessLogicLayer : Facade Pattern
+BusinessLogicLayer --> PersistenceLayer : Database Operations

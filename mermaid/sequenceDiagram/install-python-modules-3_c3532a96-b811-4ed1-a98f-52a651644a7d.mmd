@@ -1,0 +1,8 @@
+%%{init: {'theme': 'dark', 'themeVariables': { 'primaryTextColor': 'white'}}}%%
+sequenceDiagram
+    participant A as Server<br>(z.B. conda-forge)
+    participant B as Local<br>(your laptop)
+    participant C as Session<br>
+
+    A->> B: Install library
+    B->> C: Import library

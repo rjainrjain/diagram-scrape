@@ -1,0 +1,121 @@
+erDiagram
+  dim_user {
+    int user_sk PK
+    int user_id
+    string username
+    string email
+    timestamp date_joined
+    string profile_picture
+    timestamp start_date
+    timestamp end_date
+    boolean current_flag
+  }
+  dim_video {
+    int video_sk PK
+    int video_id
+    int user_id FK
+    string title
+    text description
+    timestamp upload_date
+    string video_url
+    string thumbnail_url
+    timestamp start_date
+    timestamp end_date
+    boolean current_flag
+  }
+  dim_category {
+    int category_sk PK
+    int category_id
+    string name
+    text description
+    timestamp start_date
+    timestamp end_date
+    boolean current_flag
+  }
+  dim_video_category {
+    int video_category_sk PK
+    int video_id FK
+    int category_id FK
+    timestamp start_date
+    timestamp end_date
+    boolean current_flag
+  }
+  dim_comment {
+    int comment_sk PK
+    int comment_id
+    int video_id FK
+    int user_id FK
+    text content
+    timestamp comment_date
+    timestamp start_date
+    timestamp end_date
+    boolean current_flag
+  }
+  dim_like {
+    int like_sk PK
+    int video_id FK
+    int user_id FK
+    timestamp start_date
+    timestamp end_date
+    boolean current_flag
+  }
+  dim_playlist {
+    int playlist_sk PK
+    int playlist_id
+    int user_id FK
+    string name
+    text description
+    timestamp creation_date
+    timestamp start_date
+    timestamp end_date
+    boolean current_flag
+  }
+  dim_playlist_video {
+    int playlist_video_sk PK
+    int playlist_id FK
+    int video_id FK
+    timestamp start_date
+    timestamp end_date
+    boolean current_flag
+  }
+  dim_subscription {
+    int user_subscription_sk PK
+    int subscriber_id FK
+    int subscribed_to_id FK
+    timestamp subscription_date
+    timestamp start_date
+    timestamp end_date
+    boolean current_flag
+  }
+  fact_video_category {
+    int video_category_sk PK
+    int video_sk FK
+    int category_sk FK
+  }
+  fact_video_user {
+    int video_user_sk PK
+    int video_sk FK
+    int user_sk FK
+  }
+  fact_video_like {
+    int video_like_sk PK
+    int video_sk FK
+    int likes_count
+  }
+  dim_user ||--o{ dim_video : has
+  dim_user ||--o{ dim_comment : makes
+  dim_user ||--o{ dim_like : likes
+  dim_user ||--o{ dim_playlist : creates
+  dim_user }|--o{ dim_subscription : subscribes
+  dim_video ||--o{ dim_comment : receives
+  dim_video ||--o{ dim_like : receives
+  dim_video ||--o{ fact_video_user : related_to
+  dim_video ||--o{ fact_video_category : belongs_to
+  dim_video ||--|| fact_video_like : liked
+  dim_category ||--o{ dim_video_category : has
+  dim_category ||--o{ fact_video_category : categorizes
+  dim_video ||--o{ dim_video_category: has
+  dim_playlist ||--o{ dim_playlist_video : contains
+  dim_video ||--o{ dim_playlist_video : contains
+  dim_user ||--o{ fact_video_user : watched_by
+  

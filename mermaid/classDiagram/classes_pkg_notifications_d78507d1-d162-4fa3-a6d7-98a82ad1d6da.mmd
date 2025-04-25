@@ -1,0 +1,18 @@
+classDiagram
+
+namespace pkg_notifications {
+
+class Notification {
+  id : int
+  titre : string
+  message : Text
+  isVue: bool
+}
+
+}
+
+namespace pkg_rh {
+class Apprenant
+}
+
+Notification  "*" --> "1" Apprenant : "un seul" 

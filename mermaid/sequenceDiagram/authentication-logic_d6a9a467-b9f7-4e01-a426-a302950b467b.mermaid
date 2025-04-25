@@ -1,0 +1,25 @@
+sequenceDiagram
+    participant Token_Server as "Token Server"
+    participant App as "App"
+    participant SD_RTN as "SD-RTB"
+
+    rect rgb(240, 240, 240)
+        note over Token_Server, App: Join a channel with authentication
+
+        App->>+Token_Server: Request token (channel name, role, token type, user ID)
+        Token_Server->>+Token_Server: Validate user (security checks)
+        Token_Server-->>-App: Generate and return token
+        App->>+SD_RTN: Join channel with (uid, channel, token)
+        SD_RTN-->>-App: Validate token
+        App->>App: Trigger callback (user added)
+    end
+
+    rect rgb(240, 240, 240)
+        note over Token_Server, App: Renew token
+
+        SD_RTR->>App: Notify: Token Privilege will Expire
+        App->>+Token_Server: Request fresh token (same parameters)
+        Token_Server->>+Token_Server: Validate renewal request (logic checks)
+        Token_Server-->>-App: Generate and return fresh token
+        App->>App: Send RenewToken (new token)
+     end

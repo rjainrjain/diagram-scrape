@@ -1,0 +1,12 @@
+graph TD
+    U[User] -->|Uses| SP[Sustainable Diet Platform]
+    SP -->|Sends Notifications| U
+    SP -->|Provides Information| U
+    SP -->|Manages Users| U
+    SP -->|Offers Challenges| U
+    SP -->|Provides Recipes| U
+    SP -->|Sends Emails| U
+    SP -->|Provides Geographic Info| U
+    G[Google] -->|Authentication| SP
+    N[News Websites] -->|Scraped Content| SP
+    OSM[OpenStreetMap] -->|Geographic Data| SP

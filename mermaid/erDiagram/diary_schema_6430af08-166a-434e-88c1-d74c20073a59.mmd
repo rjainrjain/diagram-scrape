@@ -1,0 +1,56 @@
+erDiagram
+    BASEMODEL {
+        int id PK
+        datetime created_at
+        datetime updated_at
+    }
+    SHIP {
+        string name
+        string type
+        int year_built
+    }
+    LOGENTRY {
+        datetime timestamp
+        text notes
+    }
+    ENGINELOG {
+        float hours_operated
+        float fuel_consumed
+        text maintenance_notes
+    }
+    FUELLOG {
+        float current_level
+        float consumed
+        float refilled
+    }
+    NAVIGATIONLOG {
+        float latitude
+        float longitude
+        float speed
+        string destination
+    }
+    CREWLOG {
+        int crew_count
+        text crew_changes
+    }
+    WEATHERLOG {
+        float temperature
+        float wind_speed
+        string wind_direction
+        int sea_state
+    }
+    MAINTENANCELOG {
+        string equipment
+        text work_done
+        datetime next_maintenance
+    }
+
+    BASEMODEL ||--o{ SHIP : ""
+    BASEMODEL ||--o{ LOGENTRY : ""
+    SHIP ||--o{ LOGENTRY : "has"
+    LOGENTRY ||--o{ ENGINELOG : "is a"
+    LOGENTRY ||--o{ FUELLOG : "is a"
+    LOGENTRY ||--o{ NAVIGATIONLOG : "is a"
+    LOGENTRY ||--o{ CREWLOG : "is a"
+    LOGENTRY ||--o{ WEATHERLOG : "is a"
+    LOGENTRY ||--o{ MAINTENANCELOG : "is a"

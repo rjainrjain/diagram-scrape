@@ -1,0 +1,22 @@
+sequenceDiagram
+    participant B as Browser
+    participant S as Server
+
+    B->>+S: POST: exampleapp/new_note<br/> (containing form info)
+
+    note over B, S: Server-side JS code alters <br/> data.json with new data
+    S-->>-B: RESPONSE: 302 Found<br/> Redirect to /exampleapp/notes
+
+    B->>+S: GET: exampleapp/notes
+    S-->>-B: RESPONSE: 200 OK <br/> Sends HTML Document
+
+    B->>+S: GET: exampleapp/main.css
+    S-->>-B: RESPONSE: 200 OK <br/> Sends CSS file
+
+    B->>+S: GET: exampleapp/main.js
+    S-->>-B: RESPONSE: 200 OK <br/> Sends JavaScript file
+
+    B->>+S: GET: exampleapp/data.json
+    S-->>-B: RESPONSE: 200 OK <br/> Sends JSON file
+
+

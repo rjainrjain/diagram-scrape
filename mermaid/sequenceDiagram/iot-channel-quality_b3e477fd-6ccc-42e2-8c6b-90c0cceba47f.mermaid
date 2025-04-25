@@ -1,0 +1,43 @@
+sequenceDiagram
+    participant User
+    participant Your_app
+    participant IoT_SDK
+    participant Agora
+    participant SD_RTN
+
+    User ->>+ Your_app: Start
+    rect rgb(255, 255, 255)
+        note right of Your_app: Setup Agora engine
+        Your_app ->>+ Agora: Instantiate the Agora RTC engine
+        Agora -->>- Your_app: Engine instance created
+        Your_app ->>+ Agora: Set options
+        Agora -->>- Your_app: Options set
+        Your_app ->> Your_app: Verify license
+        Your_app ->>+ Agora: Initialize engine
+        Agora -->>- Your_app: Engine initialized
+        Your_app ->> Your_app: Create connection
+    end
+    rect rgb(255, 255, 255)
+        note right of Your_app: Join a channel
+        Your_app ->>+ SD_RTN: Join a channel
+        SD_RTN -->>- Your_app: Set bandwidth params
+        Your_app ->> Your_app: Specify audio codec and rate
+        Your_app ->>+ SD_RTN: Call join method
+        SD_RTN -->>- Your_app: On join success
+    end
+    rect rgb(255, 255, 255)
+        note right of Your_app: Send and receive audio and video
+        Your_app ->> IoT_SDK: Start sending data
+        IoT_SDK -->> Your_app: Start receiving data
+    end
+    rect rgb(255, 255, 255)
+        note right of Your_app: Detect and respond to network changes
+        Your_app ->> Your_app: Detect bandwidth changes
+        Your_app ->> IoT_SDK: Adjust quality
+    end
+    rect rgb(255, 255, 255)
+        note right of Your_app: Manage audio and video streams
+        Your_app ->> Your_app: Manage streams
+        Your_app -->> Your_app: Update stream settings
+    end
+    Your_app -->>- User: End

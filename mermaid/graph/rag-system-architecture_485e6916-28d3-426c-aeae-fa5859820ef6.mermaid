@@ -1,0 +1,44 @@
+flowchart TB
+    subgraph "Frontend Applications"
+        AD["Admin Dashboard\n(Next.js)"]
+        CI["Chat Interface\n(Next.js)"]
+    end
+
+    subgraph "Backend Services"
+        API["FastAPI Server\n(Main API)"]
+        
+        subgraph "RAG System"
+            direction TB
+            RAG["RAG Server\n(Docker Container)"]
+            VDB["Vector Database"]
+            LLM["Language Model"]
+            RAG --> VDB
+            RAG --> LLM
+        end
+        
+        subgraph "Storage"
+            DS["Document Store\n(Raw PDFs, etc.)"]
+        end
+    end
+
+    %% Frontend to API connections
+    AD -->|"Document Management\nAPI Calls"| API
+    CI -->|"Chat Queries\nAPI Calls"| API
+
+    %% API to other services
+    API -->|"Store/Retrieve\nDocuments"| DS
+    API -->|"Query/Index\nDocuments"| RAG
+    
+    %% Data flow annotations
+    classDef frontend fill:#a8d5ff,stroke:#2d74da
+    classDef backend fill:#c9e6ca,stroke:#2e7d32
+    classDef storage fill:#ffe0b2,stroke:#ef6c00
+    classDef container fill:#e1bee7,stroke:#6a1b9a
+
+    class AD,CI frontend
+    class API backend
+    class DS storage
+    class RAG,VDB,LLM container
+
+    %% Add links style
+    linkStyle default stroke:#666,stroke-width:2px;

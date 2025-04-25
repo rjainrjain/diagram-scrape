@@ -1,0 +1,49 @@
+---
+title: PagerDuty Flowchart
+---
+
+flowchart TD
+
+subgraph Observability
+    A(terraform)
+end
+
+subgraph All Incident Types
+    subgraph Datadog Monitoring
+        B(sythentic tests)
+        A(terraform)-.->C(monitors)
+    end
+    D(andon)
+    A(terraform)-.->D(andon)
+    E(custom incident)
+    F(looker)
+end
+
+E(custom incident)-->G(events API V2)
+F(looker)-->G(events API 2)
+
+G(events API V2)-->H(PagerDuty new incident)-->M(Slack)
+J(event rules)-->H(PagerDuty new incident)
+H(PagerDuty new incident)-->N(Service)
+N(Service)-->O(Escalation Policy)
+O(Escalation Policy)-.->P(Team)
+O(Escalation Policy)-->Q(Schedule)
+Q(Schedule)-->R(User)
+A(terraform)-.->N(Service)
+A(terraform)-.->O(Escalation Policy)
+
+subgraph Ruleset
+    I(payload rules)
+    B(sythentic tests)-->J(event rules)
+    C(monitors)-->J(event rules)
+    D(andon)-->J(event rules)
+end
+
+subgraph Notifcation Types
+    K(direct email)
+    L(custom webhooks)
+    M(Slack)
+end
+
+%% style A fill:#f9f,stroke:#333,stroke-width:4px
+%% style Observability font-weight:bold

@@ -1,0 +1,17 @@
+classDiagram
+    class Solution {
+        +solveSudoku(board)
+    }
+    class solve {
+        <<function>>
+        solve(board) bool
+    }
+    class is_valid {
+        <<function>>
+        is_valid(board, row, col, num) bool
+    }
+    Solution --> solve : calls
+    solve --> is_valid : calls
+    solve --> solve : recursive call
+    note right of is_valid : Checks if num can be placed at (row,col) without conflicts.
+    note right of solve : Tries to fill the board recursively, backtracks if stuck

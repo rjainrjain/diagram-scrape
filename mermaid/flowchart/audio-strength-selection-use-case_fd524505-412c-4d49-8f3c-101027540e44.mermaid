@@ -1,0 +1,39 @@
+flowchart LR
+    subgraph left
+        SE1[Streaming end 1] --> AS1[Audio stream 1]
+        SEA[Streaming end A] --> ASA[Audio stream A]
+        SEB[Streaming end B] --> ASB[Audio stream B]
+        SEC[Streaming end C] --> ASC[Audio stream C]
+        SED[Streaming end D] --> ASD[Audio stream D]
+    end
+
+    Agora[Agora SD-RTN&trade;]
+
+    subgraph right_upper
+        ASN1[Audio stream N1]
+        ASN2[Audio stream N2]
+        ASN3[Audio stream N3]
+        ASN4[Audio stream N4]
+    end
+
+    subgraph right_lower
+        ASA2[Audio stream A]
+        ASB2[Audio stream B]
+        ASC2[Audio stream C]
+        ASD2[Audio stream D]
+    end
+    
+    AS1 -->|-->| Agora -->|-->| ASN1
+    ASA -->|-->| Agora -->|-->| ASN2
+    ASB -->|-->| Agora -->|-->| ASN3
+    ASC -->|-->| Agora -->|-->| ASN4
+    ASD -->|-->| Agora -->|-->| ASA2
+
+    ASN1 --> RE1[Receiving end]
+    ASN2 --> RE2[Receiving password]
+    ASN3 --> RE3[Receiving privacy]
+    ASN4 --> RE4[Receiving connection]
+    ASA2 --> REA[Receiving end A]
+    ASB2 --> REB[Receiving end B]
+    ASC2 --> REC[Receiving end C]
+    ASD2 --> RED[Receiving end D]

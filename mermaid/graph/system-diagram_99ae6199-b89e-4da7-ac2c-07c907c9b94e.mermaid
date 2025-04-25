@@ -1,0 +1,5 @@
+graph TD;
+    A(Frontend - AWS Amplify) -->|Fetches CMS Content| B(CMS Content - Strapi on Render);
+    B -->|Stores Content| D[Cloudinary];
+    B -->|Stores Data| E[Render Hosting Platform];
+    D -->|Serves Images| A;

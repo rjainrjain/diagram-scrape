@@ -1,0 +1,8 @@
+flowchart TD
+Z((Start))
+Z --> A["Mark and (optionally) annotate entries of interest"]
+A --> B[Select all marked entries and export them for content review] -->|Repeat as needed|A
+B --> C[Publish content]
+C --> D["(optional) Tag marked entries as published"]
+D--> E[Remove marked entry tags]
+E --> Z

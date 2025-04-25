@@ -1,0 +1,6 @@
+graph TD
+    MA[Mobile App] -->|Requests| RH[Request Handling Component]
+    RH -->|Password reset requests| PR[Password Reset Component]
+    PR -->|Send emails| ES[Email Sending Component]
+    PR -->|Store/retrieve data| MDB[Mail Database Component]
+    MDB -->|Stores data| PG[(PostgreSQL)]

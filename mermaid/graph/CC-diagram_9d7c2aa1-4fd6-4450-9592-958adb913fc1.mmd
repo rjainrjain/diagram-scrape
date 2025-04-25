@@ -1,0 +1,15 @@
+
+graph TD
+  subgraph .Net Build Server
+  ncc[.Net Code Coverage Tool] --> nr[Reporter Service]
+  end
+  subgraph Java Build Server
+  jcc[Java Code Coverage Tool] --> jr[Reporter Service]
+  end
+  nr --> ccr
+  jr --> ccr
+  subgraph API Server
+  ccr[Metric Repo] --> api[API]
+  end
+  api --> ccd[Dashboard]
+  api --> doc["Document Generation Tool (Future State)"]

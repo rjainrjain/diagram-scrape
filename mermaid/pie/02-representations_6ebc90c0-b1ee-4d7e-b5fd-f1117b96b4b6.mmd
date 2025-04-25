@@ -1,0 +1,53 @@
+classDiagram
+direction BT    
+    class SourceRepresentation~T~ {
+        <<interface>>
+        +sourceFile: File
+        +representation: T
+    }
+    class TokenizedSource~Sequence<‎Token‎>~ {
+        <<interface>>
+        +splitInGramsOf(dimension: Int) Sequence~Gram~
+    }
+    TokenizedSource --|> SourceRepresentation
+
+    class Token {
+        <<interface>>
+        +line: Int
+        +column: Int
+        +type: TokenType
+    }
+    Token <--* TokenizedSource
+
+    class Gram {
+        <<interface>>
+        +items: List~Token~
+    }
+    Token <--* Gram
+    Gram -- TokenizedSource
+
+    class TokenType {
+        <<interface>>
+        +name: String
+        +languageConstructs: Set~String~
+    }
+    TokenType <--* Token
+
+    class LanguageTokenTypes {
+        <<interface>>
+        +tokenFor(constructName: String) TokenType
+        +isToken(constructName: String) Boolean
+    }
+    TokenType <--* LanguageTokenTypes
+
+    class TokenTypesSupplier {
+        <<interface>>
+        +types: LanguageTokenTypes
+    }
+    LanguageTokenTypes <--* TokenTypesSupplier
+
+    class FileTokenTypesSupplier {
+        <<inteface>>
+        +FileTokenTypesSuppier(configFileName: String)
+    }
+    TokenTypesSupplier <|.. FileTokenTypesSupplier

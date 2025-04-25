@@ -1,0 +1,10 @@
+sequenceDiagram
+    opt handle
+        opt enqueue
+           Agent-->>InputHandler: < event, inputNode >
+        end
+        loop dequeue
+          InputHandler->>Node: event
+        end
+        Note over Node: interact(event)
+    end

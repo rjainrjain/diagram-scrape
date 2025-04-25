@@ -1,0 +1,330 @@
+classDiagram
+	class Dust_particles
+	class Advanced_shooting_enemy
+	Advanced_shooting_enemy: +on_death()
+	Advanced_shooting_enemy <|-- Health_component
+	Advanced_shooting_enemy <|-- Hitbox_component
+	Advanced_shooting_enemy <|-- Health_bar_component
+	Advanced_shooting_enemy <|-- Enemy_state_machine
+	Advanced_shooting_enemy <|-- Enemy_idle
+	Advanced_shooting_enemy <|-- Enemy_spawn
+	Advanced_shooting_enemy <|-- Enemy_wander
+	Advanced_shooting_enemy <|-- Enemy_follow
+	Advanced_shooting_enemy <|-- Enemy_die
+	Advanced_shooting_enemy <|-- Enemy_shoot
+	class Basic_enemy
+	Basic_enemy: +on_death()
+	Basic_enemy <|-- Health_component
+	Basic_enemy <|-- Hitbox_component
+	Basic_enemy <|-- Health_bar_component
+	Basic_enemy <|-- Enemy_state_machine
+	Basic_enemy <|-- Enemy_idle
+	Basic_enemy <|-- Enemy_wander
+	Basic_enemy <|-- Enemy_follow
+	Basic_enemy <|-- Enemy_flank
+	Basic_enemy <|-- Enemy_spawn
+	Basic_enemy <|-- Enemy_die
+	class Basic_shooting_enemy
+	Basic_shooting_enemy: +on_death()
+	Basic_shooting_enemy <|-- Health_component
+	Basic_shooting_enemy <|-- Hitbox_component
+	Basic_shooting_enemy <|-- Health_bar_component
+	Basic_shooting_enemy <|-- Enemy_state_machine
+	Basic_shooting_enemy <|-- Enemy_idle
+	Basic_shooting_enemy <|-- Enemy_spawn
+	Basic_shooting_enemy <|-- Enemy_wander
+	Basic_shooting_enemy <|-- Enemy_follow
+	Basic_shooting_enemy <|-- Enemy_die
+	Basic_shooting_enemy <|-- Enemy_shoot
+	class Boss_enemy
+	Boss_enemy: +process_follow()
+	Boss_enemy: +handle_sprite_flip()
+	Boss_enemy: +play_walk_animation()
+	Boss_enemy: +change_to_flying()
+	Boss_enemy: +change_to_walking()
+	Boss_enemy: +get_distance_to_player()
+	class Dashing_enemy
+	Dashing_enemy: +on_death()
+	Dashing_enemy <|-- Health_bar_component
+	Dashing_enemy <|-- Health_component
+	Dashing_enemy <|-- Hitbox_component
+	Dashing_enemy <|-- Enemy_state_machine
+	Dashing_enemy <|-- Enemy_idle
+	Dashing_enemy <|-- Enemy_spawn
+	Dashing_enemy <|-- Enemy_die
+	Dashing_enemy <|-- Enemy_wander
+	Dashing_enemy <|-- Enemy_follow
+	Dashing_enemy <|-- Enemy_dash
+	class Enemy_bullet
+	Enemy_bullet: +setup()
+	Enemy_bullet: +set_to_destroy()
+	Enemy_bullet: +destroy_if_not_emiting()
+	Enemy_bullet <|-- Hitbox_component
+	class Game_main
+	Game_main: +on_teleport_request()
+	Game_main: +load_new_room()
+	Game_main: +clear_enemies()
+	Game_main <|-- Player
+	Game_main <|-- Room_1
+	Game_main <|-- Room_2
+	Game_main <|-- Room_3
+	Game_main <|-- Room_4
+	Game_main <|-- Room_5
+	Game_main <|-- Room_6
+	Game_main <|-- Room_7
+	Game_main <|-- Room_8
+	Game_main <|-- Pause_menu
+	Game_main <|-- Hud
+	Game_main <|-- Upgrade_screen
+	Game_main <|-- Touch_ui
+	class Npc_drone
+	Npc_drone: +decide_what_to_do()
+	Npc_drone: +get_random_speed_modified()
+	Npc_drone: +get_random_direction()
+	Npc_drone: +get_random_wander_time()
+	class Player
+	Player: +handle_keyboard_input()
+	Player: +handle_joystick_input()
+	Player: +is_dash_available()
+	Player: +on_dash_end()
+	Player: +change_state_to()
+	Player: +on_death()
+	Player: +finish_dying()
+	Player: +handle_dash_bar()
+	Player: +play_upgrade_sound()
+	Player: +emit_upgrade_particles()
+	Player: +heal()
+	Player: +increase_health()
+	Player: +increase_golden_health()
+	Player: +regenerate_golden_health()
+	Player: +increase_ammo()
+	Player: +increase_luck()
+	Player: +increase_movement_speed()
+	Player: +decrease_dash_cooldown()
+	Player: +increase_dash_boost()
+	Player: +increase_pen()
+	Player: +increase_projectile_speed()
+	Player: +increase_crit_chance()
+	Player: +increase_attack_range()
+	Player: +increase_attack_speed()
+	Player <|-- Health_component
+	Player <|-- Hitbox_component
+	Player <|-- Shooting_controller
+	class Player_bullet
+	Player_bullet: +set_to_destroy()
+	Player_bullet: +destroy_if_not_emiting()
+	class Chair
+	class Door
+	Door: +setup_upgrade()
+	Door: +door_on()
+	Door: +open_door()
+	Door: +door_animation_finished()
+	Door <|-- On_screen_notifier_component
+	class Pc
+	class Base_room
+	Base_room: +setup_doors()
+	Base_room: +setup_waves()
+	Base_room: +get_spawn_global_position()
+	Base_room: +on_spawnable_area_body_entered()
+	Base_room: +on_teleport_request()
+	class Boss_room
+	Boss_room: +get_spawn_global_position()
+	Boss_room <|-- Boss_enemy
+	class First_room
+	First_room: +close_gate()
+	First_room: +on_spawnable_area_body_entered()
+	First_room <|-- Pc
+	First_room <|-- Chair
+	First_room <|-- Door
+	First_room <|-- Spawnable_area
+	First_room <|-- Npc_drone
+	class Room_1
+	Room_1: +setup_doors()
+	Room_1: +setup_waves()
+	Room_1: +get_spawn_global_position()
+	Room_1: +on_spawnable_area_body_entered()
+	Room_1: +on_teleport_request()
+	Room_1 <|-- Door
+	Room_1 <|-- Spawnable_area
+	Room_1 <|-- Chair
+	Room_1 <|-- Pc
+	class Room_2
+	Room_2: +setup_doors()
+	Room_2: +setup_waves()
+	Room_2: +get_spawn_global_position()
+	Room_2: +on_spawnable_area_body_entered()
+	Room_2: +on_teleport_request()
+	Room_2 <|-- Spawnable_area
+	Room_2 <|-- Chair
+	Room_2 <|-- Door
+	class Room_3
+	Room_3: +setup_doors()
+	Room_3: +setup_waves()
+	Room_3: +get_spawn_global_position()
+	Room_3: +on_spawnable_area_body_entered()
+	Room_3: +on_teleport_request()
+	Room_3 <|-- Door
+	Room_3 <|-- Spawnable_area
+	Room_3 <|-- Chair
+	Room_3 <|-- Pc
+	class Room_4
+	Room_4: +setup_doors()
+	Room_4: +setup_waves()
+	Room_4: +get_spawn_global_position()
+	Room_4: +on_spawnable_area_body_entered()
+	Room_4: +on_teleport_request()
+	Room_4 <|-- Pc
+	Room_4 <|-- Chair
+	Room_4 <|-- Spawnable_area
+	Room_4 <|-- Door
+	class Room_5
+	Room_5: +setup_doors()
+	Room_5: +setup_waves()
+	Room_5: +get_spawn_global_position()
+	Room_5: +on_spawnable_area_body_entered()
+	Room_5: +on_teleport_request()
+	Room_5 <|-- Pc
+	Room_5 <|-- Chair
+	Room_5 <|-- Door
+	Room_5 <|-- Npc_drone
+	Room_5 <|-- Spawnable_area
+	class Room_6
+	Room_6: +setup_doors()
+	Room_6: +setup_waves()
+	Room_6: +get_spawn_global_position()
+	Room_6: +on_spawnable_area_body_entered()
+	Room_6: +on_teleport_request()
+	Room_6 <|-- Npc_drone
+	Room_6 <|-- Door
+	Room_6 <|-- Spawnable_area
+	class Room_7
+	Room_7: +setup_doors()
+	Room_7: +setup_waves()
+	Room_7: +get_spawn_global_position()
+	Room_7: +on_spawnable_area_body_entered()
+	Room_7: +on_teleport_request()
+	Room_7 <|-- Door
+	Room_7 <|-- Spawnable_area
+	class Room_8
+	Room_8: +setup_doors()
+	Room_8: +setup_waves()
+	Room_8: +get_spawn_global_position()
+	Room_8: +on_spawnable_area_body_entered()
+	Room_8: +on_teleport_request()
+	Room_8 <|-- Door
+	Room_8 <|-- Spawnable_area
+	class Room_9
+	Room_9: +setup_doors()
+	Room_9: +setup_waves()
+	Room_9: +get_spawn_global_position()
+	Room_9: +on_spawnable_area_body_entered()
+	Room_9: +on_teleport_request()
+	Room_9 <|-- Spawnable_area
+	class Enemy_dash
+	Enemy_dash: +enter()
+	Enemy_dash: +create_dash_line()
+	Enemy_dash: +handle_animations()
+	Enemy_dash: +handle_movement()
+	Enemy_dash: +physics_update()
+	Enemy_dash: +dash_charge()
+	Enemy_dash: +expand_dash_line()
+	Enemy_dash: +exit()
+	class Enemy_die
+	Enemy_die: +enter()
+	Enemy_die: +on_death_animation_finished()
+	class Enemy_flank
+	Enemy_flank: +enter()
+	Enemy_flank: +handle_animations()
+	Enemy_flank: +physics_update()
+	Enemy_flank: +handle_movement()
+	Enemy_flank: +start_flanking()
+	class Enemy_follow
+	Enemy_follow: +enter()
+	Enemy_follow: +exit()
+	Enemy_follow: +physics_update()
+	Enemy_follow: +handle_movement()
+	Enemy_follow: +handle_animations()
+	class Enemy_idle
+	Enemy_idle: +enter()
+	Enemy_idle: +update()
+	Enemy_idle: +handle_animations()
+	Enemy_idle: +decide_what_to_do()
+	class Enemy_shoot
+	Enemy_shoot: +enter()
+	Enemy_shoot: +on_shoot_animation_finished()
+	Enemy_shoot: +handle_animations()
+	Enemy_shoot: +shoot_bullets()
+	class Enemy_spawn
+	Enemy_spawn: +enter()
+	Enemy_spawn: +physics_update()
+	Enemy_spawn: +exit()
+	class Enemy_wander
+	Enemy_wander: +enter()
+	Enemy_wander: +physics_update()
+	Enemy_wander: +handle_movement()
+	Enemy_wander: +handle_animations()
+	Enemy_wander: +get_random_direction()
+	Enemy_wander: +decide_what_to_do()
+	class Enemy_state_machine
+	Enemy_state_machine: +on_state_transition_to()
+	Enemy_state_machine: +has_state()
+	Enemy_state_machine: +die()
+	class Damage_text
+	class Health_bar_component
+	Health_bar_component: +match_health()
+	class Hud
+	Hud: +recalculate_ammo()
+	Hud: +recalculate_health()
+	Hud: +recalculate_golden_hearts()
+	Hud: +display_time()
+	Hud: +display_ammo()
+	Hud: +display_health()
+	Hud: +display_golden_health()
+	Hud: +display_reload()
+	Hud: +display_wave_text()
+	class Pause_menu
+	Pause_menu: +resume()
+	Pause_menu: +pause()
+	Pause_menu: +testEsc()
+	Pause_menu: +set_sliders()
+	class Touch_ui
+	class Upgrade_button
+	Upgrade_button: +setup_button()
+	class Upgrade_screen
+	Upgrade_screen: +hide_upgrades()
+	Upgrade_screen: +show_upgrades()
+	Upgrade_screen: +prepare_upgrades_screen()
+	Upgrade_screen: +generate_random_player_upgrades()
+	Upgrade_screen: +generate_random_weapon_upgrades()
+	Upgrade_screen: +generate_heal_upgrade()
+	class Health_component
+	Health_component: +take_damage()
+	Health_component: +hurt_flash()
+	Health_component: +display_damage_text()
+	Health_component: +heal()
+	Health_component: +regenerate_golden_health()
+	Health_component: +increase_health()
+	Health_component: +increase_golden_health()
+	class Hitbox_component
+	Hitbox_component: +damage()
+	class On_screen_notifier_component
+	On_screen_notifier_component: +display_indicator()
+	On_screen_notifier_component: +hide_indicator()
+	class Shooting_controller
+	Shooting_controller: +recalculate_shooting_stats()
+	Shooting_controller: +calculate_closest_enemy()
+	Shooting_controller: +calculate_direction_to_closest_enemy()
+	class Spawnable_area
+	Spawnable_area: +start()
+	Spawnable_area: +start_wave()
+	Spawnable_area: +spawn_enemy()
+	Spawnable_area: +get_polygon_bounds()
+	Spawnable_area: +get_random_point_in_polygon()
+	Spawnable_area: +is_point_in_polygon()
+	Spawnable_area: +room_cleared()
+	Spawnable_area: +get_enemy_scene_to_spawn()
+	Spawnable_area: +get_enemy_type()
+	Spawnable_area: +get_enemy_scene_of_type()
+	class Upgrade_pickup
+	Upgrade_pickup: +show_upgrade_screen()
+	Upgrade_pickup <|-- On_screen_notifier_component

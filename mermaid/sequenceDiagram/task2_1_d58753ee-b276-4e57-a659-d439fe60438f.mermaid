@@ -1,0 +1,12 @@
+sequenceDiagram
+    participant User
+    participant API
+    participant BusinessLogic
+    participant Persistence
+
+    User->>API: Register User
+    API->>BusinessLogic: Validate and Create User
+    BusinessLogic->>Persistence: Save User to DB
+    Persistence-->>BusinessLogic: Confirm Save
+    BusinessLogic-->>API: Send Confirmation
+    API-->>User: Return Success Response

@@ -1,0 +1,21 @@
+sequenceDiagram
+    actor User
+    participant Your_app as Your app
+    participant Agora
+    box "In a call, all users broadcast to the channel"
+        participant Video_SDK as Video SDK
+        participant Host
+    end
+
+    User->>Your_app: Open app
+    Your_app->>Video_SDK: Initiate the Video SDK engine
+    Video_SDK->>Video_SDK: Start video in the engine
+    Host->>Host: Start call
+    Host->>Host: Start local video
+    Host->>Host: Join the channel
+    Host->>Host: Retrieve streaming from the other user
+    Host->>Host: Receive and send data streams
+    Host->>Host: Stop local video
+    Host-->>Host: Leave call
+    Video_SDK->>Your_app: Clean up local resources
+    Your_app-->>User: Close app

@@ -1,0 +1,23 @@
+erDiagram
+  CLIENT {
+    TYPE Ref_client PK
+    TYPE Nom
+    TYPE Prenom
+    TYPE Adresse
+  }
+  COMMANDE {
+    TYPE Num_commande PK
+    TYPE Date
+    TYPE Montant
+  }
+  INCLURE {
+    TYPE Quantite PK
+  }
+  PRODUIT {
+    TYPE Ref_produit PK
+    TYPE Libelle
+    TYPE Prix_unitaire
+  }
+  CLIENT ||--o{ COMMANDE: DF
+  INCLURE }|..|| COMMANDE: DF
+  INCLURE }o..|| PRODUIT: DF

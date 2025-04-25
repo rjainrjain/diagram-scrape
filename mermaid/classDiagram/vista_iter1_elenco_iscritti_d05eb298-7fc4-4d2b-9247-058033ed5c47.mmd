@@ -1,0 +1,7 @@
+classDiagram
+ class Partecipante
+ class CorsoOfferto
+ class Corso
+
+ Partecipante "0..n" -- "0..n" CorsoOfferto : partecipare
+ CorsoOfferto "0..n" -- "1" Corso

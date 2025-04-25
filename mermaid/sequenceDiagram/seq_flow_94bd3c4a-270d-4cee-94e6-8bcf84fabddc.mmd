@@ -1,0 +1,13 @@
+sequenceDiagram
+    participant M as Main
+    participant U as User
+    participant W as Wallet
+    participant T as Transaction
+    M->>U: create_user(email, password, first_name, last_name, phone_number)
+    U->>M: return user
+    M->>W: create_wallet(user_id)
+    W->>M: return wallet
+    M->>T: create_transaction(sender_wallet_id, receiver_wallet_id, amount)
+    T->>M: return transaction
+    M->>W: update_wallet_balance(wallet_id, amount)
+    W->>M: return updated_wallet

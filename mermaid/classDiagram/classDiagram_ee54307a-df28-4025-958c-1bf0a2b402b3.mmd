@@ -1,0 +1,213 @@
+classDiagram
+    class Itinerario {
+        -String nombreItinerario
+        -String descripcionItinerario
+        -Puerto listaPuertos
+        -CategoriaItinerario categoriaItinerario
+
+        +new()
+        +conocerCategoriaItinerario()
+    }
+
+    class Recorrido {
+        -int numeroEscala
+        -Itinerario itinerarioRealizado
+        -Navio navioDelViaje
+        -datetime fechaViaje
+        -float duracionViaje
+
+        +new()
+        +conocerNavio()
+        +conocerCambioPuerto()
+    }
+
+    class Navio {
+        -int codigoNavio
+        -String nombreNavio
+        -float altura
+        -float eslora
+        -float manga
+        -float desplazamiento
+        -float autonomiaViaje
+        -int cantidadCamarotes
+        -int maxCantidadPasajeros
+        -int cantidadMotores
+        -int cantidadTripulantes
+        
+
+        +new()
+        +conocerHistorialTripulantes()
+        +conocerTripulantes()
+        +conocerEstadoNavio()
+        +conocerCategoriaNavio()
+        +conocerCubierta()
+    }
+
+    class Cubierta {
+        -int numeroCubierta
+        -String ubicacionCubierta
+        -Tripulante encargado
+        -String descripcionCubierta
+        -Navio navioUbicado
+    
+        +new()
+        +conocerCamarote()
+    }
+
+    class Camarote {
+        -TipoCamarote tipoCamarote
+        -int ubicacionCamarote
+        -int numeroCamarote
+        -EstadoCamarote estadoCamarote
+        -Cubierta cubiertaUbicada
+    
+        +new()
+        +conocerTipoCamarote()
+        +conocerEstadoCamarote()
+    }
+
+    class Tripulante {
+        -String nombre_tripulante
+        -String legajo
+        -Navio navio_asignado
+        -Puesto puesto_tripulante
+        -Tripulante jefe
+    
+        +new()
+        +conocerPuesto()
+        +conocerHistorialTripulante()
+    }
+
+    class HistorialTripulante {
+        -Tripulante tripulanteCambiado
+        -Puesto nuevoPuestoTripulante
+        -String nuevoNombreJefe
+        -Navio nuevoNavioAsignado
+        -datetime fechaCambio
+    
+        +new()
+        +conocerPuesto()
+    }
+
+    class Puesto {
+        -String nombrePuesto
+        -String descripcionPuesto
+    
+        +new()
+    }
+
+    class Puerto {
+        -String nombrePuerto
+        -String descripcionPuerto
+    
+        +new()
+    }
+
+    class Pasajero {
+        -String tipo_documento
+        -int numero_documento
+        -String username
+        -String nombre
+        -Pais pais_origen
+        -Ciudad ciudad_origen
+    
+        +new()
+        +conocerPais()
+        +conocerCiudad()
+        +isViajando()
+    }
+
+    class EstadoNavio {
+        -String nombreEstadoNavio
+        -String descripcionEstadoNavio
+    
+        +new()
+    }
+
+    class EstadoCamarote {
+        -String nombreEstadoCamarote
+        -String descripcionEstadoCamarote
+        -String nombreEstadoCamarote
+        -String descripcionEstadoCamarote
+    
+        +new()
+    }
+
+    class ReservaCamarote {
+        -datetime fechaReseva
+        -Pasajero listaPasajeros
+        -Camarote camaroteReservado
+        -Recorrido recorridoReservado
+    
+        +new()
+    }
+
+    class TipoCamarote {
+        -String nombreTipoCamarote
+        -String descripcionTipoCamarote
+    
+        +new()
+    }
+
+    class CategoriaNavio {
+        -String nombreCategoria
+        -String descripcionCategoria
+    
+        +new()
+    }
+
+    class CategoriaItinerario {
+        -String nombreCategoria
+        -String descripcionCategoria
+    
+        +new()
+    }
+
+    class Pais {
+        -String nombrePais
+        -String descripcionPais
+        -String moneda
+        -String idioma
+
+        +new()
+        +conocerCiudad()
+
+        +setNombrePais()
+        +getNombrePais()
+        +setDescripcionPais()
+        +getDescripcionPais()
+        +setMoneda()
+        +getMoneda()
+        +setIdioma()
+        +getIdioma()
+    }
+
+    class Ciudad {
+        -String nombreCiudad
+        -String descripcionCiudad
+        -Pais pais
+
+        +new()
+    }
+
+
+    Itinerario --> "1..*" ReservaCamarote
+    Itinerario "1" <-- Recorrido
+    Itinerario --> "1..*" Puerto
+    Recorrido --> "1" Navio
+    Puesto "1" <-- Tripulante
+    Tripulante "1" <-- Cubierta
+    TipoCamarote "1" <-- Camarote
+    Camarote --> "1" EstadoCamarote
+    Navio --> "1..*" Cubierta
+    Cubierta --> "1..*" Camarote
+    Itinerario --> "1" CategoriaItinerario
+    Pasajero --> "1" Pais
+    Pasajero --> "1" ReservaCamarote
+    ReservaCamarote --> "1" Camarote
+    Pais --> "1..*" Ciudad
+    Navio --> "1" CategoriaNavio
+    Tripulante --> "1..*" HistorialTripulante
+    Tripulante --> "1" Tripulante
+    HistorialTripulante "1..*" <-- Navio
+    EstadoNavio "1..*" <-- Navio

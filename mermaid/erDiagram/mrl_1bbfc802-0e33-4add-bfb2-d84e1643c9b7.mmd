@@ -1,0 +1,19 @@
+erDiagram
+
+    %% use this link to find the standard 
+    %%https://schemas.isotc211.org/19115/-3/mrl/2.0/
+    %% https://schemas.isotc211.org/19115/-3/mrl/2.0/mrl/#element_LE_Algorithm
+    LE_Algorithm {
+        Abstract_Citation_PropertyType citation
+        CharacterString_PropertyType description
+    }
+    %% https://schemas.isotc211.org/19115/-3/mrl/2.0/mrl/#element_LE_NominalResolution
+    LE_NominalResolution {
+        Distance_PropertyType scanningResolution 
+        Distance_PropertyType groundResolution
+    }
+    %% https://schemas.isotc211.org/19115/-3/mrl/2.0/mrl/#element_LE_NominalResolution
+    LE_ParameterDirection {
+        MemberName_PropertyType name
+        LE_ParameterDirection_PropertyType direction
+    }

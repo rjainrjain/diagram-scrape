@@ -1,0 +1,28 @@
+
+classDiagram
+    class PortfolioAIEngineer {
+        -Introduction introduction
+        -Projects projects
+        -Contact contact
+        +__init__()
+        +show_introduction() str
+        +show_projects() str
+        +show_contact() str
+    }
+    class Introduction {
+        +__init__(description: str)
+        -description str
+    }
+    class Project {
+        +__init__(name: str, description: str, image: str)
+        -name str
+        -description str
+        -image str
+    }
+    class Contact {
+        +__init__(linkedin_profile: str)
+        -linkedin_profile str
+    }
+    PortfolioAIEngineer --> Introduction
+    PortfolioAIEngineer --> Projects (multiple)
+    PortfolioAIEngineer --> Contact

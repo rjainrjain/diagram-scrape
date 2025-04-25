@@ -1,0 +1,33 @@
+flowchart TD
+    A[Start] --> B[Import packages]
+    B --> C[Define Logger struct]
+    C --> D[New function]
+    D --> E{Is verbose?}
+    E -->|Yes| F[Set debugLevel to 1]
+    E -->|No| G[Use provided debugLevel]
+    F --> H[Create Logger instance]
+    G --> H
+    H --> I[Return Logger]
+
+    subgraph Logger Methods
+        J[Debug method]
+        K[Info method]
+        L[Fatalf method]
+    end
+
+    I --> J
+    I --> K
+    I --> L
+
+    J --> M{debugLevel >= 1?}
+    M -->|Yes| N[Log debug message]
+    M -->|No| O[Do nothing]
+
+    K --> P{debugLevel >= 0?}
+    P -->|Yes| Q[Log info message]
+    P -->|No| R[Do nothing]
+
+    L --> S[Log fatal message]
+    S --> T[Call exitFunc]
+
+    style Logger Methods fill:#f9f,stroke:#333,stroke-width:2px

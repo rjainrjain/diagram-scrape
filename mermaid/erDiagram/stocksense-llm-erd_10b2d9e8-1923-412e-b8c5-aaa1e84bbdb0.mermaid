@@ -1,0 +1,104 @@
+erDiagram
+    User ||--o{ UserQuery : submits
+    User ||--o{ UserPreferences : sets
+    User ||--o{ TradingHistory : has
+    User ||--o{ Watchlist : maintains
+    UserQuery ||--o{ SentimentAnalysis : informs
+    Stock ||--o{ TradingHistory : involved_in
+    Stock ||--o{ Option : has
+    Stock ||--o{ Watchlist : contains
+    Option ||--o{ TradingHistory : involved_in
+    FederalReserveSpeech ||--|| SentimentAnalysis : analyzed_for
+    NewsArticle ||--|| SentimentAnalysis : analyzed_for
+    MarketIndex ||--o{ Stock : influences
+    AIModel ||--o{ SentimentAnalysis : performs
+    AIModel ||--o{ UserQuery : processes
+
+    User {
+        int UserID PK
+        string Username
+        string Email
+        string PasswordHash
+        date JoinDate
+    }
+    UserQuery {
+        int QueryID PK
+        int UserID FK
+        string QueryText
+        datetime Date
+        string Response
+    }
+    UserPreferences {
+        int PreferenceID PK
+        int UserID FK
+        string[] PreferredSectors
+        int RiskTolerance
+        string OptionTradingStrategy
+    }
+    TradingHistory {
+        int TradeID PK
+        int UserID FK
+        int StockID FK
+        int OptionID FK
+        string TradeType
+        int Quantity
+        float PriceAtTrade
+        datetime TradeDate
+        float ProfitLoss
+    }
+    Stock {
+        int StockID PK
+        string Symbol
+        string CompanyName
+        float CurrentPrice
+        int DailyVolume
+        float MarketCap
+        string Sector
+    }
+    Option {
+        int OptionID PK
+        int StockID FK
+        string OptionType
+        float StrikePrice
+        date ExpirationDate
+        float ImpliedVolatility
+    }
+    FederalReserveSpeech {
+        int SpeechID PK
+        string Speaker
+        date SpeechDate
+        string Transcript
+    }
+    NewsArticle {
+        int ArticleID PK
+        string Headline
+        string Source
+        datetime PublishDate
+        string Content
+    }
+    SentimentAnalysis {
+        int AnalysisID PK
+        int ReferenceID
+        string ReferenceType
+        float SentimentScore
+        string SentimentCategory
+    }
+    Watchlist {
+        int WatchlistID PK
+        int UserID FK
+        int StockID FK
+        datetime DateAdded
+    }
+    MarketIndex {
+        int IndexID PK
+        string IndexName
+        float CurrentValue
+        float DailyChange
+    }
+    AIModel {
+        int ModelID PK
+        string ModelName
+        string ModelType
+        date LastUpdated
+        float Accuracy
+    }

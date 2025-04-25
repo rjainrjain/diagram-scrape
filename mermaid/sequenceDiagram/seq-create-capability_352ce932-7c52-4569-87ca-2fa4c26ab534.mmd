@@ -1,0 +1,30 @@
+sequenceDiagram
+    actor client as API Client
+    participant cc as CapabilityController
+    participant cas as CapabilityApplicationService
+    participant c as Capability
+    participant cr as CapabilityRepository
+    participant ef as SelfServiceDbContext
+
+    client ->>+ cc: [POST] /capabilities
+        critical Transactional boundary
+        critical Record and add domain events to transaction
+            cc ->>+ cas: CreateNewCapability(...)
+                cas ->>+ cr: Exists(...)
+                cr -->> cas: false
+
+                cas ->>+ c: CreateCapability(...)
+                c -->>- cas: capability
+
+                cas ->> cr: Add(capability)
+                    cr ->>+ ef: AddAsync(capability)
+                    ef -->>- cr:  
+                cr -->>- cas: 
+            cas -->>- cc: CapabilityId
+        end
+        end
+
+        cc ->>+ cr: Get(capabilityId)
+        cr -->>- cc: capability
+
+    cc -->>- client: [201] capability as json

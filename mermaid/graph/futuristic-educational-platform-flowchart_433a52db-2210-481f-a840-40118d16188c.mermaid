@@ -1,0 +1,35 @@
+graph TD
+    A["🌟 Start"] --> B["🔐 Login"]
+    B --> C{"🧑‍🎓 Student or 👨‍🏫 Teacher?"}
+    
+    C -->|Student| D["📝 Select User Type: Student"]
+    D --> E["🖋️ Fill Student Details"]
+    E --> F["🚀 Navigate to Student Dashboard"]
+    F --> G["🏫 Join Classroom"]
+    G --> H["📚 Open Classroom"]
+    H --> I["📢 Check Announcements"]
+    I --> J["✍️ Take Test"]
+    
+    C -->|Teacher| K["📝 Select User Type: Teacher"]
+    K --> L["🖋️ Fill Teacher Details"]
+    L --> M["🚀 Navigate to Teacher Dashboard"]
+    M --> N["🏗️ Create Classroom"]
+    N --> O{"📤 Upload or Create?"}
+    O -->|Upload| P["📁 Upload Syllabus and Notes"]
+    O -->|Create| Q["🤖 Create Test with AI Prompt"]
+    P --> R["📅 Schedule Test"]
+    Q --> R
+    R --> S["📊 Analyze Student Performance"]
+    
+    style A fill:#4CAF50,stroke:#45a049,stroke-width:2px
+    style B fill:#2196F3,stroke:#1e88e5,stroke-width:2px
+    style C fill:#FF9800,stroke:#f57c00,stroke-width:2px
+    style F fill:#9C27B0,stroke:#8e24aa,stroke-width:2px
+    style J fill:#E91E63,stroke:#d81b60,stroke-width:2px
+    style M fill:#9C27B0,stroke:#8e24aa,stroke-width:2px
+    style N fill:#00BCD4,stroke:#00acc1,stroke-width:2px
+    style Q fill:#3F51B5,stroke:#3949ab,stroke-width:2px
+    style S fill:#F44336,stroke:#e53935,stroke-width:2px
+    
+    classDef default fill:#424242,stroke:#212121,stroke-width:2px,color:#fff
+    classDef decision fill:#FF9800,stroke:#f57c00,stroke-width:2px,color:#fff

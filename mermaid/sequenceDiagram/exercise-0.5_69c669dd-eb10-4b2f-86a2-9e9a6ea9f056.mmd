@@ -1,0 +1,28 @@
+sequenceDiagram
+    participant browser
+    participant server
+
+    Note left of browser: HTML document is fetched from server
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/spa
+    activate server
+    server->>browser: HTML document
+    deactivate server
+
+    Note left of browser:Files present on HTML Doc are fetched from server i.e, CSS,JS
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.css
+    activate server
+    server->>browser: CSS file
+    deactivate server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/spa.js
+    activate server
+    server->>browser: JS file
+    deactivate server
+
+    Note left of browser:Browser executes JS code which fetches Data.JSON file
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+    activate server
+    server->>browser: Data.JSON file
+    deactivate server
+
+    Note left of browser:The event handlers on JS file are executed and data is reflected on browser based on the stucture formatted on HTML and CSS files

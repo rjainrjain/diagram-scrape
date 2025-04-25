@@ -1,0 +1,16 @@
+sequenceDiagram
+    participant U as User
+    participant T as Tokenizer
+    participant F as Feature Extractor
+    participant D as Dictionaries
+    participant M as CRF Model
+    participant V as Viterbi Algorithm
+
+    U->>T: Input affiliation string
+    T->>F: Tokenized sequence
+    F->>D: Request lookups
+    D-->>F: Dictionary matches
+    F->>M: Feature vectors
+    M->>V: Compute potentials
+    V-->>M: Most likely sequence
+    M-->>U: Labeled affiliation

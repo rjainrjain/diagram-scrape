@@ -1,0 +1,102 @@
+erDiagram
+    User {
+        int id
+        string username
+        string password
+        string name
+        string gender
+        string address
+        int role_id
+        datetime created_at
+        datetime updated_at
+        int created_by
+        int updated_by
+    }
+    Role {
+        int id
+        string name
+    }
+    Permission {
+        int id
+        int role_id
+        string scope
+    }
+    Product {
+        bigint id
+        string type
+        string name
+        int quantity
+        float price
+        string photo
+        string address
+        datetime open_hour
+        datetime close_hour
+        datetime created_at
+        datetime updated_at
+        int created_by
+        int updated_by
+    }
+    Discount {
+        bigint id
+        bigint product_id
+        string type
+        float value
+        datetime created_at
+        datetime updated_at
+        int created_by
+        int updated_by
+    }
+    Order {
+        bigint id
+        int user_id
+        datetime book_start_date
+        datetime book_end_date
+        string status
+        float total_amount
+        string payment_method
+        datetime created_at
+        datetime updated_at
+        int created_by
+        int updated_by
+    }
+    Order_Items {
+        bigint id
+        bigint order_id
+        bigint product_id
+        float price
+        float discount
+        int quantity
+        float total_amount
+        datetime created_at
+        datetime updated_at
+        int created_by
+        int updated_by
+    }
+    Membership {
+        int id
+        int user_id
+        datetime start_date
+        datetime end_date
+        datetime created_at
+        datetime updated_at
+        int created_by
+        int updated_by
+    }
+    Order_Status_History {
+        bigint id
+        bigint order_id
+        string status
+        datetime created_at
+        datetime updated_at
+        int created_by
+        int updated_by
+    }
+
+    User ||--|| Role : "belongs to"
+    Role ||--o{ Permission : "has"
+    Product ||--|| Order_Items : "has"
+    Product ||--|| Discount : "has"
+    User ||--o{ Order : "places"
+    Order ||--o{ Order_Status_History : "has"
+    Order_Items }o--|| Order : "has"
+    Membership ||--|| User : "has"

@@ -1,0 +1,30 @@
+classDiagram
+class volumes
+volumes : mongodb
+volumes : postgresdb
+
+class redis
+redis : image
+
+class mongo
+mongo : image
+
+class memcached
+memcached : image
+
+class postgres
+postgres : image
+
+class mailcatcher
+mailcatcher : image
+
+class platformdashboard
+platformdashboard : image
+platformdashboard : command
+platformdashboard : restart
+
+class platformapi
+platformapi : image
+platformapi : command
+platformapi : restart
+

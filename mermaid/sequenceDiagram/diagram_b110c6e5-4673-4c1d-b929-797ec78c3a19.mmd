@@ -1,0 +1,55 @@
+sequenceDiagram
+participant M as Some module
+participant E as MyEvent(record)
+participant R as RecordsSupervisor
+participant PS as ProducerSupervisor
+participant P as Producer
+participant CD as ConsumerDynamicSupervisor
+participant CS as ConsumerSupervisor
+participant C as Consumer
+participant T as Task
+participant K as Kinesis
+M->>+E: record(event)
+
+opt MyEvent server not running
+E->>+R: start_child
+R->>+E: init
+E->>E: New ets table
+E->>E: create_or_get_queue
+
+E->>+PS: start_child(MyEvent)
+PS->>+P: init(MyEvent)
+P->>+CD: start_child(MyEvent, pid)
+CD->>+CS: init({MyEvent, pid})
+CS-->>-CD: {:ok, pid}
+CD-->>-P: {:ok, pid}
+P->>+E: create_or_get_queue
+E-->>-P: queue
+P-->>-PS: {:producer, {{queue, 0}, MyEvent}}
+PS-->>-E: {:ok, pid}
+E-->>-R: {:ok, nil}
+R-->>-E: {:ok pid}
+end
+
+E->>E: add(event)
+
+E-->>-M: :ok
+
+loop Every tick
+C->>+E: create_batches_and_flush
+E-->>-C: batch of events
+C->>C: Append batches to the current batches queue
+
+opt When there is enough batches to dispatch
+C->>C: dispatch batches
+end
+end
+
+opt When a new batch is dispatched
+CS->>+C: start_link(MyEvent, events)
+C->>+T: start_link
+T->>E: handle_event(events)
+E->>K: send_data(events)
+T->>-C: :ok
+C-->>-CS: {:ok, pid}
+end

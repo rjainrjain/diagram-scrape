@@ -1,0 +1,24 @@
+sequenceDiagram
+    participant M as Main
+    participant G as Game
+    participant U as UI
+
+    M->>U: start()
+    U->>U: display_welcome_message()
+    U->>G: start_game(size)
+    U->>U: display_board()
+    loop until game over
+        U->>U: prompt_move()
+        U->>G: make_move(column)
+        U->>G: switch_player()
+        U->>U: display_board()
+        U->>G: is_winner()
+        alt if winner
+            U->>U: display_winner()
+            U->>U: display_goodbye_message()
+            G->>M: end game
+        else if board full
+            U->>U: display_draw()
+            U->>U: display_goodbye_message()
+            G->>M: end game
+    end

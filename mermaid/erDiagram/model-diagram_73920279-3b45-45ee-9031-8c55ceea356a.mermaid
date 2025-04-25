@@ -1,0 +1,15 @@
+erDiagram
+    PROCESSING_REQUEST ||--o{ PRODUCT : has
+    PROCESSING_REQUEST {
+        UUID requestId PK
+        STRING status
+        STRING webhookUrl
+    }
+    PRODUCT {
+        INTEGER id PK
+        INTEGER serialNumber
+        STRING productName
+        TEXT inputUrls
+        TEXT outputUrls
+        UUID processingRequestId FK
+    }

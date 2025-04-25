@@ -1,0 +1,24 @@
+---
+title: My ERD
+---
+erDiagram
+    person ||--o{ shopping_cart : uses
+    person {
+        string last_name
+        string first_name
+        int poverty_level
+    }
+    shopping_cart ||--|{ item : contains
+    shopping_cart {
+        int size
+    }
+    person }|..|{ house : lives_in
+    item {
+       string color
+       float cost
+       string shape
+    }
+    house {
+        string type
+        string color
+    }

@@ -1,0 +1,33 @@
+classDiagram
+JobAnnouncer --> UI: 1. clickViewAllApplicants()
+UI --> ApplicationController: 2. getDetailedApplicantsList(jobAnnounceId)
+ApplicationController --> StudentRepository: 3. getDetailedStudentInfo(jobAnnounceId)
+StudentRepository --> DBConnector: 4. executeQuery(Q8J.1, jobAnnounceId)
+DBConnector --> StudentRepository: 5. studentDetailsList
+StudentRepository --> ApplicationController: 6. return studentDetailsList
+ApplicationController --> UI: 7. return formattedStudentDetails
+UI --> UI: 8. displayDetailedApplicantsList()
+
+    class JobAnnouncer {
+
+    }
+
+    class UI{
+        +displayDetailedApplicantsList()   
+    }
+
+    class ApplicationController {
+        +getDetailedApplicantsList()
+    }
+
+    class StudentRepository {  
+
+    }
+
+    class PositionRepository {
+        +getDetailedStudentInfo()
+    }
+
+    class DBConnector {
+        +executeQuery()
+    }

@@ -1,0 +1,119 @@
+classDiagram
+  Offer -- AdultOrientedEnumeration
+  Offer -- Review
+  Offer -- Trip
+  Offer -- Event
+  Offer -- Product
+  Offer -- AggregateOffer
+  Offer -- CreativeWork
+  Offer -- MenuItem
+  Offer -- Service
+  Offer -- PhysicalActivityCategory
+  Offer -- Thing
+  Offer -- CategoryCode
+  Offer -- date
+  Offer -- OfferShippingDetails
+  Offer -- TypeAndQuantityNode
+  Offer -- BusinessFunction
+  Offer -- OfferItemCondition
+  Offer -- QuantitativeValue
+  Offer -- LoanOrCredit
+  Offer -- PaymentMethod
+  Offer -- WarrantyPromise
+  Offer -- Organization
+  Offer -- Person
+  Offer -- Place
+  Offer -- GeoShape
+  Offer -- Duration
+  Offer -- AggregateRating
+  Offer -- DeliveryMethod
+  Offer -- dateTime
+  Offer -- time
+  Offer -- Offer
+  Offer -- MerchantReturnPolicy
+  Offer -- PriceSpecification
+  Offer -- AdministrativeArea
+  Offer -- BusinessEntityType
+  Offer -- ItemAvailability
+
+
+class Offer {
+
+  AdultOrientedEnumeration hasAdultConsideration
+  string gtin12
+  Review review
+  Trip itemOffered
+  Event itemOffered
+  Product itemOffered
+  AggregateOffer itemOffered
+  CreativeWork itemOffered
+  MenuItem itemOffered
+  Service itemOffered
+  string category
+  string category
+  PhysicalActivityCategory category
+  Thing category
+  CategoryCode category
+  date priceValidUntil
+  OfferShippingDetails shippingDetails
+  string mpn
+  TypeAndQuantityNode includesObject
+  BusinessFunction businessFunction
+  OfferItemCondition itemCondition
+  string gtin
+  QuantitativeValue eligibleQuantity
+  LoanOrCredit acceptedPaymentMethod
+  PaymentMethod acceptedPaymentMethod
+  WarrantyPromise warranty
+  Organization seller
+  Person seller
+  Place ineligibleRegion
+  string ineligibleRegion
+  GeoShape ineligibleRegion
+  QuantitativeValue leaseLength
+  Duration leaseLength
+  AggregateRating aggregateRating
+  Person offeredBy
+  Organization offeredBy
+  QuantitativeValue deliveryLeadTime
+  DeliveryMethod availableDeliveryMethod
+  dateTime validFrom
+  date validFrom
+  date availabilityEnds
+  dateTime availabilityEnds
+  time availabilityEnds
+  GeoShape eligibleRegion
+  string eligibleRegion
+  Place eligibleRegion
+  QuantitativeValue hasMeasurement
+  string gtin8
+  QuantitativeValue inventoryLevel
+  string sku
+  Offer addOn
+  MerchantReturnPolicy hasMerchantReturnPolicy
+  QuantitativeValue advanceBookingRequirement
+  string gtin14
+  string priceCurrency
+  PriceSpecification eligibleTransactionVolume
+  AdministrativeArea areaServed
+  GeoShape areaServed
+  string areaServed
+  Place areaServed
+  BusinessEntityType eligibleCustomerType
+  ItemAvailability availability
+  string gtin13
+  Review reviews
+  boolean isFamilyFriendly
+  dateTime validThrough
+  date validThrough
+  PriceSpecification priceSpecification
+  number price
+  string price
+  time availabilityStarts
+  dateTime availabilityStarts
+  date availabilityStarts
+  QuantitativeValue eligibleDuration
+  Place availableAtOrFrom
+  string serialNumber
+
+ }

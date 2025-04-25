@@ -1,0 +1,29 @@
+sequenceDiagram
+participant CLIENT as ☺ ☺ ☺ <br/>Client
+participant TESTSERVICE as ⌬ <br/>Test service
+participant LOGSERVICE as ⌬ <br/>LogService
+participant REDIS as ⌬ <br/>Redis
+participant RABBITMQ as ⌬ <br/>RabbitMQ
+  %% COMMENT
+    CLIENT ->> TESTSERVICE: Request to run worker
+      LOOP infinity
+        TESTSERVICE ->> TESTSERVICE: Print ok to screen
+      END
+    NOTE RIGHT OF CLIENT: Note right of client
+    NOTE LEFT OF CLIENT: Note left of client
+    PAR Get user
+        ALT is admin
+          TESTSERVICE ->> TESTSERVICE: print the role to screen
+        ELSE is not admin
+          TESTSERVICE ->> LOGSERVICE: Add log to server
+        END
+        LOOP in 10 times
+          TESTSERVICE ->> TESTSERVICE: print index to screen
+        END
+    AND Get company
+        TESTSERVICE --) REDIS: Publish hello
+        TESTSERVICE ->> LOGSERVICE: Make a request to add log
+        RABBITMQ -) TESTSERVICE : Comsume event
+    END
+    NOTE OVER CLIENT, RABBITMQ: Message over here
+    TESTSERVICE -->> CLIENT : Response "OK"

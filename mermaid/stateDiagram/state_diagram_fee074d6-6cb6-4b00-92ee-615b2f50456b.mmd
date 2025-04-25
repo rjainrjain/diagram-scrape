@@ -1,0 +1,29 @@
+stateDiagram-v2
+    [*] --> EmptySystem
+    EmptySystem --> DatabaseCreated: Create Database
+    DatabaseCreated --> TableCreated: Create Table
+    TableCreated --> TableWithSchema: Get Table Schema
+    TableWithSchema --> TableWithRow: Insert Row
+    TableWithRow --> TableWithRowRetrieved: Get Row
+    TableWithRowRetrieved --> TableWithUpdatedRow: Update Row
+    TableWithUpdatedRow --> TableWithUpdatedRowRetrieved: Get Updated Row
+    TableWithUpdatedRowRetrieved --> EmptyTable: Delete Row
+    EmptyTable --> TableDeleted: Delete Table
+    TableDeleted --> EmptyDatabase: List Tables (Empty)
+    EmptyDatabase --> [*]: End Test
+
+    state TableWithRow {
+        [*] --> RowInserted
+    }
+
+    state TableWithUpdatedRow {
+        [*] --> RowUpdated
+    }
+
+    state EmptyTable {
+        [*] --> NoRows
+    }
+
+    state EmptyDatabase {
+        [*] --> NoTables
+    }

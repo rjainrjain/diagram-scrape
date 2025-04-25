@@ -1,0 +1,26 @@
+
+
+flowchart LR
+    classDef bigger font-size:20px
+    classDef biggest font-size:50px,fill:green
+
+    User["User"]
+    Chain1["EVM Chain 1"]
+    Chain2["EVM Chain 2"]
+    Zetachain["Zetachain"]
+    zEVM["zEVM"]
+    Observer((("Observer/Signer")))
+
+    User -- 1. Trigger interaction --> Chain1 
+    Chain1 -- 2. Zeta emitted event --> Chain1
+    Chain1 -- 3. Sees Incoming ZetaSend event --> Observer 
+    Observer:::bigger -- 4. Vote on inbound event occurence --> Zetachain 
+    Zetachain:::biggest -- 5. Handle Voting Process --> Zetachain 
+    Zetachain:::biggest -- 6. Emit vote succeeded event --> Zetachain 
+    Zetachain:::biggest -- 7. Observe outbound Tx --> Observer 
+    Observer:::bigger -- 8. P2P TSS signature generation --> Observer
+    Observer:::bigger -- 9. TSS Send to EVM chain --> Chain2
+    Chain2 -- 10. ZetaReceived emitted event  --> Chain2
+    Chain2 -- 11. Sees Incoming ZetaReceived event --> Observer:::bigger
+    Observer:::bigger -- 12. Vote on outbound event occurence --> Zetachain 
+    Zetachain:::biggest -- 13. Emit vote succeeded event --> Zetachain 

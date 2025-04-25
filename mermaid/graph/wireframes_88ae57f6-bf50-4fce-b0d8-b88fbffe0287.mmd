@@ -1,0 +1,31 @@
+graph TD
+    subgraph Welcome/Login Screen
+    A[Welcome Message] --> B[Username Input]
+    B --> C[Password Input]
+    C --> D[Login Button]
+    D --> E[Register Button]
+    end
+
+    subgraph Register Screen
+    F[Register Header] --> G[Username Input]
+    G --> H[Password Input]
+    H --> I[Register Button]
+    end
+
+    subgraph Forum Home
+    J[Forum Categories] --> K[Sub-forums]
+    K --> L[Recent Threads]
+    L --> M[User Profile/Logout]
+    end
+
+    subgraph Thread View
+    N[Thread Title] --> O[Original Post]
+    O --> P[Replies]
+    P --> Q[Reply Input]
+    Q --> R[Submit Reply Button]
+    end
+
+    E --> F
+    I --> A
+    D --> J
+    K --> N

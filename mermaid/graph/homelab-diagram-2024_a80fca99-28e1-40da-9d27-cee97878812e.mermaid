@@ -1,0 +1,32 @@
+```mermaid
+graph TB
+	a[Proxmox]-->b[Truenas]
+	a-->c[Ubuntu Server]
+	c-->subA
+	b-->subB
+	subB -- "smba" -->subC
+	subgraph subA[Docker]
+		direction LR
+		d[Jellyfin]
+		e[Uptime-kuma]
+		f[Potainer]
+		g[WoodpeckerCI]
+		h[CMS]
+    j[]
+		k[Node Services]
+		l[GoLang Services]
+	end
+	subgraph subB[Storage]
+		direction RL
+		j[(smb:media)]
+		k[(smb:file system)]
+		l[(ISCSI)]
+	end
+	subgraph subC[LocalMachines]
+		m[machine One]
+		n[machine Two]
+		o[machine Three]
+	end
+
+	j-- "smb mnt"-->d
+```

@@ -1,0 +1,18 @@
+graph TD
+    A[Requirements Gathering] -->|Analyze & Document| B(Planning)
+    B --> C{Design}
+    C -->|Architecture| D[Development]
+    C -->|UI/UX| D
+    D -->|Code| E(Testing)
+    E -->|QA Feedback| D
+    E -->|Passes QA| F[Deployment]
+    F -->|Release| G(Maintenance)
+    G -->|New Features/Bugs| A
+    
+    style A fill:#f9d5e5,stroke:#333,stroke-width:2px
+    style B fill:#eeac99,stroke:#333,stroke-width:2px
+    style C fill:#e06377,stroke:#333,stroke-width:2px
+    style D fill:#c83349,stroke:#333,stroke-width:2px
+    style E fill:#5b9aa0,stroke:#333,stroke-width:2px
+    style F fill:#d6e1c7,stroke:#333,stroke-width:2px
+    style G fill:#f9d5e5,stroke:#333,stroke-width:2px

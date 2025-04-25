@@ -1,0 +1,20 @@
+erDiagram
+    USERS {
+        user_id int PK
+        unique_id int
+        fname varchar
+        lname varchar
+        email varchar
+        password varchar
+        img varchar
+        status varchar
+    }
+    MESSAGES {
+        msg_id int PK
+        incoming_msg_id int
+        outgoing_msg_id int
+        msg varchar
+    }
+
+    MESSAGES ||--o{ USERS : incoming_msg_id
+    MESSAGES ||--o{ USERS : outgoing_msg_id

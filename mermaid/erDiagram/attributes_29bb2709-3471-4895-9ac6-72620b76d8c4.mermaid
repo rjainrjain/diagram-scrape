@@ -1,0 +1,35 @@
+---
+title: IFA
+---
+erDiagram
+    EVENT many--one VENUE : "takes place at"
+    COMPETITOR zero or more--zero or more EVENT : "entrant"
+    COMPETITOR one or zero--one USER :  ""
+    ORGANISER one or many--many EVENT : "organises"
+    ORGANISER  one or zero--one USER :  ""
+    USER {
+        text email "UNIQUE"
+        text family_name
+        text given_names
+        text password
+    }
+    COMPETITOR {
+        text nationality
+        date date_of_birth
+        text emergency_contact
+    }
+    VENUE {
+        text name
+        text address
+        text contact_email
+    }
+    EVENT {
+        text name
+        text description
+        text country
+        int stars "1 to 4"
+        date start_date
+        date end_date
+        text contact_email
+    }
+

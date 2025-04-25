@@ -1,0 +1,11 @@
+stateDiagram-v2
+ direction LR
+ [*] --> Load
+ Load --> Idle
+ Idle --> Cache: Correct Password
+ Cache --> Commit: Commit CMD
+ Cache --> Idle: Cancel CMD
+ Commit --> Erase: Correct Password
+ Commit --> Idle: Cancel CMD
+ Erase --> Write
+ Write --> [*]

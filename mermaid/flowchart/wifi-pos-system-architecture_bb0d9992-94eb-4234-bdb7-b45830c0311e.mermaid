@@ -1,0 +1,50 @@
+flowchart TD
+    subgraph Hardware
+        A[POS Terminal]
+        B[Receipt Printer]
+        C[Mikrotik Router]
+        D[Backend Server]
+        E[Network Switch]
+    end
+    
+    subgraph Software
+        F[POS Software]
+        G[Node.js Backend]
+        H[MongoDB Database]
+        I[Redis Cache]
+        J[MQTT Broker]
+        K[RouterOS API]
+        L[Captive Portal Frontend]
+    end
+    
+    A -->|Runs| F
+    F -->|Generates| M[QR Code]
+    M -->|Printed on| B
+    F -->|Sends data| G
+    G -->|Stores data| H
+    G -->|Caches data| I
+    G -->|Publishes events| J
+    J -->|Subscribes to events| K
+    K -->|Configures| C
+    C -->|Hosts| L
+    G -->|Serves| L
+    D -->|Runs| G
+    D -->|Runs| H
+    D -->|Runs| I
+    D -->|Runs| J
+    E -->|Connects| A
+    E -->|Connects| C
+    E -->|Connects| D
+    
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#333,stroke-width:2px
+    style C fill:#bfb,stroke:#333,stroke-width:2px
+    style D fill:#fbb,stroke:#333,stroke-width:2px
+    style E fill:#ddd,stroke:#333,stroke-width:2px
+    style F fill:#fcf,stroke:#333,stroke-width:2px
+    style G fill:#cff,stroke:#333,stroke-width:2px
+    style H fill:#ffc,stroke:#333,stroke-width:2px
+    style I fill:#cfc,stroke:#333,stroke-width:2px
+    style J fill:#ccf,stroke:#333,stroke-width:2px
+    style K fill:#fcc,stroke:#333,stroke-width:2px
+    style L fill:#cff,stroke:#333,stroke-width:2px

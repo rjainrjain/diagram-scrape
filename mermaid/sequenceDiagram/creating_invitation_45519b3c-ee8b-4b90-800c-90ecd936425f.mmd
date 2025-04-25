@@ -1,0 +1,18 @@
+sequenceDiagram
+
+%% diagram created with https://mermaidjs.github.io/ feel free to use the live editor at https://mermaidjs.github.io/mermaid-live-editor/ to modify
+
+participant Alice
+participant Bob
+participant Keystore
+participant Vault
+
+Note over Alice,Keystore: Alice Creates invitation to connect with Bob
+
+Alice->>Alice: (1) Generate keypair for connection/invitation
+Alice->>Alice: (2) Encrypt keypair with KEK/Master Key
+Alice->>Keystore: (3) Save keypair [POST /keypairs]
+Keystore->>Alice: (4) Return keypair saved
+Alice->>Vault: (5) Create Invitation using vault public key, and email [POST /connection/invitations]
+Vault->>Vault: (6) Send email to Bob including invitation ID and invitation token
+Vault->>Alice: (7) Return invitation created

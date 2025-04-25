@@ -1,0 +1,195 @@
+erDiagram
+
+        Gender {
+            MALE MALE
+FEMALE FEMALE
+OTHER OTHER
+        }
+    
+
+
+        Role {
+            USER USER
+ADMIN ADMIN
+        }
+    
+
+
+        Status {
+            DRAFT DRAFT
+PENDING PENDING
+ACTIVE ACTIVE
+REJECTED REJECTED
+EXPIRED EXPIRED
+        }
+    
+
+
+        TaskStatus {
+            DRAFT DRAFT
+ACTIVE ACTIVE
+COMPLETED COMPLETED
+        }
+    
+
+
+        TaskType {
+            GIVE_STARS GIVE_STARS
+TWEET TWEET
+INSTA INSTA
+LINKEDIN LINKEDIN
+PHOTO PHOTO
+VIDEO VIDEO
+TEXT TEXT
+AUDIO AUDIO
+CODE CODE
+OTHER OTHER
+        }
+    
+
+
+        TaskValidationType {
+            MANUAL MANUAL
+AUTOMATIC AUTOMATIC
+PEER_REVIEW PEER_REVIEW
+        }
+    
+
+
+        SubmissionStatus {
+            DRAFT DRAFT
+PENDING PENDING
+REJECTED REJECTED
+ACCEPTED ACCEPTED
+        }
+    
+
+
+        Difficulty {
+            EASY EASY
+MEDIUM MEDIUM
+HARD HARD
+        }
+    
+  "Social" {
+    Int id "🗝️"
+    String linkedin "❓"
+    String twitter "❓"
+    String instagram "❓"
+    }
+  
+
+  "User" {
+    Int id "🗝️"
+    String firstName 
+    String lastName 
+    String username 
+    String email 
+    String password "❓"
+    Gender gender 
+    String profile 
+    String referrer "❓"
+    Role role 
+    DateTime createdAt 
+    DateTime updatedAt 
+    DateTime deletedAt "❓"
+    }
+  
+
+  "Event" {
+    Int id "🗝️"
+    String title 
+    String description 
+    String slug 
+    String poster 
+    DateTime startDate 
+    DateTime endDate 
+    String location 
+    Int organizerId 
+    Int managerId 
+    Status status 
+    String contacts 
+    DateTime createdAt 
+    DateTime updatedAt 
+    DateTime deletedAt "❓"
+    }
+  
+
+  "Prize" {
+    Int id "🗝️"
+    String name 
+    Int amount "❓"
+    String description 
+    DateTime createdAt 
+    DateTime updatedAt 
+    DateTime deletedAt "❓"
+    }
+  
+
+  "Task" {
+    Int id "🗝️"
+    String name 
+    String tagline "❓"
+    String description 
+    Int points 
+    Difficulty difficulty 
+    DateTime dueDate 
+    TaskStatus status 
+    TaskType type 
+    TaskValidationType validation 
+    String tags 
+    DateTime createdAt 
+    DateTime updatedAt 
+    DateTime deletedAt "❓"
+    }
+  
+
+  "Submission" {
+    Int id "🗝️"
+    String content 
+    String attachments 
+    SubmissionStatus status 
+    Int points "❓"
+    DateTime createdAt 
+    DateTime updatedAt 
+    DateTime deletedAt "❓"
+    }
+  
+
+  "event_to_organizer" {
+
+    }
+  
+
+  "event_to_manager" {
+
+    }
+  
+    "Social" o{--}o "User" : "user"
+    "User" o|--|| "Gender" : "enum:gender"
+    "User" o|--|o "Social" : "social"
+    "User" o|--|| "Role" : "enum:role"
+    "User" o{--}o "Submission" : "submissions"
+    "User" o{--}o "Task" : "validations"
+    "User" o{--}o "event_to_organizer" : "EventToOrganizer"
+    "User" o{--}o "event_to_manager" : "EventToManager"
+    "Event" o{--}o "Prize" : "prizes"
+    "Event" o|--|| "Status" : "enum:status"
+    "Event" o{--}o "Task" : "tasks"
+    "Event" o{--}o "event_to_organizer" : "EventToOrganizer"
+    "Event" o{--}o "event_to_manager" : "EventToManager"
+    "Prize" o|--|| "Event" : "event"
+    "Task" o|--|| "Event" : "event"
+    "Task" o|--|| "Difficulty" : "enum:difficulty"
+    "Task" o|--|| "TaskStatus" : "enum:status"
+    "Task" o|--|o "User" : "validator"
+    "Task" o|--|| "TaskType" : "enum:type"
+    "Task" o|--|| "TaskValidationType" : "enum:validation"
+    "Task" o{--}o "Submission" : "submissions"
+    "Submission" o|--|| "User" : "user"
+    "Submission" o|--|| "Task" : "task"
+    "Submission" o|--|| "SubmissionStatus" : "enum:status"
+    "event_to_organizer" o|--|| "User" : "User"
+    "event_to_organizer" o|--|| "Event" : "Event"
+    "event_to_manager" o|--|| "User" : "User"
+    "event_to_manager" o|--|| "Event" : "Event"

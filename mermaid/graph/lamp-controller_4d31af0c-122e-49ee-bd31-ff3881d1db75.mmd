@@ -1,0 +1,29 @@
+---
+title: Lamp Controller
+---
+
+flowchart LR
+    classDef cluster fill:#ffffff00,stroke:#aabbccff,stroke-width:3px,rx:8px,ry:8px;
+    classDef node fill:#ffffff00,stroke:#aabbccff,stroke-width:2px,rx:5px,ry:5px;
+    classDef dashed_border stroke-dasharray:10 6;
+
+    home_network["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.1em'><img src='../../../../icons/network.png' style='min-width:80px;max-width:80px' /></div>Home<br />Network"]
+    class home_network dashed_border
+    home_assistant["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/home-assistant.png' style='min-width:80px;max-width:80px' /></div>Home<br />Assistant"]
+    class home_assistant dashed_border
+
+    subgraph app_wrapper[" "]
+        lamp_controller("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/placeholder.png' style='min-width:80px;max-width:80px' /></div>Lamp controller")
+    end
+
+    gpio_button("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/button.png' style='min-width:80px;max-width:80px' /></div>Button")
+    class gpio_button dashed_border
+    gpio_lamp("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/lightbulb.png' style='min-width:80px;max-width:80px' /></div>Lamp")
+    class gpio_lamp dashed_border
+
+    lamp_controller ~~~ gpio_button --->|GPIO 2| lamp_controller
+    lamp_controller --->|GPIO 14| gpio_lamp
+
+    home_network <--->|:80| lamp_controller
+    home_assistant ~~~ lamp_controller
+    home_assistant -..->|control| app_wrapper

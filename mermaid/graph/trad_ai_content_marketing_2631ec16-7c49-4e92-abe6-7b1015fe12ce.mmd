@@ -1,0 +1,29 @@
+%%{init: {'theme':'dark'}}%%
+graph TD
+subgraph search["google, bing"]
+indexing
+matching
+end
+landing_page["Landing Page,<br/>Blogs, and News"]
+landing_page -->indexing
+indexing o--o matching
+search_user["Potential Customer"] ==>|search|matching
+matching -->|ranked_results|search_user
+
+style search_user stroke:#ffffff,stroke-width:4px,fill:#111111
+
+subgraph ai["openai, google, other LLMs"]
+train_ai_brain
+thinking["thinking<br/>and reasoning"]
+end
+train_ai_brain["Train AI Brain"]
+ai_landing_page["Landing Page,<br/>Blogs, and News"]
+ai_landing_page -->train_ai_brain
+ai_user["Potential Customer"] ==>|question|thinking
+ca["Customer's copilot<br/>and agents"] ==>|query|thinking
+train_ai_brain o--o thinking
+thinking -->|response|ai_user
+thinking -->|response|ca
+
+style ai_user stroke:#ffffff,stroke-width:4px,fill:#111111
+

@@ -1,0 +1,8 @@
+classDiagram
+    Project <|-- Template : Defines
+    Template <|-- JobTemplate : Specializes
+    JobTemplate --> Job : Executes
+    Workflow --> JobTemplate : Uses
+    JobTemplate --> Survey : Prompts
+    Project --> Repository : SynchronizesWith
+

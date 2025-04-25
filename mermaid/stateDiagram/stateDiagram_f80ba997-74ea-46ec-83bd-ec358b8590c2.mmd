@@ -1,0 +1,9 @@
+stateDiagram
+    s1: En attente
+    s2: Validé
+    s3: Refusé
+    [*] --> s1
+    s1 --> s2
+    s1 --> s3 : Dossier incomplet\n Date de consultation a\n dépassée 2 mois
+    s2 --> [*]
+    s3 --> [*]

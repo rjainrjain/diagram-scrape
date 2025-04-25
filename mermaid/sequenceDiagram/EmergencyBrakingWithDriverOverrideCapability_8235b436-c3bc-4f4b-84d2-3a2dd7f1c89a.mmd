@@ -1,0 +1,21 @@
+sequenceDiagram
+    participant D as Driver
+    participant S as Sensors
+    participant CPU as Central Processing Unit
+    participant BCS as Brake Check System
+    participant Brakes
+    participant Notif as Notification System
+    participant Log as Logging System
+
+    Note over S,CPU: Continuous Monitoring
+    S->>CPU: Hazard Data (Radar, LiDAR, Camera)
+    CPU->>CPU: Analyze Hazard
+    alt Hazard Detected
+        CPU->>BCS: Trigger Brake Activation
+        BCS->>Brakes: Apply Brake Force
+        BCS->>Notif: Activate Driver Alert
+        D-->>BCS: Override (if necessary)
+        BCS->>Log: Log Event
+    else No Hazard Detected
+        CPU->>Log: Log Normal Status
+    end

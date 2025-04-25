@@ -1,0 +1,21 @@
+classDiagram
+    class Icecream{
+        <<interface>>
+        +getCost()
+        +getDescription()
+    }
+
+    class ToppingDecorator{
+        <<abstract>>
+        #icecreate: Icecream
+    }
+
+    Icecream <..OrangeCone: implements
+    Icecream <..ToppingDecorator: implements
+
+    ToppingDecorator <-- VanillaCone: extends
+    ToppingDecorator <-- ChocolateCone: extends
+    ToppingDecorator <-- TutifuttiCone: extends
+    ToppingDecorator <-- NutsCone: extends
+    ToppingDecorator <-- SprinklesCone: extends
+    ToppingDecorator <-- FruitsCone: extends

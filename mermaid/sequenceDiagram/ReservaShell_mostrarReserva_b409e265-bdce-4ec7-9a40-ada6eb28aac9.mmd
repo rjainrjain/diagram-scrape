@@ -1,0 +1,29 @@
+sequenceDiagram
+actor User
+User ->> ReservaShell : mostrarReserva
+activate ReservaShell
+ReservaShell ->> iReservaServicio : buscarReserva
+activate iReservaServicio
+iReservaServicio -->> ReservaShell : #32; 
+deactivate iReservaServicio
+ReservaShell ->> iClienteServicio : buscarCliente
+activate iClienteServicio
+iClienteServicio -->> ReservaShell : #32; 
+deactivate iClienteServicio
+ReservaShell ->> PrintShell : imprimir
+activate PrintShell
+PrintShell -->> ReservaShell : #32; 
+deactivate PrintShell
+ReservaShell ->> iAutocaravanaServicio : buscarAutocaravana
+activate iAutocaravanaServicio
+iAutocaravanaServicio -->> ReservaShell : #32; 
+deactivate iAutocaravanaServicio
+ReservaShell ->> PrintShell : imprimir
+activate PrintShell
+PrintShell -->> ReservaShell : #32; 
+deactivate PrintShell
+ReservaShell ->> PrintShell : imprimir
+activate PrintShell
+PrintShell -->> ReservaShell : #32; 
+deactivate PrintShell
+deactivate ReservaShell

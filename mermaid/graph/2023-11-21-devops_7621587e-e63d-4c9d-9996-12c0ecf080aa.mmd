@@ -1,0 +1,17 @@
+flowchart TB
+
+    subgraph Deploy
+
+    subgraph Local 
+    P1[provision] 
+    D1[deploy]
+    end
+
+    subgraph Cloud
+    P2[Azure] 
+    D2[Start app]
+    end
+    end
+
+    P1 -- create resources\nand configure --> P2
+    D1 -- send app --> D2

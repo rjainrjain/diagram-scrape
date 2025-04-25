@@ -1,0 +1,10 @@
+classDiagram
+    Component ..> React : uses
+    Component ..> D3 : uses
+    DOM <.. D3 : Creates and Changes SVG DOM Elements
+    note for D3 "useEffect() allows D3 to customize DOM elements"
+    note for Component "Defines what should be rendered"
+
+    class React {
+        +useEffect()
+    }

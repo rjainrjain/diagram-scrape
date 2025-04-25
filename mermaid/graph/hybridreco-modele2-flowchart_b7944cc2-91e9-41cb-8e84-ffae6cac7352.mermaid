@@ -1,0 +1,21 @@
+graph TD
+    A[Start] --> B[Prepare Data]
+    B --> C[Preprocess Data]
+    C --> D[Create Preprocessor]
+    D --> E[Define Objective Function]
+    E --> F[Train and Evaluate Models]
+    F --> G[Compare Model Performance]
+    G --> H[Generate Recommendations]
+    H --> I[End]
+
+    subgraph Model Training
+        F1[Random Forest] --> F4[Best Model Selection]
+        F2[LightGBM] --> F4
+        F3[CatBoost] --> F4
+    end
+
+    subgraph Recommendation Generation
+        H1[Get User Level] --> H2[Predict Word Scores]
+        H2 --> H3[Adjust Predictions]
+        H3 --> H4[Select Top Words]
+    end

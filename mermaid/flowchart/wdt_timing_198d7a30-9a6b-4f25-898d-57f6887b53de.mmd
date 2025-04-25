@@ -1,0 +1,12 @@
+flowchart LR
+ start(( ))
+ subgraph Interrupts.c
+ subgraph TIMER1_ISR["TIMER1_ISR()"]
+ div8["Divide By 8 Calls"]
+ end
+ end
+ subgraph IoT supervisor_main.c
+ mbWDTsm["mbWDTsm( )"]
+ end
+ start -->|every 1 ms| div8
+ div8 -->|every 8 ms| mbWDTsm

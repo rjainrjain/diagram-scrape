@@ -1,0 +1,70 @@
+---
+title: Health Factory (ER Diagram)
+---
+erDiagram
+    Customer {
+        int id PK
+        varchar(20) first_name "NOT NULL"
+        varchar(20) last_name
+        varchar(20) phone_number UK "NOT NULL"
+        varchar(20) email_address UK
+        varchar(511) address
+        varchar(1) gender
+        date birth_date
+    }
+
+    Employee {
+        int id PK
+        varchar(20) first_name "NOT NULL"
+        varchar(20) last_name "NOT NULL"
+        varchar(20) phone_number UK "NOT NULL"
+        varchar(20) email_address UK "NOT NULL"
+        varchar(511) address "NOT NULL"
+        varchar(1) gender "NOT NULL"
+        date birth_date "NOT NULL"
+        date joining_date "NOT NULL"
+        varchar(20) designation
+        decimal montly_salary "NOT NULL"
+        varchar(255) login_password "NOT NULL"
+        boolean currently_employeed "NOT NULL"
+        boolean is_administrator "NOT NULL"
+    }
+
+    Manufacturer {
+        int id PK
+        varchar(255) name "NOT NULL"
+        varchar(20) phone_number UK "NOT NULL"
+        varchar(511) address
+    }
+
+    Medicine {
+        int id PK
+        varchar(255) name "NOT NULL"
+        int manufacturer_id FK "NOT NULL"
+        decimal cost_price "NOT NULL"
+        decimal sale_price "NOT NULL"
+        int potency
+        int quantity_per_unit "NOT NULL"
+        date manufacturing_date "NOT NULL"
+        date purchase_date "NOT NULL"
+        date expiry_date "NOT NULL"
+    }
+
+    Sale {
+        int id PK
+        datetime date_time "NOT NULL"
+        int employee_id FK "NOT NULL"
+        int customer_id FK "NOT NULL"
+        decimal amount "NOT NULL"
+    }
+
+    Salt {
+        int id PK
+        varchar(255) name "NOT NULL"
+    }
+
+    Manufacturer only one to zero or more Medicine: makes
+    Medicine zero or more to zero or more Sale: sold
+    Medicine zero or more to zero or more Salt: contains
+    Employee only one to zero or more Sale: sells
+    Customer only one to zero or more Sale: buys

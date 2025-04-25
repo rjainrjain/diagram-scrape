@@ -1,0 +1,31 @@
+sequenceDiagram
+    participant User as "User"
+    participant YourApp as "Your app"
+    participant Agora as "SD-RTN"
+    rect rgb(255, 255, 255)
+        note right of YourApp: Voice SDK
+        YourApp ->> YourApp: Open App
+        YourApp ->> Agora: Create an instance of Agora Engine
+        rect rgb(255, 255, 255)
+            note right of YourApp: Setup raw data processing
+            YourApp ->> YourApp: Setup the audio frame observer
+        end
+        rect rgb(255, 255, 255)
+            note right of YourApp: Join a channel
+            YourApp ->> YourApp: Register the audio frame observer
+            YourApp ->> YourApp: Set audio frame parameters
+            YourApp ->> YourApp: Retrieve authentication token to join a channel
+            YourApp ->> YourApp: Join the channel
+        end
+        rect rgb(255, 255, 255)
+            note right of YourApp: Process raw audio data
+            YourApp ->> YourApp: Get the raw data in the callbacks
+            YourApp -->> YourApp: Send the processed data back with the callbacks
+        end
+        rect rgb(255, 255, 255)
+            note right of YourApp: Leave
+            YourApp ->> YourApp: Unregister the audio frame observer
+            YourApp ->> YourApp: Leave the channel
+        end
+    end
+    YourApp -->> User: Return Result

@@ -1,0 +1,21 @@
+sequenceDiagram
+
+%% diagram created with https://mermaidjs.github.io/ feel free to use the live editor at https://mermaidjs.github.io/mermaid-live-editor/ to modify
+
+participant Alice
+participant Bob
+participant Vault
+
+
+Note over Alice,Vault: Alice Shares a item with Bob
+
+Alice->>Vault: (15) Request List of items [GET /items]
+Vault->>Alice: (16) Return items
+Alice->>Vault: (17) Request List of Connections [GET /connections]
+Vault->>Alice: (18) Return connections including id and public key
+Alice->>Alice: (19) Generate DEK
+Alice->>Alice: (20) Encrypt DEK with Bob's public key from connection
+Alice->>Alice: (21) Encrypt item data with new DEK
+Alice->>Vault: (22) Create Share using re-encrypted data, connection ID, <br>item ID, and encrypted_dek [POST /items/{item_id}/shares]
+Vault->>Alice: (23) Return share created
+

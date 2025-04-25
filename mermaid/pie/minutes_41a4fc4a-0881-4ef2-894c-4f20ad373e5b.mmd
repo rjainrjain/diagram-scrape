@@ -1,0 +1,76 @@
+# Week 2
+
+## Introduction to the Command Line Interface
+
+command [-flags] [arguments]
+
+pwd ... print working directory
+
+ls ... list directory files
+
+    -a ... print hidden files
+    -l ... list with details
+    [-al] ... combine a & l flags
+
+cd ... change directory
+    .. ... move up one directory 
+
+__Basic file management__
+---
+
+mkdir ... create an empty folder
+
+touch ... create an empty file
+
+cp ... copy files
+
+    cp FROM TO
+    -r ... recursive copy, copies entire folders
+    cp -r Documents More_Documents
+
+    rm ... remove files
+
+    -r recursively delete files
+    __NOTE__ No undo functionality
+
+    mv ... move files between directories
+
+    date ... print date
+
+    echo ... print string to screen
+
+## Introduction to GIT
+    git init ... initialize local git repo
+    git remote add origin [REPO] ... point local repo to GitHub
+    clone [REPO] ... clone to current working directory
+
+__Basic GitHub commands__
+
+1. [add] new files to index 
+2. [commit] changes to local repo
+3. [push] new contents to remote repository
+
+<code>
+    git add . ... add all new files to index
+
+    git add -u ... update tracking for changed names or deletions
+    git add -A ... do both of the above
+
+    git commit -m 'message' ... stage for local repo, description
+    git push ... send changes to remote repo
+</code>
+
+__Branching__
+
+<code>
+    git checkout -b BRANCHNAME ... create a branch from a repo
+    git branch ... show your active branch
+    git checkout BRANCHNAME ... switch your active branch to BRANCHNAME
+</code>
+
+__Pull requests__
+
+Once you pushed changes to your branch of the repo, create a [pull]
+request to merge your changes into another repo. The request must be
+completed on the website.
+

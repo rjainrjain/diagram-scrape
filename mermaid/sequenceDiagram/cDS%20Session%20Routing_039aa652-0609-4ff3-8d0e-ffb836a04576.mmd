@@ -1,0 +1,118 @@
+sequenceDiagram
+participant P as Player
+participant Boot as Bootstrap
+participant LD as DNS resolver
+participant AD as Authoritative DNS server
+
+participant SM as cDS::Session Management
+participant sNA as cDS::Node-A
+participant sNB as cDS::Node-B
+participant TC as cDS::TC
+participant NA as cDS::Node-C
+participant CS as cDS::Content Steering Servers
+participant TE as cDS::Telemetry
+
+autonumber
+    P->>Boot: get session bootstrap
+    Boot->>P: Bootstrap details e.g. endpoint, ad serving parameters, etc
+
+    %% resolve Session Management server domain name
+    P->>LD: query cDS::Session Management domain name
+    LD->>AD: query cDS::Session Management domain name
+    AD->>LD:  cDS::Session Management Server IP for that DNS resolver
+    LD->>P: cDS::Session Mangement Server IP
+
+    %% request master manifest from Session Management server
+    Note over P, SM: request master manifest from cDS::Session Management
+    P->>SM: GET /master manifest
+    Note over P, SM: #35;EXTM3U<br/> #35;EXT-X-VERSION:3<br>#35;EXT-X-CONTENT-STEERING:SERVER-URI="https://cs.harmonic.com/"<br>#35;EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=2297761,RESOLUTION=960x540,FRAME-RATE=30.000,PATHWAY-ID="cDS::Node-A"<br>https://nodeA.harmonic.com/01.m3u8<br>#35;EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=2297761,RESOLUTION=960x540,FRAME-RATE=30.000,PATHWAY-ID="cDS::Node-B"<br>http://nodeB.harmonic.com/01.m3u8<br>#35;EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=2297761,RESOLUTION=960x540,FRAME-RATE=30.000,PATHWAY-ID="cDS::TC"<br>https://tc.harmonic.com/01.m3u8.....
+    SM->>P: 200 OK\n(master manifest) 
+    
+    %% request steering manifest from Content Steering server
+    Note over P, CS: request steering manifest from cDS: Content Steering
+    P->>LD: query cDS::Content Steering domain name
+    LD->>AD: query cDS::Content Steering domain name
+    AD->>LD:  cDS::Content Steering Server IP for that DNS resolver
+    LD->>P: cDS::Content Steering Server IP
+
+    P->>CS: GET /steering manifest
+    Note over CS, P: {<br>"VERSION": 1,<br>"TTL": 300,<br>"PATHWAY-PRIORITY: ["cDS::Node-A", "cDS::Node-B", "cDS::TC"]<br>}
+    CS->>P: 200 OK\n(steering manifest)
+    
+    Note over P, sNA: request variant manifest from cDS::Node A
+    P->>LD: query cDS::Node A domain name
+    LD->>AD: query cDS::Node A domain name
+    AD->>LD:  cDS::Node A IP for that DNS resolver
+    LD->>P: cDS::Node A IP
+    P->>sNA: TCP SYN
+    Note over P, sNA: cDS::Node A is down<br>TCP retransmission timer timeout<br>Player fail over to cDS::Node B
+    Note over TE: cDS::Telemetry detect cDS::Node A is down
+    par 
+        TE->>CS: update routing decision (remove cDS::Node A)
+    and 
+        TE->>SM: update routing decision (remove cDS::Node A)
+    end
+
+    Note over P, sNB: Player fail over to cDS::Node B
+    P->>LD: query cDS::Node B domain name
+    LD->>AD: query cDS::Node B domain name
+    AD->>LD:  cDS::Node B IP for that DNS resolver
+    LD->>P: cDS::Node B IP
+    Note over P, sNB: GET /variant manifest 
+    P->>sNB: TCP SYN
+    sNB->>P: ACK, SYN
+    P->>sNB: SYN
+    Note over P, sNB: #35;EXTM3U<br>#35;EXT-X-TARGETDURATION:4<br>#35;EXT-X-MEDIA-SEQUENCE:432137172<br>#35;EXT-X-VERSION:3<br>#35;EXT-X-PROGRAM-DATE-TIME:2024-10-10T08:24:48.831Z<br>#35;EXTINF:3,<br>20240927T075714-01-432137172.ts<br>#35;EXT-X-PROGRAM-DATE-TIME:2024-10-10T08:24:52.031Z<br>EXTINF:5,<br>20240927T075714-01-432137173.ts<br>#35;.........
+    sNB->>P: 200 OK\n(variant manifest)
+
+    %% establish TCP connection, 3 way handshake
+    Note over P, sNB: request video segments
+    P->>sNB: GET /20240927T075714-01-432137172.ts
+
+    %% cDS:: Node start to push video segment
+    Note over sNB, P: server start pushing video segments
+    sNB->>P: TCP segment (seq_num = 0)
+    sNB->>P: TCP segment (seq_num = 100)
+    P->>sNB: ACK (seq_num = 101)
+
+    %% packet start missing and player request retransmission
+    sNB->>P: TCP segment(seq_num = 200)
+    sNB->>P: TCP segment(seq_num = 300)
+    Note over sNB, P: packet loss, retransmission timer timeout, send duplicate ACK to request retransmission
+    P->>sNB: ACK (seq_num = 101)
+    sNB->>P: reset connection
+    
+    sNB->>TE: report packet loss
+    par
+        TE->>CS: update routing decision (remove cDS::Node B)
+    and 
+        TE->>SM: update routing decision (remove cDS::Node B)
+    end
+
+    %% player fail over to cDS::TC
+    Note over P, TC: Player fail over to cDS::TC
+    P->>LD: query cDS::TC domain name
+    LD->>AD: query cDS::TC  domain name
+    AD->>LD:  cDS::TC IP for that DNS resolver
+    LD->>P: cDS::TC IP
+
+    P->> TC: GET /variant manifest
+    TC->>P: 302 Found\nLocation: cDS::Node C
+   
+    P->>LD: query cDS::Node C domain name
+    LD->>AD: query cDS::Node C domain name
+    AD->>LD:  cDS::Node C IP for that DNS resolver
+    LD->>P: cDS::Node C IP
+
+    P->>NA: GET /variant manifest
+    NA->>P: 200 OK\n(variant manifest)
+
+    loop
+        P->>NA: GET video/audio segments
+        NA->>P: 200 OK\n(video/audio segments)
+    end
+    
+    Note over P, CS: steering manifest expire, request an updated steering manifest
+    P->>CS: GET /steering manifest
+    Note over CS, P: cDS::Node A and cDS::Node B are removed from the list<br>{<br>"VERSION": 1,<br>"TTL": 300,<br>"PATHWAY-PRIORITY: ["cDS::TC"]<br>}
+    CS->>P: 200 OK\n(steering manifest)

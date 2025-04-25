@@ -1,0 +1,48 @@
+graph TD
+    subgraph Store_Frontend[Store Frontend]
+        POS_Terminal[POS Terminal]
+        Scanner[Barcode Scanner]
+        Printer[Receipt Printer]
+        Payment_Terminal[Payment Terminal]
+    end
+    
+    subgraph Server_Room[Store Server Room]
+        App_Server[Application Server]
+        DB_Server[Database Server]
+        Backup_Server[Backup Server]
+        Cache_Server[Cache Server]
+    end
+    
+    subgraph Cloud_Infrastructure[Cloud Infrastructure]
+        Cloud_Backup[Cloud Backup]
+        Analytics_Server[Analytics Server]
+        Load_Balancer[Load Balancer]
+    end
+    
+    subgraph Network_Components[Network Infrastructure]
+        Router[Store Router]
+        Firewall[Security Firewall]
+        Switch[Network Switch]
+    end
+    
+    %% Network Connections
+    POS_Terminal --> Switch
+    Scanner --> POS_Terminal
+    Printer --> POS_Terminal
+    Payment_Terminal --> Switch
+    
+    Switch --> Router
+    Router --> Firewall
+    Firewall --> Cloud_Infrastructure
+    
+    %% Server Connections
+    Switch --> App_Server
+    Switch --> DB_Server
+    App_Server --> DB_Server
+    DB_Server --> Backup_Server
+    App_Server --> Cache_Server
+    
+    %% Cloud Connections
+    Backup_Server --> Cloud_Backup
+    App_Server --> Load_Balancer
+    Load_Balancer --> Analytics_Server

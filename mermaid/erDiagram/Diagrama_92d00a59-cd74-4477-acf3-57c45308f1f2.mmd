@@ -1,0 +1,65 @@
+erDiagram
+    Tipo_doc {
+        Id_tipo_doc INT PK
+        Nombre VARCHAR
+    }
+
+    Estado {
+        Id_estado INT PK
+        Nombre VARCHAR
+        Descripcion TEXT
+        Fecha DATE
+    }
+
+    Aeronave {
+        Id_aeronave INT PK
+        Nombre VARCHAR
+    }
+
+    Pasajero {
+        Id_pasajero INT PK
+        Id_tipo_doc_fk INT FK
+        Nombre VARCHAR
+        Apellido VARCHAR
+        Documento VARCHAR
+        Telefono VARCHAR
+        Email VARCHAR
+    }
+
+    Asiento {
+        Id_asiento INT PK
+        Disponible BOOLEAN
+        Pago DECIMAL
+    }
+
+    Vuelo {
+        Id_vuelo INT PK
+        Id_estado_fk INT FK
+        Id_aeronave_fk INT FK
+        Puerta VARCHAR
+        Hora_salida DATETIME
+        Lugar_salida VARCHAR
+        Hora_llegada DATETIME
+        Lugar_llegada VARCHAR
+    }
+
+    Reserva {
+        Id_reserva INT PK
+        Id_vuelo_fk INT FK
+        Id_pasajero_fk INT FK
+    }
+
+    Venta {
+        Id_venta INT PK
+        Id_reserva_fk INT FK
+        Id_asiento_fk INT FK
+        Monto DECIMAL
+    }
+
+    Pasajero }o--|| Tipo_doc: tiene
+    Reserva ||--|{ Vuelo: tiene
+    Reserva }o--o| Pasajero: tiene
+    Venta ||--o{ Reserva: tiene
+    Venta ||--o{ Asiento: tiene
+    Vuelo }o--|| Estado: tiene
+    Vuelo }o--|| Aeronave: tiene

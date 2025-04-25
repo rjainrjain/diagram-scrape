@@ -1,0 +1,186 @@
+erDiagram
+      
+"u45389618.Person" {
+    numeric person_id "PK"
+          varchar(50) email ""
+          varchar(50) name ""
+          varchar(50) surname ""
+          
+}
+
+"u45389618.Teacher" {
+    numeric teacher_id "PK, FK"
+          varchar(10) degree ""
+          varchar(20) phone_number ""
+          varchar(255) website ""
+          varchar(20) office ""
+          
+}
+
+"u45389618.Program" {
+    numeric program_id "PK"
+          varchar(50) name ""
+          numeric duration_years ""
+          
+}
+
+"u45389618.Student" {
+    numeric student_id "PK, FK"
+          numeric program_id "FK"
+          numeric study_year ""
+          date admission_date ""
+          date graduation_date ""
+          decimal gpa ""
+          varchar(20) status ""
+          varchar(20) honor_status ""
+          
+}
+
+"u45389618.Course" {
+    numeric course_id "PK"
+          varchar(50) name ""
+          numeric credits ""
+          varchar(20) language ""
+          varchar(255) description ""
+          numeric semester ""
+          numeric garant_id "FK"
+          numeric max_capacity ""
+          
+}
+
+"u45389618.Teaches" {
+    numeric teacher_id "PK, FK"
+          numeric course_id "PK, FK"
+          
+}
+
+"u45389618.Enrollment" {
+    numeric student_id "PK, FK"
+          numeric course_id "PK, FK"
+          date enrollment_date "PK"
+          numeric grade ""
+          
+}
+
+"u45389618.Course_Schedule" {
+    numeric course_id "PK, FK"
+          time start_time "PK"
+          time end_time "PK"
+          numeric day_of_week "PK"
+          varchar(50) location ""
+          
+}
+
+"View: u45389618.vw_Student_Details" {
+    u45389618_Person person_id ""
+          u45389618_Person name ""
+          u45389618_Person surname ""
+          u45389618_Program program_id ""
+          u45389618_Program duration_years ""
+          u45389618_Student student_id ""
+          u45389618_Student study_year ""
+          u45389618_Student admission_date ""
+          u45389618_Student graduation_date ""
+          u45389618_Student gpa ""
+          u45389618_Student status ""
+          u45389618_Student honor_status ""
+          
+}
+
+"View: u45389618.vw_Student_Enrollment_Details" {
+    u45389618_Person person_id ""
+          u45389618_Person name ""
+          u45389618_Person surname ""
+          u45389618_Student student_id ""
+          u45389618_Course course_id ""
+          u45389618_Enrollment enrollment_date ""
+          u45389618_Enrollment grade ""
+          
+}
+
+"View: u45389618.vw_Teacher_Courses_Details" {
+    u45389618_Person person_id ""
+          u45389618_Person name ""
+          u45389618_Person surname ""
+          u45389618_Teacher teacher_id ""
+          u45389618_Course course_id ""
+          u45389618_Course semester ""
+          u45389618_Enrollment student_id ""
+          u45389618_Enrollment grade ""
+          
+}
+
+"View: u45389618.vw_Teacher_Schedule" {
+    u45389618_Person person_id ""
+          u45389618_Person name ""
+          u45389618_Person surname ""
+          u45389618_Teacher teacher_id ""
+          u45389618_Course course_id ""
+          u45389618_Course_Schedule start_time ""
+          u45389618_Course_Schedule end_time ""
+          u45389618_Course_Schedule day_of_week ""
+          u45389618_Course_Schedule location ""
+          
+}
+
+"View: u45389618.vw_Course_Schedule_Details" {
+    u45389618_Course course_id ""
+          u45389618_Course name ""
+          u45389618_Course semester ""
+          u45389618_Course_Schedule start_time ""
+          u45389618_Course_Schedule end_time ""
+          u45389618_Course_Schedule day_of_week ""
+          
+}
+
+"u45389618.Teacher" ||--|{ "u45389618.Person": "person_id"
+"u45389618.Student" ||--|{ "u45389618.Person": "person_id"
+"u45389618.Student" |o--|{ "u45389618.Program": "program_id"
+"u45389618.Course" |o--|{ "u45389618.Teacher": "teacher_id"
+"u45389618.Teaches" ||--|{ "u45389618.Teacher": "teacher_id"
+"u45389618.Teaches" ||--|{ "u45389618.Course": "course_id"
+"u45389618.Enrollment" ||--|{ "u45389618.Student": "student_id"
+"u45389618.Enrollment" ||--|{ "u45389618.Course": "course_id"
+"u45389618.Course_Schedule" ||--|{ "u45389618.Course": "course_id"
+"View: u45389618.vw_Student_Details" ||--|| "u45389618.Person": "vw_Student_Details => Person"
+"View: u45389618.vw_Student_Details" ||--|| "u45389618.Person": "vw_Student_Details => Person"
+"View: u45389618.vw_Student_Details" ||--|| "u45389618.Person": "vw_Student_Details => Person"
+"View: u45389618.vw_Student_Details" ||--|| "u45389618.Program": "vw_Student_Details => Program"
+"View: u45389618.vw_Student_Details" ||--|| "u45389618.Program": "vw_Student_Details => Program"
+"View: u45389618.vw_Student_Details" ||--|| "u45389618.Student": "vw_Student_Details => Student"
+"View: u45389618.vw_Student_Details" ||--|| "u45389618.Student": "vw_Student_Details => Student"
+"View: u45389618.vw_Student_Details" ||--|| "u45389618.Student": "vw_Student_Details => Student"
+"View: u45389618.vw_Student_Details" ||--|| "u45389618.Student": "vw_Student_Details => Student"
+"View: u45389618.vw_Student_Details" ||--|| "u45389618.Student": "vw_Student_Details => Student"
+"View: u45389618.vw_Student_Details" ||--|| "u45389618.Student": "vw_Student_Details => Student"
+"View: u45389618.vw_Student_Details" ||--|| "u45389618.Student": "vw_Student_Details => Student"
+"View: u45389618.vw_Student_Enrollment_Details" ||--|| "u45389618.Person": "vw_Student_Enrollment_Details => Person"
+"View: u45389618.vw_Student_Enrollment_Details" ||--|| "u45389618.Person": "vw_Student_Enrollment_Details => Person"
+"View: u45389618.vw_Student_Enrollment_Details" ||--|| "u45389618.Person": "vw_Student_Enrollment_Details => Person"
+"View: u45389618.vw_Student_Enrollment_Details" ||--|| "u45389618.Student": "vw_Student_Enrollment_Details => Student"
+"View: u45389618.vw_Student_Enrollment_Details" ||--|| "u45389618.Course": "vw_Student_Enrollment_Details => Course"
+"View: u45389618.vw_Student_Enrollment_Details" ||--|| "u45389618.Enrollment": "vw_Student_Enrollment_Details => Enrollment"
+"View: u45389618.vw_Student_Enrollment_Details" ||--|| "u45389618.Enrollment": "vw_Student_Enrollment_Details => Enrollment"
+"View: u45389618.vw_Teacher_Courses_Details" ||--|| "u45389618.Person": "vw_Teacher_Courses_Details => Person"
+"View: u45389618.vw_Teacher_Courses_Details" ||--|| "u45389618.Person": "vw_Teacher_Courses_Details => Person"
+"View: u45389618.vw_Teacher_Courses_Details" ||--|| "u45389618.Person": "vw_Teacher_Courses_Details => Person"
+"View: u45389618.vw_Teacher_Courses_Details" ||--|| "u45389618.Teacher": "vw_Teacher_Courses_Details => Teacher"
+"View: u45389618.vw_Teacher_Courses_Details" ||--|| "u45389618.Course": "vw_Teacher_Courses_Details => Course"
+"View: u45389618.vw_Teacher_Courses_Details" ||--|| "u45389618.Course": "vw_Teacher_Courses_Details => Course"
+"View: u45389618.vw_Teacher_Courses_Details" ||--|| "u45389618.Enrollment": "vw_Teacher_Courses_Details => Enrollment"
+"View: u45389618.vw_Teacher_Courses_Details" ||--|| "u45389618.Enrollment": "vw_Teacher_Courses_Details => Enrollment"
+"View: u45389618.vw_Teacher_Schedule" ||--|| "u45389618.Person": "vw_Teacher_Schedule => Person"
+"View: u45389618.vw_Teacher_Schedule" ||--|| "u45389618.Person": "vw_Teacher_Schedule => Person"
+"View: u45389618.vw_Teacher_Schedule" ||--|| "u45389618.Person": "vw_Teacher_Schedule => Person"
+"View: u45389618.vw_Teacher_Schedule" ||--|| "u45389618.Teacher": "vw_Teacher_Schedule => Teacher"
+"View: u45389618.vw_Teacher_Schedule" ||--|| "u45389618.Course": "vw_Teacher_Schedule => Course"
+"View: u45389618.vw_Teacher_Schedule" ||--|| "u45389618.Course_Schedule": "vw_Teacher_Schedule => Course_Schedule"
+"View: u45389618.vw_Teacher_Schedule" ||--|| "u45389618.Course_Schedule": "vw_Teacher_Schedule => Course_Schedule"
+"View: u45389618.vw_Teacher_Schedule" ||--|| "u45389618.Course_Schedule": "vw_Teacher_Schedule => Course_Schedule"
+"View: u45389618.vw_Teacher_Schedule" ||--|| "u45389618.Course_Schedule": "vw_Teacher_Schedule => Course_Schedule"
+"View: u45389618.vw_Course_Schedule_Details" ||--|| "u45389618.Course": "vw_Course_Schedule_Details => Course"
+"View: u45389618.vw_Course_Schedule_Details" ||--|| "u45389618.Course": "vw_Course_Schedule_Details => Course"
+"View: u45389618.vw_Course_Schedule_Details" ||--|| "u45389618.Course": "vw_Course_Schedule_Details => Course"
+"View: u45389618.vw_Course_Schedule_Details" ||--|| "u45389618.Course_Schedule": "vw_Course_Schedule_Details => Course_Schedule"
+"View: u45389618.vw_Course_Schedule_Details" ||--|| "u45389618.Course_Schedule": "vw_Course_Schedule_Details => Course_Schedule"
+"View: u45389618.vw_Course_Schedule_Details" ||--|| "u45389618.Course_Schedule": "vw_Course_Schedule_Details => Course_Schedule"

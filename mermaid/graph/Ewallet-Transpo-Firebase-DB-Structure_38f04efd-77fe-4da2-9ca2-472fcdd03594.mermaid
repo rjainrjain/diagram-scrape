@@ -1,0 +1,103 @@
+graph TD
+    subgraph Firebase Database
+        Users[Users Collection]
+        Wallets[Wallets Collection]
+        Transactions[Transactions Collection]
+        Stations[Stations Collection]
+        Routes[Routes Collection]
+        Schedules[Schedules Collection]
+        DeviceTokens[Device Tokens Collection]
+    end
+
+    Users --> |1:1| UserData["{
+        uid: string,
+        email: string,
+        displayName: string,
+        phoneNumber: string,
+        profilePicture: string,
+        createdAt: timestamp,
+        lastLogin: timestamp,
+        isVerified: boolean
+    }"]
+
+    Wallets --> |1:1| WalletData["{
+        userId: string,
+        balance: number,
+        currency: string,
+        lastTopup: timestamp,
+        nfcEnabled: boolean,
+        autoReloadSettings: {
+            enabled: boolean,
+            threshold: number,
+            amount: number
+        }
+    }"]
+
+    Transactions --> |1:N| TransactionData["{
+        transactionId: string,
+        userId: string,
+        type: 'PAYMENT'|'TOPUP'|'REFUND',
+        amount: number,
+        status: string,
+        timestamp: timestamp,
+        stationId?: string,
+        routeId?: string,
+        paymentMethod: string,
+        metadata: {
+            deviceId: string,
+            location: geopoint
+        }
+    }"]
+
+    Stations --> |1:N| StationData["{
+        stationId: string,
+        name: string,
+        type: 'MRT'|'LRT'|'PNR'|'BUS',
+        location: geopoint,
+        status: 'ACTIVE'|'INACTIVE',
+        connectedTo: string[],
+        fareMatrix: {
+            [destinationId: string]: number
+        }
+    }"]
+
+    Routes --> |1:N| RouteData["{
+        routeId: string,
+        name: string,
+        type: 'TRAIN'|'BUS'|'P2P',
+        stations: string[],
+        status: 'ACTIVE'|'INACTIVE',
+        schedule: string,
+        basePrice: number,
+        distanceMatrix: {
+            [stationPair: string]: number
+        }
+    }"]
+
+    Schedules --> |1:N| ScheduleData["{
+        scheduleId: string,
+        routeId: string,
+        day: string,
+        timeSlots: {
+            departureTime: timestamp,
+            capacity: number,
+            status: 'ON_TIME'|'DELAYED'|'CANCELLED'
+        }[]
+    }"]
+
+    DeviceTokens --> |1:N| DeviceData["{
+        userId: string,
+        deviceId: string,
+        token: string,
+        platform: 'iOS'|'Android',
+        nfcCapable: boolean,
+        lastActive: timestamp
+    }"]
+
+    Users -.->|References| Wallets
+    Users -.->|References| DeviceTokens
+    Users -.->|References| Transactions
+    Transactions -.->|References| Stations
+    Transactions -.->|References| Routes
+    Routes -.->|References| Stations
+    Routes -.->|References| Schedules

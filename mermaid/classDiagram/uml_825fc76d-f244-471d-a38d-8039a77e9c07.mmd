@@ -1,0 +1,86 @@
+classDiagram
+    class Number {
+        <<typedef>>
+        float64
+    }
+
+    class Neuron {
+        -bias Number
+        +Bias() Number
+        +SetBias(bias Number)
+    }
+
+    class Connection {
+        -from *Neuron
+        -to *Neuron
+        -weight Number
+        +Weight() Number
+        +AdjustWeight(delta Number)
+    }
+
+    class Layer {
+        -neurons []*Neuron
+        +Neurons() []*Neuron
+    }
+
+    class Network {
+        -layers []*Layer
+        -connections Connections
+        +Layers() []*Layer
+        +Connections() Connections
+        +Connect(initialWeight ...Number)
+        +AdjustNeuronConnections(layerIndex int, neuronIndex int, weightAdjustments []Number) error
+    }
+
+    class Context~T~ {
+        -activations []LayerActivations
+        +Data T
+        +Activations() []LayerActivations
+        +SetActivations(layerIndex int, activations LayerActivations) error
+    }
+
+    class Adjustments {
+        -weightAdjustments WeightAdjustments
+        -biasAdjustments BiasAdjustments
+        +WeightAdjustments() WeightAdjustments
+        +BiasAdjustments() BiasAdjustments
+    }
+
+    class ActivationCalculator {
+        <<interface>>
+        +Activation(weightedSum Number) Number
+        +Derivative(weightedSum Number) Number
+    }
+
+    class Processor~T~ {
+        <<interface>>
+        +FeedForward(network *Network, dataset Dataset) []Context~T~
+        +BackPropagate(contexts []Context~T~, labels []Labels) Adjustments
+    }
+
+    class GonumProcessor {
+        +Activation(weightedSum Number) Number
+        +Derivative(weightedSum Number) Number
+        +FeedForward(network *Network, dataset Dataset) []Context~ContextData~
+        +BackPropagate(contexts []Context~ContextData~, labels []Labels) Adjustments
+    }
+
+    class App~T~ {
+        -network *Network
+        -processor Processor~T~
+        -dataset Dataset
+        -labels []Labels
+        +Train(epochs int) error
+        -createMiniBatch() (Dataset, []Labels)
+        -updateNetwork(adjustments Adjustments, learningRate Number) error
+        -updateLearningRate(currentRate Number, epoch int) Number
+        +Predict(input Data) LayerActivations
+    }
+
+    Neuron --* Layer
+    Connection --o Network
+    Layer --* Network
+    ActivationCalculator <|.. GonumProcessor
+    Processor <|.. GonumProcessor
+    Processor --o App
+    Network --o App

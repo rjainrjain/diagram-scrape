@@ -1,0 +1,13 @@
+flowchart TD
+    START[START] --> |"createTest()"| A
+    A[inputs-needed] -->|"setTestInputParameters()"| B{inputs<br>complete?}
+    B -->|N| A
+    B -->|Y| C[inputs-complete]
+    C -->|"startTestRun()"| E1[in-progress]
+    E1 --> G{Pass?}
+    G --> |Y| H[completed]
+    G --> |N| I{Expired?}
+    I --> |N| A
+    I --> |Y| J[expired]
+    H --> END
+    J --> END

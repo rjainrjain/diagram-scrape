@@ -1,0 +1,32 @@
+sequenceDiagram
+
+participant advertiser as Advertiser (AcmeCoClient)
+participant vampAdmin as AcmeCoAdmin UI
+participant warehouse as AcmeCo (Warehouse UI)
+participant vampApi as AcmeCo Sendle Service
+
+participant sendle as Sendle API
+participant influencer as Influencer
+
+advertiser-->>vampAdmin: Wants to send product to Influencer
+Note over advertiser,vampAdmin: Uses AcmeCo UI to make request.
+
+vampAdmin->>+vampApi: sends order details to API
+
+vampApi->>+sendle: sends request to sendle to build packing label
+note right of sendle: Sendle processes <br/> packing slip details.
+sendle->>-vampApi: responds with package slip payload.
+vampApi-->>warehouse: Notify Order created
+note over warehouse: Order now in <br/>internal processing <br/>queue
+warehouse->>vampApi: retrieves picking slip details.
+# vampApi-->>vampAdmin: Notify Order processing
+Note over warehouse: Processes order <br/>puts together physical<br/>package.
+
+warehouse->>vampApi: Retrieves package slip
+# warehouse-->>vampAdmin: Warehouse retrieves label pdf
+
+# vampAdmin->>vampApi: request label
+# vampApi->>vampAdmin: sends back link to packing label. (cached)
+note over warehouse: Warehouse rep <br/> prints label
+warehouse-->>influencer: Ships package to influencer.
+vampApi-->>-vampAdmin: Notify Order shipped

@@ -1,0 +1,20 @@
+%%{init: {'theme': 'neutral'}}%%
+
+sequenceDiagram
+    participant Provedor
+    participant Broker
+    participant Validador
+
+    autonumber
+    Provedor->>Broker: Resposta de uma requisição
+    Broker->>Validador: Validar resposta
+    alt Os critérios foram atendidos
+        Validador->>Broker: Atendeu aos critérios
+    end
+    alt Provedor não retornou todos os campos obrigatórios configurados no recurso
+        Validador->>Broker: Não atendeu aos critérios
+    else Contagem de erros do provedor atingiu o limite
+        Validador->>Broker: Não atendeu aos critérios
+    else Tempo de resposta foi acima do ideal e atingiu a contagem de tempo excedido
+        Validador->>Broker: Não atendeu aos critérios
+    end

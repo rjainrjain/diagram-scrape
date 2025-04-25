@@ -1,0 +1,52 @@
+sequenceDiagram
+    title: API: Fetch mission list
+    participant Client as Web
+    participant API as API Server
+    participant Auth as Auth Middleware
+    participant Routing
+    participant Service as Service Layer
+    participant Formatter as Formatter Layer
+    participant DB as PostgreSQL DB
+
+    Client->>API: Send request
+    API->>Auth: Validate if the JWT in the request headers is correctly signed and has required scopes.<br>NOTE: outside the scope of hackathon implementation
+
+    break If auth validation error
+        Auth -->> API: Return error
+        API-->>Client: Return error response
+    end
+
+    note over Auth: Internal parameters set
+
+    Auth ->> Routing: Route specific logic execution starts
+
+    note over Routing: Only forward following external parameters to service:<br>page [query] [optional]
+
+    Routing ->> Service: Call respective service class with above mentioned<br>internal and external parameters.
+
+    note over Service: Validate mandatory parameters' presence and ensure correct types for all parameters.
+
+    break If mandatory checks or type checks fail
+        Service -->> Routing: Return error
+        Routing ->> Formatter: Call the Formatter passing service response
+        Formatter-->>Client: Return error response
+    end
+
+    note over Service: Validate page to be a positive integer, if present
+
+    break If validation failure
+        Service -->> Routing: Return error
+        Routing ->> Formatter: Call the Formatter passing service response
+        Formatter-->>Client: Return error response
+    end
+
+    note over Service: Compute offset as per the page number (default to page 1).
+
+    Service ->> DB: Fetch non deleted records from missions table using limit and offset.<br>Note: try fetching page size + 1 records.
+    DB -->> Service: Query response
+
+    note over Service: If number of records fetched <= page size, then next page is absent. Otherwise, next page is present.
+
+    Service -->> Routing: Return service response
+    Routing ->> Formatter: Call the Formatter passing service response
+    Formatter-->>Client: Return response

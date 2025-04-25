@@ -1,0 +1,65 @@
+stateDiagram-v2
+    state home <<choice>>
+    state CreateObject {
+        [*] --> Name : Check for duplicates
+        Name --> GetShape
+        GetShape --> GetDensity : Number or material
+        GetDensity --> GetPosition
+        GetPosition --> [*] : Confirm
+    }
+    state EditObject{
+        state input <<choice>>
+        state Input <<choice>>
+        [*] --> input : Display and get input
+        input --> editShape
+        input --> editName
+        input --> editDensity
+        input --> editPosition
+        editPosition --> Input
+        editName --> Input
+        editShape --> Input
+        editDensity --> Input
+        input --> [*] : Save and close object
+        Input --> input
+
+
+    }
+state Project {
+    state DisplayObject{
+        state display <<choice>>
+[*] --> loadObjects
+loadObjects --> display : Display and get Input
+display --> CreateObject
+display --> EditObject
+display --> DeleteObject
+display --> Parametrize
+Parametrize --> UpdateDisplay
+UpdateDisplay --> display
+DeleteObject --> UpdateDisplay
+EditObject --> UpdateDisplay
+CreateObject --> UpdateDisplay
+
+display-->[*] : Save and close project
+    }
+}
+state CreateProject {
+[*] --> initInfo : Get name, author, path.
+initInfo --> doesProjectExist
+doesProjectExist --> createDirectory
+createDirectory --> [*]
+}
+%%switch : <input>
+state end <<choice>>
+[*] --> home : Get User Input
+home --> openProject
+openProject --> Project : Enter Project Name or Path
+home --> newProject
+newProject --> CreateProject
+CreateProject --> Project
+Project --> end
+end --> home
+end --> [*]
+home --> config
+config --> home : TBD
+
+    

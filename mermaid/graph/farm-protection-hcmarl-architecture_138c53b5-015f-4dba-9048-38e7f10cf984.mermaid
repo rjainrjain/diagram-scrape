@@ -1,0 +1,33 @@
+graph TD
+    A[Farm Protection System] --> B[High-Level Policy]
+    A --> C[Low-Level Policies]
+    A --> D[Skill Discovery Module]
+    A --> E[Centralized Critic]
+    
+    B --> B1[Global Strategy]
+    B --> B2[Task Allocation]
+    
+    C --> C1[Drone Agents]
+    C --> C2[Ground Robot Agents]
+    C --> C3[Stationary Sensor Agents]
+    
+    D --> D1[Skill Encoder]
+    D --> D2[Skill Decoder]
+    D --> D3[Intrinsic Reward Generator]
+    
+    E --> E1[Global State Value Estimation]
+    E --> E2[Advantage Calculation]
+    
+    F[Environment] --> F1[Farm Layout]
+    F --> F2[Weather Conditions]
+    F --> F3[Threat Scenarios]
+    
+    G[Learned Skills] --> G1[Surveillance Patterns]
+    G --> G2[Threat Response Tactics]
+    G --> G3[Cooperation Protocols]
+    
+    B -.-> E
+    C -.-> E
+    D -.-> C
+    G -.-> C
+    F -.-> A

@@ -1,0 +1,24 @@
+erDiagram
+    Student ||--|{ StudentCourse : "are in"
+    StudentCourse ||--|{ Grade : "has"
+
+    Student {
+        int Id PK
+        string(100) FirstName
+        string(100) LastName
+        string(200) Email
+        string(200) Phone
+        string(MAX) Address
+    }
+
+    StudentCourse {
+        int Id PK
+        int StudentId FK
+        int CourseId FK
+    }
+
+    Grade {
+        int Id PK
+        int StudentCourseId FK
+        int Grade
+    }

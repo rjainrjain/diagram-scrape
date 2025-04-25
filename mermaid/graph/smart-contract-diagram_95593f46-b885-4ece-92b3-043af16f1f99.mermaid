@@ -1,0 +1,41 @@
+graph TB
+    SmartContract[Smart Contract]
+
+    StellarSDK[Stellar SDK]
+    StellarBlockchain[Stellar Blockchain]
+
+    StellarSDK -->|Interacts with| StellarBlockchain
+
+    PaymentFunctions -->|Executes transactions| StellarSDK
+    IteFunctions -->|Manages Ite accounts| StellarSDK
+    NFTFunctions -->|Issues NFT tokens| StellarSDK
+    ExchangeFunctions -->|Handles XLM-Fiat exchange| StellarSDK
+
+
+    subgraph PaymentFunctions
+        SendPayment[Send Payment]
+        ReceivePayment[Receive Payment]
+    end
+
+    subgraph IteFunctions
+        CreateIte[Create Ite]
+        DonateToIte[Donate to Ite]
+        WithdrawFromIte[Withdraw from Ite]
+    end
+
+    subgraph NFTFunctions
+        IssueNFT[Issue NFT]
+        TransferNFT[Transfer NFT]
+    end
+
+    subgraph ExchangeFunctions
+        XLMToFiat[XLM to Fiat]
+        FiatToXLM[Fiat to XLM]
+    end
+
+    subgraph SmartContract
+        PaymentFunctions[Payment Functions]
+        IteFunctions[Ite Functions]
+        NFTFunctions[NFT Functions]
+        ExchangeFunctions[Exchange Functions]
+    end

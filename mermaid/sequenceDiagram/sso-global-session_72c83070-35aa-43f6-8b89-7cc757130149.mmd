@@ -1,0 +1,27 @@
+sequenceDiagram
+    actor User
+    participant Browser
+    participant SSO
+    
+    autonumber
+
+    User ->> Browser: GET http://appx.omega.net.br
+
+    alt NOT LOGGED IN
+        Browser->>+SSO: GET sso.omega.net.br/sso/login?serviceUrl=http://appx.omega.net.br
+        
+        note right of SSO: const url = new URL(serviceURL);
+        
+        alt CLIENT NOT REGISTERED
+            SSO-->>Browser: HTTP 400 BAD_REQUEST
+            note over SSO,Browser: Body: { message: 'You are not allowed to access the SSO server' }  
+        else req.session.user != null && serviceURL == null
+            SSO-->>Browser: HTTP 304 NOT_MODIFIED
+        else req.session.user != null && serviceURL != null
+            note right of SSO: const url = new URL(serviceURL);
+            note right of SSO: const globalSessionToken = encodedId();
+            note right of SSO: storeApplicationInCache(url.origin, req.session.user, globalSessionToken);
+            
+            SSO-->>-Browser: GET http://appx.omega.net.br?ssoToken=${globalSessionToken}
+        end    
+    end

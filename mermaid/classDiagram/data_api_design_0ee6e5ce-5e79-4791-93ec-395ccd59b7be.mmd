@@ -1,0 +1,34 @@
+classDiagram
+    class Appointment{
+        +id: int
+        +patient_name: str
+        +provider_name: str
+        +date: date
+        +time: time
+    }
+
+    class Scheduler{
+        +schedule_appointment(patient_name: str, provider_name: str, date: date, time: time) -> Appointment
+        +reschedule_appointment(appointment_id: int, new_date: date, new_time: time) -> Appointment
+        +cancel_appointment(appointment_id: int)
+    }
+
+    class Diary{
+        +view_appointments() -> List[Appointment]
+    }
+
+    class Database{
+        +create_appointment(appointment: Appointment) -> Appointment
+        +update_appointment(appointment: Appointment) -> Appointment
+        +delete_appointment(appointment_id: int)
+        +get_appointments() -> List[Appointment]
+    }
+
+    class SMS{
+        +send_confirmation_message(appointment: Appointment)
+        +send_reminder_message(appointment: Appointment)
+    }
+
+    Scheduler "1" -- "1" Database: has
+    Scheduler "1" -- "1" SMS: has
+    Diary "1" -- "1" Database: has

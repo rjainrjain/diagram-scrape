@@ -1,0 +1,20 @@
+sequenceDiagram
+    alt poll
+        Note over Agent: Node collection
+        Agent->>Node: event
+        %opt track
+            Note over Node: track(event)
+            Node-->>Agent: node
+        %end
+        Note over Agent,Node: inputNode = trackedNode != null ? trackedNode : defaultNode
+    else handle
+        opt enqueue
+           Agent-->>InputHandler: < event, inputNode >
+        end
+        loop dequeue
+          InputHandler->>Node: event
+        end
+        Note over Node: interact(event)
+    end
+
+    %%Note over InputHandler: Agent collection

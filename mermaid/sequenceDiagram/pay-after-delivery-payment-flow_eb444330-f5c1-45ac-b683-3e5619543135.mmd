@@ -1,0 +1,26 @@
+sequenceDiagram
+    autonumber
+    participant C as Customer
+    participant Me as Merchant
+    participant Mu as MultiSafepay
+    C->>Me: Selects Pay After Delivery at checkout
+    Me->>Mu: Creates order <br> (direct and redirect flow supported)
+    Note over Mu: Performs risk assessment 
+    alt MultiSafepay declines the order 
+    Mu->>Me: Advises that order was declined
+    Me->>C: Advises that order was declined
+    else MultiSafepay accepts the order 
+    Mu->>Me: Creates an invoice order
+    Me->>C: Ships order fully or partially
+    Me->>Mu: Notifies of shipment <br> and updates order status to Shipped
+    Mu->>Me: Pays out merchant after clearing period
+    Mu->>C: Sends invoice  
+    loop While payment is outstanding
+	    Mu->>C: Sends payment reminders
+    end
+    C->>Mu: Completes payment via iDEAL or bank transfer
+    Mu->>C: Notifies that the order is completed
+    alt Customer doesn't pay  
+    Note over Mu: Sends invoice to debt collector
+    end
+    end

@@ -1,0 +1,9 @@
+nsequenceDiagram
+    participant browser
+    participant server
+
+    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+    Note right of browser: { content: "test", date: "2024-02-28..."}
+
+    server-->>browser: {"message":"note created"}
+    Note right of browser: browser executes the event handler that renders the note to display

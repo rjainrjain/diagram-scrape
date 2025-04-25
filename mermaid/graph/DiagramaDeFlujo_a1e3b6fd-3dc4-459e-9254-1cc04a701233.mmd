@@ -1,0 +1,20 @@
+graph TD
+    A([Inicio]) --> B[/Ingresar datos: Voltaje, Corriente, FP, Tipo de circuito, Temperatura, Numero de Hilos/]
+    B --> C{Tipo de circuito}
+    C -->|Monofásico| D1[Calcular Corriente Nominal Monofásico]
+    C -->|Bifásico| D2[Calcular Corriente Nominal Bifásico]
+    C -->|Trifásico| D3[Calcular Corriente Nominal Trifásico]
+    D1 --> E[Seleccionar Interruptor Termomagnético]
+    D2 --> E[Seleccionar Interruptor Termomagnético]
+    D3 --> E[Seleccionar Interruptor Termomagnético]
+    E --> F{Tipo de Carga}
+    F -->|Seleccionar Tipo de Carga| G[Calcular interruptor termomagnético]
+    G --> H[Seleccionar Interruptor]
+    
+    H --> I[Calcular Capacidad de Conducción]
+    I --> J[Calcular Caída de Tensión]
+    J --> K{Seleccionar Conductor}
+    K --> L{Seleccionar Canalización}
+    L --> M[Mostrar Información Completa]
+    M --> N[Generar Memoria de Cálculo]
+    N --> O([Fin])

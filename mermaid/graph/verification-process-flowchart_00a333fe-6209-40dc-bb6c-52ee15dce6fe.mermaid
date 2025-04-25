@@ -1,0 +1,12 @@
+graph TD
+    A[Start Verification] -->|Input Data| B[Hash Input Data]
+    B --> C{Hash Exists on Blockchain?}
+    C -->|Yes| D[Compare Timestamps]
+    C -->|No| E[Verification Failed]
+    D -->|Matches| F[Verification Successful]
+    D -->|Doesn't Match| G[Potential Tampering Detected]
+    E --> H[Log Result]
+    F --> H
+    G --> H
+    H --> I[Notify User]
+    I --> J[End Verification]

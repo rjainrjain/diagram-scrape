@@ -1,0 +1,71 @@
+flowchart TB
+    browser[Browser]
+    
+    subgraph internet_landing_zone_vnet [Internet Landing Zone Vnet]
+        lb[Public LB]
+        ddos[DDOS]
+        firewall[Firewall]
+        waf[WAF]
+    end
+
+    subgraph PROD ORP VNET
+        subgraph Web Cluster
+            subgraph web_master_subnet [Master subnet]
+                WMLB[LB]
+                WMN1[Node]
+                WMN2[Node]
+                WMN3[Node]
+
+                WMLB --> WMN1 & WMN2 & WMN3
+            end
+            subgraph web_worker_subnet [Worker subnet]
+                WWLB[LB]
+                WWN1[Node]
+                WWN2[Node]
+                WWN3[Node]
+
+                WWLB --> WWN1 & WWN2 & WWN3
+            end    
+        end
+
+        subgraph App Cluster
+            subgraph app_master_subnet [Master subnet]
+                AMLB[LB]
+                AMN1[Node]
+                AMN2[Node]
+                AMN3[Node]
+
+                AMLB --> AMN1 & AMN2 & AMN3
+            end
+            subgraph app_worker_subnet [Worker subnet]
+                AWLB[LB]
+                AWN1[Node]
+                AWN2[Node]
+                AWN3[Node]
+
+                AWLB --> AWN1 & AWN2 & AWN3
+            end    
+        end
+
+        subgraph pe_subnet [PE subnet]
+            ACRPE
+            SAPE
+            KVPE
+            DBPE
+        end
+
+        subgraph jump_subnet [Jump subnet]
+            Linux
+            Windows
+        end
+
+        subgraph DB subnet
+        end
+
+        jump_subnet & app_worker_subnet --> pe_subnet
+        
+    end
+
+    browser --> lb
+    waf --> WWLB
+    

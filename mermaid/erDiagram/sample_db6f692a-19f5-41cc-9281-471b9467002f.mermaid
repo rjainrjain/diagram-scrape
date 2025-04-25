@@ -1,0 +1,82 @@
+erDiagram
+    patient_families {
+        UUID id PK "患者会員族ID"
+        VARCHAR(7) zip_code "住所 郵便番号"
+        VARCHAR(10) prefecture "住所 都道府県"
+        VARCHAR(50) city "住所 市/区"
+        VARCHAR(50) town "住所 町名・番地"
+        VARCHAR(255) address "住所 建物名"
+        VARCHAR(255) email "Emailアドレス"
+        BOOLEAN is_valid "有効フラグ, 0: 仮登録中, 1: 登録完了"
+        TIMESTAMP last_login_at "最終ログイン日時"
+        TIMESTAMP created_at "作成日時"
+        TIMESTAMP updated_at "更新日時"
+    }
+
+    patient_users {
+        UUID id PK "患者会員個人ID"
+        UUID family_id FK "患者会員家族ID"
+        VARCHAR(50) last_name "氏名 性"
+        VARCHAR(50) first_name "氏名 名"
+        CHAR(2) gender "性別"
+        DATE birthday "生年月日"
+        VARCHAR(50) insurance_card_image_path "保険証ファイルパス"
+        VARCHAR(50) medical_treatment_card_image "医療証ファイルパス"
+        TIMESTAMP created_at "作成日時"
+        TIMESTAMP updated_at "更新日時"
+    }
+    patient_users ||--o{ patient_families : "family_id"
+
+    pharmacies {
+        UUID id PK "薬局ID"
+        VARCHAR(100) name "薬局名"
+        VARCHAR(100) branch_name "薬局 支店名"
+        VARCHAR(7) zip_code "住所 郵便番号"
+        VARCHAR(10) prefecture "住所 都道府県"
+        VARCHAR(50) city "住所 市/区"
+        VARCHAR(50) town "住所 町名・番地"
+        VARCHAR(255) address "住所 建物名"
+        TIMESTAMP created_at "作成日時"
+        TIMESTAMP updated_at "更新日時"
+    }
+
+    hospital_users {
+        UUID id PK "病院会員ID"
+        VARCHAR(100) name "病院名"
+        VARCHAR(100) branch_name "病院支店名"
+        VARCHAR(255) email "Email"
+        VARCHAR(11) tel "電話番号"
+        VARCHAR(7) zip_code "住所 郵便番号"
+        VARCHAR(10) prefecture "住所 都道府県"
+        VARCHAR(50) city "住所 市/区"
+        VARCHAR(50) town "住所 町名・番地"
+        VARCHAR(255) address "住所 建物名"
+        TIMESTAMP last_login_at "最終ログイン日時"
+        TIMESTAMP created_at "作成日時"
+        TIMESTAMP updated_at "更新日時"
+    }
+
+    hospital_doctors {
+        UUID id PK "医師ID"
+        UUID hospital_id FK "所属する病院会員ID"
+        VARCHAR(100) name "医師名"
+        VARCHAR(255) email "Email"
+        TIMESTAMP created_at "作成日時"
+        TIMESTAMP updated_at "更新日時"
+    }
+    hospital_doctors ||--o{ hospital_users : "hospital_id"
+
+    requests {
+        UUID id PK "リクエストID"
+        UUID patient_user_id FK "該当の患者会員個人ID"
+        UUID hospital_id FK "受診する病院会員ID"
+        request_status_enum request_status "リクエストステータス"
+        symptom_enum[] symptom_list "症状リスト"
+        TEXT symptom_details "症状詳細リスト"
+        TIMESTAMP[] expected_date_list "予約希望日リスト"
+        TIMESTAMP fixed_date "確定日時"
+        TIMESTAMP created_at "作成日時"
+        TIMESTAMP updated_at "更新日時"
+    }
+    requests ||--o{ patient_users : "patient_user_id"
+    requests ||--o{ hospital_users : "hospital_id"

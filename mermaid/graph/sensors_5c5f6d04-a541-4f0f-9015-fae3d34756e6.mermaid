@@ -1,0 +1,11 @@
+graph LR;
+
+	StateStore;
+	Dispatcher((Dispatcher));
+	Scheduler;
+    Sensor;
+
+	StateStore --> Dispatcher
+	Dispatcher --> Scheduler
+    Scheduler --> Sensor 
+    Sensor --> StateStore 

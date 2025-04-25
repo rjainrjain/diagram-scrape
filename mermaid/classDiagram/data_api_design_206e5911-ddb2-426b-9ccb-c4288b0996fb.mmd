@@ -1,0 +1,24 @@
+classDiagram
+    class Main{
+        +str file_path
+        +OpenAPIParser openapi_parser
+        +DescriptionGenerator description_generator
+        +OpenAPIUpdater openapi_updater
+        +run()
+    }
+    class OpenAPIParser{
+        +dict openapi_spec
+        +parse(str: file_path)
+        +extract_resources()
+    }
+    class DescriptionGenerator{
+        +str openai_api_key
+        +generate_description(str: resource)
+    }
+    class OpenAPIUpdater{
+        +update_specification(dict: resources_with_descriptions)
+        +save_updated_specification(str: file_path)
+    }
+    Main "1" -- "1" OpenAPIParser: uses
+    Main "1" -- "1" DescriptionGenerator: uses
+    Main "1" -- "1" OpenAPIUpdater: uses

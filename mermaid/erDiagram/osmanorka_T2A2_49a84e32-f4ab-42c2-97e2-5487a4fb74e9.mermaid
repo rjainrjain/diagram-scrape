@@ -1,0 +1,52 @@
+erDiagram
+    PATIENTS ||--o{ APPOINTMENTS : "has"
+    PATIENTS ||--o{ PATIENT_MEDICAL_HISTORY : "has"
+    DOCTORS ||--o{ APPOINTMENTS : "conducts"
+    DOCTORS ||--o{ DOCTOR_DEPARTMENT : "belongs to"
+    DEPARTMENTS ||--o{ DOCTOR_DEPARTMENT : "has"
+    
+    PATIENTS {
+        int id PK
+        string name
+        string surname
+        date date_of_birth
+        string contact_number
+        string email
+    }
+    
+    DOCTORS {
+        int id PK
+        string name
+        string surname
+        string specialization
+        string contact_number
+        string email
+    }
+    
+    APPOINTMENTS {
+        int id PK
+        int patient_id FK
+        int doctor_id FK
+        datetime appointment_time
+        string status
+    }
+    
+    DEPARTMENTS {
+        int id PK
+        string name
+        string description
+    }
+    
+    DOCTOR_DEPARTMENT {
+        int id PK
+        int doctor_id FK
+        int department_id FK
+    }
+    
+    PATIENT_MEDICAL_HISTORY {
+        int id PK
+        int patient_id FK
+        date record_date
+        string diagnosis
+        string treatment
+    }

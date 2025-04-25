@@ -1,0 +1,7 @@
+stateDiagram-v2
+[*] --> Cancelled : Cancel
+InReview --> ReviewApproved : ReviewApprove
+InReview --> ReviewRejected : ReviewReject
+ReviewApproved --> CustomerNotified : NotifyCustomer
+ReviewRejected --> Modifying : NotifyCustomerOfRejection
+Modifying --> InReview : SendForReview

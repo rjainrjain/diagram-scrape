@@ -1,0 +1,51 @@
+erDiagram
+    session {
+        uuid id PK
+        string redirect
+        string access_token
+        string refresh_token
+        int expires_in
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    event {
+        string slug PK
+        string title
+        timestamp date
+        timestamp game_submission_period_start
+        timestamp game_submission_period_end
+        binary image
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    term {
+        uuid id PK
+        string event_slug FK
+        boolean is_default
+        timestamp start_at
+        timestamp end_at
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    game {
+        uuid id PK
+        uuid term_id FK
+        uuid discord_user_id
+        boolean is_published
+        string creator_name
+        string creator_page_url
+        string game_page_url
+        string title
+        text description
+        string place
+        mediumblob icon
+        longblob image
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    event ||--o{ term : ""
+    term ||--o{ game : ""

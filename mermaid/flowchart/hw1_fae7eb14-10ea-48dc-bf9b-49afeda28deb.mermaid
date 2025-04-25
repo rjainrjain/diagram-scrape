@@ -1,0 +1,36 @@
+flowchart LR
+
+Instrument
+Instrument --- ins_id([<u>Instrument Id</u>])
+Instrument --- ins_name([Name])
+Instrument --- musical_key([Musical Key])
+
+Musician
+Musician --- mus_id([<u>Musician Id</u>])
+Musician --- ssn([SSN])
+Musician --- mus_name([Name])
+Musician --- mus_ad([Address]) --- ad_phone([Phone Number])
+
+Song
+Song --- song_id([<u>Song Id</u>])
+Song --- song_title([Title])
+Song --- song_author([Author])
+
+Album
+Album --- al_id([<u>Identifier</u>])
+Album --- al_title([Title])
+Album --- al_copyright_date([Copyright Date])
+Album --- al_format([Format])
+
+plays{Plays}
+produced_by{Produced By}
+belongs_to{Belongs To}
+uses{Uses}
+performed_by{Performed By}
+
+
+Song --- belongs_to --> Album
+Album --- produced_by --> Musician
+Musician --- plays --- Instrument
+Song --- uses --- Instrument
+Song --- performed_by --- Musician

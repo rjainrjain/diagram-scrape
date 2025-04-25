@@ -1,0 +1,17 @@
+classDiagram
+    class Client {
+        - clients: Queue<String>
+        + Client(temporaryClient: String[])
+        + fillQueue(temporaryClient: String[]): void
+        + modifyQueue(elementModify: String, newValue: String): void
+        + findElementQueue(element: String): String
+        + showQueue(): void
+    }
+
+    class Main {
+        + main(args: String[]): void
+        + attention(clients: Client, count: int, text1: String, text2: String): void
+    }
+
+    Client --|> Queue
+    Client --> Main

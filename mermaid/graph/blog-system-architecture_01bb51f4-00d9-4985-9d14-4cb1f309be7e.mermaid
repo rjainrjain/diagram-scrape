@@ -1,0 +1,47 @@
+graph LR
+    subgraph Client
+        ClientApplications
+    end
+    subgraph Gateway
+        API_Gateway
+    end
+    subgraph Services
+        AuthenticationService
+        BlogService
+        UserService
+        NotificationService
+        FileStorageService
+        SearchService
+    end
+    subgraph Data
+        UserDatabase
+        RedisCache
+        BlogDatabase
+        SearchIndex
+        MessageQueue
+        ObjectStorage
+    end
+    subgraph MessageBroker
+        Broker
+    end
+    
+    ClientApplications --> API_Gateway
+    API_Gateway --> Broker
+    
+    Broker --> AuthenticationService
+    Broker --> BlogService
+    Broker --> UserService
+    Broker --> NotificationService
+    Broker --> FileStorageService
+    Broker --> SearchService
+    
+    AuthenticationService --> UserDatabase
+    UserService --> RedisCache
+    UserService --> UserDatabase
+    BlogService --> BlogDatabase
+    BlogService --> RedisCache
+    BlogService --> SearchService
+    BlogService --> MessageQueue
+    SearchService --> SearchIndex
+    FileStorageService --> ObjectStorage
+    NotificationService --> MessageQueue

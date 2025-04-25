@@ -1,0 +1,24 @@
+sequenceDiagram
+	autonumber
+	participant Client
+	participant ClientThread
+  participant Session
+	participant Server
+	Server ->> Server: listens for clients
+	Client ->> Server: connect
+	Server ->> ClientThread: creates
+	Note over Server, Session: IF enough clients have connected
+	Server ->> Session: create with connected clients
+	loop until done
+		Session ->>+ ClientThread: send message
+		ClientThread ->>+ Client: forwards message
+		Client->> Client: process
+		Client -->>- ClientThread: send response
+		ClientThread -->>- Session: retrieve response
+		Session ->> Session: process
+	end
+	Session ->> ClientThread: trigger shutdown
+	ClientThread ->> Client: forwards shutdown
+	Client ->> Client: shutdown
+	ClientThread ->> ClientThread: shutdown
+	Session ->> Session: shutdown

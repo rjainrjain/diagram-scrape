@@ -1,0 +1,20 @@
+classDiagram
+  PeopleAudience -- MedicalCondition
+  PeopleAudience -- QuantitativeValue
+  PeopleAudience -- GenderType
+
+
+class PeopleAudience {
+
+  number requiredMinAge
+  number suggestedMaxAge
+  MedicalCondition healthCondition
+  QuantitativeValue suggestedMeasurement
+  QuantitativeValue suggestedAge
+  number requiredMaxAge
+  number suggestedMinAge
+  string requiredGender
+  GenderType suggestedGender
+  string suggestedGender
+
+ }

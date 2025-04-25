@@ -1,0 +1,25 @@
+sequenceDiagram
+    participant user as Usuário
+    participant browser as Navegador
+    participant server as Servidor
+
+    user->>browser: Clica em "Nova Nota"
+    browser->>user: Exibe campo de texto para nova nota
+
+    user->>browser: Digita uma nova nota
+    browser->>user: Exibe a nota digitada
+
+    user->>browser: Clica no botão "Submit"
+    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/notes
+    Note right of server: O servidor processa a nova nota
+    activate server
+    server-->>browser: Confirmação da criação da nota
+    deactivate server
+
+    browser->>browser: Atualiza a lista de notas
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+    activate server
+    server-->>browser: Retorna a lista atualizada de notas
+    deactivate server
+
+    browser->>user: Exibe a nova nota na lista

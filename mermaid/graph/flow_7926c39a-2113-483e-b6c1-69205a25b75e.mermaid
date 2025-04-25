@@ -1,0 +1,10 @@
+graph TD
+  cron[Cron Job]-->|logger 'ping...'|syslog
+  syslog-->papertrail
+  papertrail-->|webhook|pfl[Papertrail Feedback Loop]
+  pfl-->|success|consul
+  subgraph consul
+  consul[Consul Check]-->delay((Delay 10m))
+  delay-->success-check
+  success-check{Success in last 10m?}-->|failed|consul
+  end

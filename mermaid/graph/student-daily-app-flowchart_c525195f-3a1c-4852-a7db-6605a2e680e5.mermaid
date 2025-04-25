@@ -1,0 +1,38 @@
+graph TD
+    A["User Login"] --> B["Dashboard"]
+    B --> C["Task Management"]
+    B --> D["Class Schedule"]
+    B --> E["Event Management"]
+    B --> F["Canvas LMS Integration"]
+    
+    C --> C1["Create Task"]
+    C --> C2["Edit Task"]
+    C --> C3["Delete Task"]
+    C --> C4["Set Priority"]
+    C --> C5["Set Due Date"]
+    
+    D --> D1["Weekly View"]
+    D --> D2["Daily View"]
+    D --> D3["Add Class"]
+    D --> D4["Edit Class"]
+    
+    E --> E1["Add Event"]
+    E --> E2["Edit Event"]
+    E --> E3["Set Reminders"]
+    E --> E4["Sync with Calendar"]
+    
+    F --> F1["Fetch Assignments"]
+    F --> F2["Sync Deadlines"]
+    F --> F3["View Announcements"]
+    F --> F4["Check Grades"]
+    
+    B --> G["Notification System"]
+    G --> G1["Email Notifications"]
+    G --> G2["Browser Notifications"]
+    G --> G3["Manage Preferences"]
+    
+    B --> H["Future Planning"]
+    H --> H1["Semester Planning"]
+    H --> H2["Project Milestones"]
+    H --> H3["Study Schedules"]
+    H --> H4["Goal Tracking"]

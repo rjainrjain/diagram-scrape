@@ -1,0 +1,86 @@
+erDiagram
+    ZarezerwowanieTerminuPrzezKandydata {
+        X ID_TerminuEgzaminu FK
+        X ID_Kandydata FK
+        Measure CzasOczekiwaniaWDniach
+    }
+    OdbycieSieEgzaminu {
+        X ID_TerminuEgzaminu FK
+        X ID_ZajetosciTerminuEgzaminu FK
+        Measure LiczbaRezerwacjiNaTermin
+        Measure MaksymalnaLiczbaUczestnikow
+        Measure LiczbaUczestnikow
+    }
+    ZlozenieSkargi {
+        X ID_TerminuEgzaminu FK
+        X ID_Kandydata FK
+        X ID_Skargi FK
+        Measure LiczbaPowiazanychIncydentow
+    }
+    OdpowiedzenieNaPytaniePodczasEgzaminuZeSkarga {
+        X ID_TerminuEgzaminu FK
+        X ID_Kandydata FK
+        X ID_Pytania FK
+        X ID_Skargi FK
+    }
+
+    Data {
+        X ID_Daty "PK"
+        X Data
+        X Rok
+        X Miesiac
+        X NumerMiesiaca
+        X DzienTygodnia
+        X NumerDniaTygodnia
+    }
+    Czas {
+        X ID_Czasu "PK"
+        X Godzina
+    }
+    Egzaminator {
+        X ID_Egzaminatora "PK"
+        X Pesel "BK"
+        X ImieINazwisko
+        X CzyAktualne
+    }
+    TerminEgzaminu {
+        X ID_TerminuEgzaminu PK
+        X ID_DatyEgzaminu FK
+        X ID_CzasuEgzaminu FK
+        X ID_Egzaminatora FK
+        X NumerSaliEgzaminacyjnej
+    }
+    Kandydat {
+        X ID_Kandydata PK
+        X NumerPKK
+    }
+    ZajetoscTerminuEgzaminu {
+        X ID_ZajetosciTerminuEgzaminu PK
+        X ZajetoscTerminu "(Pusty, Częściowo Pełny, Pełny)"
+    }
+    Skarga {
+        X ID_Skargi PK
+        X TypEgzaminu "(Teoretyczny, Praktyczny)"
+        X TypSkargi "(Techniczny Przebieg, Treść Pytań, Egzaminator, Inne)"
+        X CzyIstniejaPowiazaneIncydenty "(Brak powiązanych incydentów, Istnieją powiązane incydenty)"
+        X CzyKandydatOdpowiedzialNaWszystkiePytania "(Kandydat Nie Zdołał Odpowiedzieć Na Wszystkie Pytania, Kandydat Odpowiedział Na Wszystkie Pytania)"
+    }
+    Pytanie {
+        X ID_Pytania PK
+        X Tresc
+    }
+
+    TerminEgzaminu ||--|| Data : ""
+    TerminEgzaminu ||--|| Czas : ""
+    TerminEgzaminu ||--|| Egzaminator : ""
+    ZarezerwowanieTerminuPrzezKandydata ||--|| Kandydat : ""
+    ZarezerwowanieTerminuPrzezKandydata ||--|| TerminEgzaminu : ""
+    OdbycieSieEgzaminu ||--|| TerminEgzaminu : ""
+    OdbycieSieEgzaminu ||--|| ZajetoscTerminuEgzaminu : ""
+    ZlozenieSkargi ||--|| TerminEgzaminu : ""
+    ZlozenieSkargi ||--|| Kandydat : ""
+    ZlozenieSkargi ||--|| Skarga : ""
+    OdpowiedzenieNaPytaniePodczasEgzaminuZeSkarga ||--|| TerminEgzaminu : ""
+    OdpowiedzenieNaPytaniePodczasEgzaminuZeSkarga ||--|| Kandydat : ""
+    OdpowiedzenieNaPytaniePodczasEgzaminuZeSkarga ||--|| Skarga : ""
+    OdpowiedzenieNaPytaniePodczasEgzaminuZeSkarga ||--|| Pytanie : ""

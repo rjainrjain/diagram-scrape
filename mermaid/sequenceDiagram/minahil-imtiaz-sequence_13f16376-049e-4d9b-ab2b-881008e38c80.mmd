@@ -1,0 +1,20 @@
+sequenceDiagram
+  participant User 
+  participant App Contract
+  participant Data Contract
+  participant Trait Contract
+  Data Contract -->> Trait Contract: Implements the traits defined
+  User ->> App Contract: Calls a function in App Contract
+  activate  App Contract
+  App Contract ->> Data Contract: Calls a function in Data Contract
+  activate Data Contract
+  Data Contract ->> Data Contract: Checks if the App Contract is a valid caller
+  alt if App Contract is a valid caller
+  Data Contract ->> App Contract: returns the result
+  else
+  Data Contract ->> App Contract: returns the error
+  end
+  deactivate Data Contract
+  App Contract ->> User: Returns the result obtained from Data Contract
+  deactivate App Contract
+            

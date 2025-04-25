@@ -1,0 +1,75 @@
+graph LR
+    Tech[Computer / Phone / Till]
+    AssemblyI[Assembly I]
+    AssemblyII[Assembly II]
+    StoneBricks[Stone bricks]
+    StoneChunks[Stone chunks]
+    CementChunk[Cement chunk]
+    ConcreteBlock[Concrete block]
+
+    Sand -- Furnace --> Glass
+    Sand -- Furnace --> Silicon
+
+    Silicon -- Etcher --> Chips
+
+    CrudeOil -- Refinery --> Plastic
+    CrudeOil -- Refinery --> Petrol
+
+    Glass -- Assembly --> Tech
+    Plastic -- Assembly --> Tech
+    Chips -- Assembly --> Tech
+
+    Stone -- Mine --> StoneChunks
+    StoneChunks -- StoneCutter --> StoneBricks
+    StoneBricks -- Assembly --> Furnace
+    StoneBricks -- StoneCutter --> StoneCutter
+    StoneBricks -- StoneCutter --> Statue
+
+    Silicon -- Furnace --> CementChunk
+    Sand -- Furnace  --> CementChunk
+    CementChunk -- Grinder --> Cement
+    Cement --> ConcreteBlock
+    StoneChunks --> ConcreteBlock
+
+    Tree -- Sawmill --> Planks
+    Planks -- Assembly --> AssemblyI
+
+    Ore -- Mine --> Metal
+    Metal -- Assembly --> Sawmill
+    Metal -- Assembly --> Pipe
+    Pipe -- Assembly --> Refinery
+
+    Metal -- Assembly --> Engine
+    Pipe -- Assembly --> Engine
+
+    Plastic -- Assembly --> Car
+    Engine -- Assembly --> Car
+
+    Metal -- Assembly --> Etcher
+    Pipe -- Assembly --> Etcher
+    Engine -- Assembly --> Etcher
+
+    Metal -- Assembly --> AssemblyII
+    Engine -- Assembly --> AssemblyII
+
+    Pipe -- Assembly --> Generator
+    Metal -- Assembly --> Generator
+
+    Plastic -- Assembly --> Furniture
+    Planks -- Assembly --> Furniture
+
+
+    classDef product fill:#99C794;
+    class Tech,Furniture,Car,Statue,ConcreteBlock,Planks,StoneBricks,Generator,Glass product;
+
+    classDef production fill:#C594C5;
+    class AssemblyI,AssemblyII,Etcher,Refinery,Furnace,StoneCutter,Sawmill production;
+
+    classDef raw fill:#EC5f67;
+    class Stone,Ore,Sand,Tree,CrudeOil raw;
+
+    classDef l1 fill:#F99157;
+    class Metal,StoneChunks,Silicon,Petrol,Plastic,CementChunk l1;
+
+    classDef l2 fill:#FAC863;
+    class Pipe,Chips,Engine,Cement l2;

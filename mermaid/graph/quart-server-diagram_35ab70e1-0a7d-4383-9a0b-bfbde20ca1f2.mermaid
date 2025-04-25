@@ -1,0 +1,42 @@
+graph TB
+    USSD[USSD Interface]
+    QuartServer[Quart Server]
+    
+    subgraph QuartServer
+        RequestHandler[Request Handler]
+        USSDMenuFlow[USSD Menu Flow]
+        PaymentProcessor[Payment Processor]
+        FavoritesManager[Favorites Manager]
+        TransactionHistory[Transaction History]
+        IteManager[Ite Manager]
+        NFTIssuer[NFT Issuer]
+        AirtimeConverter[Airtime Converter]
+        ExchangeService[XLM-Fiat Exchange Service]
+        KYCIntegration[KYC Integration]
+    end
+
+    Database[(Database)]
+    StellarSDK[Stellar SDK]
+    AirtimeAPI[Airtime API]
+    KYCPlatform[KYC Platform]
+
+    USSD -->|Sends requests| RequestHandler
+    RequestHandler -->|Manages| USSDMenuFlow
+    USSDMenuFlow -->|Uses| PaymentProcessor
+    USSDMenuFlow -->|Uses| FavoritesManager
+    USSDMenuFlow -->|Uses| TransactionHistory
+    USSDMenuFlow -->|Uses| IteManager
+    USSDMenuFlow -->|Uses| NFTIssuer
+    USSDMenuFlow -->|Uses| AirtimeConverter
+    USSDMenuFlow -->|Uses| ExchangeService
+    USSDMenuFlow -->|Uses| KYCIntegration
+
+    PaymentProcessor -->|Interacts with| StellarSDK
+    AirtimeConverter -->|Interacts with| AirtimeAPI
+    KYCIntegration -->|Verifies with| KYCPlatform
+
+    PaymentProcessor -->|Stores/Retrieves data| Database
+    FavoritesManager -->|Stores/Retrieves data| Database
+    TransactionHistory -->|Stores/Retrieves data| Database
+    IteManager -->|Stores/Retrieves data| Database
+    NFTIssuer -->|Stores/Retrieves data| Database

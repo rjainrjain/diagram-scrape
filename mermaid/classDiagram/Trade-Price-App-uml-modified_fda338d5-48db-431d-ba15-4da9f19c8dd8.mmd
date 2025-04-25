@@ -1,0 +1,71 @@
+classDiagram
+  class NewPriceRequest {
+
+    - ask : BigDecimal
+    - bid : BigDecimal
+    - instrumentDescription : String
+    - instrumentSymbol : String
+    - timestamp : Instant
+    - vendorDescription : String
+    - vendorId : Long
+    - vendorName : String
+    + getAsk() : BigDecimal
+    + getBid() : BigDecimal
+    + getInstrumentDescription() : String
+    + getInstrumentSymbol() : String
+    + getTimestamp() : Instant
+    + getVendorDescription() : String
+    + getVendorId() : Long
+    + getVendorName() : String
+    + setAsk(ask : BigDecimal)
+    + setBid(bid : BigDecimal)
+    + setInstrumentDescription(instrumentDescription : String)
+    + setInstrumentSymbol(instrumentSymbol : String)
+    + setTimestamp(timestamp : Instant)
+    + setVendorDescription(vendorDescription : String)
+    + setVendorId(vendorId : Long)
+    + setVendorName(vendorName : String)
+    + toVendorInstrumentPrice() : VendorInstrumentPrice
+  }
+  class Instrument {
+
+    - description : String
+    - symbol : String
+    + getDescription() : String
+    + getSymbol() : String
+    + setDescription(description : String)
+    + setSymbol(symbol : String)
+    + toString() : String
+  }
+  class Vendor {
+
+    - description : String
+    - id : Long
+    - name : String
+    + getDescription() : String
+    + getId() : Long
+    + getName() : String
+    + setDescription(description : String)
+    + setId(id : Long)
+    + setName(name : String)
+  }
+  class VendorInstrumentPrice {
+
+    - ask : BigDecimal
+    - bid : BigDecimal
+    - instrument : Instrument
+    - timestamp : Instant
+    - vendor : Vendor
+    + getAsk() : BigDecimal
+    + getBid() : BigDecimal
+    + getInstrument() : Instrument
+    + getTimestamp() : Instant
+    + getVendor() : Vendor
+    + setAsk(ask : BigDecimal)
+    + setBid(bid : BigDecimal)
+    + setInstrument(instrument : Instrument)
+    + setTimestamp(timestamp : Instant)
+    + setVendor(vendor : Vendor)
+  }
+VendorInstrumentPrice -->  "-vendor" Vendor
+VendorInstrumentPrice -->  "-instrument" Instrument

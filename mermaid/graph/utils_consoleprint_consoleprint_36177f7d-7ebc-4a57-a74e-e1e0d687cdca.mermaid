@@ -1,0 +1,49 @@
+flowchart TD
+    A[Start] --> B[Import packages]
+    B --> C[Define PrintDeviceList function]
+    B --> D[Define PrintResults function]
+    B --> E[Define PrintStartingFirewallConnections function]
+
+    subgraph PrintDeviceList
+        C --> F[Log: Printing device list]
+        F --> G[Print 'Device List:']
+        G --> H{For each device in deviceList}
+        H --> I{Is verbose mode?}
+        I -->|Yes| J[Print all device details]
+        I -->|No| K[Print limited device details]
+        J --> H
+        K --> H
+        H -->|End of list| L[End PrintDeviceList]
+    end
+
+    subgraph PrintResults
+        D --> M[Log: Processing WildFire registration results]
+        M --> N[Print 'WildFire Registration Results:']
+        N --> O{For each result in results}
+        O --> P[Print result]
+        P --> Q{Contains 'Successfully registered'?}
+        Q -->|Yes| R[Increment successCount]
+        Q -->|No| S[Increment failureCount]
+        R --> O
+        S --> O
+        O -->|End of results| T{results.length < totalDevices?}
+        T -->|Yes| U[Calculate missing results]
+        U --> V[Add to failureCount]
+        T -->|No| W[Log final counts]
+        V --> W
+        W --> X[End PrintResults]
+    end
+
+    subgraph PrintStartingFirewallConnections
+        E --> Y[Log: Starting connections to firewalls]
+        Y --> Z[Print connection initiation message]
+        Z --> AA[End PrintStartingFirewallConnections]
+    end
+
+    L --> BB[End]
+    X --> BB
+    AA --> BB
+
+    style PrintDeviceList fill:#f9f,stroke:#333,stroke-width:2px
+    style PrintResults fill:#ccf,stroke:#333,stroke-width:2px
+    style PrintStartingFirewallConnections fill:#cfc,stroke:#333,stroke-width:2px

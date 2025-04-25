@@ -1,0 +1,35 @@
+graph TB
+    subgraph "Presentation Layer"
+        A[Angular Frontend]
+        B[API Controllers]
+    end
+    subgraph "Application Layer"
+        C[Use Cases / Application Services]
+        D[DTOs]
+    end
+    subgraph "Domain Layer"
+        E[Entities]
+        F[Value Objects]
+        G[Domain Services]
+        H[Repositories Interfaces]
+    end
+    subgraph "Infrastructure Layer"
+        I[Repository Implementations]
+        J[External Services]
+        K[Azure Cosmos DB]
+        L[Azure SignalR Service]
+        M[Azure Notification Hubs]
+        N[Azure Application Insights]
+    end
+    A -->|HTTP/SignalR| B
+    B --> C
+    C --> D
+    C --> E
+    C --> F
+    C --> G
+    C --> H
+    H --> I
+    I --> K
+    J --> L
+    J --> M
+    J --> N

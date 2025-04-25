@@ -1,0 +1,13 @@
+stateDiagram-v2
+    Closed --> Listen
+    Listen --> SYN_RCVD
+    SYN_RCVD --> Established
+    Closed --> SYN_SENT
+    SYN_SENT --> Established
+    Established --> FIN_WAIT_1
+    FIN_WAIT_1 --> FIN_WAIT_2
+    FIN_WAIT_2 --> TIME_WAIT
+    TIME_WAIT --> Closed
+    Established --> CLOST_WAIT
+    CLOST_WAIT --> LAST_ACK
+    LAST_ACK --> Closed

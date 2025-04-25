@@ -1,0 +1,41 @@
+erDiagram
+    atlas_schema_revisions_atlas_schema_revisions["atlas_schema_revisions.atlas_schema_revisions"] {
+      character_varying version PK
+      character_varying description
+      bigint type
+      bigint applied
+      bigint total
+      timestamptz executed_at
+      bigint execution_time
+      text error
+      text error_stmt
+      character_varying hash
+      jsonb partial_hashes
+      character_varying operator_version
+    }
+    public_article["public.article"] {
+      serial id PK
+      character_varying title
+      character_varying content
+      integer author_id
+      timestamptz updated_at
+      timestamptz created_at
+    }
+    public_article_category["public.article_category"] {
+      serial id PK
+      integer article_id
+      integer category_id
+    }
+    public_author["public.author"] {
+      serial id PK
+      character_varying name
+      timestamptz created_at
+      timestamptz updated_at
+    }
+    public_category["public.category"] {
+      serial id PK
+      character_varying name
+      character_varying tag
+      timestamptz created_at
+      timestamptz updated_at
+    }

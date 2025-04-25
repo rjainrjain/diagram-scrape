@@ -1,0 +1,22 @@
+graph TD
+    subgraph Row1[The Basics]
+        A1["Date"] 
+        A2["Kata"] 
+        A3["How long I took"]
+    end
+
+    subgraph Row2[The Details]
+        B1[Did I complete it?]
+        B2[What approach was used?]
+        B3[Language Used?]
+    end
+
+    subgraph Row3[Reflection]
+        C1[How hard was it]
+        C2[How would I do it differently]
+        C3[Quality of work]
+        C4[Did I improve on last time]
+        
+    end
+    Row1 --> Row2
+    Row2 --> Row3

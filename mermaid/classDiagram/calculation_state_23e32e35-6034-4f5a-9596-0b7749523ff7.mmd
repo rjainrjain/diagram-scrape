@@ -1,0 +1,45 @@
+---
+title: Calculation State
+---
+
+classDiagram
+    direction LR
+
+    class CalculationState {
+        -string code
+        -string color
+        -bool editable
+        -string description
+        -Collection~Calculation~ calculations
+        +getCode() string
+        +setCode(string)
+        +getColor() string
+        +setColor(string)
+        +isEditable() bool
+        +setEditable(bool)
+        +getDescription() string
+        +setDescription(string)
+        +getCalculations() Collection~calculations~
+        +count() int
+    }
+
+    class AbstractEntity {
+        <<Abstract>>
+    }
+    class EntityInterface {
+        <<Interface>>
+    }
+
+    class TimestampableInterface {
+        <<Interface>>
+    }
+
+    EntityInterface <|.. AbstractEntity
+    AbstractEntity <|-- CalculationState
+    CalculationState "0" --> "*" Calculation
+    TimestampableInterface <|-- CalculationState
+
+    click EntityInterface call nodeCallback()
+    click AbstractEntity call nodeCallback()
+    click Calculation call nodeCallback()
+    click TimestampableInterface call nodeCallback()

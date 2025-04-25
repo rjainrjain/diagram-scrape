@@ -1,0 +1,18 @@
+sequenceDiagram
+    participant User
+    participant API
+    participant Business Logic
+    participant Database
+
+    User ->> API: POST /register with user's details
+    API ->> Business Logic: validate_data(data) and register_user(data)
+    Business Logic ->> Database: is_user_exists(email) : Check if user's email exists (SELECT)
+    Database -->> Business Logic: User already exists or not
+    alt user doesn't exists
+        Business Logic ->> Business Logic: hash_password(user_password)
+        Business Logic ->> Database: save() : Save new user (INSERT)
+        Database -->> Business Logic: Confirm save
+    end
+    Business Logic -->> API: Return response
+    API -->> User: Return Success (201) / Failure (400/409)
+

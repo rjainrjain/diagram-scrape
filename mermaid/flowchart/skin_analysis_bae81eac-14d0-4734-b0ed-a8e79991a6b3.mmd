@@ -1,0 +1,57 @@
+%%{init: {'theme':'default', flowchart: {'htmlLabels': false}}}%%
+
+flowchart TB
+    %% nodes
+
+    curves[(Stress-stretch curves)]
+
+    subgraph predictor_pre_selection[Predictor pre-selection]
+        exp(Exponential)
+        pca(PCA)
+        logistic(Logistic)
+        best_fit{Best fit}
+    end
+
+    images[(Images)]
+
+    subgraph hparam_search[Hyperparameter search]
+        study1["Successive halving Search 1"]
+        study2["Hyperband search 2"]
+        study3["Hyperband search 3"]
+        best_config{Best configuration}
+    end
+
+    subgraph training["Model training (on top k images)"]
+        %% train5[Model 5]
+        train10[Model 10]
+        %% train15[Model 15]
+        train20[Model 20]
+        train30[Model 30]
+        train1X[Model 20, 1X Zoom]
+        best_val{Best validation}
+    end
+
+    inference[Inference]
+
+    subgraph xai[XAI]
+        %%ig[Integrated gradients]
+        occ[Occlusion]
+        attack[Adversarial attack]
+        why{Why?}
+    end
+
+
+    %% Connections
+
+    curves --> predictor_pre_selection
+    exp & pca & logistic --> best_fit
+    best_fit --> hparam_search
+    images ----> hparam_search
+    study1 & study2 & study3 --> best_config
+    best_config --> training
+    train10 & train20 & train30 & train1X --> best_val
+    best_val --> inference & xai
+    %%best_val --> testing
+    %%ensemble --> test
+
+    occ & attack --> why

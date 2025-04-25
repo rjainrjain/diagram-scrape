@@ -1,0 +1,41 @@
+erDiagram
+    USER ||--o{ ITEM : owns
+    USER ||--o{ LOAN : "benefits from"
+    ITEM ||--o{ LOAN : is
+    ITEM ||--o{ PHOTO : has
+    PHOTO ||--|| ITEM : is
+    
+    USER {
+        int user_id PK
+        string username
+        string email
+        string password_hash
+        date registration_date
+    }
+    
+    ITEM {
+        int item_id PK
+        string user_id FK
+        string item_name
+        string description
+        string category
+        boolean availability_status
+        int photo_id FK
+        boolean has_active_loan
+    }
+    
+    LOAN {
+        int loan_id PK
+        int item_id FK
+        int borrower_user_id FK
+        date start_date
+        date end_date
+        boolean is_active
+    }
+    
+    PHOTO {
+        int photo_id PK
+        int item_id FK
+        string photo_url
+        boolean is_before_photo
+    }

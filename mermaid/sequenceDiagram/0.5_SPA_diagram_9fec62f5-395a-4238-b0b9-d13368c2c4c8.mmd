@@ -1,0 +1,26 @@
+sequenceDiagram
+    participant B as browser
+    participant S as server
+
+    B->>S: GET https://studies.cs.helsinki.fi/exampleapp/spa
+    activate S
+    S->>B: notes html document
+    deactivate S
+
+    B->>S: GET https://studies.cs.helsinki.fi/exampleapp/main.css
+    activate S
+    S->>B: site stylesheet main.css
+    deactivate S
+
+    Note right of B: fetch the json file and dynamically render the notes
+
+    B->>S: GET https://studies.cs.helsinki.fi/exampleapp/spa.js
+    activate S
+    S->>B: site script spa.js
+    deactivate S
+
+    B->>S: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+    activate S
+    S->>B: the notes array/objects
+    deactivate S
+

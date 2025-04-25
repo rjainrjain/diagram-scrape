@@ -1,0 +1,45 @@
+sequenceDiagram
+    participant User
+    participant Your_app
+    participant Signaling_SDK
+    participant Agora
+
+    rect rgb(255, 255, 255)
+    note over User, Your_app: Initialize
+        User->>+Your_app: Open app
+        Your_app->>+Signaling_SDK: Create a signalingEngine instance
+        Signaling_SDK->>+Signaling_SDK: Add the presence event listener
+        Signaling_SDK->>+Signaling_SDK: Set the authentication token
+        Signaling_SDK->>+Agora: Log in to Signaling
+    end
+
+    rect rgb(255, 255, 255)
+    note over User, Your_app: Presence notifications
+        User->>+Your_app: Join a channel
+        Your_app->>+Signaling_SDK: Subscribe to a channel and enable presence events for the channel
+        Signaling_SDK->>+Agora: Presence event: A remote user joins, leaves or changes status
+        Agora-->>-Signaling_SDK: Read the event arguments
+        Signaling_SDK-->>-User: Inform users
+    end
+
+    rect rgb(255, 255, 255)
+    note over User, Your_app: Presence queries
+        User->>+Your_app: Load the list of users in the channel
+        Your_app->>+Signaling_SDK: Call getOnlineUsers
+        User->>+Your_app: Load the channel list for a user
+        Your_app->>+Signaling_SDK: Call getUserChannels
+    end
+
+    rect rgb(255, 255, 255)
+    note over User, Your_app: User status
+        User->>+Your_app: Set own status
+        Your_app->>+Signaling_SDK: Call setState
+        User->>+Your_app: Query the status of a remote user
+        Your_app->>+Signaling_SDK: Call getState
+    end
+
+    rect rgb(255, 255, 255)
+    note over User, Your_app: Close
+        User->>+Your_app: Log out
+        Your_app->>+Signaling_SDK: Log out of Signaling
+    end

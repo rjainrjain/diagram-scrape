@@ -1,0 +1,33 @@
+sequenceDiagram
+    actor User as Грегор Замса
+    participant OrdersService as Orders Service
+    participant OrdersTable as Orders Table
+    participant OutboxTable as Outbox Table
+    participant EventsDispatcher as Events Dispatcher
+    participant ShippingService as Shipping Service
+
+    User->>OrdersService: Создать заказ
+    
+    critical Транзакция в БД
+        activate OrdersService
+        OrdersService->>OrdersTable: Вставить заказ
+        OrdersService->>OutboxTable: Вставить сообщение
+    end
+
+    OrdersService-->>User: Заказ создан
+    deactivate OrdersService
+
+    activate EventsDispatcher
+
+    EventsDispatcher->>OutboxTable: Запросить сообщения
+    activate OutboxTable
+    OutboxTable->>EventsDispatcher: Сообщения на отправку
+    deactivate OutboxTable
+
+    critical Транзакция в БД
+        EventsDispatcher->>ShippingService: Отправить заказ (async)
+        EventsDispatcher->>OutboxTable: Удалить сообщение
+        EventsDispatcher->>OrdersTable: Обновить заказ
+    end
+
+    deactivate EventsDispatcher

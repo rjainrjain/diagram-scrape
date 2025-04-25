@@ -1,0 +1,11 @@
+sequenceDiagram
+  Note over Blockchain Gateway: Initiate vote
+  Blockchain Gateway ->> CampShare: Compiles and sends moderator list
+  CampShare ->> Administrator: Set moderators to project
+  Administrator -->> Blockchain Gateway: Get list of moderators
+  Note over Administrator: Set moderators
+  AccountManager ->> CampShare: [Moderator] Submit encrypted votes
+  CampShare ->> Moderator: Decode moderator votes and commit final votes
+  Note over Moderator: Trigger cancel
+  AccountManager ->> PLGProject: [Backer] Request refund
+  PLGProject ->> PLGToken: Calculate and transfer refund

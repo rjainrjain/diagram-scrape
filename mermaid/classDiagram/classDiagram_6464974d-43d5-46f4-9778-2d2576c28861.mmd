@@ -1,0 +1,101 @@
+classDiagram
+
+    Temporada --> "1..*" DetalleDesafio
+    DetalleDesafio --> "1" Desafio
+    Temporada --> "1..*" RondaEliminacion
+    Temporada --> "1..*" Equipo
+    Equipo --> "1..*" Participante
+    Equipo "1..*" <-- Alianza
+    Participante --> "1..*" Pais
+    Participante --> "1..*" Habilidad
+    Desafio --|> RondaEliminacion
+    Desafio --> "1..*" Reglas
+    RondaEliminacion --> "1..*" Equipo
+    Desafio --> "1..*" Equipo
+    Temporada --> "0..*" Alianza
+
+    class Equipo{
+        String nombre
+        String imagen_representativa
+        Participante participantes
+        int puntos
+        conocerParticipantes()
+        listarParticipantes()
+        formarAlianza()
+        estadoAlianza()
+    }
+    class Participante{
+        String nombre
+        String descripcion
+        String apellido
+        Pais pais
+        Habilidad habilidad
+        String apodo
+        String estadoParticipacion
+        agregarParticipante()
+        eliminarParticipante()
+        cambiarEstado()
+    }
+    class Pais{
+        String nombre
+        String descripcion
+    }
+    class Habilidad{
+        String nombre
+        String descripcion
+        setNombre()
+        setDescripcion()
+        getNombre()
+        getDescripcion()
+        crear()
+    }
+    class Temporada{
+        int numero
+        String nombre
+        String ganador
+        Equipo listaEquipo
+        Alianza listaAlianza
+        Desafio listaDesafio
+        Detalle_desafio listaDetalleDesafio
+        RondaEliminacion listaRondaEliminacion
+        conocerEquipos()
+        conocerDesafios()
+        conocerDetallesDesafios()
+        conocerRondasEliminacion()
+        conocerAlianzas()
+        listaEquipos()
+        listaDesafios()
+        listaRondasELiminacion()
+        listaDetalleDesafio()
+        listaAlianza()
+        enviarEquipos()
+        calcularPuntos()
+        generarTabla()
+        actualizarTabla()
+    }
+    class Desafio{
+        String nombre
+        String descripcion
+        Equipo equipos
+        Reglas Reglas
+    }
+    class DetalleDesafio{
+        int puntos
+        Date FechaDesafio
+        Equipo ganador
+    }
+    class Reglas{
+        String nombre
+        String descripcion
+    }
+    class RondaEliminacion{
+        Date FechaRondaEliminacion
+        Equipo eliminado
+        eliminarEquipo()
+    }
+    class Alianza{
+        String nombre
+        String descripcion
+        Equipo listaEquipo
+        bool estado
+    }

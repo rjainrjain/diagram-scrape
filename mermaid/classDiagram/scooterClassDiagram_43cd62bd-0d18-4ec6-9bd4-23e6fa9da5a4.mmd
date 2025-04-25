@@ -1,0 +1,39 @@
+classDiagram
+    ScooterApp *--|> "*" User
+    ScooterApp *--|> "*" Scooter
+
+    Scooter "1" --o "1" User
+
+    class Scooter {
+        +string station
+        +number charge
+        +boolean isBroken
+        +boolean isDocked
+
+        -number serial
+        -User|string user
+
+        rent()
+        recharge()
+        dock(station)
+        requestReapir()
+    }
+
+    class User {
+        +string username
+
+        -number age
+        -string password
+    }
+
+    class ScooterApp {
+        arr stations
+        arr registeredUsers
+        arr scooterSessions$
+
+        register(user)
+        logIn(username, password)
+        addScooter(location, scooter)
+        removeScooter(scooterToRemove)
+    }
+        

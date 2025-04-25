@@ -1,0 +1,103 @@
+erDiagram
+
+    Vuelo }|--|| Aeropuerto : tiene
+    Vuelo }|--|| Estado_vuelo : tiene
+    Vuelo }|--|| Compania_aerea : tiene
+    Aeropuerto }|--|| Ciudad : tiene
+    Vuelo }|--|| Servicio_comida : tiene
+    Vuelo }|--|| Aeronave : tiene
+    Reserva }|--|| Pasajero : tiene 
+    Pasajero }|--|| Tipo_documento : tiene 
+    Reserva ||--|| Asiento : tiene
+    Estado_asiento }|--|| Asiento : tiene
+    Reserva }|--|| Vuelo : tiene
+
+
+    Vuelo {
+        INT num_vuelo PK 
+        date fecha 
+        INT duracion 
+        INT distancia 
+        INT id_aeropuerto_salida FK
+        datetime hora_salida
+        INT id_aeropuerto_llegada FK
+        datetime hora_llegada
+        INT id_estado_vuelo FK
+        INT id_compania_aerea FK
+        INT id_servicio_comida FK
+        INT id_aeronave FK
+    }
+
+    Aeropuerto {
+        INT id_aeropuerto PK
+        Varchar nombre
+        INT id_ciudad FK
+        Varchar descripcion
+    }
+
+    Ciudad {
+        INT id_ciudad PK
+        Varchar nombre 
+        Varchar descripcion
+    }
+
+    Estado_vuelo {
+        INT id_estado_vuelo PK
+        Varchar nombre
+        Varchar descripcion
+    }
+
+    Compania_aerea {
+        INT id_compania_aerea PK
+        Varchar nombre
+        Varchar descripcion
+    }
+
+    Servicio_comida {
+        INT id_servicio_comida PK
+        Varchar nombre
+        Varchar descripcion
+    }
+
+    Aeronave {
+        INT id_aeronave PK
+        Varchar nombre
+        Varchar descripcion
+    }
+
+    Pasajero {
+        INT id_tipo_documento PK
+        INT num_documento PK
+        Varchar nombre
+        Varchar apellido
+        INT num_telefono_contacto
+        Varchar correo_electronico
+    }
+
+    Tipo_documento {
+        INT id_tipo_documento
+        Varchar nombre
+        Varchar descripcion
+    }
+
+    Reserva {
+        INT num_reserva PK
+        INT num_vuelo FK
+        INT num_documento FK
+        INT id_tipo_documento FK
+        INT id_asiento FK
+        INT costo
+    }
+
+    Asiento {
+        INT id_asiento PK
+        INT fila
+        INT numero
+        INT id_estado_asiento FK 
+    }
+
+    Estado_asiento {
+        INT id_estado_asiento PK
+        Varchar nombre 
+        Varchar descripcion 
+    }

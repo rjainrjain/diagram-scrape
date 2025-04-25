@@ -1,0 +1,24 @@
+graph TD
+    Start((Start)) --> InitiateBill[Start New Bill]
+    InitiateBill --> ScanItem[Scan Item]
+    
+    ScanItem --> ValidateItem{Valid Item?}
+    ValidateItem -->|No| ErrorHandler[Display Error]
+    ErrorHandler --> ScanItem
+    
+    ValidateItem -->|Yes| UpdateCart[Add to Cart]
+    UpdateCart --> CheckMore{More Items?}
+    CheckMore -->|Yes| ScanItem
+    
+    CheckMore -->|No| CalculateTotal[Calculate Total]
+    CalculateTotal --> ApplyDiscount[Apply Discounts]
+    ApplyDiscount --> SelectPayment[Select Payment Method]
+    
+    SelectPayment --> ProcessPayment{Process Payment}
+    ProcessPayment -->|Failed| PaymentError[Display Error]
+    PaymentError --> SelectPayment
+    
+    ProcessPayment -->|Success| PrintReceipt[Print Receipt]
+    PrintReceipt --> UpdateInventory[Update Inventory]
+    UpdateInventory --> UpdateLoyalty[Update Loyalty Points]
+    UpdateLoyalty --> End((End))

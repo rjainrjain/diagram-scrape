@@ -1,0 +1,17 @@
+sequenceDiagram
+    participant User
+    participant Auth as Auth Service
+    participant Video as Video Service
+    participant Kafka
+    participant Process as Processing Service
+    participant Stream as Streaming Service
+    
+    User->>Auth: 1. Register/Login
+    Auth->>Kafka: 2. Publish user_event
+    User->>Video: 3. Upload Video
+    Video->>Kafka: 4. Publish video_uploaded event
+    Kafka->>Process: 5. Consume video_uploaded event
+    Process-->>Process: 6. Process Video
+    Process->>Kafka: 7. Publish video_processed event
+    Kafka->>Stream: 8. Consume video_processed event
+    User->>Stream: 9. Request Video Stream

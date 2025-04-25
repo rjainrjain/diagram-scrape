@@ -1,0 +1,13 @@
+
+sequenceDiagram
+    participant browser
+    participant server
+
+    Note right of browser: User clicks "Save" button to submit a new note
+
+    browser->>server: POST /new_note_spa { "content": "New note content", "date": "2024-7-18" }
+    activate server
+    server-->>browser: 201 Created
+    deactivate server
+
+    Note right of browser: The browser dynamically updates the notes list with the new note from the POST payload

@@ -1,0 +1,11 @@
+---
+title: Library Management
+---
+classDiagram
+    class Library
+    Library : +String BookTitle
+    Library : +Array BookAuthor
+    Library : +String reader
+    Library : +addBook(title, author, reader, loaned)
+    Library : +editBook(bookTitle, property, value)
+    Library : +deleteBook(bookTitle)

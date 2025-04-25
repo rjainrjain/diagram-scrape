@@ -1,0 +1,106 @@
+classDiagram
+
+namespace pkg_authentification {
+class User
+class Role
+}
+User "*" --> "1" Role
+
+namespace pkg_rh {
+  class Personne
+  class Formateur 
+  class Apprenant
+  class  Groupe 
+  class  Ville
+  class  NivaeuScholaire
+  class Specialite
+}
+Personne <|-- Formateur
+Personne <|-- Apprenant 
+User "1" <-- "1" Formateur : "compte"
+User "1" <-- "1" Apprenant : "compte"
+Apprenant  "*" --> "1"  Groupe 
+Formateur "*" --> "1" Groupe
+Formateur "*" --> "1" Specialite
+Apprenant "*" --> "1" NivaeuScholaire
+Personne "*" --> "1" Ville
+
+
+namespace pkg_competences {
+  class Competence 
+  %% Description d'un niveau de compétence
+  class NiveauCompetence 
+  class Technologie 
+  class CategorieTechnologie 
+  class Appreciation
+}
+
+Competence "1" -- "*" NiveauCompetence
+Competence "1" --> "*" Technologie 
+Technologie "*" --> "1" CategorieTechnologie
+Appreciation "*" --> "1" NiveauCompetence
+Appreciation "*" --> "1" Formateur
+
+
+
+
+
+namespace pkg_creation_projets {
+  class Projet 
+  class Resource 
+  class Livrable 
+  class NatureLivrable 
+  %% par défaut il faut ajouter deux livrable : Code, Présentation
+  class TransfertCompetence
+}
+Formateur "1" <-- "*" Projet
+Projet "1" --> "*" Resource
+Projet "1" --> "*" Livrable
+Projet "1" --> "*" TransfertCompetence
+TransfertCompetence "*" -- "1" Competence 
+TransfertCompetence "*" -- "*" Technologie
+Livrable "*" --> "1" NatureLivrable
+TransfertCompetence "*" -- "1" Appreciation
+
+namespace pkg_realisation_projets {
+  class RealisationProjet
+  class LivrableRealisation 
+  class EtatRealisationProjet 
+}
+Projet "1" -- "*" RealisationProjet
+RealisationProjet "*" --> "1" EtatRealisationProjet
+RealisationProjet "1" --> "*" LivrableRealisation
+RealisationProjet "*" -- "1" Apprenant
+LivrableRealisation "*" --> "1" Livrable
+
+
+namespace pkg_validations {
+class Validation 
+class Message 
+}
+RealisationProjet "1" --> "*" Validation
+Validation "*" --> "1" TransfertCompetence
+Validation "*" --> "1" Appreciation
+Validation "1" --> "*" Message
+
+
+
+
+
+namespace pkg_formations {
+  class Formation
+}
+
+
+namespace pkg_realisation_tache{
+  class RealisationTache 
+  class EtatRealisationTache
+}
+Message "*"<-- "1" RealisationTache
+
+namespace pkg_creation_tache{
+  class Tache 
+}
+Tache  "*" --> "1" Projet
+
+

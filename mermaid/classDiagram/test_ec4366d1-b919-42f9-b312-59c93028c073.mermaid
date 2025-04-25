@@ -1,0 +1,24 @@
+classDiagram
+
+    Farm *-- Coop
+    class Farm {
+        name: String!
+    }
+
+
+    Coop *-- Hen
+    class Coop {
+        name: String! [faker: "location.country"]
+        farm_id: Farm!
+
+        getByName(name: String): Coop
+    }
+
+    class Hen {
+        name: String! [faker: "person.firstName"]
+        coop_id: Coop
+        eggs: Int [minimum: 0, maximum: 10]
+        dob: Date
+
+        getByName(name: String): [Hen]
+    }

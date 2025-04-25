@@ -1,0 +1,37 @@
+classDiagram
+direction BT
+    class Repository {
+        <<interface>>
+        +name: String
+        +owner: String
+        +cloneUrl: URL
+        +getSources(pattern: Regex) Sequence~File~
+    }
+    class AbstractRepository {
+        <<abstract>>
+        -knoledgeBaseManager: KnoledgeBaseManager
+        +getSources(pattern: Regex) Sequence~File~
+    }
+    AbstractRepository ..|> Repository
+    class GitHubRepository {
+        -repository: GHRepository
+        +GitHubRepository(\nㅤㅤrepository: GHRepository\n)
+    }
+    class BitBucketRepository {
+        -repoInfos: JSONObject
+        +BitBucketRepository(\nㅤㅤrepoInfos: JSONObject\n)
+    }
+    GitHubRepository --|> AbstractRepository
+    BitBucketRepository --|> AbstractRepository
+
+    class KnoledgeBaseManager {
+        <<interface>>
+        +save(repository: Repository)
+        +isCached(repository: Repository) Boolean
+        +load(repository: Repository) File
+    }
+    class FileKnowledgeBaseManager {
+        -repositoryFolder: File
+    }
+    FileKnowledgeBaseManager ..|> KnoledgeBaseManager
+    KnoledgeBaseManager <--* AbstractRepository

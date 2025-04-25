@@ -1,0 +1,32 @@
+erDiagram
+    RECIPIENTS {
+        int id
+        string name
+        string email
+    }
+    ACCOUNTS {
+        int id
+        string account
+        string cost_center
+        string title
+        int unit
+    }
+    UNITS {
+        int id
+        string name
+        int aul
+        int head
+    }
+    SUBCODES {
+        int id
+        string title
+        string notes
+    }
+    UNITS_RECIPIENTS{
+        int unit
+        int recipient
+    }
+	
+    UNITS ||--|{UNITS_RECIPIENTS: ""
+    UNITS_RECIPIENTS }o--|| RECIPIENTS : ""
+    ACCOUNTS }|--||UNITS:  ""

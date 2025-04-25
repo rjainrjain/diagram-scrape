@@ -1,0 +1,34 @@
+---
+title: ER Diagram
+---
+erDiagram
+    t[Topics] {
+        string Name
+        string Description
+    }
+    p[Posts] {
+        string Title
+        string Content
+    }
+    c[Comments] {
+        string Content
+    }
+    l[Likes] {
+        int Likes
+    }
+    x[Users] {
+        string Name
+        string Password
+        string Email
+    }
+    
+    x ||--|{ t : Create
+    x ||--|{ p : Add
+    x ||--|{ c : Make
+    t ||--|{ p : Contain
+    p ||--|{ c : Have
+    
+    x ||--|{ l : Pass
+    p ||--|{ l : Show
+    c ||--|{ l : Have
+    

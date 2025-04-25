@@ -1,0 +1,25 @@
+sequenceDiagram
+  participant upstream as UW-POLS-503/pols-503-2018-projects
+  participant remote as student/pols-503-2018-projects
+  participant local as local repository
+  upstream->>remote: Fork repository
+  remote->>local: Clone repository
+  Note over remote: Proposal
+  loop Until completed
+    local->>local: Work and commit
+    local->>remote: Push changes
+  end
+  remote->>remote: Open issue to submit
+  Note over remote: Draft
+  loop Until completed
+    local->>local: Work and commit
+    local->>remote: Push changes
+  end
+  remote->>remote: Open issue to submit
+  remote->>remote: Open issue to submit
+  Note over remote: Final Submission
+  loop Until completed
+    local->>local: Work and commit
+    local->>remote: Push changes
+  end
+  remote->>remote: Open issue to submit

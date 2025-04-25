@@ -1,0 +1,65 @@
+classDiagram
+class IClassDiagramBuild {
+<<Class>>
++ Any logger
++Constructor(str name) None
++reset() None
++createClass(AbstractClass target, List~AbstractClass~ linkedClasses, List~AbstractEnum~ linkedEnums, List~AbstractFunction~ linkedFunctions) None
++createEnum(AbstractEnum target) None
++build() str
+}
+class AbstractClass {
+<<Class>>
++ str namespace
++ str type
++ List&lt;Tuple&lt;str,str,str&gt;&gt; members
++ List&lt;Tuple&lt;str,str,List&lt;Tuple&lt;str,str&gt;&gt;,str&gt;&gt; methodes
++ List&lt;Tuple&lt;str,str,str&gt;&gt; parents
++ List~str~ linkedGenericTypes
++ List~AbstractClassClassifier~ classifiers
++Constructor(str name, str namespace, str origin) None
++addGenericType(str genType) None
++addMember(str type, str name, str visibility) None
++hasMember(str name) bool
++addMethod(str returnType, str name, List&lt;Tuple&lt;str,str&gt;&gt; parameters, str visibility) None
++addParent(str completetype, str name, str visibility) None
++addClassifier(AbstractClassClassifier classifier) None
++getMainClassifier() str
++getLinkedTypes() List~str~
+-isPotentialClassName(str type) bool
+-getDependanceFromType(str type) List~str~
+-splitTypes(Any decl) List~str~
++getFullName() str
+-cleanLanguageArtifacts(str type) str
+-removeNonObjectTypes(List~str~ typeList) List~str~
++isParent(AbstractClass klass) bool
++print() None
+}
+link AbstractClass "class££pycodeanalyzer::core::abstraction::objects::AbstractClass"
+class AbstractEnum {
+<<Class>>
++ str namespace
++ str type
++ List~str~ values
++Constructor(str name, str namespace, str origin, List~str~ values) None
++getFullName() str
++print() None
+}
+link AbstractEnum "class££pycodeanalyzer::core::abstraction::objects::AbstractEnum"
+class AbstractFunction {
+<<Class>>
++ str namespace
++ str type
++ str returnType
++ List&lt;Tuple&lt;str,str&gt;&gt; parameters
++ str doxygen
++ List~str~ linkedGenericTypes
++Constructor(str name, str origin, str returnType, List&lt;Tuple&lt;str,str&gt;&gt; parameters, str namespace, str doxygen) None
++addGenericType(str genType) None
++print() None
++getFullDef() str
+}
+link AbstractFunction "class££pycodeanalyzer::core::abstraction::objects::AbstractFunction"
+IClassDiagramBuild ..> AbstractClass
+IClassDiagramBuild ..> AbstractEnum
+IClassDiagramBuild ..> AbstractFunction

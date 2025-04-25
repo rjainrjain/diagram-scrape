@@ -1,0 +1,18 @@
+```mermaid
+graph TD
+    A[Início] --> B[Usuário acessa a lista de acomodações];
+    B --> C[Usuário seleciona a acomodação a ser atualizada];
+    C --> D[Sistema exibe o formulário com os dados atuais da acomodação e fotos];
+    D --> E["Usuário modifica os campos desejados e adiciona/remove fotos (opcional)"];
+    E --> F[Sistema valida os dados modificados];
+    F -- Dados válidos --> G[Sistema atualiza os dados da acomodação no banco de dados];
+    G -- Sucesso --> H["Sistema atualiza as fotos no banco de dados (se modificadas)"];
+    H -- Sucesso --> I["Sistema exibe mensagem de sucesso "Dados da acomodação atualizados com sucesso""];
+    I --> J["Fim (Dados atualizados com sucesso)"];
+    F -- Dados inválidos --> K[Sistema exibe mensagens de erro de validação];
+    K --> E;
+    G -- Erro ao atualizar --> L[Sistema exibe mensagem de erro no banco de dados];
+    L --> E;
+    H -- Erro ao atualizar fotos --> M[Sistema exibe mensagem de erro ao atualizar fotos];
+    M --> E;
+```

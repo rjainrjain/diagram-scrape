@@ -1,0 +1,35 @@
+---
+title: version 9 - custom offline Java generator + Angular single page application
+---
+
+%%{ init: {'theme': 'neutral'} }%%
+graph LR
+
+subgraph offline
+   database[(database)]
+   generator[["Java generator"]]
+   source{{original images}}   
+   script[[Bash scripting]]
+   sql([SQL editor]) --> database
+   gimp([Image editor]) --> source
+end
+
+database --> source
+database --> generator
+generator -- ftp --> json
+source --> script
+script -- ftp --> images
+
+subgraph online
+   app[[Angular app]]
+   images{{prepared images}}
+   json{{generated json}}
+   posts{{maintained markdown}}
+end
+
+images --> app
+json --> app
+posts --> app
+app -.-> browser(((WWW)))
+
+editor([Text editor]) -- git --> posts

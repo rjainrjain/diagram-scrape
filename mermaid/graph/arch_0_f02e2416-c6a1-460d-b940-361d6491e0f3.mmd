@@ -1,0 +1,35 @@
+flowchart TB
+    A["`Client`"]
+    subgraph PRGM ["`Web Application Server (*Spring Framework*)`"]
+        B_0["`pom.xml
+        (*Maven Dependencies*)`"]
+        B_1["`application.properties
+        (*Spring global settings*)`"]
+        B_2["`Other Configuration`"]
+        C["`main()`"]
+        D[/"`controllers
+        (*RestController*)`"\]
+        E["`service class`"]
+        subgraph JPA ["`Java Persistence API`"]
+            style JPA fill:#ff8
+            F["`repository class`"]
+        end
+        G[("`Database
+        (*PostgresSQL*)`")]
+    end
+
+
+    A -->|"`HTTP Request (via *REST APIs*)`"| D
+    B_0 --> C
+    B_1 --> C
+    B_2 --> C
+    C -->|Init| D
+    D -->|Call| E
+    E -->|Call| F
+    F -->|SQL Query| G
+    G -->|Query Result| F
+
+    F -->|"`*Entity* class`"| E
+    E -->|DTO| D
+    D -->|"`HTTP Response
+    (*json*)`"| A

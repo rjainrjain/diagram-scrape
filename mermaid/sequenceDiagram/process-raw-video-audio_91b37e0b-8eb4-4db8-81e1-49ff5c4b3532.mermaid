@@ -1,0 +1,39 @@
+sequenceDiagram
+    participant User
+    participant Your_app
+    participant Agora
+
+    User ->> Your_app: Open App
+    Your_app ->> Your_app: Create an instance of Agora Engine using Video SDK
+    Your_app ->> Your_app: Enable audio and video in Agora Engine
+
+    rect rgb(255, 255, 255)
+        note right of Your_app: Setup raw data processing
+        Your_app ->> Your_app: Setup the audio frame observer
+        Your_app ->> Your_app: Setup the video frame observer
+    end
+
+    rect rgb(255, 255, 255)
+        note right of Your_app: Join
+        Your_app ->> Your_app: Join a channel
+        Your_app ->> Your_app: Register the video frame observer
+        Your_app ->> Your_app: Register the audio frame observer
+        Your_app ->> Your_app: Set audio frame parameters
+        Your_app ->> Agora: Retrieve authentication token to join a channel
+        Agora -->> Your_app: Send authentication token
+        Your_message ->> Agora: Join the channel
+    end
+
+    rect rgb(255, 255, 255)
+        note right of Your_app: Process raw audio and video data
+        Your_app ->> Your_app: Get the raw data in the callbacks
+        Your_app ->> Your_app: Send the processed data back with the callbacks
+    end
+
+    rect rgb(255, 255, 255)
+        note right of Your_app: Leave
+        Your_app ->> Agora: Leave the channel
+        Your_app ->> Your_app: Unregister the video frame observer
+        Your_app ->> Your_app: Unregister the audio frame observer
+        Agora -->> Your_app: Confirm channel exit
+    end

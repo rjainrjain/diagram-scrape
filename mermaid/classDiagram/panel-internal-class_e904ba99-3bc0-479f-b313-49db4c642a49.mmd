@@ -1,0 +1,62 @@
+classDiagram
+    class PanelPlugin
+    class PanelProps~T~ {
+        Options options
+        data
+        ...
+    }
+    class CorePanel {
+        <<component>>
+        PanelProps~Options~ props
+        systemState
+    }
+    class RegionView {
+        <<component>>
+        systemState
+    }
+    class DataSource {
+        <<external>>
+    }
+    class TreeView {
+        <<component>>
+        systemState
+    }
+    class TopologyView {
+        <<component>>
+        systemState
+    }
+    class SystemState {
+        balancers[]
+    }
+    class Legend {
+        <<component>>
+        systemState
+    }
+    class ColorProvider {
+        assignments
+        +assign()
+        +getAssignments()
+    }
+
+    SystemState *-- CorePanel
+    PanelOptions "1" --* "1" PanelPlugin : Defines UI for
+    PanelOptions "1" .. "1" Options : Defines structure of
+    PanelProps "1" --> "1" CorePanel : Is input of
+    Options "1" --* "1" PanelProps : wrapped by
+    DataSource "1" --> "1" PanelProps : Feeds
+    PanelPlugin "1" *-- "1" CorePanel : Provides
+    CorePanel "1" *-- "0..1" RegionView : Renders
+    CorePanel "1" *-- "0..1" TreeView : Renders
+    CorePanel "1" *-- "0..1" TopologyView : Renders
+    CorePanel "1" *-- "1" Legend : Renders
+    Legend "1" --> "1" ColorProvider : Reads
+    RegionView "1" <-- "1" ColorProvider : Feeds Colors
+    TreeView "1" <-- "1" ColorProvider : Feeds Colors
+    TopologyView "1" <-- "1" ColorProvider : Feeds Colors
+
+
+    %% FIXME: not supported on mermaid 10.6, requires upgrading to 10.7
+    %% style DataSource stroke:,stroke-dasharray:5 5
+    %% style PanelProps stroke:,stroke-dasharray:5 5
+    %% style PanelPlugin stroke:,stroke-dasharray:5 5
+    %% style PanelOptions stroke:,stroke-dasharray:5 5

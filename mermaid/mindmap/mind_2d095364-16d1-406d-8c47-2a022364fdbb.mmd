@@ -1,0 +1,63 @@
+mindmap
+  root((Expression))  
+    TableExpressionBase
+        FromSqlExpression            
+        JoinExpressionBase
+            CrossApplyExpression
+            CrossJoinExpression
+            OuterApplyExpression
+        PredicateJoinExpressionBase
+            InnerJoinExpression
+            LeftJoinExpression
+            
+        SelectExpression
+      
+        SetOperationBase
+            UnionExpression
+            ExceptExpression
+            IntersectExpression
+        TableExpression
+
+        TableValuedFunctionExpression
+
+        ValuesExpression
+    SqlExpression
+        AtTimeZoneExpression
+        CaseExpression
+        CollateExpression
+        ColumnExpression
+        DistinctExpression
+        ExistsExpression
+        InExpression
+        LikeExpression
+        RowNumberExpression
+        RowValueExpression
+        ScalarSubqueryExpression
+        SqlBinaryExpression
+        SqlConstantExpression
+        SqlFragmentExpression
+        SqlFunctionExpression
+        SqlParameterExpression
+        SqlUnaryExpression
+
+    UpdateExpression
+    DeleteExpression
+    OrderingExpression
+    ProjectionExpression
+    QueryRootExpression
+        SqlQueryRootExpression
+        EntityQueryRootExpression
+            TableValuedFunctionQueryRootExpression
+            FromSqlQueryRootExpression
+    EntityProjectionExpression
+    EnumerableExpression
+    JsonQueryExpression
+    NonQueryExpression
+    RelationalCollectionShaperExpression
+    EntityShaperExpression
+        RelationalEntityShaperExpression
+    RelationalGroupByResultExpression
+    GroupByShaperExpression
+        RelationalGroupByShaperExpression
+    RelationalSplitCollectionShaperExpression
+

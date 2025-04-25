@@ -1,0 +1,40 @@
+graph TD
+    %% Start and End Nodes
+    Start((Start))
+    End((End))
+
+    %% Vertices
+    A[Vertex A]
+    B[Vertex B]
+    C[Vertex C]
+    D[Vertex D]
+    E[Vertex E]
+
+    %% Edges
+    Start --> A
+    A --> B
+    A --> C
+    B --> D
+    C --> D
+    D --> E
+    E --> End
+
+    %% Superstep notation
+    subgraph Superstep 0
+        Start
+        A
+    end
+
+    subgraph Superstep 1
+        B
+        C
+    end
+
+    subgraph Superstep 2
+        D
+    end
+
+    subgraph Superstep 3
+        E
+        End
+    end

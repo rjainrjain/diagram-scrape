@@ -1,0 +1,13 @@
+erDiagram
+    Department {
+        int Id PK "Primary Key"
+        varchar Name "Department Name"
+    }
+    Employee {
+        int Id PK "Primary Key"
+        varchar Name "Employee Name"
+        int Salary "Salary"
+        int DepartmentId FK "Foreign Key - References Department(Id)"
+    }
+
+    Department ||--o{ Employee : "has"

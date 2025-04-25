@@ -1,0 +1,36 @@
+sequenceDiagram
+    participant User
+    participant App
+    participant StoryWriter
+    participant Evaluator
+    participant MarketingExpert
+    participant SocialMediaTeam
+    participant MarketingTeam
+    participant OutputGenerator
+
+    User->>App: Enter story idea
+    App->>StoryWriter: Create story
+    StoryWriter->>App: Return story
+    App->>Evaluator: Evaluate story
+    Evaluator->>App: Return evaluation
+    App->>User: Show evaluation
+    User->>App: Request improvement
+    App->>StoryWriter: Improve story
+    StoryWriter->>App: Return improved story
+    App->>Evaluator: Re-evaluate story
+    Evaluator->>App: Return new evaluation
+    App->>User: Show improved story and evaluation
+    User->>App: Continue to marketing
+    App->>MarketingExpert: Analyze story
+    MarketingExpert->>App: Return marketing analysis
+    App->>SocialMediaTeam: Create social media content
+    SocialMediaTeam->>App: Return social media posts
+    App->>MarketingTeam: Create marketing concepts
+    MarketingTeam->>App: Return marketing ideas
+    App->>OutputGenerator: Compile all results
+    OutputGenerator->>App: Return final package
+    App->>User: Show final result
+    User->>App: Request PDF download
+    App->>OutputGenerator: Generate PDF
+    OutputGenerator->>App: Return PDF
+    App->>User: Provide PDF for download

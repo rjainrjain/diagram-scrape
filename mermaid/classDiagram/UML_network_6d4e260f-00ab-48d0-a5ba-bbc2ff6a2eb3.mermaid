@@ -1,0 +1,199 @@
+classDiagram
+    %% -----------------------------
+    %% Network
+    %% -----------------------------
+
+    %% -----------------------------
+    %% Rmi
+    %% -----------------------------
+
+    ChatListener <|-- VirtualView
+    GameFieldListener <|-- VirtualView
+    GameListener <|-- VirtualView
+    PlayerListener <|-- VirtualView
+    ScoreTrackBoardListener <|-- VirtualView
+    DeckListener <|-- VirtualView
+
+
+    VirtualView <|-- RmiClient
+    VirtualView  <-- SocketClientHandler
+
+    VirtualServerGame <|-- RmiServerGame
+    VirtualServerGame <|-- VirtualSocketServer
+
+    VirtualServerGamesManager <|-- RmiServerGamesManager
+    VirtualServerGamesManager <|-- VirtualSocketServer
+
+    class RmiClient{
+        - nickname: String
+        - serverGamesManager: VirtualServerGamesManager
+        - serverGame: VirtualServerGame
+        - gameView: GameView
+        - ui: Ui
+        - pong: boolean
+        - maxMissedPongs int
+        + RmiClient(nickname: String,serverGamesManager: VirtualServerGamesManager)
+        + setPong()
+        + connectToGamesManagerServer(connectionType: boolean,interdaceType: boolean)
+        + reconnectPlayer(nickname: String,connectionType: boolean,interdaceType: boolean)
+        - checkPong()
+        + receiveUpdate(update: Update)
+        + startUpdateExecutor()
+    }
+    class RmiServerGame{
+        - gameController: GameController
+        - commandsQueue: BlockingDeque~GameCommand~
+        + RmiServerGame(gameController: GameController)
+        - startCommandExecutor()
+        + connect(client: VirtualView)
+        + setAndExecuteCommand(gameControllerCommand: GameCommand)
+    }
+    class RmiServerGamesManager{
+        - myRmiServerGamesManager: RmiServerGamesManager
+        - clients: List~VirtualView~
+        - rmiServerGames: Map~Integer, RmiServerGame~
+        - commandsQueue: BlockingDeque~GamesManagerCommand~
+        - RmiServerGamesManager()
+        + getRmiServerGamesManager() RmiServerGamesManager
+        + connect(client: VirtualView)
+        + checkNickname(nickname: String) NicknameCheck
+        - startCommandExecutor()
+        + getGameServer(gameId: int) VirtualServerGame
+        + setAndExecuteCommand(gamesManagerCommand: GamesManagerCommand)
+        + createServerGame(nickname: String, gameId: int)
+        + deleteGame(gameId: int)
+    }
+    %% -----------------------------
+    %% Socket
+    %% -----------------------------
+    class SocketClient{
+        - nickname: String
+        - mySocket: Socket
+        - gameView: GameView
+        - input: ObjectInputStream
+        - myServer: VirtualSocketServer
+        - clientAlive: boolean
+        - ui: Ui
+        - maxMissedPongs: int
+        - pong: boolean
+        + SocketClient(nickname: String, mySocket: Socket)
+        + manageSetUp( output: ObjectOutputStream,  interfaceType: boolean)
+        - manageReceivedUpdate()
+        - checkPong()
+        - closeConnection()
+
+    }
+    class SocketClientHandler{
+        - gamesManager: GamesManager
+        - gameController: GameController
+        - mySocket: Socket
+        - input: ObjectInputStream
+        - output: ObjectOutputStream
+        - myClientNickname: String
+        - isReconnected: boolean
+        + SocketClientHandler(gamesManager: GamesManager, gameController: GameController)
+        - manageSetUp()
+        - manageGamesManagerCommand()
+        - manageGameCommand()
+        + closeConnection()
+        - receiveUpdate(update: Update)
+    }
+    class SocketServer{
+        - mySocket: ServerSocket
+        - clients: List~SocketClientHandler~
+        + SocketServer(mySocket: ServerSocket)
+        + runServer()
+    }
+    class VirtualSocketServer{
+        - output: ObjectOutputStream
+        + VirtualSocketServer(output: ObjectOutputStream)
+        + setAndExecuteCommand(gameControllerCommand: GameCommand)
+        + checkNickname(nickname: String)
+    }
+
+    class Client{
+        + setAndExecuteCommand(gamesManagerCommand: GamesManagerCommand)
+        + setAndExecuteCommand(gameControllerCommand: GameControllerCommand)
+        + isClientAlive() boolean
+        + setClientAlive(isAlive: boolean)
+        + notifyJoinNotSuccessful()
+        + setServerGame(serverGame: VirtualServerGame)
+        + runJoinGameInterface()
+        + runGameInterface()
+    }
+    class PingPongManager{
+        - gameController: GameController
+        - playersPing: Map~String,Boolean~
+        - playersVirtualView Map~String, VirtualView~
+        - maxMissedPings: int
+        + PingPongManager(gameController: GameController)
+        + addPingSender(nickname: String, virtualView: VirtualView)
+        + receivePing(nickname: String)
+        + getVirtualView(nickname:String) VirtualView
+        + notifyPlayerDisconnected( nickname:String)
+        + checkPing(nickname: String)
+        + sendPing(nickname: String)
+    }
+    class PingSender{
+        <<interface>>
+        ~ startGamePing()
+    }
+    class SocketCommunication{
+        <<enumeration>>
+        GAME_JOINED,
+        DISPLAY_SUCCESSFUL,
+        ACTION_NOT_SUCCESSFUL
+    }
+    class VirtualServerGame{
+        <<interface>>
+        ~ setAndExecuteCommand(gameControllerCommand: GameCommand)
+    }
+    class VirtualServerGamesManager{
+        <<interface>>
+        ~ connect(client: VirtualView)
+        ~ checkNickname(nickname: String) NicknameCheck
+        ~ getGameServer(gameId int) VirtualServerGame
+        ~ setAndExecuteCommand(gamesManagerCommand: GamesManagerCommand)
+    }
+    class VirtualView{
+        <<interface>>
+        ~ setServerGame(serverGame: VirtualServerGame)
+        ~ receiveExistingGamesUpdate(existingGamesUpdate: ExistingGamesUpdate)
+        ~ notifyJoinNotSuccessful()
+        ~ sendPong()
+    }
+
+    %% -----------------------------
+    %% Listeners
+    %% -----------------------------
+
+    class ChatListener {
+        <<interface>>
+        ~ receiveChatMessageUpdate(chatMessageUpdate: ChatMessageUpdate)
+    }
+    class DeckListener {
+        <<interface>>
+        ~ receiveStarterCardUpdate(starterCardUpdate StarterCardUpdate)
+        ~ receivePlacedCardUpdate(placedCardUpdate PlacedCardUpdate)
+    }
+    class GameFieldListener{
+        <<interface>>
+        ~ receiveStarterCardUpdate(starterCardUpdate StarterCardUpdate)
+        ~ receivePlacedCardUpdate(placedCardUpdate PlacedCardUpdate)
+    }
+    class GameListener{
+        <<interface>>
+        ~ receiveGameModelUpdate(gameModelUpdate GameModelUpdate)
+        ~ receivePlayerJoinedUpdate(playersUpdate PlayerJoinedUpdate)
+        ~ receiveCommandResultUpdate(commandResultUpdate CommandResultUpdate)
+    }
+    class PlayerListener {
+        <<interface>>
+        ~ receiveStallUpdate(stallUpdate StallUpdate)
+        ~ receiveConnectionUpdate(connectionUpdate ConnectionUpdate)
+        ~ receiveCardHandUpdate(cardHandUpdate CardHandUpdate)
+    }
+    class ScoreTrackBoardListener {
+        <<interface>>
+        ~ receiveScoreUpdate(scoreUpdate ScoreUpdate)
+    }

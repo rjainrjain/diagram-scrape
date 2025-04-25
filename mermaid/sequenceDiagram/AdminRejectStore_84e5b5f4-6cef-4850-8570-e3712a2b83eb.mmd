@@ -1,0 +1,41 @@
+
+sequenceDiagram
+  actor Admin
+  participant V_ASP as View #10095; AdminStorePage
+  participant P_RS as Pop-up #10095; RejectStore
+  participant C_S as Controller #10095; StoreController
+  participant M_S as Model #10095; Store
+
+  Admin->>V_ASP: klik tombol "Tolak" di salah satu data
+  
+  activate Admin
+
+  activate V_ASP
+
+  V_ASP->>P_RS: setIsModalRejectOpen(true)
+
+  activate P_RS
+
+  Admin->>P_RS: klik tombl "Tolak"
+  P_RS->>C_S: update_store_status()
+
+  activate C_S
+
+  C_S->>M_S: update()
+  
+  activate M_S
+  
+  M_S-->>C_S: return
+
+  deactivate M_S
+
+  C_S-->>V_ASP: return view
+
+  deactivate C_S
+  
+  V_ASP->>P_RS: setIsModalRejectOpen(false)
+
+  deactivate P_RS
+  deactivate V_ASP
+  
+  deactivate Admin

@@ -1,0 +1,27 @@
+flowchart TD
+    A[Start] --> B{Is user authenticated?}
+    B -->|No| C[Redirect to login]
+    B -->|Yes| D[Display quiz creation form]
+    D --> E[User fills quiz form]
+    E --> F[User adds questions and answers]
+    F --> G[User submits form]
+    G --> H{Is form valid?}
+    H -->|No| I[Display errors]
+    I --> D
+    H -->|Yes| J[Create Quiz object]
+    J --> K[Set quiz creator to current user]
+    K --> L[Save Quiz object]
+    L --> M[For each question]
+    M --> N[Create Question object]
+    N --> O[Set question's quiz]
+    O --> P[Save Question object]
+    P --> Q[For each answer]
+    Q --> R[Create Answer object]
+    R --> S[Set answer's question]
+    S --> T[Save Answer object]
+    T --> U{More answers?}
+    U -->|Yes| Q
+    U -->|No| V{More questions?}
+    V -->|Yes| M
+    V -->|No| W[Redirect to quiz detail page]
+    W --> X[End]

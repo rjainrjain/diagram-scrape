@@ -1,0 +1,26 @@
+classDiagram
+    class User {
+        +String name
+        +String email
+        +void viewCode()
+        +void watchAnimation()
+        +void accessResources()
+        +void writeCode()
+        +void submitCode()
+    }
+
+    class System {
+        +void displayCode()
+        +void displayAnimation()
+        +void displayResources()
+        +void evaluateCode()
+        +void provideFeedback()
+    }
+
+    class GPT {
+        +void evaluateCode()
+        +String provideSuggestions()
+    }
+
+    User --> System : interacts with
+    System --> GPT : calls

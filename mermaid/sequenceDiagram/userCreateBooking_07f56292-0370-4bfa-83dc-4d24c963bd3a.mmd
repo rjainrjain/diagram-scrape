@@ -1,0 +1,21 @@
+sequenceDiagram
+    participant Client
+    participant #58;AppModule
+    participant #58;AuthService
+    participant #58;BookingController
+    participant #58;BookingService
+    participant #58;DB
+
+    Client ->>+ #58;AppModule : POST /booking 
+
+    #58;AppModule ->>+ #58;AuthService : Validate token
+    #58;AuthService -->>- #58;AppModule : Response
+
+    #58;AppModule->>+#58;BookingController: Create booking
+    #58;BookingController->>+#58;BookingService: Create booking
+    #58;BookingService->>+#58;DB: Create booking
+    #58;DB-->>-#58;BookingService: Booking detail
+    #58;BookingService-->>-#58;BookingController: Booking detail
+    #58;BookingController-->>-#58;AppModule: Booking detail
+    
+    #58;AppModule-->>-Client: Booking detail

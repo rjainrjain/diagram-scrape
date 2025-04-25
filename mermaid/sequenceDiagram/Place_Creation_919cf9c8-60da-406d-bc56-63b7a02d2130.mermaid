@@ -1,0 +1,12 @@
+sequenceDiagram
+participant User
+participant API
+participant BusinessLogic
+participant Database
+
+User->>API: Place creation
+API->>BusinessLogic: Validate and create Place
+BusinessLogic->>Database: Save Place
+Database-->>BusinessLogic: Confirm Place
+BusinessLogic-->>API: Return Response
+API-->>User: Return Success/Failure

@@ -1,0 +1,21 @@
+graph TD
+    START --> CREATE
+    START --> RECONCILE
+    START --> DESTROY
+
+    CREATE --> Start_Runtime_Environment
+    DESTROY --> Import_State
+    RECONCILE --> Import_State
+    Import_State --> Start_Runtime_Environment
+
+    Start_Runtime_Environment --> Prepare_Blueprint
+    Prepare_Blueprint --> Validate_Blueprint
+    Validate_Blueprint --> Initialize_Runtime_Environment
+    Initialize_Runtime_Environment --> Run_Deployment
+    Run_Deployment --> Export_State
+    Run_Deployment --> Get_Outputs
+    Run_Deployment --> Write_Logs
+
+    Export_State --> END
+    Get_Outputs --> END
+    Write_Logs --> END

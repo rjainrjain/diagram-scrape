@@ -1,0 +1,15 @@
+sequenceDiagram
+    participant User
+    participant Your_app as Your app
+    participant Video_SDK as Video SDK
+    participant Agora
+    participant SD_RTN as SD-RTN
+    participant Host
+    participant Audience
+
+    Your_app->>Video_SDK: Initiate the Video SDK engine: agoraEngine = AgoraRtcEngineKit.sharedEngine
+    Your_app->>Video_SDK: Start video in the engine: agoraEngine.enableVideo()
+    Host->>Video_SDK: In a live streaming event, only the hosts broadcast to the channel: agoraEngine.setClientRole(broadcaster)
+    Audience->>Video_SDK: agoraEngine.setClientRole(audience)
+    %% Merging back to main user actions
+    User->>Your_app: Stop video, leave channel, destroy SDK instance

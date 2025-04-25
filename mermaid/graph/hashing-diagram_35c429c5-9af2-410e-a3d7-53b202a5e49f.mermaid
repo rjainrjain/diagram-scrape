@@ -1,0 +1,17 @@
+graph TD
+    A[Input Data] --> B[Hash Function]
+    B --> C{Hash Table}
+    C --> |Index 0| D[Bucket 0]
+    C --> |Index 1| E[Bucket 1]
+    C --> |Index 2| F[Bucket 2]
+    C --> |...| G[...]
+    C --> |Index n-1| H[Bucket n-1]
+    
+    I[Collision Resolution] --> |Chaining| J[Linked List]
+    I --> |Open Addressing| K[Probing]
+    
+    L[Operations] --> M[Insert]
+    L --> N[Search]
+    L --> O[Delete]
+    
+    P[Load Factor] --> Q[Resize/Rehash]

@@ -1,0 +1,28 @@
+classDiagram
+    class FileManager {
+        <<interface>>
+        +readTasks() List
+        +writeTasks(List tasks)
+    }
+    FileManager <|-- FileManagerCsv
+    FileManager <|-- FileManagerJson
+    class FileManagerCsv {
+        +readTasks() List
+        +writeTasks(List tasks)
+    }
+    class FileManagerJson {
+        +readTasks() List
+        +writeTasks(List tasks)
+    }
+    class TaskManager {
+
+        -FileManager fileManager
+        +TaskManager(FileManager fileManager, boolean isDone)
+        +executeCommand(String[] args)
+    }
+    class App {
+        +main(String[] args)
+        +exec(String[] args) int
+    }
+    TaskManager -- FileManager
+    App -- TaskManager

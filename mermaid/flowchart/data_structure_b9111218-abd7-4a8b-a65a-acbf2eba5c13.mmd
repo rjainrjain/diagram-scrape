@@ -1,0 +1,30 @@
+%% first allow to have a scolling bar (zoo mwould be better)
+flowchart TB
+  a(Study) --- b1(Beach 1) & b2(Beach 2) & b3(Beach 3)
+    subgraph Exposure 
+    b1
+    b2
+    b3
+  end
+  subgraph NAP[NAP]
+    s1(Site 1)
+    s2(Site 2)
+    s3(Site 3)
+    s4(Site 4)
+    s5(Site 5)
+    s6(Site 6)
+    s7(Site 7)
+    s8(Site 8)
+    s9(Site 9)
+    s10(Site 10)
+    s11(Site 11)
+    s12(Site 12)
+    s13(Site 13)
+    s14(Site 14)
+    s15(Site 15)
+  end
+  b1 --- s1 & s2 & s3 & s4 & s5
+  b2 --- s6 & s7 & s8 & s9 & s10
+  b3 --- s11 & s12 & s13 & s14 & s15
+  style NAP fill:#f9f,stroke:#333,stroke-width:4px
+ 

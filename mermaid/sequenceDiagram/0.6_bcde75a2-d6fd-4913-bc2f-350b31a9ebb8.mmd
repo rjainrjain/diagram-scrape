@@ -1,0 +1,36 @@
+
+sequenceDiagram
+    participant browser
+    participant server
+
+    browser ->> server: GET /studies.cs.helsinki.fi/exampleapp/spa
+    activate server
+    server ->> browser: response: HTML document
+    deactivate server
+
+    browser ->> server: GET main.css
+    activate server 
+    server ->> browser: response: main.css
+    deactivate server
+
+    browser ->> server: GET spa.js
+    activate server 
+    server ->> browser: response: spa.js
+    deactivate server
+
+    browser ->> server: GET data.json
+    activate server 
+    server ->> browser: response: data.json
+    deactivate server
+
+    activate browser
+    loop Onclick
+        browser ->> browser : form submitted
+        end
+    note left of browser: render page omit default behaviour
+    deactivate browser
+
+    browser ->> server: POST new note
+    activate server
+   note right of server: save data
+    deactivate server

@@ -1,0 +1,91 @@
+erDiagram 
+
+    TipoDoc{
+        int id_tipDoc PK
+        varchar nombre 
+        varchar descripcion
+    }
+
+    Destino{
+        int id_destino
+        varchar nombre
+        varchar descripcion
+    }
+
+    Pasajero{
+        int id_pasajero PK
+        varchar nombre
+        varchar apellido 
+        varchar e-mail
+        int telefono
+        int id_tipoDoc FK 
+        varchar descripcion
+    }
+
+    Vuelo{
+        int id_vuelo PK
+        int num_vuelo
+        int num_avion
+        varchar origen
+        datetime hora-fecha 
+        varchar descripcion
+        varchar id_destino FK
+    }
+
+    EstadoR{
+        int id_estadoR PK
+        int estado
+        varchar descripcion
+    }
+
+    EstadoAS{
+        int id_estadoAS
+        varchar nombre
+        varchar descripcion
+    }
+
+    Historial_estadoAS{
+        int id_historial_estadoAS PK
+        int estadoAS FK
+        varchar descripcion
+    }
+
+    Asiento{
+        int id_asiento PK
+        int numero
+        int id_historial_estadoAS FK
+        int id_reserva FK
+        varchar descripcion
+    }
+
+    Reserva{
+        int id_reserva PK
+        int codigo
+        datetime hora-fecha
+        int id_estadoR FK
+        int id_vuelo FK
+        int id_pasajero FK
+        int id_asiento FK
+        varchar descripcion
+    }
+
+    Pasajero_Reserva{
+        int id_pasajero_reserva PK
+        int id_reserva FK
+        int id_pasajero FK    
+        varchar descripcion
+    }
+
+    TipoDoc ||--|{ Pasajero : tiene
+    Pasajero  ||--|{  Pasajero_Reserva : tiene
+
+    Pasajero_Reserva }|--|| Reserva : tiene
+
+    Destino  ||--|{ Vuelo : tiene
+    Vuelo  ||--|{  Reserva : tiene
+    EstadoR  ||--|{  Reserva : tiene
+
+    Reserva  ||--||  Asiento : tiene
+
+    EstadoAS ||--|{  Historial_estadoAS : tiene
+    Historial_estadoAS ||--|{  Asiento : tiene

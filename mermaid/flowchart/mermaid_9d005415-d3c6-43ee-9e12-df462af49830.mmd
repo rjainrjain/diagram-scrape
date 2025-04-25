@@ -1,0 +1,6 @@
+flowchart
+    First(RankedMapData) -- Training Data --> Second(PredictStarNumberHelper)
+    Second -- Learned Model --> Third(PredictStarNumber)
+    Second -- Learned Model --> PredictStarNumberMod
+    Second -- Learned Model --> maybe-overrated-underrated-map-playlist
+    Third <-- REST API --> PredictStarNumberExtension

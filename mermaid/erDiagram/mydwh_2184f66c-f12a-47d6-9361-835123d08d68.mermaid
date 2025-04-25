@@ -1,0 +1,40 @@
+erDiagram
+        MyDimDate ||--o{ MyFactTrips : ""
+        MyDimWaste ||--o{ MyFactTrips : ""
+        MyDimZone ||--o{ MyFactTrips : ""
+
+    MyDimDate{
+        dateid int
+        date date
+        month int
+        monthname varchar
+        quarter int
+        quartername varchar
+        year int
+        weekday int
+        weekdayname varchar
+        day int
+    }
+
+    MyDimWaste{
+        wasteid int
+        wastetype varchar
+    }
+
+    MyDimZone{
+        zoneid int
+        collectionzone varchar
+        city varchar
+    }
+
+    MyFactTrips{
+        tripid int
+        dateid int
+        zoneid int
+        wasteid int
+        wastecollected float
+    }
+
+
+        
+        

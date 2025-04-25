@@ -1,0 +1,7 @@
+sequenceDiagram
+    Actor User
+    User ->> WebServer: Request
+    WebServer ->> Database: Query
+    Database -->> WebServer: Response
+    WebServer -->> User: Response
+    

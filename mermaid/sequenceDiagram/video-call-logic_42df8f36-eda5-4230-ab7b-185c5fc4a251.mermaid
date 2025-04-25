@@ -1,0 +1,40 @@
+sequenceDiagram
+    participant User as User
+    participant App as Your app
+    participant SDK as Video SDK
+    participant API as API
+
+    rect rgb(255,255,255)
+        note right of User: Open App
+        User ->> App: Open App
+        rect rgb(255,255,255)
+            note right of App: RTEngine.create
+            App ->> App: RTEngine.create
+            note right of App: Engine.enableVideo
+            App ->> App: Engine.enableVideo
+            note right of App: Engine.joinChannel
+            App ->> App: Engine.joinChannel
+        end
+        App -->> User: Engine.on("joinChannelSuccess")
+    end
+    rect rgb(255,255,255)
+        note right of App: Start broadcast
+        App ->> SDK: Start broadcast
+        SDK ->> App: Publish
+        SDK ->> API: Send data stream
+        SDK ->> App: Widget = RtcLocalView.SurfaceView()
+        SDK -->> App: Engine.on("userJoined")
+        App ->> SDK: Subscribe
+        SDK ->> App: Receive data stream
+        SDK ->> App: Widget = RtcRemoteWantView.SurfaceView()
+    end
+
+    note right of SDK: Join broadcast
+    SDK ->> API: Join broadcast
+    App ->> SDK: Join broadcast
+
+    rect rgb(255,255,255)
+        note right of SDK: Leave broadcast
+        App ->> SDK: Leave broadcast
+        SDK -->> App: Engine.leaveChannel
+    end

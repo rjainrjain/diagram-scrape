@@ -1,0 +1,43 @@
+classDiagram
+namespace tcpip {
+  class OneClientServer
+}
+
+namespace m2com {
+  class ErrorHandler
+  class SimpleDelayFilter
+  class BiquadraticFilter
+}
+
+MockControlLoop "1" *-- "4" BiquadraticFilter
+MockControlLoop "1" *-- "3" SimpleDelayFilter
+MockControlLoop "1" *-- "2" MockDeadbandControl
+MockControlLoop *-- MockGainSchedular
+MockControlLoop *-- MockInPosition
+
+ErrorHandler <|-- MockErrorHandler
+
+MockServer "1" *-- "2" OneClientServer
+MockServer *-- MockModel
+MockServer *-- MockMessageTelemetry
+MockServer *-- MockMessageEvent
+MockServer *-- MockCommand
+
+MockMessageEvent *-- OneClientServer
+MockMessageTelemetry *-- OneClientServer
+
+MockCommand --> MockMessageEvent
+MockCommand --> MockModel
+
+MockModel *-- MockScriptEngine
+MockModel *-- MockControlOpenLoop
+MockModel *-- MockControlClosedLoop
+MockModel *-- MockErrorHandler
+MockModel "1" *-- "2" MockPowerSystem
+MockModel "1" *-- "84" MockInnerLoopController
+MockModel *-- MockPlant
+
+MockControlClosedLoop *-- MockControlLoop
+MockControlClosedLoop --> MockPlant
+
+MockControlOpenLoop ..> MockPlant

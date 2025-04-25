@@ -1,0 +1,113 @@
+%% Mitigation plan for Weaknesses
+flowchart TB
+
+  subgraph a[Addressing Anxiety]
+  direction BT
+
+  Anxiety[[Anxiety]]
+
+  Anxiety --- Therapy(Therapy)
+
+  Strategies(Strategies) --Mitigates--> Anxiety
+
+  Therapy -.Provides.-> Strategies
+
+  Strategies --- Reassurance(Self-Reassurance)
+
+  Strategies --- Breath(Deep Breathing)
+
+  Strategies --- Exercise(Exercise)
+
+  Strategies --- Sleep(Good Sleep)
+
+  Strategies --- Meditation(Meditation)
+
+  Strategies --- Sharing(Talking to a friend)
+
+  Meditation -.Induces.-> Breath
+
+  Exercise -.Promotes.-> Sleep
+
+  Reassurance -.Allows.-> Positive(Positive Thinking)
+
+  end
+
+  subgraph b[Addressing Setting Boundaries]
+  direction BT
+
+  Boundaries[[Setting Boundaries]]
+
+  Boundaries --- Communication(Communication)
+
+  Communication --- Assertiveness(Assertiveness)
+
+  Communication --- Respect(Respect)
+
+  Communication --- Understanding(Understanding)
+
+  Boundaries --- Planning(Planning)
+
+  Planning --- Time(Time Allocation)
+
+  Goals --- Prioritization(Prioritization)
+
+  Planning --- Goals(Goal Setting)
+
+  Goals --- Feasibility(Feasibility)
+
+  Planning --- Accountability(Accountability)
+
+  Communication -.Based on.- Planning
+
+  Boundaries --- Acceptance(Acceptance)
+
+  Acceptance -.Based on.- Planning
+
+  Acceptance -.Reduces.-> Perfect(Perfectionism)
+
+  end
+
+  subgraph c[Addressing Work-Life Balance]
+  direction TB
+
+  Balance[Work-Life Balance]
+
+  Prioritization2 --- Personal(Personal Life)
+
+  Prioritization2 --- Professional(Professional Life)
+
+  Balance --- Time2(Time Management)
+
+  Time2 --- Prioritization2(Prioritisation)
+
+  Time2 --- Schedule(Scheduling)
+
+  Balance --- Self(Self-Care)
+
+  Self --- Breaks(Breaks)
+
+  Self --- Hobbies(Hobbies)
+
+  Self --- Exercise2(Exercise)
+
+  Breaks --Supports--> Health
+
+  Exercise2 --Promotes--> Health(Health)
+
+  Self --- Satisfaction(Satisfaction)
+
+  Hobbies --Produces--> Satisfaction
+
+  Productivity --Support--> Professional 
+
+  Health -.Improves.-> Productivity
+
+  Satisfaction -.Increases.-> Productivity
+
+  Professional -.Finance.-> Personal
+
+  end
+
+  c -.Reduces.-> a
+
+  b -.Supports.-> c

@@ -1,0 +1,115 @@
+---
+title: Translation
+---
+erDiagram
+    ANSWER {
+        long answerId PK
+        long translationLinkId FK
+        long userId FK
+        long fromLanguageId FK
+        boolean rightAnswer
+        date answerTime
+        enum interrogationType
+    }
+    LANGUAGE {
+        long languageId PK
+        string languageCode
+        string name
+    }
+    PHRASE {
+        long phraseId PK
+        long languageId FK
+        string text
+        string audioUrl
+    }
+    TRANSLATION {
+        long translationId PK
+        long translationLinkId FK
+        long phraseId FK
+        integer order
+    }
+    TRANSLATION_LINK {
+        long translationLinkId PK
+        string examlple
+        string translatedExamlple
+        string imageUrl
+        date nextInterrogationDate
+    }
+    UNIT_CONTENT {
+        long unitContentId PK
+        long unitTreeId FK
+        long translationLinkId FK
+    }
+    UNIT_TREE {
+        long unitTreeId PK
+        long partentUnitTreeId FK
+        long fromLanguageId FK
+        long toLanguageId FK
+        string name
+    }
+    USER {
+        long userId PK
+        string email
+        string alias
+    }
+    USER_ROLE {
+        long userId PK
+        string role
+    }
+    WORD_TYPE {
+        long wordTypeId PK
+        long languageId FK
+        string name
+    }
+    WORD_TYPE_FROM {
+        long wordTypeFromId PK
+        long translationLinkId FK
+        long wordTypeId FK
+        long phraseId FK
+    }
+    WORD_TYPE_FORM_PHRASE {
+        long wordTypeFromPhraseId PK
+        long translationLinkId FK
+        long wordTypeFormId FK
+        long phraseId FK
+    }
+    WORD_TYPE_FORM {
+        long wordTypeFormId PK
+        long wordTypeId FK
+        string name
+        integer orderNumber
+    }
+    WORD_TYPE_UNIT {
+        long wordTypeUnitId PK
+        long wordTypeId FK
+        string name
+    }
+    WORD_TYPE_UNIT_LINK {
+        long translationLinkId PK
+        long wordTypeUnitId FK
+    }
+
+    TRANSLATION_LINK ||--o{ WORD_TYPE_UNIT_LINK: unitTranslationLink
+    WORD_TYPE_UNIT ||--o{ WORD_TYPE_UNIT_LINK: unit
+    WORD_TYPE ||--o{ WORD_TYPE_UNIT: wordType
+    WORD_TYPE ||--o{ WORD_TYPE_FORM: wordType
+    WORD_TYPE ||--o{ WORD_TYPE_FROM: wordType
+    TRANSLATION_LINK ||--o{ WORD_TYPE_FROM: translationFromLink
+    PHRASE ||--o{ WORD_TYPE_FROM: fromPhrase
+    PHRASE ||--o{ WORD_TYPE_FORM_PHRASE: phrase
+    TRANSLATION_LINK ||--o{ WORD_TYPE_FORM_PHRASE: translationToLink
+    WORD_TYPE_FORM ||--o{ WORD_TYPE_FORM_PHRASE: wordTypeForm
+    LANGUAGE ||--o{ WORD_TYPE: language
+
+    USER only one to zero or more ANSWER: responder
+    TRANSLATION_LINK ||--o{ ANSWER: answered-translation
+    LANGUAGE ||--o{ ANSWER: language-from
+    LANGUAGE ||--o{ PHRASE: language
+    PHRASE ||--o{ TRANSLATION: translation-from
+    TRANSLATION_LINK ||--o{ TRANSLATION: translation-link
+    UNIT_TREE ||--o{ UNIT_TREE: parent-unit
+    LANGUAGE ||--o{ UNIT_TREE: language-from
+    LANGUAGE ||--o{ UNIT_TREE: language-to
+    UNIT_TREE ||--o{ UNIT_CONTENT: unit
+    TRANSLATION_LINK ||--o{ UNIT_CONTENT: translation-link
+    USER ||--o{ USER_ROLE: user

@@ -1,0 +1,67 @@
+classDiagram 
+  class CursorOpt {
+    Weight
+    Group
+    Id
+    Label
+    Features
+    AllowBadWeights 
+    AllowBadGroups 
+    AllowBadLabels 
+    AllowBadFeatures 
+    AllowBadEverything 
+    AllWeights 
+    AllGroups 
+    AllLabels 
+    AllFeatures 
+  }
+
+  class TrainingCursorBase {
+    Row : DataViewRow
+    KeptRowCount
+    SkippedRowCount
+    Accept()
+    CreateCursor()
+    CursoringCompleteFlags()
+    MoveNext()
+  }
+  class StandardScalarCursor {
+    BadGroupCount 
+    BadWeightCount
+    Group 
+    Id 
+    Weight
+    Accept()
+  }
+  class FeatureFloatVectorCursor {
+    BadFeatureRowCount
+    Features : VBuffer<float>
+    Accept()
+    CursoringCompleteFlags()
+  }
+  class FloatLabelCursor {
+    BadLabelCount
+    Label : float
+    Accept()
+    CursoringCompleteFlags()
+  }
+  TrainingCursorBase <-- StandardScalarCursor
+  StandardScalarCursor <-- FeatureFloatVectorCursor
+  FeatureFloatVectorCursor <-- FloatLabelCursor
+
+  class FactoryBase~TCurs~ { 
+    _data : RoleMappedData 
+    _initOpts : CursOpt 
+    _lock 
+    _opts : CursOpt
+    Data : RoleMappedData
+    Create()
+    CreateCursorCore(:DataViewRowCursor, :RoleMappedData, :CursOpt, signal : Action<CursOpt>)
+    CreateSet()
+    SignalCore(:CursorOpt)
+  }
+
+  class FloatLabelCursor_Factory {
+    CreateCursorCore(:DataViewRowCursor, :RoleMappedData, :CursOpt, signal : Action<CursOpt>)
+  }
+  FactoryBase~FloatLabelCursor~  <-- FloatLabelCursor_Factory

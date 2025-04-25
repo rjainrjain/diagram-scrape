@@ -1,0 +1,95 @@
+﻿classDiagram
+
+namespace Calculator {
+
+    class Function {
+        +Add(double a, double b)$ double
+        +Subtract(double a, double b)$ double
+        +Multiply(double a, double b)$ double
+        +Divide(double a, double b)$ double
+        +Mod(int a, int b)$ int
+        +Power(double a, double b)$ double
+        +Root(double a, double b)$ double
+        +Abs(double a, bool degrees = false)$ double
+        +Sin(double a, bool degrees = false)$ double
+        +Cos(double a, bool degrees = false)$ double
+        +Tan(double a, bool degrees = false)$ double
+        +Asin(double a, bool degrees = false)$ double
+        +Acos(double a, bool degrees = false)$ double
+        +Atan(double a, bool degrees = false)$ double
+        +Sinh(double a, bool degrees = false)$ double
+        +Cosh(double a, bool degrees = false)$ double
+        +Tanh(double a, bool degrees = false)$ double
+        +Asinh(double a, bool degrees = false)$ double
+        +Acosh(double a, bool degrees = false)$ double
+        +Atanh(double a, bool degrees = false)$ double
+    }
+	
+    class History{
+        -List~string~ history
+        -bool enabled
+        -bool isChanged
+        +History()
+        +Clear()
+        +Resume()
+        +IsEnabled() bool
+        +AddEntry(string entry)
+        +ReadAll() string
+        +ReadRecent() string
+    }
+
+    class Token{
+        +string Name
+        +Token()
+    }
+
+    class Operand{
+        +double? value
+        +Operand(double num)
+        +Operand(string variable)
+    }
+
+    class Operator{
+        +int Precedence
+        +char Associativity
+        +Operator(char symbol)
+        +Operator(string function)
+    }
+
+    class Term{
+        +Token Left
+        +Token Right
+        +Operator op
+
+        +Term(Token Left, Token Right, Operator Op)
+        +GetTokenizedList() List~Token~
+        -GetTokenizedList(Term curr) IEnumerable~Token~
+    }
+
+    class Arithmetic{
+        +Arithmetic()
+        +ToString()
+        +Solve(string equation) double
+        -ParseTokens(string equation) List~Token~
+        #InfixToRPN(List~Token~) List~Token~
+    }
+
+    class Algerbra{
+        +Algerbra()
+        +ToString()
+        +Solve(string equation) double
+        +Simplify(string equation) string
+        #RPNToInfix(List~Token~) List~Token~
+        -ParseTokens(string equation) List~Token~
+    }   
+
+}
+Token <|-- Operand
+Token <|-- Operator
+Token <|-- Term
+Token <.. Arithmetic
+Token <.. Algerbra
+Function <.. Arithmetic
+Function <.. Algerbra
+
+note for Function "This class has 4 overloads for each operation\nint, double, float, and string and return the same respective values unless those return types are detremental\nAll overloads will be ammended out"

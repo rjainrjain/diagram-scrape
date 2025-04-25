@@ -1,0 +1,21 @@
+classDiagram
+  class PcOperator
+  class UsbPort {
+    +pluginKeyboard()
+    +pluginMouse()
+  }
+  class AbstractUsbDevice {
+    +connect()
+  }
+  class UsbKeyboard
+  class UsbMouse
+  class BuiltinKeyboard
+  class BuiltinTrackpad
+  <<Abstract>> AbstractUsbDevice
+  UsbKeyboard --|> AbstractUsbDevice
+  UsbMouse --|> AbstractUsbDevice
+  UsbPort --> AbstractUsbDevice
+  PcOperator --> UsbKeyboard
+  PcOperator --> UsbMouse
+  PcOperator --> BuiltinKeyboard
+  PcOperator --> BuiltinTrackpad

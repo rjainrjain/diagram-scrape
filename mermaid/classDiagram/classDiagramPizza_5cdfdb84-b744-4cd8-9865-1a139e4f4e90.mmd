@@ -1,0 +1,24 @@
+---
+title: Pizza Store Case
+---
+classDiagram
+	class Pizza
+	Pizza : - _name string
+	Pizza : - _price double
+	Pizza : +ToString() string
+
+	class Customer
+	Customer : - _name string
+	Customer : - _email string
+	Customer : - _phone string
+	Customer : +ToString() string
+
+	class Order
+	Order : - _orderNo int
+	Order : - _pizza Pizza
+	Order : - _customer Customer
+	Order : +TotalPrice() double
+	Order : +ToString() string
+
+	Order --* Customer
+	Pizza *-- Order

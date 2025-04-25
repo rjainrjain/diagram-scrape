@@ -1,0 +1,24 @@
+flowchart TD;
+    initialise([initialise])
+    Loop1((Loop i))
+    If1{"i <= 2?"}
+    codeTurn([Turn Right])
+    Loop2((For loop j))
+    If2{"j <= 2?"}
+    codePieCheck{Pie in Sight?}
+    codeEatPie([Eat Pie])
+    codeWalk([Walk])
+    endCode([End])
+    
+    initialise --> Loop1
+    Loop1 --> If1
+    If1 -- No --> Loop2
+    If1 -- Yes --> codeTurn
+    codeTurn --> Loop1
+    Loop2 --> If2
+    If2 -- No --> endCode
+    If2 -- Yes --> codePieCheck
+    codePieCheck -- No --> codeWalk
+    codePieCheck -- Yes --> codeEatPie
+    codeEatPie --> Loop2
+    codeWalk --> Loop2

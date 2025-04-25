@@ -1,0 +1,25 @@
+sequenceDiagram
+    actor User
+    participant Gateway as Gateway Service
+    participant FlightSearch as Flights Search Service
+    participant ExternalAPI as External API Integration Service
+    participant Amadeus as Amadeus API
+
+    User->>Gateway: Request flight offers with criteria
+    Gateway->>FlightSearch: Forward request
+    FlightSearch->>ExternalAPI: Request flight data
+    ExternalAPI->>Amadeus: Query for flight offers
+    Amadeus->>ExternalAPI: Return flight offers
+    ExternalAPI->>FlightSearch: Process and return flight data
+    FlightSearch->>Gateway: Return processed flight offers
+    Gateway->>User: Respond with flight offers
+
+
+1. The user sends a request to the gateway-service with flight search criteria.
+2. The gateway-service forwards the request to the flights-search-service.
+3. The flights-search-service requests flight data from the external-api-integration service.
+4. The external-api-integration service queries the Amadeus API for flight offers based on the given criteria.
+5. Amadeus API returns the flight offers to the external-api-integration service.
+6. The external-api-integration service processes the data and returns it to the flights-search-service.
+7. The flights-search-service sends the processed flight offers back to the gateway-service.
+8. Finally, the gateway-service responds to the user with the flight offers.

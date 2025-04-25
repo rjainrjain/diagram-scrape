@@ -1,0 +1,167 @@
+classDiagram
+direction BT
+class AnnotatedResult {
+  + annotationRequestId() UUID
+  + orderId() UUID
+  + algorithm() String
+  + result() String
+  + annotationId() UUID
+}
+class AnnotatedResultSerializer {
+  + serialize(String, AnnotatedResult) byte[]
+}
+class AnnotationAlgorithm {
+<<enumeration>>
+  + values() AnnotationAlgorithm[]
+  + valueOf(String) AnnotationAlgorithm
+}
+class AnnotationHandler {
+  + start() void
+  - getSenderRecord(Tuple2~AnnotatedResult, ReceiverOffset~) SenderRecord~String, AnnotatedResult, ReceiverOffset~
+  - processRequest(List~ReceiverRecord~String, AnnotationRequest~~) Mono~List~Tuple2~AnnotatedResult, ReceiverOffset~~~
+  - handle(AnnotationAlgorithm, List~ReceiverRecord~String, AnnotationRequest~~) List~Tuple2~ReceiverRecord~String, AnnotationRequest~, Optional~String~~~
+  - toResult(AnnotationRequest, String) AnnotatedResult
+}
+class AnnotationId {
+  - UUID uuid
+  + equals(Object) boolean
+  + toString() String
+  + hashCode() int
+  # canEqual(Object) boolean
+   UUID uuid
+}
+class AnnotationRequest {
+  - UUID annotationId
+  - AnnotationAlgorithm algorithm
+  - UUID annotationRequestId
+  - UUID orderId
+  - Variant variant
+  + toString() String
+  + hashCode() int
+  + equals(Object) boolean
+  # canEqual(Object) boolean
+   AnnotationAlgorithm algorithm
+   Variant variant
+   UUID annotationRequestId
+   UUID orderId
+   UUID annotationId
+}
+class AnnotationRequestDeserializer {
+  + deserialize(String, byte[]) AnnotationRequest
+}
+class AnnotationStrategy~T~ {
+  + getColumnName1(int) String
+  + getColumnName(int) String
+  + generateHeader(T) String[]
+}
+class Build_gradle {
+  + main(String[]) Unit
+}
+class CsvBean
+class CsvHandler {
+  + saveBean(Path, List~CsvBean~) Optional~Path~
+}
+class FileHandler {
+<<Interface>>
+  + saveBean(Path, List~CsvBean~) Optional~Path~
+}
+class FileHelper {
+  + readRowsOfHeaderFile(String) List~String~
+}
+class KafkaConfig {
+  + createConsumerProps() Properties
+  + createProducerProps() Properties
+   SenderOptions~String, AnnotatedResult~ senderOps
+   ReceiverOptions~String, AnnotationRequest~ ops
+}
+class KafkaRequestConsumer {
+  - Flux~ReceiverRecord~String, AnnotationRequest~~ requestStream
+   Flux~ReceiverRecord~String, AnnotationRequest~~ requestStream
+}
+class Main {
+  + main(String[]) void
+}
+class POCTest {
+  + deser() void
+}
+class PangolinAlgorithm {
+  + handle(List~PangolinInput~) Optional~String~
+  - prepareInputFile(List~PangolinInput~) Optional~Path~
+  - runAlgorithm(Path) Optional~String~
+  - getResult(String) Optional~String~
+}
+class PangolinInput {
+  - String alt
+  - long position
+  - String ref
+  - String chrom
+  - String gene
+  + equals(Object) boolean
+  + hashCode() int
+  + toString() String
+  + from(List~AnnotationRequest~) List~PangolinInput~
+  + from(AnnotationRequest) PangolinInput
+  # canEqual(Object) boolean
+   String alt
+   String ref
+   String gene
+   long position
+   String chrom
+}
+class PythonProcessRunner {
+  + runPangolinProcess(String, String) Optional~String~
+}
+class RProcessRunner {
+  + runSPIPProcess(String, String) Optional~String~
+}
+class SPIPAlgorithm {
+  + handle(List~SPIPInput~) Optional~String~
+  - runAlgorithm(Path) Optional~String~
+  - getResult(String) Optional~String~
+  - prepareInputFile(List~SPIPInput~) Optional~Path~
+}
+class SPIPInput {
+  - long position
+  - String alt
+  - String chrom
+  - String id
+  - String ref
+  + equals(Object) boolean
+  # canEqual(Object) boolean
+  + toString() String
+  + from(List~AnnotationRequest~) List~SPIPInput~
+  + from(AnnotationRequest) SPIPInput
+  + hashCode() int
+   String alt
+   String ref
+   String id
+   long position
+   String chrom
+}
+class Settings_gradle {
+  + main(String[]) Unit
+}
+class Variant {
+  - String referenceAllele
+  - String chromosome
+  - String gene
+  - String alternativeAllele
+  - long position
+  + equals(Object) boolean
+  + toString() String
+  + hashCode() int
+  # canEqual(Object) boolean
+   String gene
+   String referenceAllele
+   String chromosome
+   long position
+   String alternativeAllele
+}
+class VcfHandler {
+  + saveBean(Path, List~CsvBean~) Optional~Path~
+}
+
+CsvHandler  ..>  FileHandler 
+PangolinInput  -->  CsvBean 
+SPIPInput  -->  CsvBean 
+VcfHandler  ..>  FileHandler 

@@ -1,0 +1,36 @@
+> *repos.mermaid*
+
+``` mermaid
+%%{init: {"flowchart": {"htmlLabels": false}} }%%
+
+graph TD
+
+tabbedIn(Repos Tab Clicked)
+showListInMenu(Show List of Cached Repos in Menu Panel)
+showsAddButton(Shows add button in Menu Panel top)
+showsCachedRepos(Shows cached repos in Menu Panel)
+onClickAdd(On click Add button, show dialog to choose the following.)
+onClickCachedRepo(On click Cached Repo, set as checked in repo.)
+addExisting(add existing repo)
+addClone(Clone Repo)
+createNew(Create new Repo)
+
+tabbedIn
+--> showListInMenu
+--> showsAddButton
+
+showListInMenu
+--> showsCachedRepos
+
+--> onClickAdd
+--> addExisting
+
+showsCachedRepos
+--> onClickCachedRepo
+
+onClickAdd
+--> addClone
+
+onClickAdd
+--> createNew
+```

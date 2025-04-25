@@ -1,0 +1,24 @@
+graph TD
+    A((Usuario)) -->|Visita| B[Página de inicio]
+    B --> C{Acciones del usuario}
+    C -->|Navega| D[Explorar productos]
+    C -->|Busca| E[Buscar productos]
+    C -->|Inicia sesión| F[Gestionar cuenta]
+    C -->|Agrega al carrito| G[Gestionar carrito]
+    C -->|Realiza| H[Comprar productos]
+    
+    D --> I[Ver detalles del producto]
+    I --> J[Leer reseñas]
+    I --> K[Ver disponibilidad]
+    
+    E --> L[Filtrar resultados]
+    
+    F --> M[Ver historial de pedidos]
+    F --> N[Actualizar información personal]
+    
+    G --> O[Modificar cantidades]
+    G --> P[Eliminar productos]
+    
+    H --> Q[Seleccionar método de pago]
+    H --> R[Elegir dirección de envío]
+    H --> S[Confirmar pedido]

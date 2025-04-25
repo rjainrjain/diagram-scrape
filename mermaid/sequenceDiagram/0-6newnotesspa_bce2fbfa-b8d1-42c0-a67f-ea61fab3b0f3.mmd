@@ -1,0 +1,26 @@
+sequenceDiagram
+    participant user
+    participant browser
+    participant server
+
+    Note right of user: Usuário escreve uma nova nota<br/>e clica em 'Save'
+
+    user->>browser: Submete o formulário
+
+    Note right of browser: O JavaScript previne o<br/>comportamento padrão do formulário
+
+    Note right of browser: JavaScript cria um objeto para a nova nota
+
+    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+    Note right of browser: Envia dados da nova nota como JSON:<br/>{"content": "nova nota", "date": "2023-5-11"}
+
+    activate server
+    Note left of server: Servidor adiciona<br/>a nova nota
+    server-->>browser: {"message":"note created"}
+    deactivate server
+
+    Note right of browser: JavaScript adiciona a nova nota<br/>à lista de notas no navegador
+
+    Note right of browser: JavaScript re-renderiza<br/>a lista de notas na página
+
+    Note right of user: Usuário vê a nova nota<br/>aparecer instantaneamente

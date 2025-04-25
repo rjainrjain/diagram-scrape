@@ -1,0 +1,20 @@
+```mermaid
+flowchart TD;
+    A(Start) --> B[Define main];
+    B --> C{Check current_date < end_date};
+    C -- Yes --> D[Calculate batch_end_date];
+    C -- No --> N(End);
+    D --> E[Prepare SOQL Query for ContentDocumentLink];
+    E --> F[Try to get Salesforce data];
+    F -- Success --> G[Extract ContentDocumentIds];
+    F -- Failure --> O[Print error and exit];
+    G --> H{Check if ContentDocumentIds exist};
+    H -- Yes --> I[Prepare SOQL Query for ContentVersion];
+    H -- No --> M[Update current_date and loop];
+    I --> J[Try to get ContentVersion data];
+    J -- Success --> K[Process records];
+    J -- Failure --> O;
+    K --> L[Download files and save metadata];
+    L --> M[Update current_date and loop];
+    M --> C;
+```

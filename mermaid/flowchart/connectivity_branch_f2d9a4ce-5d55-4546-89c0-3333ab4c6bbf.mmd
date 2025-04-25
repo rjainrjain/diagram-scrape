@@ -1,0 +1,8 @@
+%%{init: { "flowchart": {"htmlLabels":false }} }%%
+graph LR
+
+a[頂点vが非連結だった]
+a--->|"連結: {v}<br/>禁止:{}"| b[UNSAT]
+a--->|"連結: {}<br/>禁止:{v}"| c[頂点wが非連結だった]
+c--->|"連結: {w}<br/>禁止:{v}"| d[UNSAT]
+c--->|"連結: {}<br/>禁止:{v,w}"| e[連結解が得られた]

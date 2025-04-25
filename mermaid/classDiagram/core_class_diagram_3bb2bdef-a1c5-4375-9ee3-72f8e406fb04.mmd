@@ -1,0 +1,75 @@
+classDiagram
+  class Database {
+    db_name : str
+    tables : list[Table]
+    add_table(table: Table)
+    create_table(table_name: str, schema: Schema, data: list[dict])
+    drop_table(table_name: str)
+    get_table(table_name: str)
+    load(file_path: str)
+    save(file_path: str)
+  }
+  class Char {
+    value : str
+    to_json_value()
+    validate() bool
+  }
+  class DataType {
+    validate()* bool
+  }
+  class Integer {
+    value : int
+    to_json_value()
+    validate() bool
+  }
+  class Money {
+    currency
+    value : int
+    parse(s: str)
+    to_json_value()
+    validate() bool
+  }
+  class MoneyInterval {
+    end
+    start
+    parse()
+    to_json_value()
+    validate() bool
+  }
+  class Real {
+    value : float
+    to_json_value()
+    validate() bool
+  }
+  class String {
+    value : str
+    to_json_value()
+    validate() bool
+  }
+  class Schema {
+    fields : dict[str, DataType]
+    validate(row: dict)
+  }
+  class Table {
+    name : str
+    rows : list[dict]
+    schema
+    delete(condition: dict)
+    insert(row: dict)
+    rename(new_name: str)
+    select(columns: list[str], filter: dict)
+    union(other: 'Table')
+    update(condition: dict, new_values: dict)
+    validate(row: dict)
+  }
+  Char --|> DataType
+  Integer --|> DataType
+  Money --|> DataType
+  MoneyInterval --|> DataType
+  Real --|> DataType
+  String --|> DataType
+  Money --* MoneyInterval : start
+  Money --* MoneyInterval : end
+  Schema --o Table : schema
+  Table --o Database
+  Schema --> DataType

@@ -1,0 +1,9 @@
+sequenceDiagram
+   User->>App: "Hi there, can you help me track an order? My email is john@gmail.com"
+   App->>App: get_user
+   App->>Model: tool use; call get_user with john@gmail.com
+   Model->>App: {"user_id": 123123}
+   App->>App: get_customer_orders
+   App->>Model: tool use; call get_customer_orders with user_id 123123
+   Model->>App: {"order_id": 2, "status": shipped, "product": headphones"}
+   App->>User: "It looks like your recent headphones order has shipped!"

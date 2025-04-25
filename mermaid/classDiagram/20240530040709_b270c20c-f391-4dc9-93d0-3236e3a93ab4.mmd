@@ -1,0 +1,21 @@
+
+classDiagram
+    class Main {
+        +main()
+    }
+    class LogProcessor {
+        +process_logs(logs: str)
+        +chunk_logs(logs: str) list
+        +discover_logs() list
+    }
+    class OpenAIClient {
+        +send_logs(chunked_logs: list)
+    }
+    class LogFile {
+        -path: str
+        -format: str
+        +read() str
+    }
+    Main --> LogProcessor
+    LogProcessor --> OpenAIClient
+    LogProcessor --> LogFile

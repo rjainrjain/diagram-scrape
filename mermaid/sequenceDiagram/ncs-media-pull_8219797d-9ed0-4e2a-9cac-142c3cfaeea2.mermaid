@@ -1,0 +1,27 @@
+```mermaid
+sequenceDiagram
+    participant Web_Server as Web Server
+    participant Your_App_Server as Your App Server
+    participant Agora_Medium_Pull as Agora Medium Pull
+
+    Web_Server->>Your_App_Server: Start pulling media into an Agora channel
+    Your_App_Server-->>Web_Server: Authenticate notification signature
+    Web_Server->>Your_App_ Server: Change player status
+    Your_App_ Server-->>Web_Server: Authenticate notification signature
+    Web_Server->>Your_App_ Server: Stop playing media
+    Your_App_Server-->>Web_Server: Authenticate notification signature
+
+    Your_App_Server->>Agora_Media_Pull: Create player API
+    Agora_Media_Pull->>Your_App_Server: Response containing player parameters
+    Your_App_Server->>Agora_Media_Pull: Update player API
+    Agora_Media_Pull->>Your_App_Server: Response containing player parameters
+    Your_App_Server->>Agora_Media_Pull: Delete player API
+    Agora_Media_Pull->>Your_App_Server: Response confirming player delete
+
+    Agora_Media_Pull-->>Your_App_Server: Notification eventType=1: Player created
+    Your_App_Server->>Agora_Media_Pull: 200 OK
+    Agora_Media_Pull-->>Your_App_Server: Notification eventType=4: Player status changed
+    Your_App_Server->>Agora_Media_Pull: 200 OK
+    Agora_Media_Pull-->>Your_App_Server: Notification eventType=2: Player destroyed
+    Your_App_ Server->>Agora_Media_Pull: 200 OK
+```

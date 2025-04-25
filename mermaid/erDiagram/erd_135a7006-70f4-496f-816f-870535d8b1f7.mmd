@@ -1,0 +1,23 @@
+%%{
+  init: {
+    'theme': 'base',
+    'themeVariables': {
+      'primaryColor': '#727272',
+      'textColor': '#000'
+    }
+  }
+}%%
+
+erDiagram
+
+history {
+  bigint id
+  varchar history_type "enum"
+  int start
+  int end
+  bool is_surah_done "nullable"
+  bool is_juz_done "nullable"
+  datetime occured_at
+  datetime created_at
+  datetime updated_at
+}

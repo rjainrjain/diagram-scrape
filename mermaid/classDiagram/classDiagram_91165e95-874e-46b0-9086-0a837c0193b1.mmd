@@ -1,0 +1,24 @@
+classDiagram
+    User "1" o-- "*" Group
+    Group "1" o-- "*" Member
+
+    class Group {
+        +string name
+        +datetime date
+        +string location
+        +number maxPrice
+    }
+
+    class User {
+        +string name
+        +string email
+        +number mobile
+        +string password
+    }
+
+    class Member {
+        +string name
+        +string email
+        +number mobile
+        +string recipient
+    }

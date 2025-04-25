@@ -1,0 +1,18 @@
+sequenceDiagram
+    participant browser
+    participant server
+
+    Note over browser: User writes a note and clicks save button
+
+    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note
+    activate server
+    server->>server: Process request
+    alt Valid Note
+        server->>server: Create new note
+        server->>server: Add note to db
+        server-->>browser: 200 Success
+        Note right of browser: Refresh notes page
+    else Invalid Note
+        server-->>browser: 400 Error
+    end
+    deactivate server

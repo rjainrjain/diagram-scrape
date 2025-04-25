@@ -1,0 +1,70 @@
+erDiagram
+    Usuario ||--o{ Asignan : seleccionan
+    Usuario {
+        auto_increment ID_Usuario PK
+        string-70 Nombre_Usuario
+        string-20 User
+        string-20 Password
+        choice Tipo_usuario
+        email CorreoE
+        boolean Permiso
+    }
+
+    Materias ||--o{ Asignan : usa 
+    Materias {
+        int pik PK
+        string-8 clave_reticula 
+        string-8 Carrera FK "from Carreras"
+        string-100 Nombre_Materia
+        int horas_teoricas 
+        int horas_practicas
+        int creditos
+        int unidades
+    }
+    
+    Carreras ||--o{ Materias : tiene
+    Carreras {
+        string-8 ID_Carrera PK
+        string-50 Nombre_Carrera
+    }
+
+    Asignan ||--o{ Generan : crea
+    Asignan {
+        int ID_Asignan PK
+        int ID_Usuario FK "from Usuarios"
+        int ID_Materia FK "from Materias"
+        string-50 Semestre
+        choice Grupo
+        string-14 hora
+        string-10 dia
+        string-4 aula
+    }
+
+    Reportes ||--o{ Generan: crea
+    Reportes {
+        auto_increment ID_Reporte PK
+        string-100 Nombre_Reporte
+        date Fecha_Entrega
+        string-1000 Descripcion
+        boolean Opcional
+        boolean Unidad
+        boolean Calificaciones
+    }
+    
+    Generan ||--o{ Alojan : guarda
+    Generan {
+        auto_increment ID_Generacion PK
+        int ID_Asignan FK "from Asignan"
+        int ID_Reporte FK "from Reportes"
+        string-20 Estatus
+        string-20 Periodo
+        date Fecha_Entrega
+        int reprobados
+        int Unidad
+    }
+
+    Alojan {
+        auto_increment ID_Alojan PK
+        int ID_Generacion FK " from Generan"
+        file Path_PDF
+    }

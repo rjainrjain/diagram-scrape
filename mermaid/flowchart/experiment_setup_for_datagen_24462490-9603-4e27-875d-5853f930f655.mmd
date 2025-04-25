@@ -1,0 +1,44 @@
+flowchart TB
+    startExperiment((Start))
+    endProc((End))
+    empiricalDataset(Collect empirically\nsourced dataset\nof player behaviour)
+    createPlayers(Create simulated players)
+    pickPlayers(Pick two players)
+    selectCharacters(Each player\n selects characters)
+    pickFirstPlayer(Randomly assign\nactive player)
+    turnP1(Active player\ntakes turn\nrandomly)
+    switchActive("Active" player\nlabel swaps)
+    decideDone{{Active player\nexhausted?}}
+    gameFinishes((Game\nends))
+    enoughData{{Enough data\ncollected?}}
+    rankSyntheticPreferences(Rank character pair preferences\naggregated across all simulated\nplayers to assert the model's\nsimulated players' play style)
+    rankEmpiricalPreferences(Rank character pair preferences\nfor each real-world player)
+    calculateSimilarity(Assert similarity of\nsimulated players' preferences\nto each real-world player)
+    done(Experiment concludes by\nreporting similarity of\nsimulated players to each\nreal-world player)
+
+    done-->endProc
+
+    startExperiment --> createPlayers --> pickPlayers
+    startExperiment --> empiricalDataset
+
+    empiricalDataset --> rankEmpiricalPreferences
+    rankEmpiricalPreferences --> calculateSimilarity
+
+    subgraph generateSyntheticData [Generate synthetic dataset]
+        direction TB
+        createPlayers
+        pickPlayers --> playGame
+        subgraph playGame [Play Game]
+            direction LR
+            start((Start Game)) --> selectCharacters
+            selectCharacters -->  pickFirstPlayer --> turnP1 --> switchActive --> decideDone
+            decideDone -->|Yes| gameFinishes
+            decideDone -->|No| turnP1
+        end
+            playGame -->enoughData
+            enoughData -->|No|pickPlayers 
+    end
+    enoughData -->|Yes| rankSyntheticPreferences
+
+    rankSyntheticPreferences --> calculateSimilarity
+    calculateSimilarity --> done

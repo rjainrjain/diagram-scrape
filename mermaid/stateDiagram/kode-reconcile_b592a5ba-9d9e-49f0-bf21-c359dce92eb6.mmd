@@ -1,0 +1,85 @@
+stateDiagram-v2
+    [*] --> ReconciliationRequest
+    ReconciliationRequest --> FetchLatestKode
+    FetchLatestKode --> CheckDeletionTimestamp
+    CheckDeletionTimestamp --> HandleDeletingState: DeletionTimestamp Set
+    CheckDeletionTimestamp --> CheckGenerationMismatch: DeletionTimestamp Not Set
+    CheckGenerationMismatch --> AssessCurrentPhase: No Mismatch
+    CheckGenerationMismatch --> Configuring: Mismatch Detected
+    AssessCurrentPhase --> Pending: New or Unknown
+    AssessCurrentPhase --> Configuring
+    AssessCurrentPhase --> Provisioning
+    AssessCurrentPhase --> Active
+    AssessCurrentPhase --> Inactive
+    AssessCurrentPhase --> Failed
+    AssessCurrentPhase --> Suspending
+    AssessCurrentPhase --> Suspended
+    AssessCurrentPhase --> Resuming
+    Pending --> ValidateKode
+    ValidateKode --> FetchTemplate: Validation Passed
+    ValidateKode --> Failed: Validation Failed
+    FetchTemplate --> Configuring: Template Found
+    FetchTemplate --> Failed: Template Not Found
+    Configuring --> EnsureResources
+    EnsureResources --> Provisioning: Resources Created
+    EnsureResources --> Failed: Error
+    Provisioning --> CheckResourceReadiness
+    CheckResourceReadiness --> Provisioning: Resources Not Ready
+    CheckResourceReadiness --> Active: Resources Ready
+    CheckResourceReadiness --> Failed: Error
+    Active --> CheckResourceHealth
+    CheckResourceHealth --> Configuring: Resources Not Ready
+    CheckResourceHealth --> Active: Resources Healthy
+    Inactive --> Suspending: Suspension Initiated
+    Suspending --> Suspended: Suspension Complete
+    Suspended --> Resuming: Resume Initiated
+    Resuming --> Configuring: Resume Complete
+    Failed --> IncrementRetryCount
+    IncrementRetryCount --> CheckMaxRetries
+    CheckMaxRetries --> Pending: Retry
+    CheckMaxRetries --> Failed: Max Retries Exceeded
+    HandleDeletingState --> CleanupResources
+    CleanupResources --> RemoveFinalizer: Cleanup Complete
+    RemoveFinalizer --> END_TRUE: Finalizer Removed
+
+    state CheckGenerationMismatch {
+        [*] --> CompareGenerations
+        CompareGenerations --> MismatchDetected: Generation Changed
+        CompareGenerations --> NoMismatch: Generation Unchanged
+        MismatchDetected --> UpdateObservedGeneration
+        UpdateObservedGeneration --> [*]
+        NoMismatch --> [*]
+    }
+
+    NewKodeCreated --> Pending
+    SpecChanged --> CheckGenerationMismatch
+    ResourceStatusChanged --> CheckGenerationMismatch
+    PeriodicReconciliation --> CheckGenerationMismatch
+    ManualAction --> Suspended
+    ManualAction --> Failed
+    DeletionTimestampSet --> HandleDeletingState
+
+    Pending --> END_REQUEUE: Need Further Processing
+    Configuring --> END_REQUEUE: Need Further Processing
+    Provisioning --> END_REQUEUE: Need Further Processing
+    Active --> END_TRUE: No Changes Needed
+    Inactive --> END_REQUEUE: Need Further Processing
+    Failed --> END_REQUEUE: Retry Needed
+    Suspending --> END_REQUEUE: Need Further Processing
+    Suspended --> END_REQUEUE: Need Further Processing
+    Resuming --> END_REQUEUE: Need Further Processing
+
+    END_TRUE --> [*]
+    END_REQUEUE --> [*]
+
+    classDef state fill:#4CAF50,stroke:#333,stroke-width:2px,color:#fff;
+    classDef special fill:#FFC107,stroke:#333,stroke-width:2px,color:#333;
+    classDef reconcileOrigin fill:#FF4081,stroke:#333,stroke-width:2px,color:#fff;
+    classDef initialState fill:#3F51B5,stroke:#333,stroke-width:4px,color:#fff;
+    classDef endState fill:#E91E63,stroke:#333,stroke-width:4px,color:#fff;
+
+    class Pending,Configuring,Provisioning,Active,Inactive,Failed,Suspending,Suspended,Resuming state
+    class CheckGenerationMismatch special
+    class NewKodeCreated,SpecChanged,ResourceStatusChanged,PeriodicReconciliation,ManualAction,DeletionTimestampSet reconcileOrigin
+    class ReconciliationRequest initialState
+    class END_TRUE,END_REQUEUE endState

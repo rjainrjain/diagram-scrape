@@ -1,0 +1,37 @@
+```mermaid
+sequenceDiagram
+    participant User
+    participant Your_app
+    participant Agora
+
+    rect rgb(240, 240, 240)
+    note right of User: Open App
+    User ->> Your_app: Create an Agora Engine instance using Video SDK
+    activate Your_app
+    Your_app ->> Your_app: Enable audio and video in Agora Engine
+    end
+
+    User ->>+ Your_app: Join a channel
+    Your_app ->>+ Agora: Retrieve authentication token to join a channel
+    Agora -->>- Your_app: Token
+    Your_app ->> Your_app: Join the channel
+
+    User ->>+ Your_app: Trigger sound effect
+    Your_app ->> Your_app: Play effect
+    Your_app ->> Your_app: Pause and resume effect
+    Your_ui ->> Your_app: Set effect position
+    Your_app ->> Your_app: Set effect volume
+    Your_app -->>- User: On audio effect finished
+
+    User ->> Your_app: Start audio mixing
+    Your_app ->> Your_app: Stop audio mixing
+
+    User ->>+ Your_app: Set preset voice edition 
+    Your_app -->>- User: Disable the voice effect
+
+    rect rgb(240, 240, 240)
+    note right of User: Leave the channel
+    User ->> Your_app: Leave the assign channel.
+    deactivate Your_app
+    end
+```

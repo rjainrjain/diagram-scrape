@@ -1,0 +1,25 @@
+classDiagram
+    Usuario <|-- Aluno
+    Usuario <|-- Recepcionista
+    Recepcionista <|-- Instrutor
+
+    class Usuario {
+        -String nome
+        -String senha
+        -String idUsuario
+        +toString() String
+    }
+    class Aluno {
+        -String numeroMatricula
+        +agendarAula()
+        +cancelarAula()
+        +toString() String
+    }
+    class Recepcionista {
+        +registrarNovoAluno()
+        +gerenciarPagamentos()
+    }
+    class Instrutor {
+        +criarPlanosTreino()
+        +avaliarDesempenhoAlunos()
+    }

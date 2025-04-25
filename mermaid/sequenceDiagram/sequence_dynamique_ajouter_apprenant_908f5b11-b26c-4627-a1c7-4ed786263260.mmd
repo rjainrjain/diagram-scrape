@@ -1,0 +1,15 @@
+sequenceDiagram
+
+actor Formateur
+
+
+Formateur->>PersonneController: use case : Ajouter apprenant
+PersonneController-->>Formateur: Formulaire d'insertion
+Formateur->>+PersonneController: Create(apprenant)
+PersonneController ->> ApprenantRepository : Create(apprenant)
+activate ApprenantRepository
+note over ApprenantRepository : Affectation de rôle apprenant au nouvell utilisateur
+ApprenantRepository -->>UtilisateurRepository: Create(user,role)
+deactivate ApprenantRepository
+PersonneController-->>-Formateur: message de confirmation
+

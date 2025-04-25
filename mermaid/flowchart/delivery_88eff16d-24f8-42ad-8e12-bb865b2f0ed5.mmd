@@ -1,0 +1,33 @@
+flowchart LR
+    package([<b>Package</b><br>Package 1])
+    delivery([<b>Delivery</b><br>Package 1 from Warehouse 1 in<br>New York to House 1 in Seattle])
+    r1([<b>Route</b><br>Route 1])
+    r2([<b>Route</b><br>Route 2])
+    r3([<b>Route</b><br>Route 3])
+    addr1([<b>Address</b><br>Warehouse 1 in New York])
+    addr2([<b>Address</b><br>Transit station in Denver])
+    addr3([<b>Address</b><br>Transit station in Seattle])
+    addr4([<b>Address</b><br>House 1 in Seattle])
+    r1 --> |from| addr1
+    r1 --> |to| addr2
+    r2 --> |from| addr2
+    r2 --> |to| addr3
+    r3 --> |from| addr3
+    r3 --> |to| addr4
+    deEv1([<b>Delivery Event</b><br>Package 1 leaves<br>New York])
+    deEv2([<b>Delivery Event</b><br>Package 1 arrives in<br>Denver])
+    deEv3([<b>Delivery Event</b><br>Package 1 leaves<br>Denver])
+    deEv4([<b>Delivery Event</b><br>Package 1 arrives in<br>Seattle]) 
+    deEv5([<b>Delivery Event</b><br>Package 1 delayed in<br>Seattle]) 
+    deEv6([<b>Delivery Event</b><br>Package 1 arrives at<br>Destination]) 
+    deEv1 --> r1
+    deEv2 --> r1
+    deEv3 --> r2
+    deEv4 --> r3
+    deEv5 --> r3
+    deEv6 --> r3
+    package --> delivery
+    delivery --> deEv1 & deEv2 & deEv3 & deEv4 & deEv5 & deEv6
+    cookies([<b>Item</b><br>Cookies])
+    cocoa([<b>Item</b><br>Cocoa])
+    cookies & cocoa-->|in| package 

@@ -1,0 +1,164 @@
+﻿classDiagram
+    namespace Data{
+
+        class CardData{
+            +bool isOpen
+            +int Number
+            +CardType Type
+        }
+
+        class PlayerData{
+            +int Chips
+        }
+    }
+    CardData <.. CardType
+    
+    namespace Core{
+        class GameManager{
+            
+        }
+        class Consts{
+
+        }
+        class FlowManager{
+            -BaseFlow m_NowFlow
+            -OnChangedFlow(BaseFlow)
+        }
+    }
+    
+    
+    
+    namespace Flows{
+        
+        class BaseFlow{
+            +InitFlow()
+            +StartFlow()
+            +EndFlow()
+        }
+        class TitleFlow{
+            
+        }
+        class BetFlow{
+            
+        }
+        class DealFlow{
+            
+        }
+        class DealerHandCheckFlow{
+            
+        }
+        class ActionFlow{
+            
+        }
+        class DealerHandOpenFlow{
+            
+        }
+        class ResultFlow{
+            
+        }
+        class PauseFlow{
+            
+        }
+    }
+    BaseFlow <|-- TitleFlow
+    BaseFlow <|-- BetFlow
+    BaseFlow <|-- DealFlow
+    BaseFlow <|-- DealerHandCheckFlow
+    BaseFlow <|-- ActionFlow
+    BaseFlow <|-- DealerHandOpenFlow
+    BaseFlow <|-- ResultFlow
+    BaseFlow <|-- PauseFlow
+
+    namespace View{
+        class CardView{
+            <<MonoBehaviour>>
+            %%型はアセットによる
+            -GameObject m_Model
+            +Open()
+            +Hide()
+            
+        }
+
+        class TotalPointView {
+            <<MonoBehaviour>>
+            TextMeshProUGUI m_HeaderText
+            TextMeshProUGUI m_PointText
+            +SetPoint(int)
+        }
+
+        class ActionButton{
+            <<MonoBehaviour>>
+            -Button m_Button
+            +IObservable OnClick
+            +SetInteractable(bool)
+            +Hide()
+            +Show()
+        }
+
+    }
+    
+    namespace Presenter{
+        class ActionPresenter{
+            -ActionButton m_HitButton
+            -ActionButton m_StandButton
+            -ActionButton m_DoubleDownButton
+            -ActionButton m_SplitButton
+            -PlayerModel m_Player
+            +OnHit()
+            +OnStand() 
+            +OnDoubleDown()
+            %%実装予定だけど未定
+            +OnSplit() 
+        }
+    }
+    
+    namespace Model{
+        
+        class PersonModel{
+            -List<CardData> m_Hand
+            +GetTotalPoint():int
+            +GetHandCards():CardData[]
+            +AddHandCard()
+            +RemoveHandCard()
+            +ResetHand()
+        }
+        
+        class PlayerModel{
+            -PlayerData m_PlayerData
+            +SetChips(int):int
+            +GetChips():int
+        }
+
+        class DealerModel{
+            -List<CardData> m_Stock
+            +AddStocks(CardData[])
+            +RemoveStock(CardData)
+            +GetStock():CardData
+        }
+        
+    }
+    PersonModel <|-- PlayerModel
+    PersonModel <|-- DealerModel
+    PlayerModel <|-- CardData
+    DealerModel o-- CardData
+    
+    
+    namespace Enum{
+        class CardType{
+            <<Enumeration>>
+            A,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            J,
+            Q,
+            K,
+        }
+        
+    }

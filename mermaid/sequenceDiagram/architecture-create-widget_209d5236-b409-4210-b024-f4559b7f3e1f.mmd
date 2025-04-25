@@ -1,0 +1,9 @@
+sequenceDiagram
+    Portable Layer ->> Native Layer: Create a "main" window titled "Counter Program"
+    activate Native Layer
+    note right of Native Layer: Creates the window and shows it
+    deactivate Native Layer
+    Portable Layer ->> Native Layer: Draw these widgets in the "main" window
+    activate Native Layer
+    note right of Native Layer: Draws the widgets in the "main" window
+    deactivate Native Layer

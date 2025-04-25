@@ -1,0 +1,36 @@
+classDiagram
+
+class Banda
+Banda: +nombre tring
+Banda: +fundacion ushort
+Banda: +idBanda ushort
+Album  *-- Banda
+
+class Album
+Album: +nombre string
+Album: +lanzamiento DateTime
+Album: +idBanda ushort
+Album: +idAlbum int
+Album: +cantidad int
+Cancion *-- Album
+
+class Cancion
+Cancion: +nombre string
+Cancion: +orden byte
+Cancion: +idAlbum int
+Cancion: +idCancion uint
+Cancion: +cantidad int
+Reproduccion  o-- Cancion
+
+class Reproduccion
+Reproduccion: +reproduccion DateTime
+Reproduccion: +idCancion uint
+Reproduccion: +idUsuario int
+Usuario  o-- Reproduccion
+
+class Usuario
+Usuario: +nombre string
+Usuario: +apellido string
+Usuario: +email string
+Usuario: +contraseña string
+Usuario: +idUsuario int

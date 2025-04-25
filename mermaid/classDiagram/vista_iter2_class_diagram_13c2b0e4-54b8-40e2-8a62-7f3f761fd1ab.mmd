@@ -1,0 +1,19 @@
+classDiagram
+ class Partecipante {
+  nome
+  cognome
+  dataRilascioCertificato
+  dataScadenzaCertificato
+ }
+ class CorsoOfferto {
+  massimoNumeroPartecipanti
+ }
+ class Orario
+ class Corso
+ class Istruttore
+
+ Partecipante "0..n" -- "0..n" CorsoOfferto : partecipare
+ CorsoOfferto "0..n" -- "1" Corso
+ CorsoOfferto "0..n" -- "1" Istruttore : impartire
+ Istruttore "0..n" -- "1..n" Corso: specializzare
+ CorsoOfferto "0..n" -- "0..n" Orario

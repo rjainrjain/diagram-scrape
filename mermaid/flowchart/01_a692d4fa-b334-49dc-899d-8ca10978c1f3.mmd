@@ -1,0 +1,41 @@
+flowchart TD
+    P0[시작]
+    P1[전체패키지조회] 
+    P2[실행위치확인]
+    P3[스트림생성]
+    P4[URL생성]
+    P5[NULL제거]
+    P6[폴더생성]
+    P7[파일제거]
+    P8[폴더내부파일조회]
+    P9[경로변경]
+    P10[클래스정보생성]
+    P11[NULL제거]
+    P12[SET으로변환]
+    P13[반환]
+    
+    P0 --> P1
+    P1 --> P2
+    P2 --> P3
+    P3 --> |map| P4
+    P4 --> |filter| P5
+    P5 --> |map| P6
+    P6 --> |filter| P7
+    P7 --> |flatMap| P8
+    P8 --> |map| P9
+    P9 --> |map| P10
+    P10 --> |filter| P11
+    P11 --> |toSet| P12
+    P12 --> P8
+    P12 --> P13
+    
+style P0 fill:#0984e3,color:white
+style P13 fill:#0984e3,color:white
+style P4 fill:#00b894,color:white
+style P6 fill:#00b894,color:white
+style P8 fill:#00b894,color:white
+style P9 fill:#00b894,color:white
+style P10 fill:#00b894,color:white
+style P5 fill:#ff7675,color:white
+style P7 fill:#ff7675,color:white
+style P11 fill:#ff7675,color:white

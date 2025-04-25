@@ -1,0 +1,24 @@
+flowchart LR
+   
+    A["zeckenstiche_full.csv"]
+    G["Anteil Wald"]
+    H["Boxplot"]
+    subgraph loop ["for loop (>50x)"]
+        direction TB
+        
+        B["zeckenstiche (DataFrame)"]
+        C["Sim. Zeckenstiche (DataFrame)"]
+        D["Sim. Zeckenstiche (GeoDataFrame)"]
+        E["Sim. Zecken. Join (GeoDataFrame)"]
+
+        B -->|offset coordinate|C
+        C -->|gpd.GeoDataFrame|D
+        D -->|gpd.sjoin|E
+    end
+    A --> |pd.read_csv|loop
+    loop -->|Anteil Wald berechnen| G
+    G --> H
+    
+
+
+

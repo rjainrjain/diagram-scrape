@@ -1,0 +1,125 @@
+sequenceDiagram
+    actor a1 as Player
+    actor a2 as Player
+    participant Main
+    participant CLI
+    participant io as IOHandler
+    participant game as Game
+    participant p1 as Player
+    participant ship as Ship
+    participant sector as Sector
+%%    participant p2 as p2:Player
+    Main ->>+ game: playRound()
+
+    rect rgb(0,40,80)
+        note left of game: phase1()
+        game ->>+ io: getCommandOrders()
+        io ->>+ CLI: getCommandOrders()
+        CLI ->> CLI: displayGameState()
+        a1 ->> CLI: chose command order for the round
+        a2 ->> CLI: chose command order for the round
+        CLI -->>- io: orders
+        io -->>- game: orders
+        game ->> game: check orders validity
+    end
+    rect rgb(0,40,80)
+        note left of ship: phase2()
+        loop 3 times
+            note left of ship: microPhase2()
+            game ->> game: get number of player expanding
+            loop for each player from the starting player
+            note left of ship: EXPAND
+                alt player chosed expand for this microPhase2
+                    game ->>+ p1: expand(nShips)
+                    p1 ->>+ io: expand(playerId, nShips)
+                    io ->>+ CLI: expand(playerId, nShips)
+                    CLI ->> CLI: displayGameSate()
+                    a1 ->> CLI: chose where to expand
+                    CLI -->>- io: input
+                    io -->>- p1: input
+                    p1 ->> p1: check input validity
+                    p1 ->> p1: get available ships
+                    loop for each ships
+                        p1 ->> ship: setCell(cell)
+                        ship -->> p1: void
+                    end
+                    p1 -->>- game: void
+                end
+            end
+            loop for each player from the starting player
+            note left of ship: EXPLORE
+                alt player chosed explore for this microPhase2
+                    game ->>+ p1: explore(nFleet)
+                    p1 ->>+ io: explore(playerId, nFleet)
+                    io ->>+ CLI: explore(playerId, nFleet)
+                    CLI ->> CLI: displayGameSate()
+                    a1 ->> CLI: chose where to explore
+                    CLI -->>- io: input
+                    io -->>- p1: input
+                    p1 ->> p1: check input validity (check if cell is empty or owned and unused and if ships are unused)
+                    p1 ->> p1: get moving ships
+                    loop for each ships
+                        p1 ->> ship: setCell(cell)
+                        ship -->> p1: void
+                    end
+                    p1 -->>- game: void
+                end
+            end
+            loop for each player from the starting player
+            note left of ship: EXTERMINATE
+                alt player chosed exterminate for this microPhase2
+                    game ->>+ p1: exterminate(nSystem)
+                    p1 ->>+ io: exterminate(playerId, nSystem)
+                    io ->>+ CLI: explore(playerId, nSystem)
+                    CLI ->> CLI: displayGameSate()
+                    a1 ->> CLI: chose where to exterminate
+                    CLI -->>- io: input
+                    io -->>- p1: input
+                    p1 ->> p1: check input validity
+                    p1 ->> p1: get attacking ships
+                    loop for each ships
+                        p1 ->> ship: setCell(cell)
+                        ship -->> p1: void
+                    end
+                    p1 ->> p1: check if a player died
+                    p1 -->>- game: void
+                end
+            end
+        end
+    end
+
+    rect rgb(0,40,80)
+    note left of ship: phase3()
+        rect rgb(15,60,0)
+        note left of ship: sustain ships
+            loop for each cell
+                alt if nShips > maxShips
+                    loop extra ships
+                        game ->> ship: setCell(null)
+                    end
+                end
+            end
+        end
+        game ->> game: if round == 9 -> endGame()
+        rect rgb(15,60,0)
+        note left of p1: score sectors
+            loop for each player from the starting player
+                game ->> game: reset sectors (used -> false)
+                game ->>+ p1: score()
+                p1 ->>+ io: score(playerId)
+                io ->>+ CLI: score(playerId)
+                CLI ->> CLI: displayGameSate()
+                a1 ->> CLI: chose a sector to score
+                CLI -->>- io: input
+                io -->>- p1: input
+                p1 -->>- game: input
+                game ->> game: check sector availability
+                game ->> sector: setUsed(true)
+            end
+            game ->> p1: score()
+            note over io, p1: just allow owner of TriPrime to score one more time
+        end
+    end
+
+
+    game -->>- Main: finished

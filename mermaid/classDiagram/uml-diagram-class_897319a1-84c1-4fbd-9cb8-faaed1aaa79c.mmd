@@ -1,0 +1,153 @@
+classDiagram
+    class User {
+        -id : int
+        -name : varchar
+        -email : varchar
+        -password : varchar
+        -ra : varchar
+        -phone : varchar
+        -type : varchar
+        -permission : varchar
+        -isSuperAdmin : bool
+        +createUser(name, email, password, phone, type, permission, isSuperAdmin) : void
+        +readUser(id) : User
+        +updateUser(id, name, email, password, phone, type, permission, isSuperAdmin) : void
+        +deleteUser(id) : void
+        +getAllUsers() : User[]
+        +importUsersFromCSV(csvFile) : void
+        +grantPermission(userId, permission) : void
+        +revokePermission(userId, permission) : void
+        +getAllPermissions(userId) : varchar[]
+        +grantSuperAdminStatus(userId) : void
+        +revokeSuperAdminStatus(userId) : void
+        +isSuperAdmin(userId) : bool
+    }
+
+    class Order {
+        -id : int
+        -userId : int
+        -ticketIds : int[]
+        -totalValue : decimal
+        -paymentMethod : varchar
+        -statusPayment : varchar
+        -paymentAt : datetime
+        -code : varchar
+        +createOrder(userId, ticketIds, totalValue, paymentMethod, statusPayment) : void
+        +readOrder(id) : Order
+        +updateOrder(id, userId, ticketIds, totalValue, paymentMethod, statusPayment, paymentAt, code) : void
+        +deleteOrder(id) : void
+        +getAllOrders() : Order[]
+    }
+
+    class Ticket {
+        -id : int
+        -orderId : int
+        -subEventId : int
+        -status : varchar
+        -codigoIngresso : varchar
+        -createdAt : datetime
+        +createTicket(orderId, subEventId, status, codigoIngresso) : void
+        +readTicket(id) : Ticket
+        +updateTicket(id, orderId, subEventId, status, codigoIngresso) : void
+        +deleteTicket(id) : void
+        +getAllTickets() : Ticket[]
+    }
+
+    class Certificate {
+        -id : int
+        -userId : int
+        -subEventId : int
+        -createdAt : datetime
+        -verificationCode : varchar
+        +createCertificate(userId, subEventId, verificationCode) : void
+        +readCertificate(id) : Certificate
+        +updateCertificate(id, userId, subEventId, verificationCode) : void
+        +deleteCertificate(id) : void
+        +getAllCertificates() : Certificate[]
+        +generateCertificatePDF(id) : PDF
+    }
+
+    class Submission {
+        -id : int
+        -userId : int
+        -subEventId : int
+        -workTitle : varchar
+        -description : text
+        -archive : blob
+        -submissionDate : datetime
+        -status : varchar
+        +createSubmission(userId, subEventId, workTitle, description, archive) : void
+        +readSubmission(id) : Submission
+        +updateSubmission(id, userId, subEventId, workTitle, description, archive, status) : void
+        +deleteSubmission(id) : void
+        +getAllSubmissions() : Submission[]
+    }
+
+    class Event {
+        -id : int
+        -name : varchar
+        -description : text
+        -startDate : datetime
+        -endDate : datetime
+        +createEvent(name, description, startDate, endDate) : void
+        +readEvent(id) : Event
+        +updateEvent(id, name, description, startDate, endDate) : void
+        +deleteEvent(id) : void
+        +getAllEvents() : Event[]
+    }
+
+    class SubEvent {
+        -id : int
+        -name : varchar
+        -description : text
+        -startDate : datetime
+        -endDate : datetime
+        -eventId : int
+        -value : decimal
+        -quantity : int
+        +createSubEvent(name, description, startDate, endDate, eventId, value, quantity) : void
+        +readSubEvent(id) : SubEvent
+        +updateSubEvent(id, name, description, startDate, endDate, eventId, value, quantity) : void
+        +deleteSubEvent(id) : void
+        +getAllSubEvents() : SubEvent[]
+    }
+
+    class Address {
+        -id : int
+        -subEventId : int
+        -block : varchar
+        -floor : varchar
+        +createAddress(subEventId, block, floor) : void
+        +readAddress(id) : Address
+        +updateAddress(id, subEventId, block, floor) : void
+        +deleteAddress(id) : void
+        +getAllAddresses() : Address[]
+    }
+
+    class Attendance {
+        -id : int
+        -userId : int
+        -subEventId : int
+        -checkinTime : datetime
+        -checkoutTime : datetime
+        +registerAttendance(userId, subEventId, checkinTime) : void
+        +checkoutAttendance(attendanceId, checkoutTime) : void
+        +readAttendance(id) : Attendance
+        +updateAttendance(id, userId, subEventId, checkinTime, checkoutTime) : void
+        +deleteAttendance(id) : void
+        +getAllAttendances() : Attendance[]
+        +getUserAttendances(userId) : Attendance[]
+        +getSubEventAttendances(subEventId) : Attendance[]
+    }
+
+    User "1" --o "0..*" Order
+    Order "1" --o "0..*" Ticket
+    User "1" --o "0..*" Certificate
+    Certificate "0..*" --o "1" SubEvent
+    User "1" --o "0..*" Submission
+    Submission "0..*" --o "1" Event
+    Submission "0..*" --o "0..1" SubEvent
+    Event "1" --o "0..*" SubEvent
+    SubEvent "1" --o "0..*" Address
+    User "1" --o "0..*" Attendance
+    Attendance "0..*" --o "1" SubEvent

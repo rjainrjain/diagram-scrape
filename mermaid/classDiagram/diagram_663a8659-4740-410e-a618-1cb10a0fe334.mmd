@@ -1,0 +1,28 @@
+classDiagram
+    direction LR
+
+    class Gospodarstwo["Gospodarstwo domowe"] {
+        budynek
+        struktura gospodarstwa
+        liczba rodzin
+    }
+
+    class Rodzina {
+        typ rodziny
+        liczba osób
+        liczba dzieci
+        liczba samochodów
+        liczba rowerów
+    }
+
+    class Człowiek {
+        rola
+        wiek
+        płeć
+        preferencje transportowe
+        plan dnia
+    }
+
+    Gospodarstwo "" --* "1.." Rodzina
+    Rodzina "" --* "1.." Człowiek
+

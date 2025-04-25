@@ -1,0 +1,10 @@
+flowchart TB
+    AWX[AWX] <-->|Uses| Plugin[EC2 Inventory Plugin]
+    Plugin <-->|Fetches data from| AWS_API[AWS API]
+    AWS_API <-->|Returns metadata of| EC2_Instances[EC2 Instances]
+    
+    style AWX fill:#1e90ff,stroke:#333,stroke-width:2px
+    style Plugin fill:#32cd32,stroke:#333,stroke-width:2px
+    style AWS_API fill:#ff8c00,stroke:#333,stroke-width:2px
+    style EC2_Instances fill:#ffd700,stroke:#333,stroke-width:2px
+

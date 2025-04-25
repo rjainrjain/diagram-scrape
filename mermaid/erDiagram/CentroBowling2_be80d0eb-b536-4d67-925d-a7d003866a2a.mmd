@@ -1,0 +1,122 @@
+erDiagram
+
+    Cliente {
+        String num_cliente PK
+        String Nombre
+        String direccion
+        int num_telefono
+        String correo
+    }
+
+    Pista {
+        String numero_identificativo PK
+        String max_capacidad
+    }
+
+    HistorialEstadoPista {
+        datetime fecha_hora_inicio PK
+        datetime fecha_hora_fin
+    }
+
+    Reserva {
+        date dia_reserva PK
+        date hora_reserva PK
+    }
+
+    EstadoReserva {
+        String nombre PK
+        String descripcion
+    }
+
+    HistorialEstadoReserva {
+        datetime fecha_hora_inicio PK
+        datetime fecha_hora_fin
+    }
+
+    Menu {
+        String nombre PK
+        String descripcion
+        String precio
+    }
+
+    ProductoMenu {
+        int precio PK
+        String productoMenu
+    }
+
+    Producto {
+        String nombre PK
+        String descripcion
+        int precio
+    }
+
+    Pedido {
+        String descripcion PK
+        datetime hora
+    }
+
+    DetallePedido {
+        String reserva PK
+        String pedido PK
+        String descripcion
+    }
+
+    PrecioProducto {
+        int precio PK
+        date fecha_vigencia PK
+    }
+
+    AsignacionPedido {
+        String descripcion PK
+        int precio
+    }
+
+    Partida {
+        String identificador_unico PK
+        String descripcion
+    }
+
+    Fila {
+        String identificador_unico PK
+        String nombre
+    }
+
+    Turno {
+        String descripcion PK
+    }
+
+    DetalleTurno {
+        String Turno PK
+        String nombre
+        String fecha_hora_inicio
+        String fecha_hora_fin
+        String dia_reserva
+    }
+
+    DetalleTurno {
+        String nombre PK
+        String descripcion
+    }
+    Tirada {
+        String descripcion PK
+        String pinos_derribados
+    }
+    
+    Cliente ||--o{ Reserva : Tiene
+    Cliente ||--o{ HistorialEstadoReserva : Tiene 
+    Cliente ||--o{ Pedido : Tiene
+    Pedido ||--o{ Producto : Tiene
+    Reserva ||--o{ Pista : Tiene
+    Reserva ||--o{ HistorialEstadoReserva : Tiene
+    Partida }|..|{ Fila : Tiene
+    Producto ||--o{ Menu : Tiene 
+    Menu ||--o{ ProductoMenu : Tiene
+    Pedido ||--o{ DetallePedido : Tiene 
+    ProductoMenu ||--o{ AsignacionPedido : Tiene
+    Fila ||--o{ Turno : Tiene
+    Turno ||--o{ DetalleTurno : Tiene
+    DetalleTurno ||--o{ Tirada : Tiene
+    HistorialEstadoReserva }|--o{ EstadoReserva : Tiene
+    Pista ||--o{ HistorialEstadoPista : Tiene
+    Reserva ||--o{ Partida : Tiene
+    Producto }|..|{ PrecioProducto : Tiene

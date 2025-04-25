@@ -1,0 +1,30 @@
+```mermaid
+graph TD
+    A[App] --> B[NavBar]
+    A --> C[DataInitializer]
+    A --> D[SelectGame]
+    A --> E[GameProvider]
+    E --> F[PlayGame]
+    F --> G[GamePrompt]
+    F --> H[InputArea]
+    F --> I[ControlButtons]
+    F --> J[MessageArea]
+    F --> K[DisplayArea]
+    H --> L[AddOneInput]
+    H --> M[BingoStemInput]
+    H --> N[FlashcardInput]
+    H --> O[UnscrambleInput]
+    E --> P[GameContext]
+    P --> Q[useGameLogicFactory]
+    Q --> R[AddOne]
+    Q --> S[BingoStem]
+    Q --> T[Flashcard]
+    Q --> U[Unscramble]
+    V[useGameContext] --> P
+    F --> V
+    G --> V
+    H --> V
+    I --> V
+    J --> V
+    K --> V
+```

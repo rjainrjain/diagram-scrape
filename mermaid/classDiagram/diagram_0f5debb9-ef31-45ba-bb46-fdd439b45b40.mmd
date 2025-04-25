@@ -1,0 +1,30 @@
+```mermaid
+classDiagram
+    class ReprodutorMusical {
+        <<interface>>
+        +tocar()
+        +pausar()
+        +selecionarMusica(String musica)
+    }
+
+    class AparelhoTelefonico {
+        <<interface>>
+        +ligar(String numero)
+        +atender()
+        +iniciarCorreiovoz()
+    }
+
+    class NavegadorInternet {
+        <<interface>>
+        +exibirPagina(String url)
+        +adicionarNovaAba()
+        +atualziarPagina()
+    }
+
+    class iPhone {
+    }
+
+    iPhone --> ReprodutorMusical
+    iPhone --> AparelhoTelefonico
+    iPhone --> NavegadorInternet
+```

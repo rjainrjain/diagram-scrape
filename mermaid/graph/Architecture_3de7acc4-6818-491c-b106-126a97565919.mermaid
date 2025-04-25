@@ -1,0 +1,18 @@
+graph TD
+    A[Client] -->|HTTPS| B[Load Balancer]
+    B -->|Route Request| C[Symfony Application]
+    C -->|Authenticate| D[Auth Service]
+    C -->|Manage Users| E[User Service]
+    C -->|Handle Pricing| F[Pricing Service]
+    C -->|Manage API| G[API Management]
+    C -->|Process Request| H[Request Handler]
+    H -->|Queue Job| I[Message Queue]
+    J[Python Worker] -->|Consume Job| I
+    J -->|Generate Schedule| K[OR-Tools CP Model]
+    J -->|Store Result| L[Result Cache]
+    C -->|Retrieve Result| L
+    C -->|Log Events| M[Logging Service]
+    C -->|Track Metrics| N[Monitoring Service]
+    O[Admin Dashboard] -->|Manage System| C
+    P[Database] -->|Store Data| C
+    Q[Cron Jobs] -->|Periodic Tasks| C

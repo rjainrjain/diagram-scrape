@@ -1,0 +1,40 @@
+```mermaid
+sequenceDiagram
+participant VideoSDK as Video SDK
+participant AVE as Audio/Video Filter Extensions
+participant App as App
+
+rect rgb(200, 200, 200)
+    participant C as Capture
+    participant PP as Pre-process
+    participant E as Encode
+    participant T as Transmit
+    participant D as Decode
+    participant P as Post-process
+    participant Pl as Play
+end
+
+VideoSDK->>C: Capture
+C->>PP: Pre-process
+PP->>E: Encode
+E->>T: Transmit
+T->>D: Decode
+D->>P: Post-process
+P->>Pl: Play
+Pl->>AVE: Integrates filtering
+AVE->>App: Output to App
+
+participant IE as Image enhancement
+participant FF as Face Filter
+participant FC as Face change
+participant VE as Voice effect
+participant VC as Voice changer
+participant NC as Noise cancellation
+
+IE->>AVE: Image enhancement
+FF->>AVE: Face Filter
+FC->>AVE: Face change
+VE->>AVE: Voice effect
+VC->>AVE: Voice changer
+NC->>AVE: Noise cancellation
+```

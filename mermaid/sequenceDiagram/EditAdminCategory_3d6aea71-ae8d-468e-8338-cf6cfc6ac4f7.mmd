@@ -1,0 +1,45 @@
+
+sequenceDiagram
+  actor Admin
+  participant V_ACP as View #10095; AdminCategoryPage
+  participant P_EC as Pop-up #10095; EditCategory
+  participant C_C as Controller #10095; CategoryController
+  participant M_C as Model #10095; Category
+  
+  Admin->>V_ACP: klik icon pensil di salah satu data
+  
+  activate Admin
+
+  activate V_ACP
+
+  V_ACP->>P_EC: setIsModalEditOpen(true)
+
+  activate P_EC
+
+  Admin->>P_EC: klik tombl "Submit"
+  P_EC->>C_C: update()
+
+  activate C_C
+
+  opt Invalid Input
+    C_C-->>Admin: return validation message
+  end
+
+  C_C->>M_C: update()
+  
+  activate M_C
+  
+  M_C-->>C_C: return
+
+  deactivate M_C
+
+  C_C-->>V_ACP: return view
+
+  deactivate C_C
+  
+  V_ACP->>P_EC: setIsModalEditOpen(false)
+
+  deactivate P_EC
+  deactivate V_ACP
+
+  deactivate Admin

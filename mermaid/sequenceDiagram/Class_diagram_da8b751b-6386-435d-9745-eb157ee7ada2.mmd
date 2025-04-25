@@ -1,0 +1,10 @@
+sequenceDiagram
+    participant User
+    participant PaymentGateway
+    participant Payment
+    participant Transaction
+
+    User->>Payment: create_payment(amount, currency)
+    Payment->>PaymentGateway: initiate_payment(payment)
+    PaymentGateway-->>Transaction: return transaction_id
+    PaymentGateway-->>User: return payment status

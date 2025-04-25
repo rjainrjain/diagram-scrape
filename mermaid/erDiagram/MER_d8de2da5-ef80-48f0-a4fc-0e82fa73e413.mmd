@@ -1,0 +1,28 @@
+erDiagram
+
+    USERS {
+        number id
+        string name
+        string email
+        string password
+    }
+
+    USER_GIFTS {
+        number GIF_ID
+        string ALIAS
+        number USER_ID
+    }
+
+    PERSIST_REQUESTS {
+        number USER_ID
+        string PATH
+        json REQUEST_BODY
+        number STATUS_CODE
+        json RESPONSE_BODY
+        string ORIGIN_IP
+    }
+
+
+    USERS ||--o{ USER_GIFTS : owns
+
+    USERS ||--o{ PERSIST_REQUESTS : "made requests"

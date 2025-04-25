@@ -1,0 +1,17 @@
+sequenceDiagram
+    title: Sequence Diagram for Creating a Todo
+    note over Client: API Route: POST /api/todos
+    note over Client: Request Body: { title, description }
+    note over Client: Response: 201 Created, { id, title, description, completed, created_at }
+    
+    participant Client
+    participant Server
+    participant Service
+    participant Storage
+
+    Client->>Server: POST /api/todos
+    Server->>Service: createTodo(data)
+    Service->>Storage: addTodo(data)
+    Storage-->>Service: newTodo
+    Service-->>Server: newTodo
+    Server-->>Client: 201 Created, newTodo

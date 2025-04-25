@@ -1,0 +1,14 @@
+sequenceDiagram
+    actor User
+    participant Browser
+    participant Server
+
+    User->>Browser: Write and post a new note
+    Note right of User: The user creates a new note and click the save button
+    
+    Browser->>Server: POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+    activate Server
+    Server-->>Browser: Status code 201
+    deactivate Server
+
+    Browser-->>User: Display new notes list

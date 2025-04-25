@@ -1,0 +1,10 @@
+graph TD
+    Start --> 確保沒有其他線程正在設定dst_ip,tos的路徑
+    確保沒有其他線程正在設定dst_ip,tos的路徑-->|否|確保沒有其他線程正在設定dst_ip,tos的路徑
+    確保沒有其他線程正在設定dst_ip,tos的路徑-->|是|計算多條路權重合併
+    計算多條路權重合併-->刪除dst_ip與tos的所有路徑
+    刪除dst_ip與tos的所有路徑 -->  尋找所有岔路
+    尋找所有岔路 --> 設定所有group[設定所有group entry]
+    設定所有group[設定所有group entry] --> 設定非起點的flow[設定非起點的flow entry]
+    設定非起點的flow[設定非起點的flow entry] --> 設定起點的flow[設定起點的flow entry]
+    設定起點的flow[設定起點的flow entry] --> End

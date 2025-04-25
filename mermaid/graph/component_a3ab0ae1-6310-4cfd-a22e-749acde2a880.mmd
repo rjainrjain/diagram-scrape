@@ -1,0 +1,49 @@
+graph TD
+    subgraph UI_Components[UI Layer]
+        POS[POS Interface]
+        Admin[Admin Dashboard]
+        Report[Reporting Interface]
+    end
+    
+    subgraph Business_Logic[Business Logic Layer]
+        BillMgr[Billing Manager]
+        InvMgr[Inventory Manager]
+        CustMgr[Customer Manager]
+        PayMgr[Payment Manager]
+        SecMgr[Security Manager]
+        RepMgr[Report Manager]
+    end
+    
+    subgraph Data_Access[Data Access Layer]
+        DataAccess[Data Access Manager]
+        Cache[Cache Manager]
+    end
+    
+    subgraph External_Systems[External Systems]
+        Payment[Payment Gateway]
+        Printer[Receipt Printer]
+        Scanner[Barcode Scanner]
+    end
+    
+    %% UI to Business Logic
+    POS --> BillMgr
+    POS --> InvMgr
+    POS --> CustMgr
+    Admin --> SecMgr
+    Admin --> RepMgr
+    Report --> RepMgr
+    
+    %% Business Logic to Data Access
+    BillMgr --> DataAccess
+    InvMgr --> DataAccess
+    CustMgr --> DataAccess
+    PayMgr --> DataAccess
+    RepMgr --> DataAccess
+    
+    %% External System Connections
+    BillMgr --> Payment
+    BillMgr --> Printer
+    BillMgr --> Scanner
+    
+    %% Cache Connections
+    DataAccess --> Cache

@@ -1,0 +1,33 @@
+graph TD
+    subgraph Row1[The Basics]
+        A1["Who mentored"] 
+        A2["From When to when"] 
+        A3["On what topic"]
+        A4[Mentorship Style]
+        A5[Final Reflection]
+    end
+
+    subgraph Row2[The Details]
+        B1[Milestones] --> B11[Planned]
+        B1 --> B12[Achieved]
+        B2[Sessions] --> B21[When]
+        B2 --> B22[How Long]
+        B2 --> B23[Topics]
+        B2 --> B24[Reflections]
+    end
+
+    subgraph Row3[Metrics]
+        C1[How effectively have I]
+        C1 --> C11[Mentored]
+        C1 --> C12[Been Mentored]
+        C2[Areas of focus]
+        C2 --> C21[Mentored]
+        C2 --> C22[Been Mentored]
+        C3[Time Spent]
+        C3 --> C31[Mentored]
+        C3 --> C32[Been Mentored]
+        C3 --> C33[Doing Mentored Tasks]
+        
+    end
+    Row1 --> Row2
+    Row2 --> Row3

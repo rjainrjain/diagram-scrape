@@ -1,0 +1,17 @@
+sequenceDiagram
+    title: Sequence Diagram for Getting All Todos
+    note over Client: API Route: GET /api/todos
+    note over Client: No parameters required
+    note over Client: Response: 200 OK, [{ id, title, description, completed, created_at }]
+    
+    participant Client
+    participant Server
+    participant Service
+    participant Storage
+
+    Client->>Server: GET /api/todos
+    Server->>Service: getAllTodos()
+    Service->>Storage: getAllTodos()
+    Storage-->>Service: Todos[]
+    Service-->>Server: Todos[]
+    Server-->>Client: 200 OK, Todos[]

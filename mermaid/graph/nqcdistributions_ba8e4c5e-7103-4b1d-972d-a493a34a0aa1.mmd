@@ -1,0 +1,24 @@
+%%{
+    init: {
+        'theme': 'base', 
+        'themeVariables': { 
+            'fontSize': '25px',
+            'primaryColor': '#0B6E4F',
+            'primaryBorderColor': '#14cb92',
+            'primaryTextColor': '#fff',
+            'fontFamily': 'Lexend'
+        }
+    }
+}%%
+
+
+    graph LR
+        R[Configuration vector] --> S1(SampleableComponent:\n positions)
+        F[Distribution functions] --> S1
+        Rfix[Single values] --> S1
+        R --> S2(SampleableComponent:\n velocities)
+        F --> S2
+        Rfix --> S2
+        S1 --> DD(DynamicalDistribution)
+        S2 --> DD
+        S3(Electronic state) --> DD

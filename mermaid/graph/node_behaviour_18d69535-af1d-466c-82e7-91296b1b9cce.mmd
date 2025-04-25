@@ -1,0 +1,39 @@
+flowchart TD;
+A[\Start/] --> B[Caricamento configurazione]
+B --> C[Inizializzazione CAN e MQTT]
+C --> a[Lancio KEEP_ALIVE daemon]
+a --> b{E' disponbile un messaggio<br />sul topic mqtt?}
+b -- SI --> c[Decodifica il messaggio]
+c --> d{E' START_REC?}
+d -- SI --> e[Lancio requst task]
+d -- NO --> f{E' END_REC?}
+f -- SI --> h[Fermo request task]
+h --> M[Richiesta TOTAL COUNT\nai sensori]
+f -- NO --> g{E' SET_DEMO_1?}
+g -- SI --> N[Lancio request task\ncon demo1]
+g -- NO --> O{E' SET_DEMO_2?}
+O -- SI --> R[Lancio request task\ncon demo2]
+O -- NO --> Q[Error]
+e --> i
+M --> i
+N --> i
+R --> i
+
+b -- NO --> i{E' disponbile un<br />messagio sul CAN BUS?}
+i -- NO --> b
+i -- SI --> j[Decodifico il messagio]
+j --> k[Invio il messaggio al backend]
+k --> b
+
+subgraph KEEP_ALIVE daemon
+  L[\Inizio/] --> D[Invio ON_LAUNCH]
+  D --> E[Sleep]
+  E --> F[Invio KEEP_ALIVE]
+  F --> E
+end
+
+subgraph request task
+  G[\Inzio/] --> H[Richiesta WINDOW COUNT\nai sensori]
+  H --> P[Sleep]
+  P --> H
+end

@@ -1,0 +1,59 @@
+classDiagram
+    class main {
+        main()
+    }
+    class Home_page {
+        Home_page()
+    }
+    class load_data_page {
+        load_data_page()
+        load_data_cached(file)
+    }
+    class visualization_page {
+        visualization_page()
+    }
+    class Feature_Selection_page {
+        Feature_Selection_page()
+    }
+    class classification {
+        classification()
+    }
+    class About_page {
+        About_page()
+    }
+    class run_umap {
+        run_umap(data)
+    }
+    class run_pca {
+        run_pca(data)
+    }
+    class run_feature_selection {
+        run_feature_selection(X, y, k)
+    }
+    class run_classification {
+        run_classification(X, y, algorithm, param)
+    }
+    class plot_eda {
+        plot_eda(data)
+    }
+    class plot_3d_scatter {
+        plot_3d_scatter(data, labels, title)
+    }
+    class load_data {
+        load_data(file)
+    }
+
+    main --> Home_page
+    main --> load_data_page
+    main --> visualization_page
+    main --> Feature_Selection_page
+    main --> classification
+    main --> About_page
+    
+    load_data_page --> load_data
+    visualization_page --> run_umap
+    visualization_page --> run_pca
+    visualization_page --> plot_eda
+    visualization_page --> plot_3d_scatter
+    Feature_Selection_page --> run_feature_selection
+    classification --> run_classification

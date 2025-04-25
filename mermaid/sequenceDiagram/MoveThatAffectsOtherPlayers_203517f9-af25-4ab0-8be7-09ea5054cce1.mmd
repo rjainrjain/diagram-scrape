@@ -1,0 +1,59 @@
+sequenceDiagram
+    participant h as Host (Game)
+    participant s as Service (Azure)
+    participant g as Active Player (Game)
+    participant n as Next Player (Game)
+    participant a as All Players (Game)
+    loop Main Game Loop
+            h->>s: Notify Player it's their turn
+            s->>g: It's your turn
+            activate g
+            g->>s: Ack
+            s->>h: Ack
+            loop Wait for Player
+                h->>s: Ping
+                s->>h: Ack
+            end
+            loop Wait for Human
+                g->>s: Ping
+                s->>g: Ack
+            end
+            g->>s: Make play with valid card
+            s->>h: Here is Player n's move
+        h->>h: Validate move
+        h->>s: Ack
+        s->>g: Ack
+        deactivate g
+        h->>h: Play card against discard
+        h->>h: Put card on discard pile
+        Note right of h: Card is a Draw 2
+        h->>h: Pull two cards from deal pile
+        h->>s: Player n gets two new cards
+        s->>n: Here are two new cards
+        activate n
+        n->>s: Ack
+        deactivate n
+        s->>h: Player n Ack'd new cards
+        rect rgba(0, 0, 255, .1)
+        Note over h,a: Can be sent as one message
+            loop Move is Valid
+                par Discard
+                    h->>s: Card X is on Discard
+                    s->>a: Card X is on Discard
+                    activate a
+                    a->>s: Ack
+                    deactivate a
+                    s->>h: Player Ack'd
+                and Update Player 1..n
+                    h->>s: Here are the current player card numbers
+                    s->>a: Here are the current player card numbers
+                    activate a
+                    a->>s: Ack
+                    deactivate a
+                    s->>h: Player Ack'd
+                end
+            end
+        end
+        h->>h: All Players Ack'd
+        h->>h: Advance to next player
+    end

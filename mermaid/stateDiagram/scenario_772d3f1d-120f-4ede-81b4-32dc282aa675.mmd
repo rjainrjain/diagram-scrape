@@ -1,0 +1,9 @@
+stateDiagram-v2
+    state "Daemon Running" as d {
+        [*] --> Loop: Start daemon
+        Loop --> Loop: Node event
+        Loop --> Loop: Link event
+        Loop --> [*]: End event and exit daemon
+    }
+    [*] --> d: CRD Created
+    d --> [*]: Ended

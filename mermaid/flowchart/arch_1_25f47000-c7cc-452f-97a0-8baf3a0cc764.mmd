@@ -1,0 +1,58 @@
+flowchart TB
+    A["`Web Browser / Front-end (*Chrome*)`"]
+    subgraph SE ["`Server-side`"]
+        B[/"`Load Balancer
+        (built-in @ *Tomcat*)`"\]
+
+        D[/"`Other Web App Servers`"/]
+
+        subgraph VDC ["`VMs / Dockers Cluster`"]
+            direction LR
+            subgraph C_0 ["`Web Container (*Tomcat*)`"]
+                direction BT
+                C_0_["`Web App Server
+                (*Java/Spring*)`"]
+            end
+            subgraph C_1 ["`Web Container (*Tomcat*)`"]
+                direction BT
+                C_1_["`Web App Server
+                (*Java/Spring*)`"]
+            end
+            subgraph C_2 ["`Web Container (*Tomcat*)`"]
+                direction BT
+                C_2_["`Web App Server
+                (*Java/Spring*)`"]
+            end
+        end
+        
+        E_0[("`Database
+        (*PostgresSQL*)`")]
+        E_1[("`Database
+        (*PostgresSQL*)`")]
+        E_2[("`Database
+        (*PostgresSQL*)`")]
+
+        %% subgraph SI ["`Server Internal`"]
+        %%     style SI fill:#ff8
+        %%     direction TB
+        %%     E["`main()`"]
+        %%     F["`controllers
+        %%     (*RestController*)`"]
+        %% end
+    end
+
+
+    A <-->|HTTP Request/Response| B
+    B -.->|Distributes| C_0_
+    B -.->|Distributes| C_1_
+    B -.->|Distributes| C_2_
+    %% C_0_ <-->|"`Internal Comm. (*gRPC*)`"| C_1_
+    VDC <-->|"`Internal Comm. (*gRPC*)`"| D
+    C_0_ <-->|Business Logic Layer| E_0
+    C_1_ <-->|Business Logic Layer| E_1
+    C_2_ <-->|Business Logic Layer| E_2
+    %% VDC -->|HTTP Response / Json| A
+    %% C_1_ --- SI
+    %% E --> F
+    %% F -->|"`Expose & map REST API 
+    %% (return *json*)`"| C_1_

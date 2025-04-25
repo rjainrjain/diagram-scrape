@@ -1,0 +1,18 @@
+classDiagram
+    class Main{
+        -GradioInterface gui
+        -MetaGPT gpt_model
+        +__init__(gui: GradioInterface, gpt_model: MetaGPT)
+        +run()
+    }
+    class GradioInterface{
+        +__init__()
+        +create_interface()
+        +display_output(output: str)
+    }
+    class MetaGPT{
+        +__init__()
+        +generate_text(input: str): str
+    }
+    Main "1" -- "1" GradioInterface: uses
+    Main "1" -- "1" MetaGPT: uses

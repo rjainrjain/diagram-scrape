@@ -1,0 +1,51 @@
+flowchart TD
+    A[Start] --> B[Define Configuration]
+    B --> C[AffectedFamilies]
+    B --> D[UnaffectedFamilies]
+
+    subgraph AffectedFamilies
+        C --> C1[200 Family]
+        C --> C2[220 Family]
+        C --> C3[3000 Family]
+        C --> C4[3200 Family]
+        C --> C5[500 Family]
+        C --> C6[5000 Family]
+        C --> C7[5200 Family]
+        C --> C8[7000 Family]
+        C --> C9[7000b Family]
+        C --> C10[800 Family]
+        C --> C11[vm Family]
+        C --> C12[vmarm Family]
+    end
+
+    subgraph UnaffectedFamilies
+        D --> D1[400 Family]
+        D --> D2[1400 Family]
+        D --> D3[3400 Family]
+        D --> D4[5400 Family]
+        D --> D5[5400f Family]
+        D --> D6[7500 Family]
+    end
+
+    C1 --> E[PA-200]
+    C2 --> F[PA-220, PA-220-ZTP, PA-220R, PA-220R-ZTP]
+    C3 --> G[PA-3020, PA-3050, PA-3060]
+    C4 --> H[PA-3220, PA-3220-ZTP, PA-3250, PA-3250-ZTP, PA-3260]
+    C5 --> I[PA-500]
+    C6 --> J[PA-5020, PA-5050, PA-5060]
+    C7 --> K[PA-5220, PA-5250, PA-5260, PA-5280]
+    C8 --> L[PA-7050, PA-7080]
+    C9 --> M[PA-7050, PA-7080]
+    C10 --> N[PA-820, PA-820-ZTP, PA-850, PA-850-ZTP]
+    C11 --> O[PA-VM, 'PA-VM lite']
+    C12 --> P[PA-VMARM]
+
+    D1 --> Q[PA-410, PA-415, PA-415-5G, PA-440, PA-445, PA-450, PA-450R, PA-460]
+    D2 --> R[PA-1410, PA-1420]
+    D3 --> S[PA-3410, PA-3420, PA-3430, PA-3440]
+    D4 --> T[PA-5450]
+    D5 --> U[PA-5410, PA-5420, PA-5430, PA-5440, PA-5445]
+    D6 --> V[PA-7500]
+
+    style AffectedFamilies fill:#f9f,stroke:#333,stroke-width:2px
+    style UnaffectedFamilies fill:#ccf,stroke:#333,stroke-width:2px

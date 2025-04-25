@@ -1,0 +1,9 @@
+sequenceDiagram
+participant Client
+participant ClientHandler
+Client->>ClientHandler: SIGN_OUT (mail, name, password)
+alt success
+    ClientHandler->>Client: SIGN_OUT_OK
+else failure
+    ClientHandler->>Client: SIGN_OUT_KO (message)
+end

@@ -1,0 +1,52 @@
+classDiagram
+
+namespace pkg_rh {
+  class Personne
+  class Formateur 
+  class Apprenant
+  class  Groupe 
+  class  Ville
+  class  NivaeuScholaire
+  class Specialite
+}
+Personne <|-- Formateur
+Personne <|-- Apprenant 
+User "1" <-- "1" Formateur : "compte"
+User "1" <-- "1" Apprenant : "compte"
+Apprenant  "*" --> "1"  Groupe 
+Formateur "*" --> "1" Groupe
+Formateur "*" --> "1" Specialite
+Apprenant "*" --> "1" NivaeuScholaire
+Personne "*" --> "1" Ville
+
+
+Formateur "1" <-- "*" Projet  :"*"
+RealisationProjet "*" -- "1" Apprenant
+
+namespace pkg_authentification {
+class User
+}
+
+namespace pkg_creation_projets {
+  class Projet 
+}
+namespace pkg_realisation_projets {
+  class RealisationProjet
+}
+
+
+class Personne {
+    + id: int 
+    + nom: string 
+    + prenom: string 
+    %% + type : string : Voue ne pouvez pas ajouter le champs type ici, il doit être ajouter dans la base de données 
+    %% Le change type est sumbolisé dans le diagramme de classe par la notion d'héritage
+}
+
+class  Groupe {
+    id: int
+    nom: string
+    description: text
+}
+
+

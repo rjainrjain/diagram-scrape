@@ -1,0 +1,18 @@
+sequenceDiagram
+    participant ED as Event Detection
+    participant CBF as Calculate Brake Force
+    participant Cor as Corrections
+    participant Act as Activation
+    participant BCS as Brake Check System
+    participant Brakes
+
+    Note over ED,BCS: Monitoring for Events
+    ED->>BCS: Data from Radar, LiDAR, Camera
+    BCS->>CBF: Initiate Brake Force Calculation
+    CBF->>Brakes: Brake Pressure & Wheel Speed Data
+    Brakes->>BCS: Initial Brake Force Ready
+    BCS->>Cor: Assess for Corrections
+    Cor->>BCS: Corrections from IMU, Steering Angle, Environmental Data
+    BCS->>Act: Determine Activation Mode
+    Act->>Brakes: Activate Braking Systems (BAS, TCS, ABS, EBD)
+    Brakes-->>BCS: Braking Activated

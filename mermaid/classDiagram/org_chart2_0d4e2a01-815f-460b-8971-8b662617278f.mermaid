@@ -1,0 +1,72 @@
+classDiagram
+    class CEO {
+        Title: CEO
+        Name: John Doe
+    }
+
+    class CTO {
+        Title: CTO
+        Name: John Smith
+    }
+
+    class CFO {
+        Title: CFO
+        Name: Jane Smith
+    }
+
+    class COO {
+        Title: COO
+        Name: Mark Johnson
+    }
+
+    class DevTeamLead {
+        Title: Development Team Lead
+        Name: Emily Davis
+    }
+
+    class Developer1 {
+        Title: Developer 1
+        Name: Sarah Lee
+    }
+
+    class Developer2 {
+        Title: Developer 2
+        Name: Chris Brown
+    }
+
+    class FinManager {
+        Title: Finance Manager
+        Name: David Clark
+    }
+
+    class Accountant {
+        Title: Accountant
+        Name: Laura Adams
+    }
+
+    class OpsManager {
+        Title: Operations Manager
+        Name: Michael Harris
+    }
+
+    class OpsStaff1 {
+        Title: Operations Staff 1
+        Name: Olivia White
+    }
+
+    class OpsStaff2 {
+        Title: Operations Staff 2
+        Name: Kevin Green
+    }
+
+    CEO --> CTO
+    CEO --> CFO
+    CEO --> COO
+    CTO --> DevTeamLead
+    DevTeamLead --> Developer1
+    DevTeamLead --> Developer2
+    CFO --> FinManager
+    FinManager --> Accountant
+    COO --> OpsManager
+    OpsManager --> OpsStaff1
+    OpsManager --> OpsStaff2

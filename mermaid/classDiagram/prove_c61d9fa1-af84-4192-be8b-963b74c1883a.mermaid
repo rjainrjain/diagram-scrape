@@ -1,0 +1,179 @@
+classDiagram
+class AnnoScolastico {
+	annoScolasticoId: INTEGER
+	testo: TEXT
+	inizio: TEXT
+	fine: TEXT
+}
+
+class PeriodoValutazione {
+	periodoValutazioneId: INTEGER
+	annoScolasticoId: INTEGER
+	descrizione: TEXT
+	inizio: TEXT
+	fine: TEXT
+}
+
+class Classe {
+	classeId: INTEGER
+	annoScolasticoId: INTEGER
+	anno: INTEGER
+	sezione: TEXT
+	indirizzo: TEXT
+	articolazione: TEXT
+	maxGiustificazioni: INTEGER
+}
+
+class Studente {
+	studenteId: INTEGER
+	nome: TEXT
+	cognome: TEXT
+	sesso: TEXT
+	email: TEXT
+}
+
+class Registro {
+	studenteId: INTEGER
+	classeId: INTEGER
+}
+
+class Ritirato {
+	studenteId: INTEGER
+	classeId: INTEGER
+	data: TEXT
+}
+
+class Argomento {
+	argomentoId: INTEGER
+	argomento: TEXT
+}
+
+class Programmazione {
+	classeId: INTEGER
+	argomentoId: INTEGER
+}
+
+class Quesito {
+	quesitoId: INTEGER
+	argomentoId: INTEGER
+	quesito: TEXT
+}
+
+class Assenza {
+	studenteId: INTEGER
+	data: TEXT
+}
+
+class Giustificazione {
+	studenteId: INTEGER
+	data: TEXT
+	immotivata: INTEGER
+}
+
+class Griglia {
+	grigliaId: INTEGER
+	descrizione: TEXT
+}
+
+class PredisposizioneProva {
+	predisposizioneProvaId: INTEGER
+	classeId: INTEGER
+	grigliaId: INTEGER
+	descrizione: TEXT
+	data: TEXT
+	numeroQuesiti: INTEGER
+}
+
+class ArgomentiProva {
+	predisposizioneProvaId: INTEGER
+	argomentoId: INTEGER
+	numeroQuesiti: INTEGER
+	probabilita: INTEGER
+}
+
+class Indicatore {
+	indicatoreId: INTEGER
+	grigliaId: INTEGER
+	indicatore: TEXT
+	descrizione: TEXT
+	peso: REAL
+}
+
+class Descrittore {
+	descrittoreId: INTEGER
+	indicatoreId: INTEGER
+	descrittore: TEXT
+	descrizione: TEXT
+	livello: INTEGER
+}
+
+class Prova {
+	provaId: INTEGER
+	studenteId: INTEGER
+	predisposizioneProvaId: INTEGER
+	data: TEXT
+}
+
+class ValutazioneQuesito {
+	provaId: INTEGER
+	descrittoreId: INTEGER
+}
+
+class Verbale {
+	provaId: INTEGER
+	quesitoId: INTEGER
+}
+
+class Competenza {
+	competenzaId: INTEGER
+	competenza: TEXT
+	cittadinanza: INTEGER
+}
+
+class Conoscenza {
+	conoscenzaId: INTEGER
+	competenzaId: INTEGER
+	conoscenza: TEXT
+	obiettivoMinino: INTEGER
+}
+
+class Abilita {
+	abilitaId: INTEGER
+	competenzaId: INTEGER
+	abilita: TEXT
+	obiettivoMinino: INTEGER
+}
+
+class Traguardo {
+	argomentoId: INTEGER
+	competenzaId: INTEGER
+}
+
+PeriodoValutazione "*" -- "1" AnnoScolastico : annoScolasticoId
+Classe "*" -- "1" AnnoScolastico : annoScolasticoId
+Registro "*" -- "1" Classe : classeId
+Registro "*" -- "1" Studente : studenteId
+Ritirato "*" -- "1" Registro : studenteId
+Ritirato "*" -- "1" Registro : classeId
+Programmazione "*" -- "1" Argomento : argomentoId
+Programmazione "*" -- "1" Classe : classeId
+Quesito "*" -- "1" Argomento : argomentoId
+Assenza "*" -- "1" Studente : studenteId
+Giustificazione "*" -- "1" Studente : studenteId
+PredisposizioneProva "*" -- "1" Griglia : grigliaId
+PredisposizioneProva "*" -- "1" Classe : classeId
+ArgomentiProva "*" -- "1" Argomento : argomentoId
+ArgomentiProva "*" -- "1" PredisposizioneProva : predisposizioneProvaId
+Indicatore "*" -- "1" Griglia : grigliaId
+Descrittore "*" -- "1" Indicatore : indicatoreId
+Prova "*" -- "1" PredisposizioneProva : predisposizioneProvaId
+Prova "*" -- "1" Studente : studenteId
+ValutazioneQuesito "*" -- "1" Descrittore : descrittoreId
+ValutazioneQuesito "*" -- "1" Prova : provaId
+Verbale "*" -- "1" Quesito : quesitoId
+Verbale "*" -- "1" Prova : provaId
+Conoscenza "*" -- "1" Competenza : competenzaId
+Abilita "*" -- "1" Competenza : competenzaId
+Traguardo "*" -- "1" Competenza : competenzaId
+Traguardo "*" -- "1" Argomento : argomentoId
+

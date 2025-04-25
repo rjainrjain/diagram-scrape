@@ -1,0 +1,45 @@
+sequenceDiagram
+    participant M as Main
+    participant N1 as Node(1)
+    participant N2 as Node(2)
+    participant N4 as Node(4)
+    participant N5 as Node(5)
+    participant N3 as Node(3)
+    participant Null as Null
+
+    M->>+N1: preOrderTraversal(1)
+    Note over N1: Process Node 1
+    
+    N1->>+N2: preOrderTraversal(2)
+    Note over N2: Process Node 2
+    
+    N2->>+N4: preOrderTraversal(4)
+    Note over N4: Process Node 4
+    
+    N4->>Null: preOrderTraversal(null)
+    Note over Null: Left child - return
+    N4->>Null: preOrderTraversal(null)
+    Note over Null: Right child - return
+    N4-->>-N2: return
+    
+    N2->>+N5: preOrderTraversal(5)
+    Note over N5: Process Node 5
+    
+    N5->>Null: preOrderTraversal(null)
+    Note over Null: Left child - return
+    N5->>Null: preOrderTraversal(null)
+    Note over Null: Right child - return
+    N5-->>-N2: return
+    
+    N2-->>-N1: return
+    
+    N1->>+N3: preOrderTraversal(3)
+    Note over N3: Process Node 3
+    
+    N3->>Null: preOrderTraversal(null)
+    Note over Null: Left child - return
+    N3->>Null: preOrderTraversal(null)
+    Note over Null: Right child - return
+    N3-->>-N1: return
+    
+    N1-->>-M: return

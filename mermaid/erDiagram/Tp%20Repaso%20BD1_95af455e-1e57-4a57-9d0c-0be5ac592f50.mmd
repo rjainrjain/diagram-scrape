@@ -1,0 +1,109 @@
+erDiagram
+    Aeronave {
+        int id_aeronave PK
+        str nombre
+        str descripcion
+    }
+
+    Bancos{
+        int id_banco PK
+        str nombre
+        str descripcion
+        str mail
+    }
+
+    Pasaje {
+        int id_pasaje PK
+        int precio_vuelo
+        int precio_asiento
+        int tarjeta
+        datetime fechayhora
+        int id_vuelo FK
+        int id_pasajero FK
+        int id_asiento FK
+        int id_banco FK
+    }
+
+    Asiento {
+        int id_asiento PK
+        boolean ocupado
+        str nombre
+        str descripcion
+        int precio
+        int id_vuelo FK
+    }
+
+    Vuelo{
+        int id_vuelo PK
+        datetime fechayhora_salida
+        datetime fechayhora_llegada
+        int precio
+        datetime hora_embarque
+        int id_aeropuerto_salida FK
+        int id_aeropuerto_llegada FK
+        int id_puerta FK
+        int id_avion FK
+    }
+
+    Puerta {
+        int id_puerta PK
+        str descripcion
+    }
+
+    Pasajero {
+        int id_pasajero PK
+        str mail
+        str num_telefono
+        int DNI FK
+    }
+
+    DNI {
+        int num_dni PK
+        str nombres
+        str apellidos
+        str direccion
+        date fecha_nacimiento
+        int id_tipo_documento
+    }
+
+    Tipo_documento {
+        int id_tipo_documento PK
+        int tipo_doc
+        str descripcion
+    }
+
+    Aeropuerto {
+        int id_aeropuerto PK
+        str nombre
+        int id_ciudad
+        str descripcion
+    }
+
+    Ciudad {
+        int id_ciudad PK
+        str nombre
+        str provincia
+        str descripcion
+
+    }
+
+    Reserva {
+        int id_reserva PK
+        str fecha_hora_emision
+        int id_pasajero FK
+        int id_vuelo FK
+    }
+
+    Aeronave ||--|{ Vuelo: tiene
+    Bancos ||--o{ Pasaje: tiene
+    Pasaje }|--|| Asiento: tiene
+    Pasaje ||--|{ Vuelo: tiene
+    Puerta ||--|| Vuelo: tiene
+    Pasaje }|--|| Pasajero: tiene
+    Asiento }|--|| Vuelo: tiene
+    Pasajero ||--|| DNI: tiene
+    DNI ||--|| Tipo_documento: tiene
+    Pasajero ||--|{ Reserva: tiene
+    Ciudad ||--|{ Aeropuerto: tiene
+    Aeropuerto ||--|{ Vuelo:  tiene
+    Reserva }|--|| Vuelo: tiene

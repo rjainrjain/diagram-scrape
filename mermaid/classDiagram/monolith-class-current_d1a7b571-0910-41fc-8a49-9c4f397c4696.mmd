@@ -1,0 +1,52 @@
+classDiagram
+    class Monolith {
+        <<service>>
+    }
+
+    Monolith "1" --> "1" RoomManager: starts
+    Monolith "1" --> "1" ClientManager: starts
+
+    class Redis {
+        <<service>>
+    }
+
+    class RoomManager {
+        Room[] room
+    }
+
+    RoomManager "1" o-- "0..*" Room: collects
+
+    class Room {
+        String name
+        bool isTemporary
+        RoomUser[] users
+        ...
+    }
+
+    class ClientManager {
+        Client[] connections
+        Map roomStates
+        Map roomJoins
+    }
+
+    RoomManager .. ClientManager: via Redis Pubsub
+    RoomManager --> Redis: connects to
+    ClientManager --> Redis: connects to
+
+    class Client {
+        String id
+        WebSocket socket
+        SessionInfo session
+        String room
+        AuthToken token
+    }
+
+    ClientManager "1" o-- "0..*" Client: collects
+
+    class RoomUser {
+        String id
+        AuthToken token
+    }
+
+    Room "1" o-- "0..*" RoomUser: collects
+    RoomUser "1" <.. "1" Client: represented by

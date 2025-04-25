@@ -1,0 +1,10 @@
+sequenceDiagram
+    participant browser
+    participant server
+
+    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+    activate server
+    server-->>browser: 201 Created Content-Type: Json
+    deactivate server
+
+     Note right of browser: In this case, we are only one request made on POST. Where JavaScript code made all the work, returning HTML, CSS y Json

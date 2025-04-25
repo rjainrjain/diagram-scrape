@@ -1,0 +1,8 @@
+sequenceDiagram
+    participant browser
+    participant server
+
+    Note right of browser: The browser prevent the execution of<br>the default submit form callback function and executes the new one,<br>which adds the new note in the local array "Notes" and rerenders the notes
+    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+    activate server
+    Note right of server: The server adds the new note into the "notes" array

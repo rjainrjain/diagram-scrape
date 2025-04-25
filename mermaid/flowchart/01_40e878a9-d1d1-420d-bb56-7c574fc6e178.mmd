@@ -1,0 +1,14 @@
+flowchart TD
+    a[반복 시작]
+    a --> b[i = 1]
+    b --> c[i가 100이하인가?]
+    c --> |true| d[i가 홀수인가?]
+    c -----> |false| z[반복 종료]
+    d --> |true| e[/i 출력/]
+    d --> |false| f[i를 1 증가]
+    e --> f
+    f --> c
+
+style d fill:dodgerblue,color:white
+style e fill:dodgerblue,color:white
+  

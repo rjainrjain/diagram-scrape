@@ -1,0 +1,30 @@
+---
+Azure ressources
+---
+classDiagram
+  class NetworkSecurityGroup
+    
+  class SecurityRule
+
+  class VirtualNetwork
+
+  class SubNet
+
+  class NetworkInterface
+
+  class VirtualMachine
+
+  class PublicIp
+
+  NetworkSecurityGroup *-- "1..n" SecurityRule
+  VirtualNetwork *.. "0..n" SubNet
+  SubNet <.. NetworkSecurityGroup : ApplyOn
+  NetworkInterface <.. NetworkSecurityGroup : ApplyOn
+  VirtualMachine --> NetworkInterface
+  VirtualMachine --> VirtualNetwork : isIn
+
+  NetworkInterface .. PublicIp : Has
+
+
+
+

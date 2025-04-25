@@ -1,0 +1,12 @@
+flowchart TD;
+
+1["`El *sistema cliente* inicia una nueva sesión`"] --> 2[Feeder inicia una nueva sesión y manda el primer conjunto de recomendaciones]
+2 --> 3[El sistema cliente recibe las recomendaciones y las muestra al usuario final]
+3 --> 4[El usuario final selecciona o usa una recomendación]
+4 --> 5[El sistema cliente envía la selección del usuario final a Feeder, para actualizar las preferencias de la sesión]
+5 --> 6[Feeder actualiza las preferencias de la sesión]
+6 --> 7[El usuario consume o ve todas las recomendaciones y el sistema cliente solicita un nuevo batch de recomendaciones]
+7 --> 8[Feeder manda un nuevo batch de recomendaciones]
+8 -.-> 7
+8 -.-> 4
+

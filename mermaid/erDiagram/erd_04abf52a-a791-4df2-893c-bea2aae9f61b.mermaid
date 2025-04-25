@@ -1,0 +1,49 @@
+
+erDiagram
+    WATCHED }o--|| USER : has
+    TO_WATCH }o--|| USER : has
+    USER ||--o{ USER_RATING : gives
+    CONTENT ||--o{ USER_RATING : has
+    TO_WATCH||--|| CONTENT : has
+    WATCHED||--|| CONTENT : has
+
+
+    WATCHED{
+        int user_id PK, FK
+        int content_id PK, FK
+    }
+
+    TO_WATCH{
+                int user_id PK, FK
+
+        int content_id PK, FK
+    }
+
+    CONTENT {
+        int id PK
+        string title
+        string description
+        string director
+        date release_date
+        string type
+        string genres
+    }
+
+    USER {
+        int id PK
+        string email
+        string name
+        date created_at
+        date edited_at
+        bool public_profile
+    }
+
+    USER_RATING {
+        int id PK
+        int rating
+        string message
+        date created_at
+        date edited_at
+        id user_id FK "comment author"
+        id content_id FK
+    }

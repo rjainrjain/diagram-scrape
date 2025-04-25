@@ -1,0 +1,43 @@
+---
+title: Edit Tournament
+---
+sequenceDiagram
+    actor admin as Administrator
+
+    participant tournament as Tournament
+    participant team as Team
+    participant match as Match
+    participant rank as Rank
+
+    admin ->> tournament: edit tournament
+    activate admin
+    activate tournament
+    alt edit team
+        admin ->> team: edit team name
+        activate team
+        team ->> tournament: validate name
+        tournament ->> team: set name
+
+        admin ->> team: edit team member
+        team ->> tournament: validate member
+        tournament ->> team: update members
+        deactivate team
+    else edit matches
+        alt is round robin
+            admin ->> tournament: update match
+            tournament ->> match: update scores
+            activate match
+            match ->> rank: update rank
+            activate rank
+        else is elimination
+            opt does not effect other matches
+                admin ->> tournament: update match
+                deactivate admin
+                tournament ->> match: update scores
+                deactivate tournament
+                match ->> rank: update rank
+                deactivate match
+                deactivate rank
+            end
+        end
+    end

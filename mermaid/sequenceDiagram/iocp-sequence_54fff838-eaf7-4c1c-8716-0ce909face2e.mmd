@@ -1,0 +1,12 @@
+sequenceDiagram
+  Main-->>Kernel: Create a completion Q
+  loop Until end
+    Requestor-->>Kernel: Request IO work
+    Kernel-->>Kernel: IO work with driver
+    Kernel-->>Kernel: Enqueue completion to Q
+  end
+  loop Until completion end
+    Receiver-->>Kernel: Dequeue completion from Q
+    Kernel-->>Receiver: Return a completion status
+    Receiver-->>Receiver: Process a result from completion
+  end

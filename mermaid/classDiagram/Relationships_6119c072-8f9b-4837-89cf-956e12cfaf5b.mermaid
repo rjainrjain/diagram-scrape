@@ -1,0 +1,53 @@
+classDiagram
+    class Generality {
+        <<enumeration>>
+        full
+        partial
+        minimal
+    }
+    
+    class FoodItem {
+        +UUID id
+        +String name
+        +Generality generality
+    }
+    
+    class Category {
+        +UUID id
+        +String name
+        +FoodItem[] foodItems
+    }
+    
+    class Aisle {
+        +UUID id
+        +String name
+        +Category[] categories
+    }
+    
+    class FoodToGet {
+        +UUID id
+        +FoodItem foodItem
+        +Int quantity
+    }
+    
+    class Trip {
+        +UUID id
+        +FoodToGet[] foodsToGet
+        +Date date
+    }
+    
+    class ShoppingListManager {
+        +Aisle[] aisles
+        +Trip? currentTrip
+        +addFoodItem(String, String, String)
+        +createTrip(String[]) Trip
+        +organizeTrip(Trip) Map
+    }
+    
+    FoodItem --> "1" Generality : has
+    Categories --> "*" FoodItem : contains
+    Aisle --> "*" Category : contains
+    FoodToGet --> "1" FoodItem : references
+    Trip --> "*" FoodToGet : contains
+    ShoppingListManager --> "*" Aisle : manages
+    ShoppingListManager --> "0..1" Trip : manages

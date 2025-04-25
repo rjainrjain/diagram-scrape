@@ -1,0 +1,68 @@
+stateDiagram-v2
+    [*] --> SystemStartup
+    SystemStartup --> SafetyCheck
+
+    state SafetyCheck {
+        [*] --> CheckSensors
+        CheckSensors --> SensorsFailed: Any sensor failure
+        CheckSensors --> InitialState: All sensors OK
+        SensorsFailed --> EmergencyShutdown
+    }
+
+    SafetyCheck --> EnvironmentCheck: System OK
+
+    state EnvironmentCheck {
+        [*] --> MonitorCO2
+        MonitorCO2 --> FAECheck
+        FAECheck --> StartFAE: CO2 > 1000ppm
+        StartFAE --> StopFAE: CO2 < 800ppm
+        
+        state "Humidity Control" as HumidityControl {
+            [*] --> CheckHumidity
+            CheckHumidity --> StartHumidifier: < 85%
+            CheckHumidity --> StopHumidifier: > 95%
+            StartHumidifier --> WaitHumidity
+            WaitHumidity --> CheckHumidity: After 5min
+        }
+        
+        state "Temperature Control" as TempControl {
+            [*] --> CheckTemperature
+            CheckTemperature --> StartHeating: < 55°F
+            CheckTemperature --> StartCooling: > 65°F
+            StartHeating --> WaitTemp
+            StartCooling --> WaitTemp
+            WaitTemp --> CheckTemperature: After 5min
+        }
+    }
+
+    state "Safety Monitoring" as SafetyMonitoring {
+        [*] --> ContinuousMonitor
+        ContinuousMonitor --> EmergencyShutdown: Temperature > 75°F
+        ContinuousMonitor --> EmergencyShutdown: Humidity > 98%
+        ContinuousMonitor --> EmergencyShutdown: Water detected
+        ContinuousMonitor --> EmergencyShutdown: Power fluctuation
+    }
+
+    state EmergencyShutdown {
+        [*] --> StopAllSystems
+        StopAllSystems --> TriggerAlarm
+        TriggerAlarm --> RequireManualReset
+    }
+
+    EnvironmentCheck --> SafetyMonitoring
+    SafetyMonitoring --> EnvironmentCheck: All parameters normal
+    SafetyMonitoring --> EmergencyShutdown: Safety threshold exceeded
+
+    note right of SafetyCheck
+        - Verify all sensors working
+        - Check power systems
+        - Validate control responses
+    end note
+
+    note right of SafetyMonitoring
+        Critical Thresholds:
+        - Temp: < 50°F or > 75°F
+        - Humidity: < 80% or > 98%
+        - CO2: > 2000ppm
+        - Water detection on floor
+    end note

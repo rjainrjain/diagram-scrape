@@ -1,0 +1,23 @@
+classDiagram
+    class Admin {
+        +String nom
+        +String prenom
+        +String email
+        +String telephone
+        +String adresse
+        +String ville
+        +String pays
+    }
+
+    class Produit {
+        +String id
+        +String nom
+        +String description
+        +double prix
+        +int quantiteStock
+        +String categorie
+        +Date dateAjout
+    }
+
+    Admin "1" --> "0..*" Produit : gère
+

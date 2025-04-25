@@ -1,0 +1,17 @@
+sequenceDiagram
+    participant User
+    participant API
+    participant Business Logic
+    participant Database
+
+    User ->> API: POST /places/<place_id>/reviews
+    API ->> Business Logic: validate_data(data) and post_review(data)
+    Business Logic ->> Database: is_place_exist(place_id) : Check if place exists (SELECT)
+    Business Logic ->> Database: Place already exists or not
+    alt place exists
+        Business Logic ->> Database: save() : Save new review (INSERT)
+        Database -->> Business Logic: Confirm save
+    end
+    Business Logic -->> API: Return response
+    API -->> User: Return Success (201) / Failure (400)
+

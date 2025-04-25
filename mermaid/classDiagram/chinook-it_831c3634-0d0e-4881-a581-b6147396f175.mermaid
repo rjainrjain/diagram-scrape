@@ -1,0 +1,110 @@
+classDiagram
+class Album {
+	albumId: INTEGER
+	titolo: TEXT
+	artistaId: INTEGER
+}
+
+class Artista {
+	artistaId: INTEGER
+	nome: TEXT
+}
+
+class Cliente {
+	clienteId: INTEGER
+	nome: TEXT
+	cognome: TEXT
+	societa: TEXT
+	indirizzo: TEXT
+	citta: TEXT
+	stato: TEXT
+	nazione: TEXT
+	codicePostale: TEXT
+	telefono: TEXT
+	fax: TEXT
+	email: TEXT
+	assistenteId: INTEGER
+}
+
+class Dipendente {
+	dipendenteId: INTEGER
+	cognome: TEXT
+	nome: TEXT
+	titolo: TEXT
+	superioreId: INTEGER
+	dataNascita: DATETIME
+	dataAssunzione: DATETIME
+	indirizzo: TEXT
+	citta: TEXT
+	stato: TEXT
+	nazione: TEXT
+	codicePostale: TEXT
+	telefono: TEXT
+	fax: TEXT
+	email: TEXT
+}
+
+class Genere {
+	genereId: INTEGER
+	nome: TEXT
+}
+
+class Fattura {
+	fatturaId: INTEGER
+	clienteId: INTEGER
+	dataFatturazione: DATETIME
+	indirizzoFatturazione: TEXT
+	cittaFatturazione: TEXT
+	statoFatturazione: TEXT
+	nazioneFatturazione: TEXT
+	codicePostaleFatturazione: TEXT
+	totale: REAL
+}
+
+class LineaFattura {
+	lineaFatturaId: INTEGER
+	fatturaId: INTEGER
+	tracciaId: INTEGER
+	prezzoUnitario: REAL
+	quantita: INTEGER
+}
+
+class FormatoMultimediale {
+	formatoMultimedialeId: INTEGER
+	nome: TEXT
+}
+
+class Playlist {
+	playlistId: INTEGER
+	nome: TEXT
+}
+
+class TracciaPlaylist {
+	playlistId: INTEGER
+	tracciaId: INTEGER
+}
+
+class Traccia {
+	tracciaId: INTEGER
+	nome: TEXT
+	albumId: INTEGER
+	formatoMultimedialeId: INTEGER
+	genereId: INTEGER
+	compositori: TEXT
+	millisecondi: INTEGER
+	byte: INTEGER
+	prezzoUnitario: REAL
+}
+
+Album "*" -- "1" Artista : artistaId
+Cliente "*" -- "1" Dipendente : assistenteId
+Dipendente "*" -- "1" Dipendente : superioreId
+Fattura "*" -- "1" Cliente : clienteId
+LineaFattura "*" -- "1" Traccia : tracciaId
+LineaFattura "*" -- "1" Fattura : fatturaId
+TracciaPlaylist "*" -- "1" Traccia : tracciaId
+TracciaPlaylist "*" -- "1" Playlist : playlistId
+Traccia "*" -- "1" FormatoMultimediale : formatoMultimedialeId
+Traccia "*" -- "1" Genere : genereId
+Traccia "*" -- "1" Album : albumId
+

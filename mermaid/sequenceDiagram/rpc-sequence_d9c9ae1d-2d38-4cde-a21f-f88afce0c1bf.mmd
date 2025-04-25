@@ -1,0 +1,9 @@
+sequenceDiagram
+  Client-->>ClientLibrary: Call a procedure via interface.
+  ClientLibrary-->>ClientLibrary: Create a request from stub calling.
+  ClientLibrary-->>ServerLibrary: Send a request via network.
+  ServerLibrary-->>ServerLibrary: Find an actual procedure in registry.
+  ServerLibrary-->>Server: Call a real procedure.
+  Server-->ServerLibrary: Return a result.
+  ServerLibrary-->>ClientLibrary: Respond a result via network.
+  ClientLibrary-->>Client: Pass the result.

@@ -1,0 +1,67 @@
+erDiagram
+    Student["学生"] {
+        string id PK
+        string name
+        string password
+    }
+    StuTodo["学生待办"] {
+        string id PK
+        string stu_id FK
+        string title
+        string detail
+        date due
+        bool done
+        bool display 
+    }
+    Event["事件"] {
+        string id PK
+        string name        
+        string location        
+        number start_hour        
+        number end_hour        
+        string stud_id FK
+    }
+    Msg["通知"] {
+        string id PK
+        string title
+        string detail
+        date date
+        bool is_draft
+    }
+    Class["班级"] {
+        string id PK
+        string tch_id FK
+        string name
+    }
+    Teacher["老师"] {
+        string id PK
+        string name
+        string password
+    }
+    StuMsgRead["学生消息阅读表(关系表)"] {
+        string stu_id PK,FK
+        string msg_id PK,FK
+        bool read
+    }
+    ClassMsgLink["班级通知关联表(关系表)"] {
+        string msg_id PK,FK
+        string cla_id PK,FK
+    }
+    StuClassLink["学生班级关联表(关系表)"] {
+        string stu_id PK,FK
+        string cla_id PK,FK
+    }
+
+    Student ||--o{ Event: "拥有"
+    Student ||--o{ StuTodo: "拥有"
+
+    Teacher ||--o{ Class: "管理"
+
+    Student }o--o{ StuClassLink: "归属"
+    StuClassLink }o--o{ Class: "包含"
+
+    Student ||--o{ StuMsgRead: "阅读"
+    StuMsgRead }o--|| Msg: "被阅读"
+
+    Class ||--o{ ClassMsgLink: "关联"
+    ClassMsgLink ||--o{ Msg: "关联"

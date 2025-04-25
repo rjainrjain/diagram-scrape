@@ -1,0 +1,14 @@
+sequenceDiagram
+    participant browser
+    participant server
+
+    Note right of browser: document.querySelector(`input[name="note"]`).value = "こんにちは"<br/>document.querySelector(`input[type="submit"]`).click()
+    Note right of browser: formSubmitEvent.preventDefault()<br/>note = { content: "こんにちは", date:new Date() }<br/>notes.push(note)<br/>redrawNotes()<br/>clearForm()<br/>sendToServer(note) // in JSON
+
+    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa<br/>( req.body: note )
+    activate server
+    Note left of server: createNote(formatNote(req.body))
+    server-->>browser: HTTP status code 201<br/>( {"message":"note created"} )
+    deactivate server
+
+    Note right of browser: console.log(`{"message":"note created"}`)

@@ -1,0 +1,162 @@
+```mermaid
+classDiagram
+class attore {
+	attore_id: numeric
+	nome: VARCHAR(45)
+	cognome: VARCHAR(45)
+	ultima_modifica: TIMESTAMP
+}
+
+class nazione {
+	nazione_id: SMALLINT
+	nazione: VARCHAR(50)
+	ultima_modifica: TIMESTAMP
+}
+
+class citta {
+	citta_id: INT
+	citta: VARCHAR(50)
+	nazione_id: SMALLINT
+	ultima_modifica: TIMESTAMP
+}
+
+class indirizzo {
+	indirizzo_id: INT
+	indirizzo: VARCHAR(50)
+	indirizzo2: VARCHAR(50)
+	quartiere: VARCHAR(20)
+	citta_id: INT
+	codice_postale: VARCHAR(10)
+	telefono: VARCHAR(20)
+	ultima_modifica: TIMESTAMP
+}
+
+class lingua {
+	lingua_id: SMALLINT
+	nome: CHAR(20)
+	ultima_modifica: TIMESTAMP
+}
+
+class categoria {
+	categoria_id: SMALLINT
+	nome: VARCHAR(25)
+	ultima_modifica: TIMESTAMP
+}
+
+class cliente {
+	cliente_id: INT
+	negozio_id: INT
+	nome: VARCHAR(45)
+	cognome: VARCHAR(45)
+	email: VARCHAR(50)
+	indirizzo_id: INT
+	attivo: CHAR(1)
+	data_creazione: TIMESTAMP
+	ultima_modifica: TIMESTAMP
+}
+
+class film {
+	film_id: INT
+	titolo: VARCHAR(255)
+	descrizione: BLOB SUB_TYPE TEXT
+	anno_uscita: VARCHAR(4)
+	lingua_id: SMALLINT
+	lingua_originale_id: SMALLINT
+	durata_noleggio: SMALLINT
+	canone_noleggio: DECIMAL(4,2)
+	durata: SMALLINT
+	costo_rimpiazzo: DECIMAL(5,2)
+	valutazione: VARCHAR(10)
+	caratteristiche_particolari: VARCHAR(100)
+	ultima_modifica: TIMESTAMP
+}
+
+class film_attore {
+	attore_id: INT
+	film_id: INT
+	ultima_modifica: TIMESTAMP
+}
+
+class film_categoria {
+	film_id: INT
+	categoria_id: SMALLINT
+	ultima_modifica: TIMESTAMP
+}
+
+class film_testo {
+	film_id: SMALLINT
+	titolo: VARCHAR(255)
+	descrizione: BLOB SUB_TYPE TEXT
+}
+
+class inventario {
+	inventario_id: INT
+	film_id: INT
+	negozio_id: INT
+	ultima_modifica: TIMESTAMP
+}
+
+class personale {
+	personale_id: SMALLINT
+	nome: VARCHAR(45)
+	cognome: VARCHAR(45)
+	indirizzo_id: INT
+	fotografia: BLOB
+	email: VARCHAR(50)
+	negozio_id: INT
+	attivo: SMALLINT
+	username: VARCHAR(16)
+	password: VARCHAR(40)
+	ultima_modifica: TIMESTAMP
+}
+
+class negozio {
+	negozio_id: INT
+	responsabile_personale_id: SMALLINT
+	indirizzo_id: INT
+	ultima_modifica: TIMESTAMP
+}
+
+class pagamento {
+	pagamento_id: INT
+	cliente_id: INT
+	personale_id: SMALLINT
+	noleggio_id: INT
+	importo: DECIMAL(5,2)
+	data_pagamento: TIMESTAMP
+	ultima_modifica: TIMESTAMP
+}
+
+class noleggio {
+	noleggio_id: INT
+	data_noleggio: TIMESTAMP
+	inventario_id: INT
+	cliente_id: INT
+	data_restituzione: TIMESTAMP
+	personale_id: SMALLINT
+	ultima_modifica: TIMESTAMP
+}
+
+citta "*" -- "1" nazione : nazione_id
+indirizzo "*" -- "1" citta : citta_id
+cliente "*" -- "1" indirizzo : indirizzo_id
+cliente "*" -- "1" negozio : negozio_id
+film "*" -- "1" lingua : lingua_originale_id
+film "*" -- "1" lingua : lingua_id
+film_attore "*" -- "1" film : film_id
+film_attore "*" -- "1" attore : attore_id
+film_categoria "*" -- "1" categoria : categoria_id
+film_categoria "*" -- "1" film : film_id
+inventario "*" -- "1" film : film_id
+inventario "*" -- "1" negozio : negozio_id
+personale "*" -- "1" indirizzo : indirizzo_id
+personale "*" -- "1" negozio : negozio_id
+negozio "*" -- "1" indirizzo : indirizzo_id
+negozio "*" -- "1" personale : responsabile_personale_id
+pagamento "*" -- "1" personale : personale_id
+pagamento "*" -- "1" cliente : cliente_id
+pagamento "*" -- "1" noleggio : noleggio_id
+noleggio "*" -- "1" cliente : cliente_id
+noleggio "*" -- "1" inventario : inventario_id
+noleggio "*" -- "1" personale : personale_id
+```

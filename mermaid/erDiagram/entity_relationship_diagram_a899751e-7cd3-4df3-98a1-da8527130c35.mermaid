@@ -1,0 +1,180 @@
+erDiagram
+
+
+    ROOT{
+
+    }
+
+    ROOT ||--o| PROJECT : has
+    ROOT ||--o| RECENT_PROJECT : has
+
+    PROJECT {
+        string file
+        string path
+    }
+
+    RECENT_PROJECT {
+        string path
+    }
+
+    PROJECT ||--|| GLOBAL_COMPONENT : has
+    PROJECT ||--|| ENTITY_COMPONENT : has
+    PROJECT ||--|| REPOSITORY_COMPONENT : has
+    PROJECT ||--|| INTERACTOR_COMPONENT : has
+    PROJECT ||--|| APPLICATION_COMPONENT : has
+    PROJECT ||--|| DTO_COMPONENT : has
+    PROJECT ||--|| CQRS_COMPONENT : has
+    PROJECT ||--|| CONTRACTS_COMPONENT : has
+    PROJECT ||--|| PRESENTER_COMPONENT : has
+    PROJECT ||--|{ FRONT_END_COMPONENT : has
+
+    GLOBAL_COMPONENT {
+        string application_name
+        string application_cpp_domain_name
+        string organisation_name
+        string organisation_domain
+    }
+    ENTITY_COMPONENT {
+        string folder_path
+    }
+
+    ENTITY_COMPONENT ||--|{ ENTITY : has
+
+    ENTITY {
+        string name
+        ENTITY parent
+        bool only_for_heritage
+    }
+
+    ENTITY ||--o{ ENTITY : has
+    ENTITY ||--o{ ENTITY_FIELD : has
+
+    ENTITY_FIELD {
+        string type
+        string name
+        bool ordered
+        bool strong
+    }
+
+    REPOSITORY_COMPONENT {
+        string repository_folder_path
+        string base_folder_path
+    }
+
+    REPOSITORY_COMPONENT ||--|{ REPOSITORY : has
+
+    REPOSITORY {
+        ENTITY entity_name
+        string lazy_loaders
+    }
+    REPOSITORY ||--|| ENTITY : references
+
+    INTERACTOR_COMPONENT {
+        string folder_path
+        string create_undo_redo_interactor
+    }
+
+    APPLICATION_COMPONENT {
+        string common_cmake_folder_path
+    }
+
+    APPLICATION_COMPONENT ||--|| APPLICATION_FEATURE : has
+
+    APPLICATION_FEATURE {
+        string name
+        string dto_identical_to_entity
+    }
+    
+    APPLICATION_FEATURE ||--o{ CUSTOM_COMMAND : has
+    APPLICATION_FEATURE ||--o{ CUSTOM_QUERY : has
+    APPLICATION_FEATURE ||--|| APPLICATION_FEATURE_CRUD : has
+
+    APPLICATION_FEATURE_CRUD {
+        bool enabled
+        bool get
+        bool get_all
+        bool get_with_details
+        bool create
+        bool remove
+        bool get
+        bool update
+    }
+
+    CUSTOM_COMMAND {
+        string name
+        bool validator
+        bool undo
+        int minimum_progress_time
+        CUSTOM_DTO dto_in
+        CUSTOM_DTO dto_out
+    }
+
+    CUSTOM_COMMAND ||--o{ ENTITY : references
+    CUSTOM_COMMAND ||--o| CUSTOM_DTO : has
+
+
+    CUSTOM_QUERY {
+        string name
+        bool validator
+        bool undo
+        int minimum_progress_time
+        CUSTOM_DTO dto_in
+        CUSTOM_DTO dto_out
+    }
+
+    CUSTOM_QUERY ||--o{ ENTITY : references
+    CUSTOM_QUERY ||--o| CUSTOM_DTO : has
+
+    DTO_COMPONENT {
+        string common_cmake_folder_path
+    }
+
+    CUSTOM_DTO {
+        string type_prefix
+    }
+
+    CUSTOM_DTO ||--o{ CUSTOM_DTO_FIELD : has
+
+    CUSTOM_DTO_FIELD {
+        string type
+        string name
+    }
+
+    CQRS_COMPONENT{
+        string common_cmake_folder_path
+    }
+
+    CONTRACTS_COMPONENT{
+        string inverted_app_domain
+        string folder_path
+    }
+
+    PRESENTER_COMPONENT {
+        string folder_path
+        string create_undo_and_redo_singles
+    }
+
+    PRESENTER_COMPONENT ||--o{ PRESENTER_LIST_MODEL: has
+    PRESENTER_COMPONENT ||--o{ PRESENTER_SINGLE: has
+
+    PRESENTER_LIST_MODEL {
+        string name
+        ENTITY entity
+        ENTITY_FIELD displayed_field
+        ENTITY in_relation_of
+        ENTITY_FIELD relation_field_name
+    }
+    PRESENTER_LIST_MODEL ||--|| ENTITY : references
+    PRESENTER_LIST_MODEL ||--|| ENTITY_FIELD : references
+
+    PRESENTER_SINGLE {
+        string name
+        ENTITY entity
+    }
+
+    PRESENTER_SINGLE ||--|| ENTITY : references
+
+    FRONT_END_COMPONENT {
+        string front_name
+        string folder_path
+    }

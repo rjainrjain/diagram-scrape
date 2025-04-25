@@ -1,0 +1,27 @@
+classDiagram
+    class Scenario {
+        <<function>>
+        socket: WebSocket
+        user: UserEmulator
+    }
+
+    class RoomState {
+        state: object
+        you: string
+        users: object[]
+
+        +handleMessage(msg: ServerMessage)
+    }
+
+    class UserEmulator {
+        room: string
+        token: string
+        socket: WebSocket
+        state: RoomState
+
+        +handleMessage(msg: ServerMessage)
+        +act()
+    }
+
+    Scenario --* UserEmulator
+    UserEmulator --* RoomState

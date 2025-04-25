@@ -1,0 +1,23 @@
+
+    sequenceDiagram
+        participant M as Main
+        participant G as Game
+        participant P as Player
+        participant F as Food
+        M->>G: start game
+        G->>P: move player
+        G->>F: draw food
+        P->>P: collide with food
+        G->>G: update score
+        G->>M: display score
+        G->>G: check game over
+        G->>M: display game over
+        M->>G: pause game
+        G->>G: pause game
+        M->>G: resume game
+        G->>G: resume game
+        M->>G: restart game
+        G->>G: restart game
+        M->>G: end game
+        G->>G: end game
+    

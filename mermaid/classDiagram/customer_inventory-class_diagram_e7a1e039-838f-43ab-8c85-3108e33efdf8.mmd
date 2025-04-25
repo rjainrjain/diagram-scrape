@@ -1,0 +1,58 @@
+%%{init: {'theme': 'base', 'themeVariables': {
+  'lineColor': '#a8201a',
+  'primaryColor': '#fae5c7',
+  'primaryBorderColor': '#0f8b8d'
+}}}%%
+classDiagram
+  direction LR
+  class Party {
+    string id
+    string name
+  }
+  class CustomerInventory {
+    Party relatedParty
+    List~Product~ products
+  }
+  class ProductOfferingRef {
+    string id
+    string name
+    string agentId
+    Quantity unitOfMeasure
+  }
+  class Quantity {
+    string amount
+    string units
+  }
+  class Product {
+    string id
+    string partnerId
+    string description
+    ProductOfferingRef productOffering
+    ProductPrice productPrice
+  }
+  class ProductPrice {
+    PriceType priceType
+    DataTime validTill
+    string description
+    Quantity unitOfMeasure
+    Price price
+  }
+  class PriceType {
+    <<Enumeration>>
+    recurring
+    none-recurring
+    penalty
+    one-time
+  }
+  class Price {
+    string unit
+    float value
+  }
+  Party --o CustomerInventory
+  CustomerInventory *-- Product
+  ProductOfferingRef --o Product
+  ProductOfferingRef *-- Quantity
+  Product o-- ProductPrice
+  Quantity --* ProductPrice
+  ProductPrice o-- PriceType
+  ProductPrice *-- Price

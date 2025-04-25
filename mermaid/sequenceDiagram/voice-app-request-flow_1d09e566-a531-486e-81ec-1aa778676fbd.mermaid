@@ -1,0 +1,15 @@
+sequenceDiagram
+    participant User
+    participant DNS as DNS (Route 53)
+    participant LB as Load Balancer
+    participant Ingress as NGINX Ingress
+    participant App as Voice App
+
+    User->>DNS: 1. Request voicesapp.net
+    DNS-->>User: 2. Return LB IP
+    User->>LB: 3. HTTPS request
+    LB->>Ingress: 4. Forward request
+    Ingress->>App: 5. Route to appropriate service
+    App-->>Ingress: 6. Send response
+    Ingress-->>LB: 7. Forward response
+    LB-->>User: 8. Deliver response

@@ -1,0 +1,16 @@
+graph LR;
+    qemu_drive_opts[QemuOptsList qemu_drive_opts]
+        qemu_drive_opts --> disk1[QemuOpts disk1]
+            disk1 --> o1a[QemuOpt: file=disk.raw]
+            disk1 --> o1b[QemuOpt: format=raw]
+            disk1 --> o1c[QemuOpt: if=ide]
+
+        qemu_drive_opts --> disk2[QemuOpts disk2]
+            disk2 --> o2a[QemuOpt: file=disk.qcow2]
+            disk2 --> o2b[QemuOpt: format=qcow2]
+            disk2 --> o2c[QemuOpt: if=virtio]
+
+    qemu_machine_opts[QemuOptsList qemu_machine_opts]
+        qemu_machine_opts --> singleton_machine["QemuOpts (singleton)"]
+            singleton_machine --> o3a[QemuOpt: usb=on]
+            singleton_machine --> o3b[QemuOpt: accel=kvm]

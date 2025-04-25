@@ -1,0 +1,16 @@
+classDiagram
+   class Administrateur {
+        +int id
+        +string nom
+        +string email
+        +void CRUD_Biens()
+        +void gererContacts()
+    }
+        class Contact {
+        +int id
+        +string nom
+        +string email
+        +string message
+    }
+        Administrateur --> Contact : "gère"
+

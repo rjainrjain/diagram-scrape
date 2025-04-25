@@ -1,0 +1,20 @@
+sequenceDiagram
+    participant U as User
+    participant API as API Gateway
+    participant S as Search Service
+    participant E as Elasticsearch
+    participant B as Blog Service
+    
+    %% Indexing Flow
+    Note over B,E: Indexing Process
+    B->>S: New/Updated Blog Post
+    S->>E: Index Post Content
+    
+    %% Search Flow
+    Note over U,E: Search Process
+    U->>API: Search Query
+    API->>S: Forward Request
+    S->>E: Execute Search
+    E->>S: Return Results
+    S->>API: Format Response
+    API->>U: Display Results

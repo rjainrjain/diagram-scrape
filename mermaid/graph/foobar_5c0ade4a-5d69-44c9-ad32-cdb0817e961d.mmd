@@ -1,0 +1,55 @@
+graph TD
+    subgraph Docs
+        github_readme["README.md (project documentation)"]
+        github_license["LICENSE (project license)"]
+        contributing_md["CONTRIBUTING.md (for open source projects accepting contributions)"]
+    end
+
+    subgraph Web["Web Files"]
+        html[".html (HTML files)"]
+        css[".css (CSS files)"]
+        js[".js (JavaScript that runs in the web browser)"]
+        favicon["favicon.ico (multiple icon/image formats and sizes)"]
+        robots_txt["robots.txt (directives for web crawlers)"]
+        security_txt["security.txt (security policy information)"]
+    end
+
+    subgraph VSCode ["VS Code Files"]
+        vscode_folder[".vscode/"]
+        launch_json["launch.json (debug configuration)"]
+        settings_json["settings.json (workspace settings)"]
+        tasks_json["tasks.json (automation tasks)"]
+    end
+
+    subgraph Git["Git Files and Tools"]
+        git_folder[".git/"]
+        gitignore[".gitignore (ignored files for Git)"]
+    end
+
+    subgraph GitHub
+        workflows_yml[".github/workflows/*.yml (CI/CD workflows)"]
+    end
+
+    subgraph SWA["SWA"]
+        staticwebapp_config_json["src/staticwebapp.config.json (static web app configuration)"]
+        routes_json["src/routes.json (route configuration)"]
+        api_code["api/* (code that runs in Azure Functions)"]
+
+        subgraph SWA_VSCodeExtensions["SWA VS Code Extensions"]
+            azure_extensions["Azure Function VS Code extension"]
+            swa_extensions["Azure SWA VS Code extension"]
+        end
+    end
+
+    subgraph Build["Build"]
+        package_json["package.json (project metadata and dependencies)"]
+%%        yarn_lock["yarn.lock (exact versions of dependencies)"]
+%%        webpack_config_js["webpack.config.js (Webpack configuration)"]
+%%        babelrc[".babelrc (Babel configuration)"]
+    end
+
+    Build --> SWA
+    SWA --> SWA_VSCodeExtensions --> GitHub
+    GitHub --> Git
+    Git --> VSCode
+    VSCode --> Web --> Docs

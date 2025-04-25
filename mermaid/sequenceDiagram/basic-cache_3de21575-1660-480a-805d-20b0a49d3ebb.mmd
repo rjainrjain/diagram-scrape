@@ -1,0 +1,13 @@
+sequenceDiagram
+participant BW as BikeWise
+participant V as Varnish Proxy
+participant U as User (JS Client)
+U->>V: GET /incidents
+V-->>V: Cache miss
+V-->>BW: GET /incidents
+BW-->>V: HTTP 200
+V->>V: Cache update
+V->>U: HTTP 200
+U->>V: GET /incidents
+V->>V: Cache hit
+V->>U: HTTP 200 or 304

@@ -1,0 +1,33 @@
+sequenceDiagram
+Title: EIP712署名による本人認証
+participant front AS Front Web
+participant api AS WebAPI
+participant db AS DB
+participant auth AS Authentication ÐApps
+
+front->>+api: EOAアドレス
+    api->>api:IDとシークレットキー生成
+    api->>db:IDとシークレットキーを保存
+api-->>-front: IDとシークレットキー返却
+
+front->>front:ID・シークレットキー・EOAアドレスで署名
+
+front->>+api: ID・署名文字列・EOAアドレスを送信
+Note over front,api: シークレットキーは送信しない
+
+    api->>+db: ID・EOAアドレスでシークレットキーを照会
+    db-->>-api:照会結果
+
+    alt シークレットキーが照会でき、タイムスタンプが期限内
+
+        api->>+auth:ID・署名・EOAアドレス・シークレットキーを送信
+        auth->>auth:EOAアドレス計算
+        auth-->>-api: 割り出したEOAアドレス返却
+
+        alt EOAアドレスが一致(OK)
+            api->>api:アクセストークン生成
+            api->>db:EOAアドレスとアクセストークンを保存
+        end
+    end
+
+ api-->>-front: 認証結果

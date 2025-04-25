@@ -1,0 +1,41 @@
+flowchart LR
+    subgraph Inverter
+        inverterReceiveRequest(( )) -->
+        inverterSend(Send logger) -->
+        inverterEnd(( ))
+    end
+    subgraph Backend
+        backendHistory[(History)]
+
+        subgraph Fetch
+            backendFetchStart(( )) -->
+            backendRequest(Request logger) -->
+            backendReceive(( )) -->
+            backendSimplifyStructure(Simplify data\nstructure) -->
+            backendMapKeys(Convert keys\nto readable\nformat) -->
+            backendFetchEnd(( ))
+        end
+        backendStart(( )) --------->
+        Fetch -->
+        backendMaps(Merge and\ntransform loggers\nto API\nformat) -->
+        backendSave(Save to\nhistory) -->
+        backendEnd(( ))
+        backendSave -.-> backendHistory
+
+        backendReceiveRequest(( )) -->
+        backendLoad(Load from\nhistory) -->
+        backendSend(Send history) -->
+        backendEndHistory(( ))
+        backendHistory -.-> backendLoad
+    end
+    subgraph Frontend
+        frontendStart(( )) -->
+        frontendRequest(Request history) -->
+        frontendReceive(( )) -->
+        frontendDisplay(Display history) -->
+        frontendEnd(( ))
+    end
+    frontendRequest -.-> backendReceiveRequest
+    backendRequest -.-> inverterReceiveRequest
+    inverterSend -.-> backendReceive
+    backendSend -.-> frontendReceive

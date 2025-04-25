@@ -1,0 +1,9 @@
+sequenceDiagram
+    participant U as Uniswap
+    participant C as Calculator
+    participant M as Main
+    M->>U: get_pool_data(pool_id)
+    U-->>M: pool_data
+    M->>C: set_price_range(price_range)
+    M->>C: calculate_apy_roi(pool_data, price_range)
+    C-->>M: apy, roi

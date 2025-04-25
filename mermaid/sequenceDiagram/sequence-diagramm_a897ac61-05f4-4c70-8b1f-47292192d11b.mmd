@@ -1,0 +1,27 @@
+sequenceDiagram
+  participant User
+  participant React Frontend
+  participant NestJS API
+  participant Sequelize
+  participant PostgreSQL Database
+
+  User->>React Frontend: User interaction (e.g., click "Show Users" button)
+  activate React Frontend
+  React Frontend->>NestJS API: Send API request (GET /users with JWT authorization token in header)
+  activate NestJS API
+  NestJS API->>Sequelize: Validate JWT token (check for expiration, user role)
+  activate Sequelize (Sequelize authenticates against a separate authentication service)
+
+  # Authentication successful (handled within Sequelize)
+
+  NestJS API->>Sequelize: Execute data access query (SELECT * FROM users) **(if authentication successful)**
+  activate Sequelize
+  Sequelize->>PostgreSQL Database: Perform SQL operation (SELECT query)
+  activate PostgreSQL Database
+  deactivate PostgreSQL Database (data retrieved)
+  Sequelize->>NestJS API: Return query results (list of users)
+  deactivate Sequelize
+  NestJS API->>React Frontend: Send API response (JSON data with appropriate HTTP status code)
+  deactivate NestJS API
+  React Frontend->>User: Update UI based on response (display user list with error handling if unsuccessful)
+  deactivate React Frontend

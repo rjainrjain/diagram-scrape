@@ -1,0 +1,30 @@
+graph TD
+
+Uninitiated(Uninitiated)
+Confirmed(Confirmed)
+Paid(Paid)
+Ready(Ready)
+Shipped(Shipped)
+Delivered(Delivered)
+CancelRequest(CancelRequest)
+Cancelled(Cancelled)
+ReturnRequest(ReturnRequest)
+DeliveryFailure(DeliveryFailure)
+
+Uninitiated --> Confirmed
+Confirmed --> Paid
+Paid --> Ready
+
+Paid --> CancelRequest
+Ready --> CancelRequest
+
+Ready --> Shipped
+
+
+CancelRequest -->Cancelled
+
+Shipped --> Delivered
+Shipped -->ReturnRequest
+Delivered -->ReturnRequest
+
+Shipped --> DeliveryFailure

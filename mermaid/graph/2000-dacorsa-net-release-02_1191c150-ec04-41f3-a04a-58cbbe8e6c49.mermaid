@@ -1,0 +1,25 @@
+---
+title: version 2 - editthispage.com online blogserver
+---
+
+%%{ init: {'theme': 'neutral'} }%%
+graph LR
+
+subgraph offline
+    gimp([Image editor])
+    source{{Original images}}
+end
+
+subgraph online
+    images{{Uploaded images}}
+    editor[[editthispage.com]]
+end
+
+editor --> images
+
+adminbrowser([Browser]) --> editor
+source{{Original images}} --> editor
+
+editor -.-> browser(((WWW)))
+images -.-> browser
+gimp --> source

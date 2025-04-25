@@ -1,0 +1,27 @@
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#00b1c7', 'secondaryColor': '#414042', 'tertiaryColor': '#6c757d', 'primaryBorderColor': '#00c2db'}}}%%
+graph TD
+    T((Técnico RX))
+    S((Sistema))
+    
+    T -->|Inicia| CU1[Clasificar Imagen]
+    CU1 -->|1. Cargar Imagen| S
+    S -->|2. Validar Imagen| CU2{¿Imagen Válida?}
+    CU2 -->|Sí| CU3[Preprocesar Imagen]
+    CU2 -->|No| CU7[Notificar Error]
+    CU3 --> CU4[Aplicar Modelo ML]
+    CU4 --> CU5{¿Clasificación Exitosa?}
+    CU5 -->|Sí| CU6[Guardar Resultados]
+    CU5 -->|No| CU8[Solicitar Revisión Manual]
+    CU6 --> CU9[Notificar Resultados]
+    CU7 --> CU10[Solicitar Nueva Imagen]
+    CU8 --> CU11[Asignar a Radiólogo]
+    
+    classDef actor fill:#00b1c7,stroke:#00c2db,stroke-width:2px,color:#fff;
+    classDef primary fill:#00b1c7,stroke:#00c2db,stroke-width:2px,color:#fff;
+    classDef secondary fill:#414042,stroke:#00c2db,stroke-width:2px,color:#fff;
+    classDef decision fill:#6c757d,stroke:#00c2db,stroke-width:2px,color:#fff;
+    
+    class T,S actor;
+    class CU1,CU3,CU4,CU6,CU9 primary;
+    class CU7,CU8,CU10,CU11 secondary;
+    class CU2,CU5 decision;

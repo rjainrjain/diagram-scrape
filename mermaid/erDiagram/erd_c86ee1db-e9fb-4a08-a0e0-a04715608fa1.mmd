@@ -1,0 +1,50 @@
+erDiagram
+    USER ||--o{ COMPANY_ACTION: relates
+    USER ||--o{ COMPANY: owns
+    USER {
+        uuid id
+        varchar email
+        varchar username
+        varchar first_name
+        varchar last_name
+    }
+
+    COMPANY ||--o{ COMPANY_ACTION: relates
+    COMPANY ||--o{ QUIZZ: has
+    COMPANY {
+        uuid id
+        uuid owner_id
+        varchar name
+        varchar description
+    }
+    COMPANY_ACTION {
+        uuid id
+        uuid company_id
+        uuid user_id
+        enum type
+    }
+
+    QUIZZ ||--|{ QUIZZ_QUESTION: consists_of
+    QUIZZ {
+        uuid id
+        uuid company_id
+        varchar title
+        varchar description
+        boolean ready
+    }
+
+
+    QUIZZ_QUESTION {
+        uuid id
+        uuid quizz_id
+        varchar text
+        number frequency
+    }
+
+    QUIZZ_QUESTION ||--|{ QUESTION_ANSWER: has
+    QUESTION_ANSWER {
+        uuid id
+        uuid question_id
+        varchar answer
+        boolean is_correct
+    }

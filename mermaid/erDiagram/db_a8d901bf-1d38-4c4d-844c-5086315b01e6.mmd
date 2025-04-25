@@ -1,0 +1,30 @@
+erDiagram
+    USERS {
+        int idUsers PK
+        string name
+        string email
+        datetime created_at
+    }
+
+    SHOPS {
+        int idshops PK
+        string shopName
+        string shopDescription
+        string ownerName
+        json contactInformation
+    }
+
+    CATEGORIES {
+        string categoryName PK
+    }
+
+    PRODUCTS {
+        int idProducts PK
+        string productName
+        int idshops FK
+    }
+
+    USERS ||--o| SHOPS : "1-to-1"
+    SHOPS ||--o{ PRODUCTS : "1-to-many"
+    SHOPS }o--o{ CATEGORIES : "many-to-many"
+    PRODUCTS }o--|| SHOPS : "many-to-1"

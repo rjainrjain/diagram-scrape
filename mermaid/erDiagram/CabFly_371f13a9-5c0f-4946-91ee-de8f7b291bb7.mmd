@@ -1,0 +1,51 @@
+erDiagram
+    PASAJERO {
+        id_pasajero INT PK
+        nombre VARCHAR
+        apellido VARCHAR
+        documento VARCHAR
+        telefono VARCHAR
+        correo_electronico VARCHAR
+    }
+    RESERVA {
+        id_reserva INT PK
+        id_pasajero INT FK
+        fecha_creacion DATE
+        costo DECIMAL
+        vigencia DATETIME
+    }
+    VUELO {
+        id_vuelo INT PK
+        origen VARCHAR
+        destino VARCHAR
+        fecha_salida DATE
+        hora_salida TIME
+        puerta_embarque VARCHAR
+    }
+    ASIENTO {
+        id_asiento INT PK
+        id_vuelo INT FK
+        numero_asiento VARCHAR
+        tipo_asiento VARCHAR
+        costo_extra DECIMAL
+        ocupado BOOLEAN
+    }
+    TARJETA_DE_EMBARQUE {
+        id_tarjeta INT PK
+        id_reserva INT FK
+        id_asiento INT FK
+        fecha_emision DATETIME
+        puerta_embarque VARCHAR
+        hora_embarque TIME
+    }
+    METODO_DE_PAGO {
+        id_pago INT PK
+        id_reserva INT FK
+        metodo VARCHAR
+        monto_pagado DECIMAL
+    }
+    PASAJERO ||--o{ RESERVA: tiene
+    RESERVA }|--|| VUELO: tiene
+    RESERVA ||--o{ ASIENTO: tiene
+    RESERVA }|--|| TARJETA_DE_EMBARQUE: tiene
+    RESERVA }|--|{ METODO_DE_PAGO: fue_pagada_con

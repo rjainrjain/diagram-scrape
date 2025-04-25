@@ -1,0 +1,50 @@
+sequenceDiagram
+    actor User
+    participant Frontend
+    participant System
+    participant Database
+    participant GoogleAuthAPI
+
+    activate User
+    alt Standard Login
+        User->>+Frontend: Enter credentials
+        Frontend->>System: login(loginRequest)
+        activate System
+        System->>+Database: verifyCredentials(userId, password)
+        Database-->>-System: Credential verification result
+        alt Credentials valid
+            activate System
+            System->>System: createTokens(userDetails, expirationTime)
+            deactivate System
+            System-->>Frontend: Return tokens as HttpOnly cookies
+            Frontend-->>User: Grant access to the system
+        else Credentials invalid
+            System-->>Frontend: Return authentication failed message
+            deactivate System
+            Frontend-->>User: Display error message
+        end
+    else Google Login
+        User->>Frontend: Click "Continue with Google"
+        Frontend->>GoogleAuthAPI: requestGoogleAuthentication()
+        activate GoogleAuthAPI
+        GoogleAuthAPI-->>User: Open Google login portal
+        deactivate GoogleAuthAPI
+        User->>+GoogleAuthAPI: Select email and authenticate
+        GoogleAuthAPI-->>-Frontend: Google Token
+        Frontend->>+System: loginWithGoogle(token)
+        System->>+Database: checkUserExists(googleUserId)
+        Database-->>-System: User verification result
+        alt User exists
+            activate System
+            System->>System: createTokens(userDetails, expirationTime)
+            deactivate System
+            System-->>Frontend: Return tokens as HttpOnly cookies
+            Frontend-->>User: Grant access to the system
+        else User doesn't exist
+            System-->>Frontend: Return user not registered message
+            deactivate System
+            Frontend-->>User: Prompt for registration
+        end
+    end
+    deactivate Frontend
+    deactivate User

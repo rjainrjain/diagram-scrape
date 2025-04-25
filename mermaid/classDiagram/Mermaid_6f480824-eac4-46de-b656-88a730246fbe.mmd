@@ -1,0 +1,79 @@
+classDiagram
+
+    Item "0..*" --> "1" ItemType
+    Item "0..*" --> "0..1" Platform
+    Item "0..*" --> "1..*" Publisher
+    Item "0..*" --> "1" Location
+    Item "0..*" --> "1..*" Genre
+    VisitorLog "0..*" --> "1" Location
+    VisitorLog "0..*" --> "1" Visitor
+    Location "0..*" --> "1" LocationType
+
+    class Item {
+        id : INT
+        name : TEXT
+        price : REAL
+        discription : TEXT
+        typeid : INT
+        platformid : INT
+        publisherid : INT
+        series : TEXT
+        genreID : INT
+        releaseDate : NUMERIC
+        locationid : INT
+    }
+
+    class ItemType {
+        id : INT
+        name : TEXT
+    }
+
+    class Genre {
+        id : INT
+        name : TEXT
+    }
+
+    class Platform {
+        id : INT
+        name : TEXT
+        discription : TEXT
+        releaseDate : NUMERIC
+    }
+    
+    class Publisher {
+        id : INT
+        name : TEXT
+        discription : TEXT
+        website : TEXT
+    }
+    
+    class Location {
+        id : INT
+        locationType : INT
+        locationName : TEXT
+        country : TEXT
+        city : TEXT
+        street : TEXT
+        houseNumber : TEXT
+    }
+    
+    class LocationType {
+        id : INT
+        name : TEXT
+    }
+
+    class VisitorLog {
+        id : INT
+        locationid : INT
+        visitorid : INT
+        date : NUMERIC
+        donation : REAL
+    }
+    
+    class Visitor {
+        id : INT
+        name : TEXT
+        phone : TEXT
+        email : TEXT
+        address : TEXT
+    } 

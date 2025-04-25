@@ -1,0 +1,22 @@
+sequenceDiagram
+    participant User
+    participant Calendar
+    participant Task
+    participant Notification
+    participant Report
+    User->>Calendar: get_available_slots(date)
+    Calendar-->>User: available_slots
+    User->>Calendar: get_assigned_tasks(date)
+    Calendar-->>User: assigned_tasks
+    User->>Task: create_task(task)
+    Task-->>User: None
+    User->>Task: update_task(task)
+    Task-->>User: None
+    User->>Task: delete_task(task)
+    Task-->>User: None
+    User->>Task: get_tasks()
+    Task-->>User: tasks
+    User->>Notification: send_notification(user, message)
+    Notification-->>User: None
+    User->>Report: generate_report(tasks)
+    Report-->>User: report

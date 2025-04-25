@@ -1,0 +1,527 @@
+```mermaid
+
+
+classDiagram
+
+%% OBB - App Stack - 01 - Olt spec
+%% Draft - Nickel - 24/06/21
+
+
+
+
+
+
+%% OLT SPECIFICATION 
+
+    class OLT_MAKE{
+        <<olt spec>>
+        url : https://189.58.97.8/#/ams/setting/make
+        how_many : one_per_vendor
+        when : new_olt_or_card_vendor
+
+        +olt(y)
+        ont()
+        cpe()
+        splitter()
+        rack()
+        +card(y)
+        bng()
+        sfp()
+        cable()
+    }
+
+    class OLT_MODEL{
+        <<olt spec>>
+        url : https://189.58.97.8/#/ams/setting/model
+        how_many : one_per_model
+        when : new_olt_model
+
+        +name()
+        type(olt)
+        make()
+    }
+
+    class OLT_DEVICEPROF{
+        <<olt spec>>
+        url : https://189.58.97.8/#/ams/profile/device_profile?tab=OLT
+        how_many : one_per_model
+        when : new_olt_model
+
+        +name()
+        me_type(olt)
+        make()
+        model()
+        max_temp()
+        layout(horizontal)
+    }
+   
+    class OLT_RACK{
+        <<olt spec>>
+        url : https://189.58.97.8/#/ams/profile/olt-device-profile/6...-55/OLT-RACK?device_profile_name=Radisys-1RU-AnyPON-DP
+        how_many : one_per_model
+        when : new_olt_model
+
+        +name()
+        type(olt-rack)
+        number(1)
+        layout(horizontal)
+    }
+
+    class OLT_SHELF{
+        <<olt spec>>
+        url : https://189.58.97.8/#/ams/profile/olt-device-profile/6...-55/OLT-RACK/6...-56/shelf?device_profile_name=Radisys-1RU-AnyPON-DP&parent_name=Rack1
+        how_many : one_per_model
+        when : new_olt_model
+
+        +name()
+        type(olt-shelf)
+        number(1)
+        layout(horizontal)
+    }
+
+    class OLT_SLOT_1_LT{
+        <<olt spec>>
+        url : https://189.58.97.8/#/ams/profile/olt-device-profile/6...-55/OLT-RACK/6...-56/shelf/6...-57/slot?device_profile_name=Radisys-1RU-AnyPON-DP&parent_name=Shelf1
+        how_many : one_per_olt_slot
+        when : new_olt_model
+
+        +name(PON1)
+        type(olt-slot)
+        number(2)
+        layout(horizontal)
+        slot_type(lt1)
+    }
+
+    class OLT_SLOT_2_NT{
+        <<olt spec>>
+        url : https://189.58.97.8/#/ams/profile/olt-device-profile/6...-55/OLT-RACK/6...-56/shelf/6...-57/slot?device_profile_name=Radisys-1RU-AnyPON-DP&parent_name=Shelf1 
+        how_many : one_per_olt_slot
+        when : new_olt_model
+
+        +name(ETH1)
+        type(olt-slot)
+        number(1)
+        layout(horizontal)
+        slot_type(nta)
+    }
+
+    class OLT_CARD_DEVICEPROF_LT{
+        <<olt spec>>
+        url : https://189.58.97.8/#/ams/profile/device_profile?tab=CARD
+        how_many : one_per_card
+        when : new_olt_model
+
+        +name()
+        me_type(card)
+        make()
+        model()
+        layout_total_rows(1)
+        layout_total_columns(18)
+    }
+
+    class OLT_CARD_PORTS_PON{
+        <<olt spec>>
+        url : https://189.58.97.8/#/ams/profile/card-device-profile/6b...-85/port_detail?me_type=CARD
+        how_many : one_per_port
+        when : new_olt_model
+
+        +name(PON-16)
+        port_number(16)
+        me_type(pon)
+        capacity(2.5)
+        unity(gigabit)
+        direction(UNI)
+        row(1)
+        column(16)
+        ont_capacity(128)
+    }
+
+   class OLT_CARD_DEVICEPROF_NT{
+        <<olt spec>>
+        url : https://189.58.97.8/#/ams/profile/device_profile?tab=CARD
+        how_many : one_per_card
+        when : new_olt_model
+
+        +name()
+        me_type(card)
+        make()
+        model()
+        layout_total_rows(1)
+        layout_total_columns(8)
+    }
+
+    class OLT_CARD_PORTS_ETH{
+        <<olt spec>>
+        url : https://189.58.97.8/#/ams/profile/card-device-profile/6b...-85/port_detail?me_type=CARD
+        how_many : one_per_port
+        when : new_olt_model
+
+        +name(NNI-1)
+        port_number(1)
+        media_type(ethernet)
+        capacity(10)
+        unity(gigabit)
+        direction(NNI)
+        row(1)
+        column(1)
+        ont_capacity()
+    }
+
+OLT_MAKE "1"-->"1..*" OLT_MODEL
+OLT_MODEL "1"-->"1" OLT_DEVICEPROF
+OLT_DEVICEPROF "1"-->"1" OLT_RACK
+OLT_RACK "1"-->"1" OLT_SHELF
+OLT_SHELF "1"-->"1..*"OLT_SLOT_1_LT
+OLT_SHELF "1"-->"1..*" OLT_SLOT_2_NT
+
+OLT_SLOT_1_LT --> OLT_CARD_DEVICEPROF_LT
+OLT_CARD_DEVICEPROF_LT --> OLT_CARD_PORTS_PON
+
+OLT_SLOT_2_NT --> OLT_CARD_DEVICEPROF_NT
+OLT_CARD_DEVICEPROF_NT --> OLT_CARD_PORTS_ETH
+
+
+%% ONT SPECIFICATION
+
+    class ONT_MAKE{
+        <<ont spec>>
+        url : https://189.58.97.8/#/ams/setting/make
+        how_many : one_per_vendor
+        when : new_ont
+
+        olt()
+        +ont(y)
+        cpe()
+        splitter()
+        rack()
+        card()
+        bng()
+        sfp()
+        cable()
+    }
+
+    class ONT_MODEL{
+        <<ont spec>>
+        url : https://189.58.97.8/#/ams/setting/model
+        how_many : one_per_model
+        when : new_ont_model
+
+        +name()
+        type(ont)
+        make()
+    }
+
+    class ONT_DEVICEPROF{
+        <<ont spec>>
+        url : https://189.58.97.8/#/ams/profile/device_profile?tab=ONT
+        how_many : one_per_model
+        when : new_ont_model
+
+        +name()
+        me_type(ont)
+        make()
+        model()
+        vendor allocated slot number(1)
+        layout_total_rows(1)
+        layout_total_columns(4)
+    }
+   
+    class ONT_PORTS{
+        <<ont spec>>
+        url : https://189.58.97.8/#/ams/profile/ont-device-profile/8...-90/port_detail?me_type=ONT
+        how_many : one_per_port
+        when : new_ont_model
+
+        +name(veip)
+        port_number(1)
+        capacity(2.5)
+        unity(gigabit)
+        direction(UNI)
+        uni_port_type(veip)
+        row(1)
+        column(3)
+    }
+
+ONT_MAKE --> ONT_MODEL
+ONT_MODEL --> ONT_DEVICEPROF
+ONT_DEVICEPROF --> ONT_PORTS
+
+
+%% SERVICES SPECIFICATION 
+
+    class BANDWIDTH_PROF_UP{
+        <<service spec>>
+        url : https://189.58.97.8/#/ams/pon-profile/bandwidth-profile
+        how_many : one_per_bandwidth
+        when : new_bandwidth
+
+        name()
+        committed_information_rate()
+        assured_information_rate()
+        excess_information_rate()
+        delay_tolerance()
+    }
+
+    class SHAPER_PROF_DOWN{
+        <<service spec>>
+        url : https://189.58.97.8/#/ams/pon-profile/shaper-profile
+        how_many : one_per_bandwidth
+        when : new_bandwidth
+
+        name()
+        committed_information_rate()
+        excess_information_rate()
+        commited_burst_size()
+    }
+
+    class MCAST_GROUP{
+        <<service spec>>
+        url : https://189.58.97.8/#/ams/pon-profile/multicast-group
+        how_many : one_per_group
+        when : new_mcast_group
+
+        name()
+        ip()
+    }
+   
+    class MVLAN_PROF{
+        <<service spec>>
+        url : https://189.58.97.8/#/ams/pon-profile/mvlan-profile
+        how_many : one_per_mcast_vlan
+        when : new_mcast_vlan
+
+        name()
+        vid()
+        group() list
+        pon_vlan() (if_translated)
+        active_igmp_groups_per_subscriber()
+    }
+
+    class PKT_QUEUE{
+        <<service spec>>
+        url : https://189.58.97.8/#/ams/pon-profile/packet-queue
+        how_many : one_per_packet_queue
+        when : new_service
+
+        name()
+        scheduler_policy()
+        scheduler_weigth()
+        scheduler_priority()
+        discard_policy()
+        discard_max_q_size()
+        discard_max_threshold()
+        discard_min_threshold()
+        discard_max_probability()
+        traffic_class_config((allowed pbit=3)|(allowed pbits= 0-7:0)) (to_remark)
+    }
+
+    class COSQ_PROF{
+        <<service spec>>
+        url : https://189.58.97.8/#/ams/pon-profile/cosq-profile
+        how_many : one_per_packet_queue
+        when : new_service
+
+        name()
+        pkt_queue()
+        default_dscp_pbit_marking()
+    }
+
+    class VNET_PROF{
+        <<service spec>>
+        url : https://189.58.97.8/#/ams/pon-profile/vnet_profile
+        how_many : one_per_service_type
+        when : new_service
+
+        name()
+        svlan()
+        cvlan()
+        encapsulation()
+        ont_ethertype_classification()
+        allow_transparent_vlan()
+        mac_learning_type()
+        uni_vlan()
+        vlan_control()
+        cosq_prof()
+    }
+
+MCAST_GROUP --> MVLAN_PROF
+PKT_QUEUE --> COSQ_PROF
+COSQ_PROF --> VNET_PROF
+
+%% OLT INSTANCE DECLARATION
+
+    class MANAGEMENT_DOMAIN{
+        <<olt instance>>
+        url : https\://189.58.97.8/\#/ams/administration/md
+        how_many : one_per_olt
+        when : new_olt_instance
+
+        name()
+        kafka_host()
+        rest_url(/sdpon)
+        db host()
+    }
+
+    class CONTROLLER{
+        <<olt instance>>
+        url : https://189.58.97.8/#/ams/configuration/controller
+        how_many : one_per_olt
+        when : new_olt_instance
+
+        name()
+        management_domain()
+        adaptor(sdpon)
+        mode(distributed)
+        kafka_host()
+        rest_url()
+        igmp() list
+    }
+
+    class OLT{
+        <<olt instance>>
+        url : https://189.58.97.8/#/ams/config-inventory/inventory?tab=OLT
+        how_many : one_per_olt
+        when : new_olt
+
+        name()
+        management_domain()
+        controller()
+        ip()
+        management_vlan()
+        make()
+        model()
+        sn()
+        mac()
+        olt_device_prof()
+    }
+   
+    class RACK{
+   }
+
+    class SHELF{
+   }
+
+    class CARD{
+   }
+    
+    class PORTS{
+   }
+
+MANAGEMENT_DOMAIN --> CONTROLLER
+CONTROLLER --> OLT
+
+OLT --> RACK
+RACK --> SHELF
+SHELF --> CARD
+CARD --> PORTS
+
+%% OLT SERVICES DECLARATION
+
+    class LAG{
+        <<olt services>>
+        url : 
+        how_many : 
+        when : 
+    }
+
+    class RING{
+        <<olt services>>
+        url : https://189.58.97.8/#/ams/config-inventory/olt/797...-84/erps-rings/CTA01-LAB-OLT
+        how_many : 
+        when : 
+        note: ring_port_must_be_present_at_/broadcom/olt_config
+
+        name()
+        olt()
+        ring_id(1)
+        ring_type(major)
+        east_port(nni-3)
+        west_port(nni-5)
+    }
+
+    class SERVICE_ELAN{
+        <<olt services>>
+        url : https://189.58.97.8/#/ams/config-inventory/olt/797...-84/elan/CTA01-LAB-OLT 
+        how_many : 
+        when : 
+
+        name()
+        olt()
+        svlan()
+        port_list(nni-3 nni-5)
+    }
+
+LAG --> RING
+RING --> SERVICE_ELAN
+
+%% SUBSCRIBER DECLARATION
+
+    class ONT{
+        <<subscriber services>>
+        url : https://189.58.97.8/#/ams/config-inventory/inventory?tab=ONT 
+        how_many : one_per_subscriber_or_per_logical_port=ont_id
+        when : new_olt=preprovisioned_or_new_subscriber=dynamic 
+        name()
+        make()
+        model()
+        ont_deviceprof()
+        olt_name()
+        olt_port()
+        ont_number()
+        fec()
+        tod()
+        auto_activate()
+        sn()
+        registration_id()
+    }
+
+    class SUBSCRIBER{
+        <<subscriber services>>
+        url : https://189.58.97.8/#/ams/configuration/subscriber
+        how_many : one_per_subscriber
+        when : new_subscriber_or_new_ont_id
+        name()
+        onu()
+        address()
+        latitude()
+        longitude()
+    }
+
+    class SUBSCRIBER_SERVICE_PACKAGE{
+        <<subscriber services>>
+        url : https://189.58.97.8/#/ams/config-inventory/inventory?tab=ONT
+        how_many : one_per_subscriber_service_product
+        when : new_subscriber_service
+        name()
+        subscriber()
+        aggregated_bandwidth_profile()
+        aggregated_shaper_profile()
+    }
+
+    class SUBSCRIBER_SERVICE_BRIDGE{
+        <<subscriber services>>
+        url : https://189.58.97.8/#/ams/config-inventory/inventory?tab=ONT
+        how_many : one_per_service_bridge
+        when : new_subscriber_service_bridge
+        subscriber_service_bridge()
+        name()
+        uni_port_id()
+        aes()
+        mcast_kpi_enable()
+        remote_id_type()
+        vnet_prof()
+        svlan()
+        cvlan()
+        downstream_bandwidth_prof()
+        downstream_shaper_prof()
+        downstream_cosq_prof()
+        upstream_bandwidth_prof()
+        upstream_shaper_prof()
+        upstream_cosq_prof()
+    }
+
+ONT --> SUBSCRIBER
+SUBSCRIBER --> SUBSCRIBER_SERVICE_PACKAGE
+SUBSCRIBER_SERVICE_PACKAGE --> SUBSCRIBER_SERVICE_BRIDGE
+
+```         

@@ -1,0 +1,8 @@
+sequenceDiagram
+Note over Server: generate challenge
+Server ->> Browser: challenge
+Browser ->> U2F device: challenge
+Note over U2F device: sign challenge with private key
+U2F device ->> Browser: signature
+Browser ->> Server: signature
+Note over Server: verify signature with public key

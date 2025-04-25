@@ -1,0 +1,86 @@
+erDiagram
+
+  "Teacher" {
+    String id "🗝️"
+    String firstName 
+    String lastName 
+    String email 
+    String phoneNumber 
+    String password 
+    String avatarUrl "❓"
+    }
+  
+
+  "Student" {
+    String id "🗝️"
+    String firstName 
+    String lastName 
+    String email 
+    String phoneNumber 
+    String parentsPhoneNumber "❓"
+    }
+  
+
+  "StudentInfo" {
+    String id "🗝️"
+    String request 
+    String availableTime "❓"
+    String characterTraits "❓"
+    String knowledgeLevel 
+    String notes "❓"
+    }
+  
+
+  "Lesson" {
+    String id "🗝️"
+    DateTime date 
+    Int duration 
+    Int slots 
+    String url "❓"
+    String topic "❓"
+    String grade "❓"
+    String homework "❓"
+    Boolean status 
+    Int rating "❓"
+    Boolean homeworkCheck 
+    String notes "❓"
+    }
+  
+
+  "Bibliography" {
+    String id "🗝️"
+    String name 
+    String author "❓"
+    String url 
+    }
+  
+
+  "StudentsBibliography" {
+
+    }
+  
+
+  "Payment" {
+    String id "🗝️"
+    Int price 
+    DateTime time "❓"
+    Boolean status 
+    String paymentNotes "❓"
+    }
+  
+    "Teacher" o{--}o "Student" : "students"
+    "Teacher" o{--}o "Lesson" : "lessons"
+    "Teacher" o{--}o "Bibliography" : "bibliography"
+    "Student" o{--}o "StudentInfo" : "studentInfo"
+    "Student" o{--}o "Lesson" : "lessons"
+    "Student" o|--|| "Teacher" : "Teacher"
+    "Student" o{--}o "StudentsBibliography" : "studentsBibliography"
+    "StudentInfo" o|--|| "Student" : "student"
+    "Lesson" o{--}o "Payment" : "payment"
+    "Lesson" o|--|| "Teacher" : "Teacher"
+    "Lesson" o|--|| "Student" : "student"
+    "Bibliography" o|--|| "Teacher" : "teacher"
+    "Bibliography" o{--}o "StudentsBibliography" : "studentsBibliography"
+    "StudentsBibliography" o|--|| "Student" : "student"
+    "StudentsBibliography" o|--|| "Bibliography" : "bibliography"
+    "Payment" o|--|| "Lesson" : "lesson"

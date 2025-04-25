@@ -1,0 +1,9 @@
+flowchart LR
+    ktSources[/*.kt/] --> ktCompiler[Kotlin\n compiler]
+    ktCompiler --> dotClasses[(*.class)]
+    dotClasses --> jars[(*.jar)]
+    runtime[(Kotlin \n Runtime)] --> app
+    jars --> app([Application])
+
+    javaSources[/*.java /] --> javaCompiler[Java\n compiler]
+    javaCompiler --> dotClasses[(*.class)]

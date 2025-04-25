@@ -1,0 +1,111 @@
+flowchart TB
+
+%% Clients
+subgraph Clients
+    direction LR
+    UserApp[User App]
+    DriverApp[Driver App]
+end
+
+%% Ingress Layer
+subgraph Ingress
+    LB[Load Balancer]
+    API[API Gateway]
+end
+
+%% Kubernetes Cluster
+subgraph Kubernetes Cluster
+    direction TB
+
+    subgraph Microservices
+        AuthService[Auth Service]
+        BookingService[Booking Service]
+        UserService[User Service]
+        DriverService[Driver Service]
+        MatchingService[Matching Service]
+        PricingService[Pricing Service]
+        PaymentService[Payment Service]
+        NotificationService[Notification Service]
+        RealTimeTrackingService[Real-Time Tracking Service]
+        SchedulerService[Scheduling Service]
+    end
+
+    subgraph MessageQueues
+        Kafka[(Kafka Cluster)]
+    end
+
+    subgraph Databases
+        UserDB[(User DB RDBMS)]
+        DriverDB[(Driver DB)]
+        BookingDB[(Booking DB)]
+        VehicleDB[(Vehicle DB)]
+        PaymentDB[(Payment DB)]
+        LocationDB[(Location DB - NoSQL)]
+        RedisCache[(Redis Cache)]
+        ElasticSearch[(Elasticsearch)]
+    end
+end
+
+%% Infrastructure Components
+subgraph Infrastructure
+    Docker[Docker Containers]
+    K8s[Kubernetes Orchestration]
+end
+
+%% Admin Dashboard
+Admin[Admin Dashboard]
+
+%% Connections
+Clients --> LB
+LB --> API
+API --> AuthService
+
+%% User Flow
+AuthService --> UserService
+UserService --> BookingService
+BookingService --> MatchingService
+MatchingService --> Kafka
+Kafka --> MatchingService
+MatchingService --> NotificationService
+NotificationService --> UserApp
+NotificationService --> DriverApp
+
+%% Driver Flow
+DriverApp --> LB
+LB --> API
+API --> AuthService
+AuthService --> DriverService
+DriverService --> Kafka
+Kafka --> MatchingService
+
+%% Real-Time Tracking
+DriverApp --> RealTimeTrackingService
+RealTimeTrackingService --> LocationDB
+RealTimeTrackingService --> RedisCache
+RealTimeTrackingService --> UserApp
+
+%% Payment Processing
+BookingService --> PaymentService
+PaymentService --> PaymentDB
+
+%% Databases Connections
+UserService --> UserDB
+DriverService --> DriverDB
+BookingService --> BookingDB
+BookingService --> SchedulerService
+SchedulerService --> BookingDB
+VehicleDB --> BookingService
+PricingService --> BookingService
+
+%% Admin Dashboard Connections
+Admin --> Microservices
+Admin --> Databases
+
+%% Infrastructure Deployment
+Microservices --> Docker
+Docker --> K8s
+Kafka --> Docker
+Databases --> Docker
+
+%% Load Balancing and Scaling
+K8s --> LB

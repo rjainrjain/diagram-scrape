@@ -1,0 +1,27 @@
+graph TD
+    title[Yuzu Overview]
+    style title fill:#d4edda,stroke:#28a745,stroke-width:4px
+    
+    A[Yuzu dApp] --> B[Frontend]
+    A --> C[Backend]
+    
+    B --> D[src]
+    D --> E[assets]
+    D --> F[types]
+    D --> G[context]
+    D --> O[composants]
+    D --> P[layout]
+    
+    C --> H[scripts]
+    C --> I[contracts]
+    C --> J[test]
+    C --> K[hardhat configuration]
+    
+    I --> L[Token Contract]
+    I --> M[Governance Contract]
+    I --> N[Staking Contract]
+    
+    L <--> M
+    L <--> N
+    
+    B <--> |Viem| C

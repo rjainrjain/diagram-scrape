@@ -1,0 +1,19 @@
+flowchart TB
+    subgraph cloud [Platform]
+        CloudIcon{{"Cloud"}}
+    end
+    subgraph server [ ]
+        ServerIcon[/"Viewer does MeetTokServer 1.1"/]
+    end
+    subgraph devices
+        Laptop(("Laptop"))
+        DesktopMonitor[["Desktop Monitor"]]
+        Smartphone{{"Smartphone"}}
+    end
+    ServerIcon -- "1. Retrieve AccessToken with user and call permissions" --> Laptop
+    ServerIcon -- "1. Retrieve AccessToken with user and call permissions" --> DesktopMonitor
+    ServerIcon -- "1. Retrieve AccessToken with user and call permissions" --> Smartphone
+
+    Laptop -- "2. Connect to Agora Platform with AccessToken and join call" --> CloudIcon
+    DesktopMonitor -- "2. Connect to Agora Platform with AccessToken and join call" --> CloudIcon
+    Smartphone -- "2. Connect to Agora Platform with AccessToken and join call" --> CloudIcon

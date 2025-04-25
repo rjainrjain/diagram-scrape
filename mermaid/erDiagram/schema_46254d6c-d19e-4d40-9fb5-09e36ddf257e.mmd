@@ -1,0 +1,77 @@
+erDiagram
+    Date |o--o{ Ride : ""
+    Ride }o--o| Pass : ""
+    Ride }o--o| Slope : ""
+    Ride }o--o| Card : ""
+    Date |o--o{ PassPurchase : ""
+    Card |o--o{ PassPurchase : ""
+    Client |o--o{ PassPurchase : ""
+    Date |o--o{ Pass : ""
+    Pass |o--o{ PassPurchase : ""
+    PassPurchase }o--o| Junk : ""
+
+Client {
+    int ClientID "PK"
+    string Email "BK"
+    string Experience
+    bool IsCurrent
+}
+
+Card {
+    int CardID "PK"
+    string CardCode "BK"
+}
+
+Date {
+    int DateID "PK"
+    date Date "BK"
+    int Year
+    string Season
+    string Month
+    int MonthNumber
+    int Day
+    string DayOfWeek
+    int DayOfWeekNumber
+}
+
+Junk {
+    int JunkID "PK"
+    string PaymentMethod
+}
+
+Pass {
+    int PassID "PK"
+    string PassCode "BK"
+    int ValidUntilDateID "FK"
+    string Price
+    string UsedState
+}
+
+PassPurchase {
+    int PassPurchaseDateID "FK"
+    int CardID "FK"
+    int ClientID "FK"
+    int PassID "FK"
+    int JunkID "FK"
+    money Price
+    money TotalTransactionPrice
+    int BoughtRides
+    int LeftPassRides
+    int TransactionNumber
+}
+
+Ride {
+    int RideDateID "FK"
+    int SlopeID "FK"
+    int CardID "FK"
+    int PassID "FK"
+    int DaysSincePassPurchase
+}
+
+Slope {
+    int SlopeID "PK"
+    string SlopeName "BK"
+    string Country
+    string Region
+    string MountainPeak
+}

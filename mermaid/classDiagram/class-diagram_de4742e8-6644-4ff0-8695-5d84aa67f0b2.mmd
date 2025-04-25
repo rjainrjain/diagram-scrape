@@ -1,0 +1,131 @@
+---
+title: P5 Game
+---
+
+classDiagram
+    class GameState {
+        <<enumeration>>
+        TITLE,
+        MAIN_MENU,
+        CHARACTER_SELECT,
+        GAMEPLAY,
+        PAUSE_MENU
+    }
+
+    class Game {
+        currentState: Enum<State>
+        startGame()
+        pauseGame()
+        resumeGame()
+        exitGame()
+    }
+
+    class Gameplay {
+        gameObjects: List<GameObject>
+        update()
+        draw()
+    }
+
+    class TitleScreen {
+        title: String
+        startButton: Button
+        configButton: Button
+        exitButton: Button
+        display()
+    }
+
+
+    class CharacterSelectMenu {
+        sniperButton: Button
+        mageButton: Button
+        display()
+        selectCharacter(character: Character)
+    }
+
+    class Character {
+        <<abstract>>
+        type: String
+        health: Health
+        damage: int
+        specialActive: boolean
+        shoot()
+        jump()
+        crouch()
+        activateSpecial()
+    }
+
+    class Sniper {
+        specialHoming: boolean
+        activateSpecialHoming()
+    }
+
+    class Mage {
+        specialDamageReduction: boolean
+        activateSpecialDamageReduction()
+    }
+
+    class Enemy {
+        <<abstract>>
+        health: Health
+        damage: int
+        speed: int
+        move()
+        attack()
+        takeDamage()
+    }
+
+    class BasicEnemy {
+        move()
+        attack()
+    }
+
+    class HomingEnemy {
+        move()
+        attack()
+    }
+
+    class TankEnemy {
+        move()
+        attack()
+    }
+
+    class Button {
+        label: String
+        x: int
+        y: int
+        width: int
+        height: int
+        display()
+        isClicked()
+    }
+
+    class Health {
+        -int currentHealth
+        -int maxHealth
+        +Health()
+        +Health(int initialHealth, int maxHealth)
+        +int getCurrentHealth()
+        +int getMaxHealth()
+        +void setCurrentHealth(int health)
+        +void increaseHealth(int amount)
+        +void decreaseHealth(int amount)
+        +bool isAlive()
+    }
+
+    Game "1" --> "1" TitleScreen
+    Game "1" --> "1" Menu
+    Game "1" --> "1" CharacterSelectMenu
+    Game "1" --> "1" PauseMenu
+    Game "1" --> "1" Gameplay
+    Game "1" --> "1" GameState
+    Gameplay "1" --> "1" Character
+    Gameplay "1" --> "0..*" Enemy
+    TitleScreen "1" --> "1..*" Button
+    CharacterSelectMenu "1" --> "1..*" Button
+    Character "1" --> "1" Health
+    Enemy "1..*" --> "1" Health
+    Character <|-- Sniper
+    Character <|-- Mage
+    Enemy <|-- BasicEnemy
+    Enemy <|-- HomingEnemy
+    Enemy <|-- TankEnemy

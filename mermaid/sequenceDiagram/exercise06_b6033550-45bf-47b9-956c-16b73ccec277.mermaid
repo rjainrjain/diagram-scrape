@@ -1,0 +1,7 @@
+sequenceDiagram
+    participant B as Browser
+    participant S as Server
+
+    B->>+S: POST: exampleapp/new_note_spa<br/> (Payload formatted in JSON)
+    note over B,S: Browser-side JS runs on submit. <br/>Server-side confirms operation was successful
+    S-->>-B: RESPONSE: 201 Created<br/> Confirms that new note has been created

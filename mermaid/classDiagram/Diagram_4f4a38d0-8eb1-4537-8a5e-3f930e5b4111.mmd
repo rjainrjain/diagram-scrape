@@ -1,0 +1,164 @@
+classDiagram
+
+namespace Enum {
+
+  class Gender{
+   <<enum>>
+    Male
+    Female
+  }
+
+  class PowerType {
+  <<enum>>
+    Strength
+    Speed
+    Intelligence
+    Telekinesis
+    Elemental
+    Shapeshifting
+  }
+
+  class LocationType {
+  <<enum>>
+    City
+    Forest
+    UndergroundLair
+    Dimension
+  }
+
+  class CardType {
+  <<enum>>
+    Attack
+    Defense
+    Special
+  }
+
+  class GameStatus {
+  <<enum>>
+    NotStarted
+    InProgress
+    Paused
+    Ended
+  }
+}
+  class GameController {
+    +startGame(): void
+    +pauseGame(): void
+    +endGame(): void
+  }
+namespace ThePlayer{
+  class Player {
+    -_id: int
+    -_name: string
+    -_hand: List<Card>
+    +Player(id: int, name: string)
+    +getId(): int
+    +getName(): string
+    +getHand(): List<Card>
+    +addToHand(card: Card): void
+    +removeFromHand(card: Card): void
+  }
+    class Scoreboard {
+    -_scores: Map<Player, int>
+    -_gameStatus: GameStatus
+    +recordScore(player: Player, score: int)
+    +getScore(player: Player)
+    +determineWinner(): Player
+    +getGameStatus(): GameStatus
+  }
+  }
+namespace TheCard{
+  class Card {
+    -_id: int
+    -_name: string
+    -_type: CardType
+    +Card(id: int, name: string)
+    +getId(): int
+    +getName(): string
+    +getType(): CardType
+  }
+
+  class Deck {
+    -_cards: List<Card>
+    +Deck()
+    +shuffle(): void
+    +draw(): Card
+  }
+
+  class Hero {
+    -_isHero: boolean
+    +Hero(id: int, name: string)
+    +isHero(): boolean
+  }
+
+  class Villain {
+    -_isVillain: boolean
+    +Villain(id: int, name: string)
+    +isVillain(): boolean
+  }
+
+}
+
+namespace TheCharacter{
+  class Character {
+    -_id: int
+    -_name: string
+    -_gender: Gender
+    -_power: string
+    -_powerType: PowerType
+    +Character(id: int, name: string)
+    +getId(): int
+    +getName(): string
+    +getGender(): Gender
+    +getPower(): string
+    +setPower(power: string, powerType: PowerType): void
+  }
+
+  class Location {
+    -_id: int
+    -_name: string
+    -_type: LocationType
+    +Location(id: int, name: string)
+    +getId(): int
+    +getName(): string
+    +getType(): LocationType
+  }
+
+  class Relationship {
+    -_type: string
+    -_character: Character
+    +Relationship(type: string, character: Character)
+    +getType(): string
+    +getCharacter(): Character
+  }
+
+  class Universe {
+    +initialize(): void
+  }
+
+}
+
+  Universe --> "*" Character : contains
+  GameController --> Universe : controls
+  GameController --> Player : controls
+  GameController --> Deck : controls
+  GameController --> Scoreboard : controls
+  GameController --> Hero : controls
+  GameController --> Villain : controls
+  GameController --> Relationship : controls
+  Character --> Gender
+  Character -->PowerType
+  Character --|> Hero : specializes
+  Character --|> Villain : specializes
+  Character --> "n" Relationship : participates in
+  Player --> "*" Card : has
+  Player --> Scoreboard : uses
+  Card --> "*" Character : features
+  Card --> CardType
+  Location --> "*" Character : is at
+  Location --> LocationType
+
+  Deck --> "*" Card : contains
+  Scoreboard --> Player : determines winner
+  Scoreboard --> GameStatus
+  Relationship --> "1" Character : involves

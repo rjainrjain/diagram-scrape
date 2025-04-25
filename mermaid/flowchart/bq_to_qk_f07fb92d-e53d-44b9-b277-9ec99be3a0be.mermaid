@@ -1,0 +1,18 @@
+%% Subcircuit BQ to QK
+flowchart TD
+    b((broadcaster)) --> bq
+    bq[%bq] --> qr & mg
+    qr([&qr]) --> dp & bq & nd & rz & mg & qk & mh
+    dp[%dp] --> mh
+    mh[%mh] --> rz
+    rz[%rz] --> tj
+    tj[%tj] --> nd & qr
+    nd[%nd] --> jx
+    jx[%jx] --> qr & zz
+    zz[%zz] --> pf & qr
+    pf[%pf] --> xk & qr
+    xk[%xk] --> qr & sf
+    sf[%sf] --> qr
+    mg[%mg] --> dp
+    qk([&qk]) --> gf
+    gf([&gf]) --> rx

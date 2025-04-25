@@ -1,0 +1,6 @@
+graph TD
+A[Watch Filesystem using NiFi] -->|new docs| B(Text & Feature Extraction using 'markmo/onesource')
+B --> |training data| C(3-layer Bidirectional LSTM Model)
+C -->|model| D(API Layer using 'deepthought-api')
+D -->|service| E(Bot Orchestration Layer using Harold)
+E --> |service| F(Bot UI)

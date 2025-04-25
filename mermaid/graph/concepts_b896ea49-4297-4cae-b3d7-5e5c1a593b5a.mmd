@@ -1,0 +1,64 @@
+graph TB
+    op[operation]:::previous -- can have --> closure:::previous
+    op -- can have --> identity:::previous
+    op -- can have --> associativity:::previous
+    op -- can have --> commutativity:::previous
+    op -- can have --> distributivity:::previous
+    op -- can have --> inverse:::previous
+
+
+    scalar -- forms --> field
+
+    scalar:::previous -- can scale --> vector:::previous
+
+    vector:::previous -- forms --> group
+    vector -- pairs have --> dp[dot product]
+    dp:::previous -- defines --> orthogonal:::previous
+    vector -- can be --> normalised
+    normalised -- with --> norm:::previous
+    vs -- has --> axioms
+
+    vs -- has set of --> scalar
+    vs -- allows --> lincomb[linear combination]:::previous
+    vs[vector space]:::previous -- has --> vectorset:::previous
+
+    vs -- has --> basis:::previous
+
+    vs -- has --> dimension:::previous
+
+    vectorset -- contains --> vector
+    basis -- spans --> vs
+    lincomb -- of --> scalar
+    lincomb -- of --> vectorset
+    field:::previous -- has --> axioms
+    group:::previous -- has --> axioms
+    field -- includes --> group
+
+    basis -- is a --> vectorset
+    basis -- size defines --> dimension
+    basis -- can be -->orthonormal
+    orthonormal:::previous -- requires --> normalised:::previous
+
+    orthonormal -- requires --> orthogonal:::previous
+    dp -- defines a --> norm
+
+    lm[linear map]:::previous -- acts on --> vector
+    matrix:::previous -- represents --> lm
+    matrix -- has --> determinant:::previous
+    determinant -- nonzero implies --> inverse
+    matrix -- can represent --> lineq[system of linear equations]:::previous
+    ge[Gaussian elimination] -- acts on --> matrix
+    ge -- reduces matrix to --> ref[row-echelon form]
+    matrix -- can have --> ref:::previous
+    matrix -- can be --> diagonal:::previous
+
+    vectorset[set of vectors]
+    vectorset -- can have --> indep[linear independence]
+    basis -- has --> indep:::previous
+    lm -- has --> rank:::previous 
+    lm -- has --> kernel:::today
+    ge:::previous  -- can find --> inverse
+    axioms:::previous -- govern --> op
+
+classDef today fill:#f9f,stroke:#000,stroke-width:4px;
+classDef previous fill:#fff,stroke:#000,stroke-width:4px;

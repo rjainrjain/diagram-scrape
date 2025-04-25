@@ -1,0 +1,18 @@
+sequenceDiagram
+
+participant Browser
+participant App
+participant S3
+
+Browser->>App: request upload credentials
+activate App
+Note left of App: This is where direct flight is used
+App-->>Browser: send credentials
+deactivate App
+Browser->>S3: upload data with credentials
+Browser->>App: data uploaded
+S3-->>App: download data
+activate App
+Note right of App: this is where processing happens
+App->>S3: upload processed data
+deactivate App

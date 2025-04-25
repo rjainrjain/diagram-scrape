@@ -1,0 +1,104 @@
+flowchart TD
+    A[Início] --> B[Classe CameraFollow Inicializada]
+    B --> C[Movimento do Jogador Detectado]
+    C --> D{Tecla Q ou E Pressionada?}
+    D -- Sim --> E[Rotacionar Câmera]
+    D -- Não --> F[Atualizar Posicionamento da Câmera]
+    F --> G[Posição LateUpdate & LookAt Alvo]
+
+    A --> H[Lógica de Colisão de Projetil]
+    H --> I{Colisão com Inimigo?}
+    I -- Sim --> J[Aplicar Dano ao Inimigo]
+    J --> K[Destruir Projetil]
+    I -- Não --> L{Colisão com Água?}
+    L -- Sim --> M[Destruir Projetil]
+
+    A --> N[CannonController - Detecção de Alvo]
+    N --> O{Inimigo Detectado?}
+    O -- Sim --> P[Mire e Dispare o Canhão]
+    P --> Q[Instanciar Bala de Canhão & Aplicar Força]
+
+    A --> R[PlayerController - Manuseio da Espada]
+    R --> S{Ataque Acionado?}
+    S -- Sim --> T[Iniciar Coroutine de Ataque]
+    T --> U[Reproduzir Animação de Ataque]
+
+    A --> V[EnemyBoat - Movendo-se em Direção à Ilha]
+    V --> W{Bloco da Ilha Mais Próximo Encontrado?}
+    W -- Sim --> X[Mover em Direção ao Bloco da Ilha]
+    X --> Y{Bloco Atingido?}
+    Y -- Sim --> Z[Registrar Mensagem: Ilha Atingida]
+    Z --> AA{Bloco Abaixo do Jogador?}
+    AA -- Sim --> AB[Fim de Jogo]
+
+    A --> AC[EnemySpawner - Gerar Inimigos]
+    AC --> AD{Blocos da Ilha Inicializados?}
+    AD -- Sim --> AE[Gerar Barcos Inimigos em Intervalos]
+    AE --> AF[Mover Inimigos para o Bloco Mais Próximo]
+
+    A --> AG[IslandGenerator - Gerar Blocos da Ilha]
+    AG --> AH[Instanciar Blocos e Adicionar Vegetação]
+    AH --> AI[Exibir Posições dos Blocos]
+
+    A --> AJ[PlayerSpawner - Gerar Jogador]
+    AJ --> AK{Jogador Existe?}
+    AK -- Sim --> AL[Mover Jogador Existente para o Spawn]
+    AK -- Não --> AM[Instanciar Novo Jogador]
+
+    A --> AN[WeaponPlacement - Manusear Colocação de Arma]
+    AN --> AO{Tecla B Pressionada?}
+    AO -- Sim --> AP[Iniciar Colocação de Arma]
+    AP --> AQ{Clique do Botão Esquerdo do Mouse?}
+    AQ -- Sim --> AR[Colocar Arma]
+
+    AR --> AS{Arma na Água?}
+    AS -- Sim --> AT[Aplicar Física à Arma na Água]
+    AT --> AU[Destruir Arma após Atraso]
+
+    style A fill:#f9f,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style B fill:#bbf,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style C fill:#bbf,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style D fill:#ffc,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style E fill:#bbf,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style F fill:#bbf,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style G fill:#bbf,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style H fill:#f96,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style I fill:#ffc,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style J fill:#f96,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style K fill:#f96,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style L fill:#ffc,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style M fill:#f96,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style N fill:#bbf,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style O fill:#ffc,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style P fill:#bbf,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style Q fill:#bbf,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style R fill:#bbf,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style S fill:#ffc,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style T fill:#bbf,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style U fill:#bbf,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style V fill:#bbf,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style W fill:#ffc,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style X fill:#bbf,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style Y fill:#ffc,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style Z fill:#bbf,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style AA fill:#ffc,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style AB fill:#f00,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style AC fill:#bbf,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style AD fill:#ffc,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style AE fill:#bbf,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style AF fill:#bbf,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style AG fill:#bbf,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style AH fill:#bbf,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style AI fill:#bbf,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style AJ fill:#bbf,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style AK fill:#ffc,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style AL fill:#bbf,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style AM fill:#bbf,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style AN fill:#bbf,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style AO fill:#ffc,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style AP fill:#bbf,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style AQ fill:#ffc,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style AR fill:#bbf,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style AS fill:#ffc,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style AT fill:#bbf,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style AU fill:#f96,stroke:#334,stroke-width:2px,color:#000,font-weight:bold

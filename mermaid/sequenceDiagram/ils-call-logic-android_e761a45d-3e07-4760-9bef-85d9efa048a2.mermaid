@@ -1,0 +1,42 @@
+sequenceDiagram
+    participant User
+    participant Video_SDK
+    participant Agora
+
+    User ->>+ Video_SDK: Open App
+    Video_SDK ->>+ Agora: Initiate the Agora Video SDK engine: agoraEngine = RtcEngine.create
+    Agora ->>- Video_SDK: agoraEngine instance created
+    
+    Video_SDK ->> Agora: Enable the video module: agoraEngine.enableVideo()
+    Video_SDK ->> Agora: Set the channel profile: agoraEngine.setChannelProfile(CHANNEL_PROFILE_LIVE_BROADCASTING)
+    
+    rect rgb(240, 240, 240)
+      note right of Video_SDK: Host Interactions
+      Video_SDK ->> Agora: Retrieve authentication token to join channel
+      Agora ->> Video_SDK: Authentication token
+      
+      Video_SDK ->> Agora: Set the role as host: agoraEngine.setClientRole(Constants.CLIENT_ROLE_BROADCASTER)
+      Video_SDK ->> Agora: Setup local video: agoraEngine.setupLocalVideo(VideoCanvas)
+      Video_SDK ->> Agora: Start local preview: agoraEngine.startPreview()
+      Video_SDK ->> Agora: Join a channel as host: agoraEngine.joinChannel
+      
+      Video_SDK ->> Agora: Send data stream
+    end
+
+    rect rgb(240, 240, 240)
+      note right of Video_SDK: Audience Interactions
+      Video_SDK ->> Agora: Set the user role as audience: agoraEngine.setClientRole(CLIENT_ROLE_AUDIENCE)
+      Video_SDK ->> Agora: Join the channel: agoraEngine.joinChannel
+      Video_SDK ->> Agora: Retrieve streaming from the hosts: agoraEngine.setupRemoteVideo
+      Video_SDK ->> Agora: Receive data stream
+    end
+
+    Video_SDK ->> Agora: Leave the channel: agoraEngine.leaveCannel()
+    Agora ->> Video_SDK: Confirmation of leaving channel
+    Video_SDK ->> Agora: Clean up local resources: agoraEngine.destroy()
+    Agora ->> Video_SDK: Resources cleaned
+
+    User ->>+ Video_SDK: Leave the live streaming event
+    Video_SDK -->>- User: Exit
+    User ->>+ Video_SDK: Close app
+    Video_SDK ->>- User: App closed

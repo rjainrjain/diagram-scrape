@@ -1,0 +1,50 @@
+flowchart TD
+    %% USER INTERFACE (Start of Flow)
+    A[User Interface] -->|Tap NFC Card| B(NFC Reader)
+
+    %% NFC READER AND API INTEGRATION
+    B --> |Read Card Data| C{Is User Registered?}
+    C -->|Yes| D[API: Retrieve User and Card Data]
+    C -->|No| E[API: Register User and Card]
+
+    %% REGISTRATION PROCESS
+    E --> F{Is Registration Successful?}
+    F -->|Yes| G[Database: Save User and Card Data]
+    F -->|No| A[User Interface: Error Message]
+
+    %% CHECK BALANCE FLOW
+    D --> H{Check Balance?}
+    H -->|Yes| I[API: Get Card Balance]
+    I --> J[Database: Retrieve Balance]
+    J --> K[User Interface: Display Balance]
+    
+    %% FARE PAYMENT PROCESS
+    H -->|No| L{Initiate Payment?}
+    L -->|Yes| M[API: Deduct Fare]
+    M --> N[Database: Update Balance]
+    N -->|Balance Updated| O[User Interface: Payment Confirmation]
+
+    %% API AND TRANSACTION HISTORY
+    O --> P{Sync with Server?}
+    P -->|Yes| Q[API: Sync Transaction History]
+    Q --> R[Database: Update Transaction History]
+    R --> S[User Interface: Transaction Summary]
+
+    %% RELOAD BALANCE PROCESS
+    H -->|Reload Balance| T[API: Reload Balance]
+    T --> U[Database: Update Card Balance]
+    U --> V[User Interface: Reload Confirmation]
+    
+    %% API INTEGRATION FOR THIRD-PARTY APPS
+    T --> W[API: Open to Third-Party Integration]
+    W --> X[External App: View Balance, Transactions]
+
+    %% OFFLINE SUPPORT
+    A --> Z{Offline Mode?}
+    Z -->|Yes| Y[User Interface: Store Local Balance]
+    Y -->|Sync on Connect| R[Database: Sync Transaction History]
+
+    %% END OF FLOW
+    V -->|Complete| A
+    K -->|Complete| A
+    S -->|Complete| A

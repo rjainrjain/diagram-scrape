@@ -1,0 +1,44 @@
+classDiagram
+
+    direction LR
+
+    namespace Lang {
+
+        class System {
+            <<static>>
+        }
+
+    }
+
+    namespace IO {
+
+        class InputStream {
+            <<abstract>>
+            +read() int
+            +close() void
+        }
+
+        class FileInputStream {
+            +FileInputStream(name: string)
+        }
+
+        class IOException {
+
+        }
+        
+        class FileNotFoundException {
+
+        }
+
+    }
+
+    System o-->"1" InputStream: in
+
+    InputStream <|-- FileInputStream
+    InputStream ..> IOException: throws
+
+    FileInputStream ..> FileNotFoundException: throws
+
+    IOException <|-- FileNotFoundException 
+    
+    style System fill:white

@@ -1,0 +1,13 @@
+flowchart LR
+    API(API Gateway)
+    LA(Authorizer Lambda)
+    UM(External User Service)
+    L1(Lambda 1)
+    L2(Lambda 2)
+    L3(Lambda 3)
+
+    API --> LA
+    LA --check authorization--> UM
+    LA --authorized---> L1
+    LA --authorized---> L2
+    LA --authorized---> L3

@@ -1,0 +1,31 @@
+classDiagram
+    class UIElement {
+        +Render()
+        +Update()
+        +HandleInput()
+    }
+    class Button {
+        -onClick: Action
+        +SetClickHandler(handler: Action)
+    }
+    class TextBox {
+        -text: string
+        +SetText(text: string)
+        +GetText(): string
+    }
+    class Panel {
+        -children: List~UIElement~
+        +AddChild(child: UIElement)
+        +RemoveChild(child: UIElement)
+    }
+    class UIParser {
+        +ParseFromString(markup: string): UIElement
+    }
+    class StyleManager {
+        +ApplyStyle(element: UIElement, style: string)
+    }
+    UIElement <|-- Button
+    UIElement <|-- TextBox
+    UIElement <|-- Panel
+    UIParser --> UIElement
+    StyleManager --> UIElement

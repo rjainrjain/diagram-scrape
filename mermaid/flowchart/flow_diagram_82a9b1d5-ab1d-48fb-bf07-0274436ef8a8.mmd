@@ -1,0 +1,87 @@
+flowchart TD
+  A["Login"] --> B{Role?}
+  B -->|General| D[General Top]
+  B -->|Demo| E[Demo Top]
+  B -->|Admin| C[Admin Top]
+
+  %% General User Flow
+  subgraph General_Flow[General User Flow]
+    direction TB
+    D --> AF[items_index]
+    AF --> AG[show_item]
+    AG --> AH[edit_item]
+    AH --> AG
+    AF --> AI[select item]
+    AI --> AJ{"Send item?"}
+    AJ -->|Yes| AK[send_form PopUp]
+    AK -->|OK| AL[send confirm]
+    AL --> AM[send_lists]
+    AM --> D
+    AJ -->|No| AF
+    AK -->|Cancel| AF
+    AF --> AN[Search/Filter]
+    AN --> AF
+
+    D --> AO[message_template]
+    AO --> D
+  end
+
+  %% Demo User Flow
+  subgraph Demo_Flow[Demo User Flow]
+    direction TB
+    E --> Y[DemoItems_index]
+    Y --> Z[show_demo_item]
+    Y --> AA[select demo item]
+    AA --> AB{"Send demo item?"}
+    AB -->|Yes| AC[send_form PopUp]
+    AC -->|OK| AD[send confirm]
+    AD --> AE[SharedSendList]
+    AE --> E
+    AB -->|No| Y
+    AC -->|Cancel| Y
+  end
+
+  %% Admin Flow
+  subgraph Admin_Flow[Admin Flow]
+    direction TB
+    C --> F[User Management]
+    F --> G[View Users]
+    F --> H[Create New User]
+    H --> I[Enter User Details]
+    I --> J[Select Role]
+    J --> K[Generate Temporary Password]
+    K --> L[Send Invitation Email]
+    F --> M[Edit User]
+    F --> N[Deactivate User]
+
+    C --> O[DemoItemSelection]
+    O --> P[Manage Demo Items]
+    C --> Q[View All Items]
+    C --> R[Manage SharedSendList]
+  end
+
+  %% Password Reset Flow
+  subgraph Password_Reset[Password Reset Flow]
+    direction LR
+    S[Password Reset Request] --> T[Verify Email]
+    T --> U[Set New Password]
+    U --> A
+  end
+
+  %% Google Form Flow
+  subgraph Google_Form[Google Form Flow]
+    direction LR
+    V[Google Form Submission] -.-> W[Admin Review]
+    W -.-> X[Admin extracts email]
+    X -.-> H
+  end
+
+  %% スタイリング
+  classDef default fill:#000000,color:#ffffff,stroke:#333,stroke-width:2px
+  classDef popup fill:#000000,color:#ffffff,stroke:#333,stroke-width:2px
+  classDef decision fill:#000000,color:#ffffff,stroke:#333,stroke-width:2px,shape:diamond
+
+  %% クラスの適用
+  class A,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,AC,AD,AE,AF,AG,AH,AI,AK,AL,AM,AN,AO default
+  class B,AB,AJ decision
+  

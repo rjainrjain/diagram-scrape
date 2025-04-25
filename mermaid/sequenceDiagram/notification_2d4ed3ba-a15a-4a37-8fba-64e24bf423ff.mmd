@@ -1,0 +1,6 @@
+sequenceDiagram
+    participant C as Client
+    participant S as Server
+
+    C->>S: Send notification (id, module_id, byte stream)
+    S->>S: Handle notification

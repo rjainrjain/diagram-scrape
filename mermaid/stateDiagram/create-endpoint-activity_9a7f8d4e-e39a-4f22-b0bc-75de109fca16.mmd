@@ -1,0 +1,17 @@
+stateDiagram-v2
+    state "Client hits /create endpoint" as conn 
+    state "Are parameters valid?" as valid
+    state if_valid <<choice>>
+    state "False" as false
+    state "True" as true
+    [*] --> conn: Client connects.
+    conn --> valid
+    valid --> if_valid
+    if_valid --> false: No
+    if_valid --> true: Yes
+    false --> [*]: 400 Response is sent
+    true --> [*]: 200 Response is sent
+    
+
+
+    

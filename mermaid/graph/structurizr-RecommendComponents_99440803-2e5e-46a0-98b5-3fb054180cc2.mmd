@@ -1,0 +1,18 @@
+graph TB
+  linkStyle default fill:#ffffff
+
+  subgraph diagram [e-Commerce company - Recommendation Service API - Components]
+    style diagram fill:#ffffff,stroke:#ffffff
+
+    16("<div style='font-weight: bold'>Email Sender lambda</div><div style='font-size: 70%; margin-top: 0px'>[Container: Lambda, python]</div><div style='font-size: 80%; margin-top:10px'>Lambda for generating and<br />sending email for single user</div>")
+    style 16 fill:#ffffff,stroke:#d86613,color:#d86613
+
+    subgraph 11 [Recommendation Service API]
+      style 11 fill:#ffffff,stroke:#b2b2b2,color:#b2b2b2
+
+      12("<div style='font-weight: bold'>User item recommendation controller</div><div style='font-size: 70%; margin-top: 0px'>[Component: REST API]</div><div style='font-size: 80%; margin-top:10px'>API for fetch user item<br />recommendations</div>")
+      style 12 fill:#ffffff,stroke:#b2b2b2,color:#000000
+    end
+
+    16-. "<div>Makes API call to</div><div style='font-size: 70%'>[JSON/HTTPS]</div>" .->12
+  end

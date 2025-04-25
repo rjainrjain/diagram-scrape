@@ -1,0 +1,34 @@
+graph TD
+    Browser[Browser] -->|1| CF[Amazon CloudFront]
+    Browser -->|3| APIG[Amazon API Gateway]
+    CF -->|2| S3[Amazon S3 web application bucket]
+    APIG -->|4| LambdaP[AWS Lambda primary functions]
+    LambdaP <-->|Query/scan/pull items| DDB[(Amazon DynamoDB)]
+    CWS[Amazon CloudWatch scheduler] -->|5| LambdaP
+    CWS -->|List and describe inventory| SoI[Sources of Inventory]
+    
+    subgraph SoI[Sources of Inventory]
+        MS[AWS Media Services]
+        CF2[Amazon CloudFront]
+        S3_2[Amazon S3]
+        EL[AWS Elemental Live]
+        ELink[AWS Elemental Link]
+        SM[AWS Systems Manager]
+    end
+    
+    CWE[Amazon CloudWatch events] -->|8| LambdaR[AWS Lambda regional functions]
+    CWE -->|State change events| SoI
+    
+    DDB -->|6| CWA[CloudWatch alarm and event updates]
+    CWA -->|9| LambdaR
+    
+    subgraph Additional Components
+        APIG -->|User authentication| Cognito[Amazon Cognito]
+        LambdaP -->|Store diagrams| S3D[Amazon S3 diagram bucket]
+        LambdaP -->|Notifications| SNS[Amazon SNS]
+        SNS -->|Email notifications| Users[Users]
+        LambdaR -->|Cross-region data replication| DDB
+    end
+    
+    style SoI fill:#f9f,stroke:#333,stroke-width:2px
+    style Additional fill:#ccf,stroke:#333,stroke-width:2px

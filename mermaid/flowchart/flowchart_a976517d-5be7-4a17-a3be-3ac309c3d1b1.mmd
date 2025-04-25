@@ -1,0 +1,13 @@
+flowchart TD
+    A(Pergunta nome) -->|Resposta| B{Nome na Lista?}
+    B --> |SIM| D(Cumprimenta\nComenta a Dieta)
+    B --> |vazio| C(Mostra lista de nomes)
+    B --> |NÃO| E("Pergunta Nome\n(de novo)")
+    C --> F(Termina)
+    D --> |"Próx. da Fila"| A
+    E --> G(Pergunta qual\ncumprimento)
+    G --> H{Pergunta qual a dieta}
+    H --> |Carnívoro,\nOnívoro\nou Vegano| I(Adiciona na Lista)
+    H --> |Alérgico| J(Pergunta Alergia)
+    J --> I
+    I --> A

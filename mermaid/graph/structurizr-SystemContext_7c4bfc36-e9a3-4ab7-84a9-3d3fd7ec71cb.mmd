@@ -1,0 +1,19 @@
+graph TB
+  linkStyle default fill:#ffffff
+
+  subgraph diagram [LPA UID Service - System Context]
+    style diagram fill:#ffffff,stroke:#ffffff
+
+    18("<div style='font-weight: bold'>LPA UID Service</div><div style='font-size: 70%; margin-top: 0px'>[Software System]</div><div style='font-size: 80%; margin-top:10px'>Generates UIDs and stores<br />donor details.</div>")
+    style 18 fill:#1168bd,stroke:#0b4884,color:#ffffff
+    28("<div style='font-weight: bold'>LPA Case Management</div><div style='font-size: 70%; margin-top: 0px'>[Software System]</div><div style='font-size: 80%; margin-top:10px'>PKA Sirius.</div>")
+    style 28 fill:#999999,stroke:#6b6b6b,color:#ffffff
+    31("<div style='font-weight: bold'>LPA Public API</div><div style='font-size: 70%; margin-top: 0px'>[Software System]</div><div style='font-size: 80%; margin-top:10px'>API Integration for external<br />integration.</div>")
+    style 31 fill:#999999,stroke:#6b6b6b,color:#ffffff
+    6("<div style='font-weight: bold'>Make and Register a Lasting Power of Attorney Online</div><div style='font-size: 70%; margin-top: 0px'>[Software System]</div><div style='font-size: 80%; margin-top:10px'>Allows users to draft a<br />Lasting Power of Attorney<br />online.</div>")
+    style 6 fill:#1168bd,stroke:#0b4884,color:#ffffff
+
+    28-. "<div>Makes requests to</div><div style='font-size: 70%'></div>" .->18
+    31-. "<div>Makes requests to</div><div style='font-size: 70%'></div>" .->18
+    6-. "<div>Makes requests to</div><div style='font-size: 70%'></div>" .->18
+  end

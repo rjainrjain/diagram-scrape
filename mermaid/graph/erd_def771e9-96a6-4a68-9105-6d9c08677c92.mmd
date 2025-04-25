@@ -1,0 +1,112 @@
+graph TD
+    %% ===
+    %% LAUNCHPAD
+    %% ---
+    %% Rule: Each launchpad has a name and a location.
+    lpid(LaunchPadID):::pk --- LP[LaunchPad]:::entity
+    lpn(Name):::attr --- LP
+    %% Rule: A launchpad hosts multiple launches over time, and each launch is hosted by exactly one launchpad. Therefore, Launchpads will be created in the database even before the first launch is hosted there.
+    LP ~~~ H ---> LP
+    H ~~~ LP
+    %% trick w/ double invisible links to make backwards arrows work better,
+    %% from: https://github.com/mermaid-js/mermaid/issues/3208#issuecomment-1531104444
+    %% Rule: A launchpad is located in a country, and a country, in turn, is located on a continent.
+    LP === Lli{located in}:::relation
+
+    %% ===
+    %% LAUNCH
+    %% ---
+    %% Rule: A launch requires a launchpad that hosts it ...
+    H{hosted by}:::relation ==== L[Launch]:::entity
+    %% Rule: Multiple crew members can be carried on a crewed launch, and each crew member can be carried on multiple launches over time.
+    L --- CB{crewed by}:::relation
+    %% Rule: A launch requires ... the payload.
+    L ~~~ CP
+    CP{carries}:::relation ==> L
+    CP ~~~ L
+    %% Rule: A launch requires ... a launch vehicle (The rocket) ...
+    %% Rule: Each launch is performed by a launch vehicle. The serial number for the launch vehicle should be recorded. A launch vehicle can perform multiple launches over time.
+    L === LB{launched by}:::relation
+    %% Rule: For a launch, the date, time and name should be recorded as well as whether it is a crewed launch or not.
+    ld(Date):::attr --- L
+    lt(Time):::attr --- L
+    ln(Name):::attr --- L
+    lc(Crewed):::attr --- L
+    lid(LaunchID):::pk --- L
+
+    %% ===
+    %% LAUNCH VEHICLE
+    %% ---
+    %% Rule: Each launch is performed by a launch vehicle. The serial number for the launch vehicle should be recorded. A launch vehicle can perform multiple launches over time.
+    LB ---> LV[Launch Vehicle]:::weakEntity
+    lvsn(VehicleSerialNum):::disc --- LV
+    %% Rule: A launch requires ... a launch vehicle (The rocket) ... .
+    LV === Isa{is one of}:::weakRelation
+
+    %% ===
+    %% LAUNCH VEHICLE TYPE
+    %% ---
+    %% Rule: Each launch vehicle is of a specific launch vehicle type. The name, maximum thrust and whether it is reusable need to be recorded for the launch vehicle type.
+    Isa ---> LVT[Launch Vehicle Type]:::weakEntity
+    lvtn(VehicleTypeName):::disc --- LVT
+    lvtt(MaximumThrust):::attr --- LVT
+    lvtr(Reusable):::attr --- LVT
+
+    %% ===
+    %% PAYLOAD
+    %% ---
+    %% Rule: Each launch carries one payload, and a payload is only carried by one launch.
+    CP ====> P
+    %% Rule: A manufacturer also makes each payload, and a manufacturer can make many different payloads over time.
+    P[Payload]:::weakEntity ===== PMb{made by}:::weakRelation
+    plid(PayloadID):::disc --- P
+
+    %% ===
+    %% Manufacturer
+    %% ---
+    mid(ManufacturerID):::pk --- M[Manufacturer]:::entity
+    %% Rule: A specific manufacturer makes each launch vehicle type, and a manufacturer can make many different launch vehicle types.
+    LVT === LVMb{made by}:::weakRelation
+    LVMb ---> M
+    %% Rule: A manufacturer also makes each payload, and a manufacturer can make many different payloads over time.
+    PMb ---> M
+
+    %% ===
+    %% CREW
+    %% ---
+    %% Rule: Multiple crew members can be carried on a crewed launch, and each crew member can be carried on multiple launches over time.
+    %% Rule: Each crew member has a nationality (the country they come from), and their name and surname also need to be recorded.
+    %% Rule: Crew members can appear in the database before they launch for the first time
+    CB ---- C[Crew member]:::entity
+    C === If{is from}:::relation
+    cid(CrewMemberID):::pk --- C
+    cn(Name):::attr --- C
+    cs(Surname):::attr --- C
+
+    %% ===
+    %% COUNTRY
+    %% ---
+    %% Rule: Each crew member has a nationality (the country they come from), and their name and surname also need to be recorded.
+    If ---> Cu
+    %% Rule: A launchpad is located in a country, and a country, in turn, is located on a continent.
+    Lli ---> Cu
+    Cu[Country]:::entity --- Li{located in}:::relation
+    Li ---> Co[Continent]:::entity
+    cuid(CountryID):::pk --- Cu
+    cun(Name):::attr --- Cu
+    coid(ContinentID):::pk --- Co
+    con(Name):::attr --- Co
+
+    %% ===
+    %% STYLES
+    %% ---
+    classDef entity,weakEntity fill:#c6e0b4;
+    classDef relation,weakRelation fill:#9dc3e5;
+    classDef attr,subAttr,derAttr,pk,disc,multi fill:#fbf49b;
+    classDef subAttr,derAttr,multi stroke:red;
+    classDef derAttr stroke-dasharray: 10 5;
+    classDef pk text-decoration: underline;
+    classDef disc text-decoration: underline dashed;
+    %% optional attr links
+    %% FIXME: change numbers to correct links below & uncomment
+    %% linkStyle 1,4,26,39,45,51,65 stroke:red, stroke-dasharray: 10 5;

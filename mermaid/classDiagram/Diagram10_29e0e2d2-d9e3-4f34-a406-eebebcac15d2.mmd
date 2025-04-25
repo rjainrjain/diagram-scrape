@@ -1,0 +1,43 @@
+classDiagram
+ExchangeInterface --|> Exchange
+<<interface>> ExchangeInterface
+Exchange --|> NYSE
+<<abstract>> Exchange
+Exchange --|> NASDAQ
+Exchange -- InstrumentRepository : DI
+Exchange -- TradingCalendar : DI
+NYSE *-- TradingHours
+NASDAQ *-- TradingHours
+class ExchangeInterface{
+    +isTradingDay($date)
+    +isOpen($datetime)
+    +getTradedInstruments()
+    +isTraded($symbol)
+    +calcPreviousTradingDay($date)
+    +calcNextTradingDay($date)
+  }
+class Exchange{
+  -tradingCalendar
+  -instrumentRepository
+  +__construct()
+  +isTradingDay($date)
+  +getTradedInstruments()
+  +isTraded($symbol)
+  +calcPreviousTradingDay($date)
+  +calcNextTradingDay($date)
+  +getTradingCalendar()
+}
+class NYSE{
+  SYMBOLS_LIST
+  TIMEZONE
+  +isOpen($date)
+  +getExchangeName()
+}
+class NASDAQ{
+  SYMBOLS_LIST
+  TIMEZONE
+  +isOpen($date)
+  +getExchangeName()
+}
+<<FilterIterator>> TradingCalendar
+<<EntityRepository>> InstrumentRepository

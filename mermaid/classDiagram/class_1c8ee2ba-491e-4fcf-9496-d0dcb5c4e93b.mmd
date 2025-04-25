@@ -1,0 +1,94 @@
+classDiagram
+    Bullet --> Actor : owner
+    Direction --> Actor : direction
+    PowerUp --> Actor : powerUp
+
+    MapTile --> Map : tiles
+
+    Actor --> GameState : actors
+    Map --> GameState : map
+
+    GameState --> ServerGameController : game
+    GameState --> PlayerGameController : game
+
+    class ServerGameController {
+        +GameState game
+        +Socket[] clientSockets
+        +void startGame()
+        +void tick()
+        +void endGame()
+        +void sendGameState()
+    }
+
+    class PlayerGameController {
+        +GameState game
+        +Socket serverSocket
+        +void move(Direction direction)
+        +void shoot()
+    }
+
+    class GameState {
+        +Map map
+        +Actor[] actors
+        +Bullet[] bullets
+        +int timer
+    }
+
+    class Actor {
+        +int x
+        +int y
+        +string name
+        +Direction direction
+        +int score
+        +int shootCooldown
+        +PowerUp powerUp
+        +int powerUpDuration
+        +void setState(Direction state)
+        +void shoot()
+    }
+
+    class Bullet {
+        +int x
+        +int y
+        +Direction direction
+        +Actor owner    
+    }
+
+    class Map {
+        +int width
+        +int height
+        +MapTile[][] tiles
+        +void generateMap()
+        +void placePowerUps()
+    }
+
+    class Direction {
+        <<Enumeration>>
+        GOING_UP = 0
+        GOING_DOWN = 1
+        GOING_LEFT = 2
+        GOING_RIGHT = 3
+        STOPPED = 4
+    }
+
+    class PowerUp {
+        <<Enumeration>>
+        NONE = 0
+        FASTER_BULLETS = 1
+        RAMBO_MODE = 2
+        INVINCIBILITY = 3
+        GHOST_WALK = 4
+        DOUBLE_POINTS = 5
+    }
+
+    class MapTile {
+        <<Enumeration>>
+        EMPTY = 0
+        WALL = 1
+        POWER_UP_FASTER_BULLETS = 11
+        POWER_UP_RAMBO_MODE = 12
+        POWER_UP_INVINCIBILITY = 13
+        POWER_UP_GHOST_WALK = 14
+        POWER_UP_DOUBLE_POINTS = 15
+    }
+

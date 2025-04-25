@@ -1,0 +1,19 @@
+graph TD
+    A(Start Component Lifecycle) -->|First Render| B(Loader Fetches Timers)
+    B --> C{Is SecondsRemaining Default?}
+    C -->|Yes| D[Set SecondsRemaining from LocalStorage]
+    C -->|No| E{Is Timer Running?}
+    E -->|Yes| F[Set StartTime if Null]
+    F --> G[Interval Set for Timer Countdown]
+    G --> H{Is SecondsRemaining <= 0?}
+    H -->|Yes| I[Reset Timer]
+    H -->|No| J[Update LocalStorage with SecondsRemaining]
+    E -->|No| K{Was Timer Previously Running?}
+    K -->|Yes| L[Submit Data to Server]
+    L --> M[Load New Timer Data]
+    K -->|No| N[Idle State]
+    D --> E
+    I --> E
+    J --> E
+    M --> E
+    N --> E

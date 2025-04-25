@@ -1,0 +1,14 @@
+sequenceDiagram
+    participant User
+    participant API
+    participant Business Logic
+    participant Database
+
+    User ->> API: POST /places with place's details
+    API ->> Business Logic: validate_data(data) and post_place(data)
+    Business Logic ->> Database: save() : Insert new place (INSERT)
+    Business Logic ->> Database: add_amenities() : Associate amenities with the new place (INSERT)
+    Database -->> Business Logic: Confirm save
+    Business Logic -->> API: Return response
+    API -->> User: Return Success (201) / Failure (400)
+

@@ -1,0 +1,39 @@
+graph TD
+    H[Hypertension]
+    S1[Headache] -->|symptom of| H
+    S2[Blurred vision] -->|symptom of| H
+    S3[Shortness of breath] -->|symptom of| H
+    S4[Chest pain] -->|symptom of| H
+    S5[Dizziness] -->|symptom of| H
+
+    T1[Lifestyle changes] -->|treats| H
+    T2[Medication - ACE inhibitors] -->|treats| H
+    T3[Medication - Beta blockers] -->|treats| H
+    T4[Medication - Diuretics] -->|treats| H
+    T5[Medication - Calcium channel blockers] -->|treats| H
+
+    D1[Lisinopril] -->|type of| T2
+    D2[Ramipril] -->|type of| T2
+    D3[Atenolol] -->|type of| T3
+    D4[Metoprolol] -->|type of| T3
+    D5[Furosemide] -->|type of| T4
+    D6[Hydrochlorothiazide] -->|type of| T4
+    D7[Amlodipine] -->|type of| T5
+    D8[Nifedipine] -->|type of| T5
+
+    Di[Diabetes]
+    S6[Increased thirst] -->|symptom of| Di
+    S7[Frequent urination] -->|symptom of| Di
+    S8[Unexplained weight loss] -->|symptom of| Di
+    S9[Increased hunger] -->|symptom of| Di
+    S2 -->|symptom of| Di
+
+    T1 -->|treats| Di
+    T6[Medication - Insulin] -->|treats| Di
+    T7[Medication - Metformin] -->|treats| Di
+
+    D9[Insulin aspart] -->|type of| T6
+    D10[Insulin glargine] -->|type of| T6
+    D11[Metformin] -->|type of| T7
+    D12[Glyburide] -->|type of| T7
+

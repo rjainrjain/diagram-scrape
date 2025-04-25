@@ -1,0 +1,86 @@
+erDiagram
+    Users ||--o{ Orders : has
+    Orders ||--o{ Tickets : has
+    Users ||--o{ Certificado : obtains
+    Sub_events ||--o{ Certificado : belongs_to
+    Users ||--o{ Submissao : makes
+    Events ||--o{ Submissao : belongs_to
+    Sub_events ||--|{ Submissao : optionally_belongs_to
+    Events ||--|{ Sub_events : has
+    Sub_events ||--o{ Addresses : has
+
+    Users {
+        int id PK
+        varchar name
+        varchar email
+        varchar password
+        varchar phone
+        varchar type
+        varchar permission
+    }
+
+    Orders {
+        int id PK
+        int user_id FK
+        int ticket_id FK
+        decimal total_value
+        varchar payment_method
+        varchar status_payment
+        datetime payment_at
+        varchar code
+    }
+
+    Tickets {
+        int id PK
+        int event_id FK
+        int sub_event_id FK
+        varchar status
+        varchar codigoingresso
+        datetime created_at
+    }
+
+    Certificado {
+        int id PK
+        int user_id FK
+        int sub_event_id FK
+        datetime created_at
+        uuid verification_code
+    }
+
+    Submissao {
+        int SubmissaoID PK
+        int UsuarioID FK
+        int EventoID FK
+        int AtividadeID FK
+        varchar TituloTrabalho
+        text Descricao
+        blob Arquivo
+        datetime DataSubmissao
+        varchar Status
+    }
+
+    Events {
+        int id PK
+        varchar name
+        text description
+        datetime start_date
+        datetime end_date
+    }
+
+    Sub_events {
+        int id PK
+        varchar name
+        text description
+        datetime start_date
+        datetime end_date
+        int event_id FK
+        decimal value
+        int quantity
+    }
+
+    Addresses {
+        int id PK
+        int sub_event_id FK
+        varchar block
+        varchar floor
+    }

@@ -1,0 +1,14 @@
+graph TD
+    A[Researcher Login] --> B{Create New Survey?}
+    B -->|Yes| C[Design Survey in Qualtrics]
+    B -->|No| D[Select Existing Survey]
+    C --> E[Publish Survey]
+    D --> E
+    E --> F[Collect Responses]
+    F --> G[View Results]
+    G --> H{Verify Data Integrity?}
+    H -->|Yes| I[Request Verification]
+    I --> J[View Verification Results]
+    H -->|No| K[Export/Analyze Data]
+    J --> K
+    K --> L[Logout]

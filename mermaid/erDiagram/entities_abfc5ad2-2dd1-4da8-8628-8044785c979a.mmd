@@ -1,0 +1,238 @@
+erDiagram
+
+          User ||--o{ Skill: has
+          User ||--o{ Company: has
+          User ||--o{ Request: has
+          User ||--o{ Question: has
+          User ||--o{ Link: has
+          User ||--o{ Tip: has
+          User ||--o{ Poll: has
+          User ||--o{ Requirement: has
+          User ||--o{ Certificate: has
+          User ||--o{ Offer: has
+          User ||--o{ Callendar: has
+          User ||--o{ License: has
+          User ||--o{ Resource: has
+          User ||--o{ Review: has
+          User ||--o{ Remind: has
+          User ||--o{ Contact: has
+          User ||--o{ Roadmap: has
+
+          User ||--o{ Service: has
+
+          Team ||--o{ Offer: has
+
+          Request ||--o{ Response: has
+          Problem ||--o{ Tip: has
+          
+          Skill {
+            Id uint64
+            UserId uint64
+            Name string
+          }
+
+          Company {
+            Id uint64
+            Name string
+            Category uint64
+          }
+
+          Vacancy {
+            Id uint64
+            Link string
+            Status uint64
+          }
+
+          Team {
+            Id uint64
+            Name string
+            Description string
+          }
+
+          Request {
+            Id uint64
+            UserId uint64
+            Type uint64
+            Text string
+          }
+
+          Question {
+            Id uint64
+            UserId uint64
+            Text string
+          }
+
+          Tip {
+            Id uint64
+            UserId uint64
+            ProblemId uint64
+            Text string
+          }
+
+          Problem {
+            Id uint64
+            UserId uint64
+            Text string
+          }
+
+          Link {
+            Id uint64
+            UserId uint64
+            Long string
+            Short string
+          }
+
+          Request {
+            Id uint64
+            UserId uint64
+            Number string
+            Text string
+          }
+
+          Response {
+            Id uint64
+            UserId uint64
+            RequestId uint64
+            Text string
+          }
+          
+          Poll {
+            Id uint64
+            Number uint64
+            UserId uint64
+            Variant uint64
+          }
+
+          Requirement {
+            Id uint64
+            UserId uint64
+            Text string
+          }
+
+          Certificate {
+            Id uint64
+            UserId uint64
+            Created timestamp
+            Link string
+          }
+
+          Offer {
+            Id uint64
+            UserId uint64
+            Grade uint64
+            TeamId uint64
+          }
+
+          Calendar {
+            Id uint64
+            UserId uint64
+            Type uint64
+            Link string
+          }
+
+          License {
+            Id uint64
+            UserId uint64
+            Code string
+            Expired timestamp
+            Product string
+          }
+
+          Resource {
+            Id uint64
+            UserId uint64
+            Type uint64
+            Status uint64
+          }
+
+          Review {
+            Id uint64
+            UserId uint64
+            TeamId uint64
+            Text string
+          }
+
+          Service {
+            Id uint64
+            UserId uint64
+            Name uint64
+            Link string
+          }
+
+          Contact {
+            Id uint64
+            UserId uint64
+            Type uint64
+            Text string
+          }
+    
+          Roadmap {
+            Id uint64
+            UserId uint64
+            Link string
+          }
+
+          Remind {
+            Id uint64
+            UserId uint64
+            Deadline timestamp
+            Text string
+          }
+
+          Instuction {
+            Id uint64
+            ClassroomId uint64
+            Text string
+            PrevId uint64
+          }
+
+          Experience {
+            Id uint64
+            UserId uint64
+            Type uint64
+            From timestamp
+            To timespamp
+            Level uint64
+          }
+
+          Knowledge {
+            Id uint64
+            UserId uint64
+            Topic uint64
+            Text string
+          }
+
+          Meeting {
+            Id uint64
+            UserId uint64
+            Link string
+            Start timestamp
+            End timestamp
+          }
+
+          Survey {
+            Id uint64
+            UserId uint64
+            Link string
+          }
+
+          Quiz {
+            Id uint64
+            ClassroomId uint64
+            UserId uint64
+            Link string
+          }
+
+          Suggestion {
+            Id uint64
+            UserId uint64
+            CourseId uint64
+          }
+
+          Timeline {
+            Id uint64
+            UserId uint64
+            Type uint64
+            From timestamp
+            To timestamp
+          }

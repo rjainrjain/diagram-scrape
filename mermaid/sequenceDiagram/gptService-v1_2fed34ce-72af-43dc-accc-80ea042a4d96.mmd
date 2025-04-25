@@ -1,0 +1,31 @@
+sequenceDiagram
+		
+		
+    participant Backend
+    participant GPTService
+		
+
+		Backend->>GPTService: Request rule check.<br/>(character: {name: "PlayerName",character_id: "12345",...}, <br/>action: "slam a door shut to block an enemy’s path", <br/>context:"enemy rushing in")
+    create participant GPT as GPT<br/>Rule Enforcer
+    GPTService->>GPT: Prompt GPT to validate action
+		create participant RAG
+		GPT->>RAG: Query knowledge base (game_context)
+		destroy RAG
+		RAG->>GPT: Returns relevant rule knowledge
+		participant Narrator as Assistant API<br/>Narrator
+		alt is valid
+		  GPT-->>GPTService: Returns vallidation result:<br/>request rolls and present outcomes<br/>{"roll_request": {"name":"Athelectic", "dice": "d20", "dc": 17, <br/>"modifiers": [{"name": "athletics", "value": 5}, {"name": "crowbar", "value": 1}], <br/>"outcomes": {"critical_success": "Door shuts firmly, adding +2 DC for enemy to reopen", <br/>"success": "Door closes successfully, creating a temporary barrier", <br/>"failure": "Door jams halfway, providing only partial cover", <br/>"critical_failure": "Door bounces back, leaving player momentarily exposed"}}}
+			GPTService->>Backend: True, Request dice roll for Atheletic check
+			Note right of Backend: Roll 1d20 dice. Result: 12
+			Note right of Backend: Calculate final result: 12+5+1 =19
+			Note right of Backend: Resulting in success.
+	    Backend-->>GPTService: Dice roll result (12+5+1=18), <br/>Outcome: "success": "Door closes successfully, creating a temporary barrier"
+	    Narrator->>GPTService: Narrating Outcome
+			GPTService-->>Backend: Return narrative and updates game state
+			Note right of Backend: Updated game state to db
+
+    else is invalid
+			GPT-->>GPTService: None
+			GPTService->>Backend: False
+		end
+    

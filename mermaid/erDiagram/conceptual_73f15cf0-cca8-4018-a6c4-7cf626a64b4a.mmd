@@ -1,0 +1,28 @@
+erDiagram
+    WORKSPACE 1 to 1+ REPOSITORY: contains
+    WORKSPACE 1 to 0+ CHANNEL: contains
+    WORKSPACE 1 to 0+ SUBSCRIPTION: contains
+    WORKSPACE 1 to 1+ ROLE: contains
+    WORKSPACE {
+        string name
+    }
+    REPOSITORY {
+        string type
+    }
+    CHANNEL 0+ to 0+ REPOSITORY: updates
+    CHANNEL {
+        string type
+    }
+    SUBSCRIPTION 0+ to 0+ REPOSITORY: updates
+    SUBSCRIPTION {
+        string source
+        duration expiry
+    }
+    USER one or zero to 1 ROLE: has
+    USER {
+        string email
+        string name
+    }
+    ROLE {
+        string name
+    }

@@ -1,0 +1,50 @@
+
+classDiagram
+    class Main {
+        -Game game
+        +main()
+    }
+    class Game {
+        -Board board
+        -Score score
+        -Level level
+        -UI ui
+        +__init__()
+        +play()
+        +get_score()
+        +get_level()
+        +get_ui()
+    }
+    class Board {
+        -Grid grid
+        -Piece pieces
+        +__init__()
+        +move_piece(direction: str)
+        +get_grid()
+        +get_pieces()
+    }
+    class Score {
+        -value int
+        +__init__(value: int)
+        +increment()
+        +get_value()
+    }
+    class Level {
+        -difficulty int
+        -max_value int
+        +__init__(difficulty: int, max_value: int)
+        +get_difficulty()
+        +get_max_value()
+    }
+    class UI {
+        -theme str
+        -font font.Font
+        +__init__(theme: str, font: font.Font)
+        +get_theme()
+        +get_font()
+    }
+    Main --> Game
+    Game --> Board
+    Game --> Score
+    Game --> Level
+    Game --> UI

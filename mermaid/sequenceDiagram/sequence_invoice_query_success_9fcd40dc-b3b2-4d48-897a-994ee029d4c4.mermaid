@@ -1,0 +1,14 @@
+sequenceDiagram
+    participant merchant_service
+    participant uinvoice_openapi
+    participant vip_auth
+    participant uinvoice_gateway
+    participant uinvoice_core_business
+    merchant_service->>+uinvoice_openapi:invoice/query(terminal_sn,client_sn,client_task_sn,task_sn)
+    uinvoice_openapi->>+vip_auth:rpc/auth()
+    vip_auth-->>-uinvoice_openapi:status:true
+    uinvoice_openapi->>+uinvoice_gateway:route:invoice/query(terminal_sn,client_sn,client_task_sn,task_sn)
+    uinvoice_gateway->>+uinvoice_core_business:rpc/taxTopic:getMerchantSnAndStoreSnByTerminalSn()
+    uinvoice_core_business-->>-uinvoice_gateway:merchant_sn & sore_sn & isMocked
+    uinvoice_gateway-->>-uinvoice_openapi:task_status_result( if sucess() return invoice_ticket_info )
+    uinvoice_openapi-->>-merchant_service:task_status_result

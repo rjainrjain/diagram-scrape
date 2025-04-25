@@ -1,0 +1,23 @@
+flowchart-elk RL
+   classDef skipped color:#ccc,fill:#777,stroke:#333,stroke-dasharray: 5 5
+   core:primary-domain-routing([core:primary-domain-routing]):::skipped --> rootDeps
+   search:search-cluster([search:search-cluster]):::skipped --> rootDeps
+   search:search-api([search:search-api]):::skipped --> search:search-cluster:::skipped
+   edge:alb-vpc([edge:alb-vpc]):::skipped --> rootDeps
+   edge:load-balancer([edge:load-balancer]):::skipped --> edge:alb-vpc:::skipped
+   search:search-doc-storage([search:search-doc-storage]):::skipped --> rootDeps
+   core:content-storage([core:content-storage]) --> rootDeps
+   cms:discovery-api([cms:discovery-api]):::skipped --> core:content-storage
+   cms:downloads-api([cms:downloads-api]) --> core:content-storage
+   cms:management-api([cms:management-api]):::skipped --> core:content-storage
+   core:content-storage-backup([core:content-storage-backup]):::skipped --> core:content-storage
+   core:config-storage([core:config-storage]) --> rootDeps
+   core:versioned-config([core:versioned-config]) --> core:config-storage
+   edge:load-balancer:::skipped --> cms:discovery-api:::skipped
+   edge:load-balancer:::skipped --> cms:management-api:::skipped
+   edge:load-balancer:::skipped --> search:search-api:::skipped
+   edge:load-balancer:::skipped --> cms:downloads-api
+   edge:cdn([edge:cdn]) --> edge:load-balancer:::skipped
+   subgraph rootDeps[Root Dependencies]
+      core:envgroup-resources([core:envgroup-resources]):::skipped --> core:root-resources([core:root-resources])
+   end

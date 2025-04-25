@@ -1,0 +1,55 @@
+graph TD
+    A[Email Server] -->|IMAP| B(main.py)
+    B -->|Read| C[config.json]
+    B -->|Check| S[Traditional AI]
+    S -->|If not caught| D[Claude AI Model]
+    B -->|Write| E[./output/metrics.csv]
+    B -->|Move Spam| F[Junk Folder]
+    
+    G[batch-gathermetrics.cmd] -->|Run| B
+    G -->|Run| H[analyze_metrics.py]
+    
+    H -->|Read| E
+    H -->|Read| I[metrics-groundtruth.csv]
+    H -->|Write| J[./output/metrics_results.txt]
+    
+    K[cleanmailnightly.cmd] -->|Run| B
+    K -->|Write| L[./output/log.txt]
+    
+    subgraph "Configuration Files"
+        C
+        M[config-3.0-Haiku.json]
+        N[config-3.0-Opus.json]
+        O[config-3.5-Sonnet.json]
+    end
+    
+    subgraph "AI Models"
+        D
+        P[Claude 3 Haiku]
+        Q[Claude 3 Opus]
+        R[Claude 3.5 Sonnet]
+    end
+
+    subgraph "Traditional AI"
+        S
+        T[Blacklist]
+        U[Whitelist]
+    end
+    
+    style A fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    style B fill:#fff9c4,stroke:#f9a825,stroke-width:2px
+    style C fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
+    style D fill:#ffccbc,stroke:#bf360c,stroke-width:2px
+    style E fill:#e8eaf6,stroke:#3f51b5,stroke-width:2px
+    style F fill:#fce4ec,stroke:#880e4f,stroke-width:2px
+    style G fill:#f3e5f5,stroke:#6a1b9a,stroke-width:2px
+    style H fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    style I fill:#e8eaf6,stroke:#3f51b5,stroke-width:2px
+    style J fill:#fce4ec,stroke:#880e4f,stroke-width:2px
+    style K fill:#f3e5f5,stroke:#6a1b9a,stroke-width:2px
+    style L fill:#fce4ec,stroke:#880e4f,stroke-width:2px
+    style S fill:#ffecb3,stroke:#ff6f00,stroke-width:2px
+    style T fill:#ffecb3,stroke:#ff6f00,stroke-width:2px
+    style U fill:#ffecb3,stroke:#ff6f00,stroke-width:2px
+    
+    classDef default fill:#ffffff,stroke:#333,stroke-width:1px;

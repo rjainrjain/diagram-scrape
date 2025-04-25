@@ -1,0 +1,16 @@
+graph TD
+    A[Inicio] --> B[Leer daysUntilExpiration]
+    B --> C{daysUntilExpiration <= 0}
+    C -- Sí --> D[Mostrar Your subscription has expired.]
+    C -- No --> E{daysUntilExpiration == 1}
+    E -- Sí --> F[Mostrar Your subscription expires within a day! Renew now and save 20%!]
+    E -- No --> G{daysUntilExpiration <= 5}
+    G -- Sí --> H[Mostrar Your subscription expires in _ days. Renew now and save 10%!]
+    G -- No --> I{daysUntilExpiration <= 10}
+    I -- Sí --> J[Mostrar Your subscription will expire soon. Renew now!]
+    I -- No --> K[No mostrar ningún mensaje]
+    D --> L[Fin]
+    F --> L
+    H --> L
+    J --> L
+    K --> L

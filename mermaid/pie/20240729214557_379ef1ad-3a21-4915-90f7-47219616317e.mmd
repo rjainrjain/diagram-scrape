@@ -1,0 +1,21 @@
+
+sequenceDiagram
+    participant A as Application
+    participant C as Configuration
+    participant U as User
+    participant E as Event
+    participant T as Ticket
+    participant P as Payment
+    participant ES as EmailService
+    A->>C: load_config()
+    C-->>A: return config
+    A->>U: login(email, password)
+    U-->>A: return login_status
+    A->>E: get_events(query)
+    E-->>A: return events
+    A->>T: book_ticket(user_id, event_id, seat_number)
+    T-->>A: return booking_status
+    A->>P: process_payment()
+    P-->>A: return payment_status
+    A->>ES: send_email(recipient, subject, body)
+    ES-->>A: return email_status

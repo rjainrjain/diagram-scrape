@@ -1,0 +1,33 @@
+%% Documentation: https://github.com/mermaid-js/mermaid
+%% Editor: https://mermaid.live/edit
+
+sequenceDiagram
+title Vote NFT 
+participant User
+participant Server
+participant DB as Database
+participant Lens
+
+note over User: User clicks on Vote tab
+User->>Server: API call to fetch all the lens posts.
+Server->>DB: Retrieve list of lens posts which are not already voted by user
+DB->>Server: Returns list of lens posts
+Server->>User: Return list of lens posts
+
+Note over User: User clicks on upvote for a post
+
+User->>Lens: GraphQL call for upvote reaction for publication
+Lens->>User: Response 200
+User->>Server: API call to store vote of user
+Server->> DB: Create an entry in votes table
+DB->>Server: Success
+Server->>DB: Increment total votes for publication.
+DB->>Server: Success
+Server->>User: Response 200
+
+Note over User: User clicks on downvote for a post
+
+User->>Server: API call to store downvote of user
+Server->> DB: Create an entry in votes table to mark ignored
+DB->>Server: Success
+Server->>User: Response 200

@@ -1,0 +1,14 @@
+sequenceDiagram
+	actor user
+	create participant Program
+	user ->>+ Program: start
+	create participant Pizza
+	Program->>+Pizza: new Pizza(name, price)
+	Pizza-->>-Program: return
+	create participant Customer
+	Program->>+Customer: new Customer(name, email, phone)
+	Customer -->>- Program: return
+	create participant Order
+	Program->>+Order: new Order(customer, pizza)
+	Order -->>- Program: return
+	Program->>-user: end

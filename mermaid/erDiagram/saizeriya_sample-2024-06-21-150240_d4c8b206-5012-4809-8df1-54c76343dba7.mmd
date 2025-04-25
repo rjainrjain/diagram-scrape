@@ -1,0 +1,27 @@
+erDiagram
+    items ||--|{ orders : ""
+    customers ||--|{ orders : ""
+    item_categories ||--|{ items : ""
+
+    items {
+        bigint id PK
+        string name
+        integer price
+        bigint item_category_id FK
+    }
+    customers {
+        bigint id PK
+        string name
+        string telephone_number
+    }
+    orders {
+        bigint id PK
+        bigint customer_id FK
+        bigint item_id FK
+        integer count
+    }
+    item_categories {
+        bigint id PK
+        string name
+    }
+    

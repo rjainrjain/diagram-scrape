@@ -1,0 +1,97 @@
+classDiagram
+    Board ..|> IBoard 
+    Player ..|> IPlayer
+    Piece --> StatPiece
+    Piece --> Colour
+    Board ..* Piece
+    GameController"1" ..* "1"Board
+    GameController"1" ..* "24"Piece
+    GameController ..* Position
+    GameController"1"..*"2" Player
+    GameController --> StatGame
+
+    class Colour{
+        <<enumuration>>
+        Black
+        Red
+    }
+    class IPlayer{
+        <<Interface>>
+        +Nickname(+get;) string
+        +Id(+get;) int
+    }
+    class Player{
+        +Player(string nickname)
+        +Nickname(+get; -set;) string
+        +Id(+get; -set;) int
+    }
+    class StatPiece{
+        <<enumeration>>
+        Regular
+        King
+        None
+    }
+    class Position{
+        +int x
+        +int y
+    }
+    class Piece{
+        +Piece(Colour colour)
+        +Piece(Colour colour, StatPiece status)
+        +Status(+get; -set;) StatPiece
+        +Colour(+get; -set;) Colour
+        +Id(+get; -set;) int
+    }
+    class IBoard{
+        <<Interface>>
+        +Size~T~(+get;) T
+    }
+    class Board{
+        -Piece[,] size
+        +Board(int size) 
+        +Size(+get; +set;) Piece[,]
+    }
+    class StatGame{
+        GameNoReady,
+        GameReady,
+        GameOnGoing,
+        GameOver
+    }
+    class GameController{
+        - Dictionary~IPlayer HashSet~Piece~~ _player
+        - IBoard _board
+        - IPlayer _currentPlayer
+        - Piece _currentPiece
+        - Position _targetPosCurrentPiece
+        - bool isGameOnGoing
+        - StatGame statusGame
+        + event Action~Piece Position~ OnMovePiece
+        + event Action~Piece~ OnCapture
+        %%- Action~IPlayer Piece Position~ OnLog
+        
+        +SetPiecesPlayer(IPlayer player, HashSet~Piece~ pieces) bool
+        +GetPiecesPlayer() Dictionary~IPlayer HashSet~Piece~~
+        +SetBoard(IBoard board) bool
+        +GetBoard() int
+        +SetBoardPieces() bool
+        +SetBoardPieces(IPlayer player) bool
+        +SetBoardPiecesCustom(Piece piece, Position pos) bool
+        +GetBoardPieces() Piece[,]
+        +SetTurn(IPlayer player) bool
+        +GetTurn() IPlayer
+        +GetStatGame() StatGame
+        +GameStart() bool
+        +CountPossiblePiece(IPlayer player) Dictionary~Piece List~Position~~
+        +PossibelPiece(Piece piece) List~Position~
+        +IsCanMove(Piece piece, Position targetPos) bool
+        +MovePiece(Piece piece, Position targetPos) bool
+        -CapturePiece(Piece piece, Position targetPos)
+        +GetLeftPiece(IPlayer player) int
+        +ChangeStatPiece(Piece piece) Piece
+        +ChangeStatPiece(Piece piece, StatPiece status) Piece
+        +LogChangePos() bool
+        +NextTurn() bool
+        +GameOver() bool
+        +FindWinner() IPlayer?
+        +Resign(IPlayer player) bool
+    }

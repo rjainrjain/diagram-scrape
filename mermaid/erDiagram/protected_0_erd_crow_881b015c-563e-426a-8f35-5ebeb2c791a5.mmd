@@ -1,0 +1,10 @@
+erDiagram
+  Agence {
+    TYPE id_agence PK
+    TYPE nom_agence
+  }
+  Direction_regionale {
+    TYPE id_dir PK
+    TYPE nom_dir
+  }
+  Direction_regionale |o--|{ Agence: Superviser

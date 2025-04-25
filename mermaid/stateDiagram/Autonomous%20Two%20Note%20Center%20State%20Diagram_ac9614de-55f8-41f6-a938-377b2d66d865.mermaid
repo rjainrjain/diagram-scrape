@@ -1,0 +1,17 @@
+stateDiagram-v2
+    [*] --> ShooterWheelOutTake
+    ShooterWheelOutTake --> KickerShot
+    KickerShot --> Rollback
+    state two_shots_complete <<choice>>
+    RollbackComplete --> two_shots_complete
+    two_shots_complete --> Idle: two_shots_complete == False
+    two_shots_complete --> End: two_shots_complete == True
+    Rollback --> RollbackComplete
+    Idle --> IntakeNoteFromFloor
+    IntakeNoteFromFloor --> IntakeNoteInAir
+    IntakeNoteInAir --> Handoff
+    Handoff --> KickerIntakeIdle
+    KickerIntakeIdle --> ShooterWheelOutTake
+    End --> [*]
+
+

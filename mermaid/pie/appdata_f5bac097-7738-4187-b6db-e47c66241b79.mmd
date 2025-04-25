@@ -1,0 +1,53 @@
+sequenceDiagram
+  participant seller
+  participant buyer
+  participant escrow_v2
+  participant escrow_v1
+  participant escrow_data
+  participant contract_owner
+  participant escrow_traits
+  
+  escrow_data ->> escrow_traits: implements traits
+  contract_owner ->> escrow_data: set-caller(escrow_v1 contract princial)
+  Note over contract_owner, escrow_data: escrow_v1 contract can call functions in escrow-data contract
+  contract_owner ->> escrow_data: set-caller(escrow_v2 contract princial)
+  Note over contract_owner, escrow_data: escrow_v2 contract can call functions in escrow-data contract
+
+  seller ->> escrow_v2: seller-deposit(100)
+  escrow_v2 ->> escrow_v1: seller-deposit(100)
+  escrow_v1 ->>+ escrow_data: pay-to-contract(100)
+  loop check if caller contract is-authorized
+    escrow_data ->>- escrow_data: is-authorized(escrow_v1)
+  end
+  
+opt 
+  seller ->> escrow_v2: set_discount(<=100)
+  Note over seller, escrow_v2: after transfer to deposit seller can set discount
+end
+
+  buyer ->> escrow_v2: buyer-deposit(100)
+  escrow_v2 ->> escrow_v1: buyer-deposit(100)
+  escrow_v1 ->>+ escrow_data: pay-to-contract(100)
+  loop check if caller contract is-authorized
+    escrow_data ->>- escrow_data: is-authorized(escrow_v1)
+  end
+
+
+ alt Confirm Deal Flow
+  buyer ->> escrow_v2: confirm-deal()
+  escrow_v2 ->>+ escrow_data: contract-pay-to-recipient(buyer, 50)
+  escrow_data ->> escrow_data: is-authorized(escrow_v2)
+  escrow_data -->>- buyer: Transfer (50 + discount) STX
+  escrow_v2 ->>+ escrow_data: contract-pay-to-recipient(seller, 150)
+  escrow_data ->> escrow_data: is-authorized(escrow_v2)
+  escrow_data -->>- seller: Transfer (150 - discount) STX
+else Break Deal Flow
+  seller ->> escrow_v2: break-deal()
+  escrow_v2 ->> escrow_v1: break-deal()
+  escrow_v1 ->>+ escrow_data: contract-pay-to-recipient(buyer, 100)
+  escrow_data ->> escrow_data: is-authorized(escrow_v1)
+  escrow_data -->>- buyer: Transfer 100 STX
+  escrow_v1 ->>+ escrow_data: contract-pay-to-recipient(seller, 100)
+  escrow_data ->> escrow_data: is-authorized(escrow_v1)
+  escrow_data -->>- seller: Transfer 100 STX
+end

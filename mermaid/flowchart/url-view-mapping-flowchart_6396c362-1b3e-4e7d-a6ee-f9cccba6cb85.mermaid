@@ -1,0 +1,37 @@
+flowchart TD
+    A[URL Patterns] --> B{"/"}
+    A --> C{"create/"}
+    A --> D{"quiz/<int:quiz_id>/"}
+    A --> E{"add_question/"}
+    A --> F{"remove_question/"}
+    A --> G{"take/<int:quiz_id>/"}
+    A --> H{"results/<int:quiz_id>/"}
+    A --> I{"profile/"}
+    A --> J{"profile/<int:member_id>/"}
+
+    B --> K[views.home]
+    C --> L[views.quiz_create]
+    D --> M[views.quiz_detail]
+    E --> N[views.add_question]
+    F --> O[views.remove_question]
+    G --> P[views.quiz_take]
+    H --> Q[views.quiz_results]
+    I --> R[views.default_profile]
+    J --> S[views.member_profile]
+
+    K --> T[Render home.html]
+    L --> U[Render create_quiz.html]
+    M --> V[Render quiz_detail.html]
+    N --> W[Return question form HTML]
+    O --> X[Return empty response]
+    P --> Y[Render take_quiz.html]
+    Q --> Z[Render quiz_results.html]
+    R --> AA[Redirect to profile/1/]
+    S --> AB[Render profile.html]
+
+    classDef url fill:orange,stroke:black,stroke-width:2px,color:black;
+    classDef view fill:teal,stroke:#333,stroke-width:2px,color:black;
+    classDef template fill:#bfb,stroke:#333,stroke-width:2px,color:black;
+    class B,C,D,E,F,G,H,I,J url;
+    class K,L,M,N,O,P,Q,R,S view;
+    class T,U,V,W,X,Y,Z,AB,AA template;

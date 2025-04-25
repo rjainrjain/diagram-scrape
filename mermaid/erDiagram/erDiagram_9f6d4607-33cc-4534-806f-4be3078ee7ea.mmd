@@ -1,0 +1,138 @@
+erDiagram
+    Itinerario ||..o{ Recorrido : "1"
+    Itinerario ||..o{ ReservaCamarote : "1"
+    Itinerario ||..o{ Puerto : "1"
+    Recorrido }o..|| Navio : "1"
+    Puesto ||..o{ Tripulante : "1"
+    TipoCamarote ||--o{ Camarote : "1"
+    Camarote }o--|| EstadoCamarote : "1"
+    Navio ||..o{ Cubierta : "1"
+    Cubierta ||..o{ Camarote : "1"
+    Itinerario }o..|| CategoriaItinerario : "1"
+    Pasajero }o..|| Pais : "1"
+    Pasajero ||..o{ ReservaCamarote : "1"
+    ReservaCamarote }o..|| Camarote : "1"
+    Pais ||..o{ Ciudad : "1"
+    Navio }o..|| EstadoNavio : "1"
+    Navio }o..|| CategoriaNavio : "1"
+    Tripulante ||..o{ HistorialTripulante : "1"
+    Navio ||..o{ HistorialTripulante : "1"
+    Tripulante ||..o{ Tripulante : "1"
+
+Recorrido
+    Itinerario {
+        - nombreItinerario : string
+        - descripcionItinerario : string
+        - listaPuertos : Puerto
+        - categoriaItinerario : CategoriaItinerario
+    }
+    Recorrido {
+        - numeroEscala : int
+        - fechaViaje : datetime
+        - duracionViaje : float
+        - listaPuertos : Puerto
+        - itinerarioRealizado : Itinerario
+        - navioDelViaje : Navio
+        - listaPasajeros : Pasajero
+    }
+    Navio {
+        int codigoNavio
+        String nombreNavio
+        float altura
+        float eslora
+        float manga
+        float desplazamiento
+        float autonomiaViaje
+        int cantidadCamarotes
+        int maxCantidadPasajeros
+        int cantidadMotores
+        int cantidadTripulantes
+    }
+    Cubierta {
+        - numeroCubierta : int
+        - ubicacionCubierta : string
+        - descripcionCubierta : string
+        - encargado : Tripulante
+        - navioUbicado : Navio
+    }
+    Camarote {
+        - ubicacionCamarote : string
+        - numeroCamarote : int
+        - ubicacionCamarote : int
+        - estadoCamarote : EstadoCamarote
+        - cubiertaUbicada : Cubierta
+    }
+    Tripulante {
+        - nombreTripulante : string
+        - legajo : string
+        - navio_asignado : Navio
+        - puesto_tripulante : Puesto
+        - nombreJefe : string
+    }
+    HistorialTripulante {
+        - tripulanteCambiado : Tripulante 
+        - nuevoPuestoTripulante : Puesto
+        - nuevoNombreJefe : String
+        - nuevoNavioAsignado : Navio
+        - fechaCambio : datetime
+    }
+    Puesto {
+        String nombrePuesto
+        String descripcionPuesto
+    }
+    Puerto {
+        String nombrePuerto
+        String descripcionPuerto
+    }
+    Pasajero {
+        - tipoDocumento : string
+        - numeroDocumento : int
+        - nombre : string
+        - username : String
+        - pais_origen : Pais
+        - ciudad_origen : Ciudad
+    }
+    EstadoNavio {
+        String nombreEstadoNavio
+        String descripcionEstadoNavio
+    }
+    EstadoCamarote {
+        - nombreEstadoCamarote : string
+        - descripcionEstadoCamarote : string
+    }
+    ReservaCamarote {
+        - fechaReserva : datetime
+        - listaPasajeros : Pasajero
+        - camaroteReservado : Camarote
+        - recorridoReservado : Recorrido
+    }
+    TipoCamarote {
+        String nombreTipoCamarote
+        String descripcionTipoCamarote
+    }
+    CambioEstadoNavio {
+        String nombreEstadoNavio
+        datetime fechaCambioEstado
+    }
+    CategoriaNavio {
+        String nombreCategoria
+        String descripcionCategoria
+    }
+    CategoriaItinerario {
+        String nombreCategoria
+        String descripcionCategoria
+    }
+    Pais {
+        String nombrePais
+        String descripcionPais
+        String moneda
+        String idioma
+    }
+    Ciudad {
+        String nombreCiudad
+        String descripcionCiudad
+    }
+    CambioPuerto {
+        - fechaHoraLlegada : datetime
+    }
+

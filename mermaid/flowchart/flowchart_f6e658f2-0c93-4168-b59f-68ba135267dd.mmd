@@ -1,0 +1,9 @@
+flowchart TD
+    A[Start] --> B[Calculate COGS Price]
+    B --> C[Calculate Historical Price]
+    C --> D[Calculate Market's Best Price]
+    D --> E{COGS > Market's Best Price ?}
+    E -- Yes --> F["COGS + (COGS * Margin)"]
+    E -- No --> G{Historical Price > Market's Best Price ?}
+    G -- Yes --> H["Market's Best Price + (Market's Best Price * Margin)"]
+    G -- No --> I["Market's Best Price - (Market's Best Price * Margin)"]

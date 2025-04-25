@@ -1,0 +1,30 @@
+graph TD
+    A[UsernamePasswordAuthenticationFilter] -->|1. Tạo token| B(UsernamePasswordAuthenticationToken raw)
+    B -->|2. Xác thực| C[AuthenticationManager]
+    C -->|3. Ủy quyền xác thực| D[ProviderManager]
+    D -->|4. Lặp qua các provider| E[AuthenticationProvider]
+    E -->|5. Kiểm tra hỗ trợ| F{Hỗ trợ loại xác thực?}
+    F -->|Không| D
+    F -->|Có| G[DaoAuthenticationProvider]
+
+    subgraph Xác thực chi tiết
+        G -->|6. Lấy thông tin người dùng| H[UserDetailsService]
+        H -->|7. Truy vấn DB/LDAP| I(UserDetails)
+        I -->|8. Trả về thông tin người dùng| G
+        G -->|9. So sánh mật khẩu| J[PasswordEncoder]
+        J -->|10. Kết quả so sánh| G
+    end
+
+    G -->|11. Tạo token xác thực| K(UsernamePasswordAuthenticationToken authenticated)
+    K -->|12. Trả về token| D
+    D -->|13. Trả về token| C
+    C -->|14. Thiết lập SecurityContext| L[SecurityContextHolder]
+    L -->|15. Lưu trữ thông tin xác thực| M(SecurityContext)
+
+    classDef process stroke-width:2px;
+    classDef data stroke-width:2px;
+    classDef decision stroke-width:2px;
+
+    class A,C,D,E,G,H,J,L process;
+    class B,I,K,M data;
+    class F decision;

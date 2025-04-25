@@ -1,0 +1,15 @@
+stateDiagram-v2
+  state "<strong>Initialization</strong><hr>Entry: Internal parameter initialization<br>Exit: Send bootup message" as init
+  state "<strong>Pre-Operational</strong><hr>Entry: Start LED 1Hz<br>Exit: Stop LED" as preop
+  state "<strong>Operational</strong><hr>Entry: Start LED on<br>Exit: Stop LED" as op
+  state "<strong>Stop</strong><hr>Entry: Start LED 2Hz<br>Exit: Stop LED" as stop
+  [*] --> init : Device startup
+  init --> preop : (automatic)
+  preop --> init : CMD reset
+  preop --> op : CMD set operational
+  op --> preop : CMD set pre-operational
+  op --> init : CMD reset
+  stop --> init : CMD reset
+  stop --> preop : CMD set pre-operational
+  stop --> op : CMD set operational
+

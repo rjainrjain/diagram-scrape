@@ -1,0 +1,19 @@
+graph TD
+    A[Start] --> B{Is n < 2?}
+    B -->|Yes| C[Not Prime]
+    B -->|No| D{Is n == 2?}
+    D -->|Yes| E[Prime]
+    D -->|No| F{Is n even?}
+    F -->|Yes| G[Not Prime]
+    F -->|No| H[Calculate sqrt_n]
+    H --> I[Generate primes up to sqrt_n]
+    I --> J{For each prime p up to sqrt_n}
+    J -->|Next prime| K{Is n divisible by p?}
+    K -->|Yes| L[Not Prime]
+    K -->|No| J
+    J -->|All primes checked| M[Prime]
+    C --> N[End]
+    E --> N
+    G --> N
+    L --> N
+    M --> N

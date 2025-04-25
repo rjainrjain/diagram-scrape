@@ -1,0 +1,7 @@
+stateDiagram-v2
+    [*] --> Disabled
+    Disabled --> Enabled : NewProfile
+    Disabled --> Enabled : ExistingProfile & CustomProfile & SettingsDiffer
+    Enabled --> Disabled : EmptyName
+    Enabled --> Disabled : ExistingProfile & DefaultProfile
+    Enabled --> Disabled : ExistingProfile & CustomProfile & SettingsMatch

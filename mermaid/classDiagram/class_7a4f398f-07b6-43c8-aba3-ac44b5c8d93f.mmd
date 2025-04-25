@@ -1,0 +1,47 @@
+```mermaid
+classDiagram
+    note for Player "Can Shoot\n Can help in debugging"
+    Player <|-- Statistics
+    class Player{
+        -uuid id
+        -string first_name
+        -string last_name
+        -Statistics statistics
+        +get_player_name() string
+    }
+    class Team{
+        -uuid id
+        -string team_name
+        -list-uuid player_ids
+        +get_team_name() string
+    }
+    class Game{
+        -uuid id
+        -list_uuid player_or_team_ids
+        -bool team_game
+        -bool game_complete
+        -uuid winner
+    }
+    class Tournament{
+        +bool is_wild
+        +run()
+    }
+    class Statistics{
+        +bool: shot
+        +run()
+    }
+    class Set{
+        -uuid id
+        -list_uuid player_or_team_ids
+        -bool team_game
+        -bool game_complete
+        -uuid winner
+    }
+    class Leg{
+        -uuid id
+        -list_uuid player_or_team_ids
+        -bool team_game
+        -bool game_complete
+        -uuid winner
+}
+```

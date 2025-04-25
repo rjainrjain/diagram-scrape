@@ -1,0 +1,28 @@
+stateDiagram-v2
+    [*] --> Idle: System Start
+    
+    Idle --> ScanningItems: New Bill Started
+    ScanningItems --> CalculatingTotal: Scanning Complete
+    ScanningItems --> ScanningItems: Add More Items
+    ScanningItems --> Idle: Cancel Transaction
+    
+    CalculatingTotal --> ProcessingPayment: Total Confirmed
+    CalculatingTotal --> ScanningItems: Modify Items
+    
+    ProcessingPayment --> PrintingReceipt: Payment Successful
+    ProcessingPayment --> CalculatingTotal: Payment Failed
+    
+    PrintingReceipt --> UpdatingInventory: Receipt Printed
+    UpdatingInventory --> Idle: Transaction Complete
+    
+    note right of ScanningItems
+        Updates running total
+        Validates product
+        Checks inventory
+    end note
+    
+    note right of ProcessingPayment
+        Cash
+        Card
+        Digital Payment
+    end note

@@ -1,0 +1,34 @@
+
+classDiagram
+    class Main {
+        +run() void
+    }
+    class AgentManager {
+        -list~Agent~ agents
+        +create_agent(name: str, script: str) Agent
+        +get_agents() list~Agent~
+        +interact(agent1: Agent, agent2: Agent) str
+    }
+    class PodiumAPI {
+        +fetch_script(podcast_id: str) str
+    }
+    class UserInterface {
+        +display_agents(agents: list~Agent~) void
+        +get_user_input() str
+        +display_response(response: str) void
+    }
+    class ChatHandler {
+        +handle_user_interaction(user_input: str) str
+        +handle_agent_interaction(agent1: Agent, agent2: Agent) str
+    }
+    class Agent {
+        -name: str
+        -script: str
+        +mimic_personality() str
+    }
+    Main --> AgentManager
+    Main --> PodiumAPI
+    Main --> UserInterface
+    Main --> ChatHandler
+    AgentManager --> Agent
+    ChatHandler --> Agent

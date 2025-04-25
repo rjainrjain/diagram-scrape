@@ -1,0 +1,89 @@
+classDiagram
+direction BT
+
+class RoleType {
+ type: String
+ id: Long
+ +setType(type: String)
+ +getType(): String
+ +setId(id: Long)
+ +getId(): Long
+}
+
+class Shift {
+ uuid: UUID
+ showId: Long
+ roleTypeId: Long
+ id: Long
+ userId: Long
+ +setUuid(uuid: UUID)
+ +getUuid(): UUID
+ +setShowId(showId: Long)
+ +getShowId(): Long
+ +setRoleTypeId(roleTypeId: Long)
+ +getRoleTypeId(): Long
+ +setId(id: Long)
+ +getId(): Long
+ +setUserId(userId: Long)
+ +getUserId(): Long
+}
+
+class Show {
+ from: OffsetDateTime
+ to: OffsetDateTime
+ id: Long
+ +setFrom(from: OffsetDateTime)
+ +getFrom(): OffsetDateTime
+ +setTo(to: OffsetDateTime)
+ +getTo(): OffsetDateTime
+ +setId(id: Long)
+ +getId(): Long
+}
+
+class User {
+ uuid: UUID
+ name: String
+ username: String
+ password: String
+ email: String
+ phoneNumber: String
+ isSuper: Boolean
+ ticketCount: Int
+ totalShifts: Int
+ id: Long
+ +setUuid(uuid: UUID)
+ +getUuid(): UUID
+ +setName(name: String)
+ +getName(): String
+ +setUsername(username: String)
+ +getUsername(): String
+ +setPassword(password: String)
+ +getPassword(): String
+ +setEmail(email: String)
+ +getEmail(): String
+ +setPhoneNumber(phoneNumber: String)
+ +getPhoneNumber(): String
+ +setIsSuper(isSuper: Boolean)
+ +getIsSuper(): Boolean
+ +setTicketCount(ticketCount: Int)
+ +getTicketCount(): Int
+ +setTotalShifts(totalShifts: Int)
+ +getTotalShifts(): Int
+ +setId(id: Long)
+ +getId(): Long
+}
+
+class UserRole {
+ roleTypeId: Long
+ userId: Long
+ +setRoleTypeId(roleTypeId: Long)
+ +getRoleTypeId(): Long
+ +setUserId(userId: Long)
+ +getUserId(): Long
+}
+
+Shift..>RoleType:role_type_id
+Shift..>Show:show_id
+UserRole..>RoleType:role_type_id
+UserRole..>User:userId
+Shift..>User:userId

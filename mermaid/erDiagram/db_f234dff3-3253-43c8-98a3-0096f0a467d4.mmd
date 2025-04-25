@@ -1,0 +1,68 @@
+---
+title: Warcraft III Game Tracker
+---
+erDiagram
+    LEAGUE {
+        id UUID
+        name string
+        start_date Date
+        end_date Date
+        website string
+    }
+    PARTICIPANT {
+        id UUID
+        name string
+        contact_info string
+        wins int
+        losses int
+        rank int
+    }
+    MATCH {
+        id UUID
+        group_id UUID
+        participant1_id UUID
+        participant2_id UUID
+        replay_url string
+    }
+    MATCH_VETO {
+        id UUID
+        match_id UUID
+        participant_id UUID
+        game_map_id UUID
+    }
+    GAME {
+        id UUID
+        match_id UUID
+        round_number int
+        winning_player_id UUID
+        game_map_id UUID
+        game_date Date
+    }
+    GROUP {
+        id UUID
+        name String
+        league_id UUID
+        admin string
+        vetos int
+        maps_per_match int
+        status string
+    }
+    GAME_MAP {
+        id UUID
+        name string
+    }
+    PARTICIPANT_GROUP {
+        id UUID
+        participant_id UUID
+        group_id UUID
+    }
+    PARTICIPANT }|--|| GAME: "compete in"
+    PARTICIPANT }|--|{ PARTICIPANT_GROUP: "belongs to"
+    GROUP }|--|| PARTICIPANT_GROUP: "includes"
+    PARTICIPANT }|--|{ MATCH: "plays in"
+    MATCH ||--|{ GAME: "is part of"
+    GAME }|--|| GAME_MAP: "is played on"
+    MATCH }|--|{ MATCH_VETO: "includes"
+    PARTICIPANT }|--|| MATCH_VETO: "votes for"
+    GAME_MAP }|--|| MATCH_VETO: "is voted for"
+    LEAGUE ||--|{ GROUP: "has"

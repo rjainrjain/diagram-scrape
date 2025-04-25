@@ -1,0 +1,92 @@
+flowchart TB
+    model[("machine learning model")]
+    normalization[("SimpleReductionPreprocessor\n(Normalize time stamps)")]
+    config[("Config\n(Custom configuration from setup step)")]
+    process_data[("process the input data")]
+    imputation_function[("Imputation Function")]
+    preprocessor[("Preprocessor\nInstance of PreprocessorConfiguration")]
+    data[("original training data\n(holds the raw input data)")]
+    time_steps[("original time_steps data\n(holds the raw input data)")]
+
+    websocket --> init
+
+    subgraph init ["initalize model runner"]
+        direction TB 
+        parameter --> model
+        parameter --> preprocessor
+        parameter --> data
+        parameter --> time_steps
+        parameter --> imputation_function
+        normalization --> set_data2
+        config --> set_data1
+    end
+
+    subgraph run_model
+        direction TB    
+        
+        set_data1[("Set Data\n(Set training data)")]
+        process1[("Process\n(Normalize data with additional configs via implementation)")]
+        set_data2[("Set Data\n(Set time stamps)")]
+        process2[("Process\n(Process time stamps, only normalization)")]
+        normalizedData[("Normalized Data\n(Ready to continue)")]
+        check_gaps[("Check for Gaps\n(gap.contains_gaps)")]
+        large_gap[("Run Classifier with Prepared Data")]
+        save_preprocessor_config[("Save Processing Configuration\n(Required when loading data later)")]
+        run_model_training[("Run Model Training")]
+        run_both[("run both the classifier and the model")]
+        run_gap_classifier_training[("Run Classifier Training")]
+        set_data1 --> |original_data| process1
+        set_data2 --> |time_data| process2
+        process1 --> normalizedData
+        process2 --> normalizedData
+        normalizedData --> check_gaps{contains gaps?}
+        
+        
+        check_gaps -->|Gaps Found| process_data
+        check_gaps -->|No Gaps| save_preprocessor_config
+        
+        subgraph "impute small gaps and mark large ones"
+            process_data --> gap_processing
+            process_data --> overrite_original_data
+        end
+
+        overrite_original_data --> save_preprocessor_config
+        save_preprocessor_config --> large_gap{contains larger gaps\nthat require classifier?}
+        large_gap --> |yes| run_both
+        large_gap --> |no| run_model_training
+        run_both --> run_model_training
+        run_both --> run_gap_classifier_training
+        
+    end
+
+    subgraph save_model ["save model after training"]
+        direction TB
+        finished_model_training[("Finished Training Model")]
+        finished_classifier_training[("Finished Training Classifier")]
+        save_solution[("Save Solution and Training Information\n(Models are written in temp file, converted into base64, and stored in DB)")]
+        run_gap_classifier_training -->|Async| finished_classifier_training
+        run_model_training -->|Async| finished_model_training
+        finished_classifier_training --> save_solution
+        finished_model_training --> save_solution
+    end
+
+    subgraph gap_processing["Data Preparation"]
+        find_differences[__find_differences_in_steps_and_fill_them_with_nan]
+        fill_with_value["predefined value\ntimespamps will have\nclear separation"]
+        categorize_gaps[__categorize_gaps]
+        handle_gaps[__handle_gaps]
+        normalize_data["normalize data to fixed lengths"]
+        return_processed_data[("normalized and gap removed data")]
+
+        find_differences -->|Processed Data, Time Stamps| categorize_gaps
+
+        categorize_gaps -->|List of Gaps| handle_gaps{large gap}
+        handle_gaps --> |small gap| imputation_function
+        handle_gaps --> |large gap| fill_with_value
+        imputation_function --> normalize_data
+        fill_with_value --> normalize_data
+        normalize_data --> return_processed_data
+        return_processed_data --> process_data
+    end
+
+    init --> run_model --> save_model

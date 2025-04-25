@@ -1,0 +1,77 @@
+classDiagram
+    class Product1 {
+        productId = "P001"
+        name = "Milk 1L"
+        barcode = "890123456"
+        price = 3.99
+        currentStock = 50
+        reorderLevel = 10
+    }
+
+    class Category1 {
+        categoryId = "C001"
+        name = "Dairy"
+        description = "Dairy Products"
+    }
+
+    class Bill1 {
+        billId = "B001"
+        billDate = "2024-11-03"
+        totalAmount = 25.97
+        tax = 2.60
+        discount = 0.00
+        status = "Completed"
+    }
+
+    class BillItem1 {
+        billItemId = "BI001"
+        quantity = 2
+        unitPrice = 3.99
+        totalPrice = 7.98
+    }
+
+    class Customer1 {
+        customerId = "CUST001"
+        name = "John Doe"
+        phone = "555-0123"
+        email = "john@email.com"
+        loyaltyPoints = 150
+    }
+
+    class Payment1 {
+        paymentId = "PAY001"
+        method = "Credit Card"
+        amount = 25.97
+        paymentDate = "2024-11-03"
+        status = "Completed"
+    }
+
+    class Employee1 {
+        employeeId = "E001"
+        name = "Jane Smith"
+        role = "Cashier"
+        username = "jane.s"
+    }
+
+    class Inventory1 {
+        inventoryId = "INV001"
+        quantity = 50
+        lastUpdated = "2024-11-03"
+    }
+
+    class Supplier1 {
+        supplierId = "S001"
+        name = "Dairy Foods Inc"
+        contact = "555-9876"
+        email = "orders@dairyfoods.com"
+    }
+
+    Product1 -- BillItem1
+    Product1 -- Inventory1
+    Product1 -- Category1
+    Product1 -- Supplier1
+    Bill1 -- BillItem1
+    Bill1 -- Payment1
+    Bill1 -- Customer1
+    Bill1 -- Employee1
+    Employee1 -- Inventory1

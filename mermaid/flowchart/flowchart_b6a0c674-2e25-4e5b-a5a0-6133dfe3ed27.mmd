@@ -1,0 +1,21 @@
+flowchart TB 
+    A([Start]) --> B[/"n=5 , array_int[5],
+     *ptr =array_int" , largest, i/]
+     B --> C["i=0" ] 
+   
+
+     subgraph Input
+        direction LR
+        D{"i < n"} --yes--> E[/Masukkan elemen angka/] --> F["Assign to ptr+i"] --> G[i++]
+        G --> D
+    end
+ C --> D
+ D -- no--> H[largest = *ptr] --> I[i = 1]
+    subgraph Cari_Nilai_Maksimal
+    direction LR
+        J{"i < n"} --yes--> K{"*(ptr+i) > largest"} --yes--> L["largest = *(ptr+i)"] 
+        K --no--> M[i++] --> J
+        L --> M
+    end
+I -->J
+J{"i < n"} --no--> N[/Tampilkan nilai Maksimal/] --> O([End])

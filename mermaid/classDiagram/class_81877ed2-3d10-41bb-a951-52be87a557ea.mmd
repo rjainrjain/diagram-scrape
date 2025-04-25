@@ -1,0 +1,108 @@
+classDiagram
+    class Product {
+        -int productId
+        -string name
+        -string barcode
+        -double price
+        -int currentStock
+        -int reorderLevel
+        +getProductDetails()
+        +updateStock()
+        +checkReorderLevel()
+        +updatePrice()
+    }
+
+    class Category {
+        -int categoryId
+        -string name
+        -string description
+        +getCategory()
+        +updateCategory()
+    }
+
+    class Bill {
+        -int billId
+        -Date billDate
+        -double totalAmount
+        -double tax
+        -double discount
+        -string status
+        +calculateTotal()
+        +applyDiscount()
+        +calculateTax()
+        +generateReceipt()
+        +voidBill()
+    }
+
+    class BillItem {
+        -int billItemId
+        -int quantity
+        -double unitPrice
+        -double totalPrice
+        +calculateItemTotal()
+        +updateQuantity()
+    }
+
+    class Customer {
+        -int customerId
+        -string name
+        -string phone
+        -string email
+        -int loyaltyPoints
+        +updatePoints()
+        +getCustomerHistory()
+        +updateProfile()
+    }
+
+    class Payment {
+        -int paymentId
+        -string method
+        -double amount
+        -Date paymentDate
+        -string status
+        +processPayment()
+        +generateReceipt()
+        +refundPayment()
+    }
+
+    class Employee {
+        -int employeeId
+        -string name
+        -string role
+        -string username
+        -string password
+        +login()
+        +logout()
+        +changePassword()
+        +checkAccess()
+    }
+
+    class Inventory {
+        -int inventoryId
+        -int quantity
+        -Date lastUpdated
+        +updateStock()
+        +checkStock()
+        +generateAlert()
+        +recordTransaction()
+    }
+
+    class Supplier {
+        -int supplierId
+        -string name
+        -string contact
+        -string email
+        +placeOrder()
+        +updateSupplier()
+        +getOrderHistory()
+    }
+
+    Product "1" -- "1..*" BillItem
+    Product "1" -- "1" Inventory
+    Product "*" -- "1" Category
+    Product "*" -- "1" Supplier
+    Bill "1" -- "1..*" BillItem
+    Bill "1" -- "1" Payment
+    Bill "1" -- "1" Customer
+    Bill "1" -- "1" Employee
+    Employee "1" -- "*" Inventory

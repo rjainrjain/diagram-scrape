@@ -1,0 +1,35 @@
+```mermaid
+sequenceDiagram
+    participant User as "User"
+    participant Your_app as "Your app"
+    participant Agora_Chat_Server as "Agora Chat Server"
+    
+    
+    Your_app->>Your_app: Open app
+    Your_app->>Your_app: Get a ChatClient instance
+    Your_app->>Your_app: agoraChatClient = ChatClient.getInstance
+    Your_app->>Your_app: Initialize the instance:
+    Your_app->>Your_app: agoraChatClient.init(options)
+    Your_app->>Your_app: Add message event callbacks:
+    Your_app->>Your_app: agoraChatClient.chatManager.addEventHandler(...)
+    Your_app->>Your_app: Add connection event callbacks:
+    Your_app->>Your_app: agoraChatClient.addConnectionEventHandler(...)
+    
+    Your_app->>Your_app: Join a chat
+    Your_app->>Your_app: Retrieve authentication token for the user 
+    Your_app->>Agora_Chat_Server: Log in to the chat server:
+    Agora_Chat_Server-->>Your_app: agoraChatClient.loginWithAgoraToken(userid, token)
+    Your_app->>Your_app: onConnected() callback
+    
+    Your_app->>Your_app: Send a message
+    Your_app->>Your_app: Create a ChatMessage
+    Your_app->>Agora_Chat_Server: Send the ChatMessage:
+    Agora_Chat_Server-->>Your_app: agoraChatAddManager.sendMessage(message)
+    
+    Agora_Chat_Server->>Your_app: onMessagesReceived(List<ChatMessage> messages) callback
+    Your_app->>User: Display message
+    
+    Your_app->>Your_app: Leave the chat
+    Your_app->>Agora_Chat_Server: Log out:
+    Agora_Carnhat_Serve_server-->>Your_app: agoraChatClient.logout(...)
+```

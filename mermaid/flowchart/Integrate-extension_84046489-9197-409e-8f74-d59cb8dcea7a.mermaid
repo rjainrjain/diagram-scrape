@@ -1,0 +1,22 @@
+flowchart TB
+    subgraph A ["Encapsulate audio or video processing capabilities"]
+        ImageEnhancement --> AudioVideoFilterExtensions
+        FaceFilter --> AudioVideoFilterExtensions
+        FaceChange --> AudioVideoFilterExtensions
+        VoiceEffect --> AudioVideoFilterExtensions
+        VoiceChanger --> AudioVideoFilterExtensions
+        NoiseCancellation --> AudioVideoFilterExtensions
+    end
+    
+    subgraph B [Video SDK]
+        Capture --> PreProcess
+        PreProcess --> Encode
+        Encode --> Transmit
+        Transmit --> Decode
+        Decode --> PostProcess
+        PostProcess --> Play
+    end
+    
+    AudioVideoFilterExtensions -->|"Audio and Video Data"| Extension
+    AudioVideoFilterExtensions -.-> B
+    Extension("Extension")

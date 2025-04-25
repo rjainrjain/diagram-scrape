@@ -1,0 +1,102 @@
+sequenceDiagram
+    actor Operatore
+    participant UserAgent
+    participant FE as FE_MyOperatore
+    participant BFF as BFF_MyOperatore
+    participant AUTH as P4PA_AUTH
+    participant IAM
+
+    activate UserAgent
+        alt Operatore entra direttamente sul portale Piattaforma Unitaria
+            note over Operatore, UserAgent: Assenza di una sessione valida
+            Operatore ->> UserAgent: Accede al portale Piattaforma Unitaria
+
+            UserAgent ->> FE: #
+            activate FE
+                FE -->> UserAgent: Redirect verso pagina di login
+            deactivate FE
+        else
+            Operatore ->> UserAgent: Accede all'Area Riservata
+        end
+
+        UserAgent ->> IAM: Pagina di login
+        activate IAM
+            note right of IAM: L'utente si autentica e accede<br />al prodotto "Piattaforma Unitaria"
+            IAM -->> UserAgent: Redirect verso pagina di accettazione ID Token
+        deactivate IAM
+        note over UserAgent, IAM: RFC 8693 dello standard OAuth 2.0, token passato mediante query param.<BR />L'ID Token dovrà avere durata effimera (1 minuto)
+
+        UserAgent ->> FE: Prosegue con la redirect
+        activate FE
+            FE ->> BFF: Consegna ID Token
+            activate BFF
+                BFF ->> AUTH: POST /token
+                activate AUTH
+                    AUTH ->> IAM: Recupera .well-known/jwks.json
+                    note right of AUTH: Valida ID Token
+                    AUTH ->> AUTH: Ricerca in tabella Users
+                    activate AUTH
+                        alt Utente non registrato
+                            note right of AUTH: Genera access Token con scope 'tos'
+                            note right of AUTH: Salva in cache la coppia<BR />AccessToken: ID Token<BR />Retention pari al exp
+
+                            AUTH -->> BFF: access token JWT e HttpStatus 412
+                            BFF -->> FE: access token JWT e HttpStatus 412
+                            FE -->> UserAgent: Pagina di accettazione ToS
+                            UserAgent -->> Operatore: #
+                            Operatore ->> UserAgent: Accetta ToS
+                            UserAgent ->> FE: #
+                            FE ->> BFF: Accettazione ToS
+                            note over FE, BFF: Authorization: Bearer <accessToken>
+                            BFF ->> AUTH: POST /consent
+                            note over BFF, AUTH: Authorization: Bearer <accessToken>
+                            activate AUTH
+                                note right of AUTH: Recupera l'ID Token dalla cache
+                                AUTH ->> AUTH: Ricerca in tabella utenti
+
+                                alt Utente non registrato
+                                    AUTH ->> AUTH: Registra dati utente in tabella Users (no PII)
+                                    alt Il token contiene l'ente di accesso ed il ruolo
+                                        AUTH ->> AUTH: Aggiorna relazione ente-utente in tabella Operators
+                                    end
+                                end
+                                note right of AUTH: Genera access Token con scope 'api'
+                                note right of AUTH: Salva in cache la coppia<BR />AccessToken: ID Token<BR />Retention pari al exp
+
+                                AUTH -->> BFF: 200: Consegna Access Token
+                            deactivate AUTH
+                        else
+                            alt Configurata modalità "ente di accesso"
+                                AUTH ->> AUTH: Aggiorna relazione ente-utente in tabella Operators
+                                note right of AUTH: Se il token non contiene l'ente di accesso,<BR />si otterrà l'errore di token non valido
+                            end
+                            note right of AUTH: Genera access Token con scope 'api'
+                            note right of AUTH: Salva in cache la coppia<BR />AccessToken: ID Token<BR />Retention pari al exp
+
+                            AUTH ->> BFF: 200: Consegna Access Token
+                        end
+
+                    deactivate AUTH
+                BFF -->> FE: access token JWT e HttpStatus 200
+            deactivate BFF
+
+            FE ->> BFF: GET /userinfo
+            activate BFF
+                BFF ->> AUTH: GET /userinfo
+                activate AUTH
+                    AUTH ->> AUTH: Recupera l'ID Token dalla cache
+                    AUTH ->> AUTH: Recupera le relazioni ed i ruoli<BR />con gli enti dalla tabella Operators
+                    AUTH -->> BFF: Dati utente ed enti/ruoli
+                deactivate AUTH
+            BFF -->> FE: Dati utente
+            deactivate BFF
+            note right of FE: Salva dati utente in memoria
+
+            note right of UserAgent: token di sessione persistito nel session storage
+            FE -->> UserAgent: #
+        deactivate FE
+
+        UserAgent -->> Operatore: #
+    deactivate UserAgent
+
+    note right of Operatore: Operatore libero di navigare<BR />all'interno del portale

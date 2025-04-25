@@ -1,0 +1,39 @@
+erDiagram
+    RESEARCHER ||--o{ SURVEY : creates
+    SURVEY ||--|{ RESPONSE : has
+    RESPONSE ||--|{ DATA_POINT : contains
+    DATA_POINT ||--|| HASH : generates
+    HASH ||--|| BLOCKCHAIN_RECORD : stored_as
+    RESEARCHER {
+        int id
+        string name
+        string email
+    }
+    SURVEY {
+        int id
+        string title
+        date created_at
+        int researcher_id
+    }
+    RESPONSE {
+        int id
+        int survey_id
+        date submitted_at
+    }
+    DATA_POINT {
+        int id
+        int response_id
+        string question
+        string answer
+    }
+    HASH {
+        int id
+        int data_point_id
+        string hash_value
+    }
+    BLOCKCHAIN_RECORD {
+        int id
+        int hash_id
+        string transaction_id
+        date recorded_at
+    }

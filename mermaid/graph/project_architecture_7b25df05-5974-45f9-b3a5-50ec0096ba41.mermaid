@@ -1,0 +1,36 @@
+graph TB;
+    subgraph Frontend[React/TypeScript Frontend Container]
+        UI(User Interface)
+        GameClient[Phaser.js Game Client]
+        SocketIO_Client[Socket.IO Client]
+        ReactRouter[React Router]
+    end
+    subgraph Backend[NestJS Backend Container]
+        Auth[Passport.js Authentication]
+        User[User Controller]
+        Game[Game Controller]
+        Chat[Chat Controller]
+        SocketIO_Server[Socket.IO Server]
+        WebServer[NestJS Web Server]
+    end
+    subgraph Database[PostgreSQL Database Container]
+        Users[Users Table]
+        Games[Games Table]
+        Chats[Chats Table]
+        Messages[Messages Table]
+    end
+
+    UI --> ReactRouter
+    ReactRouter -->|Sends/Receives Data| Auth
+    ReactRouter -->|Sends/Receives Data| User
+    ReactRouter -->|Sends/Receives Data| Game
+    ReactRouter -->|Sends/Receives Data| Chat
+    GameClient -->|Real-time Interaction| SocketIO_Client
+    SocketIO_Client -->|Real-time Communication| SocketIO_Server
+    SocketIO_Server -->|Real-time Communication| Chat
+    SocketIO_Server -->|Real-time Communication| Game
+    Auth -->|Accesses| Users
+    User -->|Accesses| Users
+    Game -->|Accesses| Games
+    Chat -->|Accesses| Chats
+    Chat -->|Accesses| Messages

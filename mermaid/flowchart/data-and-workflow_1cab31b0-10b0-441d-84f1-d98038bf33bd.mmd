@@ -1,0 +1,39 @@
+flowchart TD
+    GLAG["Glacier inventory\n(global)"]:::Data
+    GLAN["Glacier inventory\n(national)"]:::Data
+    BCLIM["CHELSA\nbioclimatic vars\n(present)"]:::Data
+    BCFUT["CHELSA\nbioclimatic vars\n(future)"]:::Data
+    GMTED["GMTED\ntopography vars"]:::Data
+
+    GLAO(("Glacier\noutlines")):::Steps
+    GLAB(("Spatial\nclusters")):::Steps
+    CLUA{"Cluster\nanalysis"}:::Steps
+    SUIT(("Present\nSuitability")):::Steps
+    FSUIT(("Future\nSuitability")):::Steps
+
+    GLAP["Tropical Glacier Ecosystem\nunits"]:::Product
+    GBM{"Gradient\nBoosting\nMachine"}:::Steps
+    RS["Relative Severity\nof degradation"]:::Product
+    GLAG --- GLAO
+    GLAN --- GLAO
+    GLAO --- GLAB
+
+    BCLIM --- CLUA 
+    GMTED --- CLUA
+    GLAB --- BCLIM
+    GLAB --- GMTED
+    CLUA --- GLAP
+
+    BCLIM --- GBM
+    GMTED --- GBM
+    GLAP --- GBM
+    GLAO --- GBM
+
+    GBM -- predicts --- SUIT
+    GBM -- predicts --- FSUIT
+    BCFUT --- FSUIT
+    SUIT --- RS
+    FSUIT --- RS
+  classDef Data fill:aliceblue, color:black, stroke:black
+  classDef Steps color:black, fill:white, stroke:black
+  classDef Product fill:peachpuff, color:black, stroke:peru 

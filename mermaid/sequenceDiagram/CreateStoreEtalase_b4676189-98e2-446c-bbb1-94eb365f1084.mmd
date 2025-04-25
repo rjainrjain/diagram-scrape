@@ -1,0 +1,45 @@
+
+sequenceDiagram
+  actor Penjual
+  participant V_SCP as View #10095; SellerStoreCategoryPage
+  participant P_ASC as Pop-up #10095; AddStoreCategory
+  participant C_SC as Controller #10095; StoreCategoryController
+  participant M_SC as Model #10095; StoreCategory
+
+  Penjual->>V_SCP: klik tombol "Tambah Etalase"
+  
+  activate Penjual
+
+  activate V_SCP
+
+  V_SCP->>P_ASC: setIsModalCreateOpen(true)
+
+  activate P_ASC
+
+  Penjual->>P_ASC: klik tombl "Submit"
+  P_ASC->>C_SC: store()
+
+  activate C_SC
+
+  opt Invalid Input
+    C_SC-->>Penjual: return validation message
+  end
+
+  C_SC->>M_SC: create()
+  
+  activate M_SC
+  
+  M_SC-->>C_SC: return
+
+  deactivate M_SC
+
+  C_SC-->>V_SCP: return view
+
+  deactivate C_SC
+  
+  V_SCP->>P_ASC: setIsModalCreateOpen(false)
+
+  deactivate P_ASC
+  deactivate V_SCP
+  
+  deactivate Penjual

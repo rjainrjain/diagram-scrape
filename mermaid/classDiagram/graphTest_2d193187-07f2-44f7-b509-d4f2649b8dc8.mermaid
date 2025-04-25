@@ -1,0 +1,124 @@
+classDiagram
+    Calendar "1" o-- "*" Event
+    User -- Calendar
+    Event "1" o-- "*" Task
+    User <|-- Admin
+    User <|-- Tutor
+    User <|-- Student
+    User *-- PersonalInformation
+    User "1" -- "*" Task
+    User "1" -- "*" RoomMessage
+    RoomMessage o-- Message
+    Event "1" *-- "*" Goal
+
+    class User {
+        userId
+        email
+        password
+        personalInformation
+        signUp()
+        signIn()
+        forgotPassword()
+        getRole()
+        getMessages()
+        getCalendar()
+        getTasks()
+
+    }
+    class Admin{
+        adminId
+        setRole(userId,role)
+        getAllUsers()
+        assignATutorToAStudent(tutorUserId,studentgUserId)
+        unAssignATutorToAStudent(tutorUserId,studentgUserId)
+        revokeUserId(UserId)
+    }
+
+    class Tutor{
+        tutorId
+        listAllMyStudent()
+        createAnEvent()
+        createATask()
+        setGoal() //TODO should it be defined at Goal level?
+        moveGoaldToNewEventId()
+        numberOfStudent()
+        isNotAcceptingMoreStudent()
+
+
+    }
+    class Student{
+        studentId
+        getMessages()
+        hasATutor()
+    }
+
+    class PersonalInformation{
+        personalInformationId
+        firstName
+        lastName
+        phoneNumber
+        postalAdress
+        getPersonnalInformation()
+        setPersonnalInformation()
+    }
+
+    class Event{
+        eventId
+        participants
+        evantDate
+        linkToVisio
+        weeklyGoals
+        isUnread() //TODO to detect if notification is needed, is it ok ?
+        getWeeklyGoals()
+        setWeeklyGoals() //TODO should it be defined at tutor level?
+        getEventTasks()
+        setEventTasks() //TODO should it be defined at Task level?
+
+    }
+
+    class Calendar{
+        calendarId
+        events
+    }
+
+    class Task {
+        taskId
+        name
+        ownerUserId
+        assignedByUserId
+        deadline
+        status
+        summary
+        isUnread()
+
+    }
+
+    class RoomMessage {
+        roomId
+        users
+        getUsers()
+        getMessages()
+    }
+
+    class Message {
+        messageId
+        expeditorUserId
+        destinationUserId
+        timeOfExpedition
+        object
+        body
+        isPinned()
+        isUnread()
+    }
+
+    class Goal {
+        goalId
+        name
+        ownerUserId
+        goalSummary
+        status
+        getGoal()
+        setGoal() //TODO should it be define at tutor level ?
+
+    }
+

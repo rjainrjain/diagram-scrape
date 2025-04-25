@@ -1,0 +1,200 @@
+---
+title: Detail class diagram
+---
+classDiagram
+    class Menu {
+        <<interface>>
+        +String menuHeader
+        +MenuItem[] menuItems
+        +launch()
+    }
+    class MenuItem {
+        <<interface>>
+        +String itemName
+        +launch()
+    }
+
+    class Service {
+        <<interface>>
+    }
+
+    class Repository {
+        <<interface>>
+    }
+
+    class AbstractMenu {
+        <<abstract class>>
+        +backItem
+        +selectInstruction
+        -checkUserChoise(String userChoise)
+        +launchMenuItem(int index)
+    }
+
+    class MainMenu {
+    }
+
+    class ManageGradeMenu {
+    }
+
+    class ManageCourseMenu {
+    }
+
+    class ManageBalanceSheetMenu {
+    }
+
+    class NewBalanceSheetMenu {
+    }
+
+    class ShowCourseFeature{
+
+    }
+
+    class ShowBalanceSheetDetailFeature{
+
+    }
+    class RemoveSavedBalanceSheetFeature{
+
+    }
+    class ShowSavedBalanceSheetFeature{
+
+    }
+    class AddCourseFeature{
+
+    }
+    class RemoveCourseFeature{
+
+    }
+    class CleanGradeFeature{
+
+    }
+    class UpdateGradeFeature{
+
+    }
+    class AdjustBalanceSheetFeature{
+
+    }
+    class CleanBalanceSheetAdjustmentFeature{
+
+    }
+    class PersistBalanceSheetFeature{
+
+    }
+    class ResetBalanceSheetFeature{
+
+    }
+    class UpdateBalancingExpectedGpaFeature{
+        
+    }
+
+    class CourseService{
+        <<interface>>
+        
+    }
+    class GpaBalancingService{
+        <<interface>>
+        
+    }
+    class CourseServiceImpl{
+        
+    }
+    class GpaBalancingServiceImpl{
+        
+    }
+
+    class GpaBalanceSheetRepository{
+        <<interface>>
+        
+    }
+    class CourseRepository{
+        <<interface>>
+        
+    }
+    class GpaBalanceSheetRepositoryIml{
+        
+    }
+    class CourseRepositoryIml{
+        
+    }
+
+    Menu--MenuItem
+    Menu--Service
+    MenuItem--Service
+    Service--Repository
+    Menu<|--AbstractMenu
+    AbstractMenu<|--MainMenu
+    AbstractMenu<|--ManageGradeMenu
+    AbstractMenu<|--ManageCourseMenu
+    AbstractMenu<|--NewBalanceSheetMenu
+    AbstractMenu<|--ManageBalanceSheetMenu
+
+    MainMenu--ManageGradeMenu
+    MainMenu--ManageCourseMenu
+    MainMenu--NewBalanceSheetMenu
+    MainMenu--ManageBalanceSheetMenu
+
+    MenuItem<|--ManageGradeMenu
+    MenuItem<|--ManageCourseMenu
+    MenuItem<|--NewBalanceSheetMenu
+    MenuItem<|--ManageBalanceSheetMenu
+
+    MenuItem<|--ShowCourseFeature
+    MenuItem<|--ShowBalanceSheetDetailFeature
+    MenuItem<|--RemoveSavedBalanceSheetFeature
+    MenuItem<|--ShowSavedBalanceSheetFeature
+    MenuItem<|--AddCourseFeature
+    MenuItem<|--RemoveCourseFeature
+    MenuItem<|--CleanGradeFeature
+    MenuItem<|--UpdateGradeFeature
+    MenuItem<|--AdjustBalanceSheetFeature
+    MenuItem<|--CleanBalanceSheetAdjustmentFeature
+    MenuItem<|--PersistBalanceSheetFeature
+    MenuItem<|--ResetBalanceSheetFeature
+    MenuItem<|--UpdateBalancingExpectedGpaFeature
+
+    ManageBalanceSheetMenu--RemoveSavedBalanceSheetFeature
+    ManageBalanceSheetMenu--ShowSavedBalanceSheetFeature
+
+    ShowBalanceSheetDetailFeature--RemoveSavedBalanceSheetFeature
+    ShowBalanceSheetDetailFeature--ShowSavedBalanceSheetFeature
+
+    ManageCourseMenu--AddCourseFeature
+    ManageCourseMenu--RemoveCourseFeature
+    ManageCourseMenu--ShowCourseFeature
+
+    ManageGradeMenu--CleanGradeFeature
+    ManageGradeMenu--UpdateGradeFeature
+    ManageGradeMenu--ShowCourseFeature
+
+    NewBalanceSheetMenu--AdjustBalanceSheetFeature
+    NewBalanceSheetMenu--CleanBalanceSheetAdjustmentFeature
+    NewBalanceSheetMenu--PersistBalanceSheetFeature
+    NewBalanceSheetMenu--ResetBalanceSheetFeature
+    NewBalanceSheetMenu--UpdateBalancingExpectedGpaFeature
+    NewBalanceSheetMenu--ShowBalanceSheetDetailFeature
+    
+    GpaBalancingService<|--GpaBalancingServiceImpl
+    CourseService<|--CourseServiceImpl
+
+    GpaBalanceSheetRepository<|--GpaBalanceSheetRepositoryIml
+    CourseRepository<|--CourseRepositoryIml
+
+    GpaBalancingServiceImpl--GpaBalanceSheetRepository
+    GpaBalancingServiceImpl--CourseRepository
+    CourseService--CourseRepository
+
+    GpaBalancingService--RemoveSavedBalanceSheetFeature
+    GpaBalancingService--ShowSavedBalanceSheetFeature
+    
+    GpaBalancingService--AdjustBalanceSheetFeature
+    GpaBalancingService--CleanBalanceSheetAdjustmentFeature
+    GpaBalancingService--PersistBalanceSheetFeature
+    GpaBalancingService--ResetBalanceSheetFeature
+    GpaBalancingService--UpdateBalancingExpectedGpaFeature
+    GpaBalancingService--ShowBalanceSheetDetailFeature
+    
+    CourseService--AddCourseFeature
+    CourseService--RemoveCourseFeature
+    CourseService--ShowCourseFeature
+
+    CourseService--CleanGradeFeature
+    CourseService--UpdateGradeFeature

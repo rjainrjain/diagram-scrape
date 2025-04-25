@@ -1,0 +1,54 @@
+sequenceDiagram
+    participant merchant_service
+    participant uinvoice_openapi
+    participant vip_auth
+    participant uinvoice_gateway
+    participant rabbitmq
+    participant uinvoice_backend_schedule
+    participant uinvoice_core_business
+    participant alipay_invoice
+    participant mail_gateway
+    merchant_service->>+uinvoice_openapi: invoice/apply()
+    uinvoice_openapi->>+vip_auth:rpc/auth()
+    vip_auth-->>-uinvoice_openapi:status:true
+    uinvoice_openapi->>+uinvoice_gateway:route:invoice/apply()
+    uinvoice_gateway->>+uinvoice_core_business:rpc/taxTopic:getMerchantSnAndStoreSnByTerminalSn()
+    uinvoice_core_business-->>-uinvoice_gateway:merchant_sn & sore_sn & isMocked
+    uinvoice_gateway->>+rabbitmq:pub(invoice/apply_task)
+    rabbitmq-->>-uinvoice_gateway:ack
+    uinvoice_gateway-->>-uinvoice_openapi:apply/success(task_sn)
+    uinvoice_openapi-->>-merchant_service:apply/success(task_sn)
+    rabbitmq->>+uinvoice_backend_schedule:sub(invoice/apply_task)
+    uinvoice_backend_schedule-->>-rabbitmq:ack
+    uinvoice_backend_schedule->>+alipay_invoice:apply
+    alipay_invoice-->>-uinvoice_backend_schedule:success(applyId)
+    uinvoice_backend_schedule->>+rabbitmq:pub(invoice/query_task)
+    rabbitmq-->>-uinvoice_backend_schedule:ack
+    rabbitmq->>+uinvoice_backend_schedule:sub(invoice/query_task)
+    uinvoice_backend_schedule-->>-rabbitmq:ack
+    uinvoice_backend_schedule->>+alipay_invoice:query(applyId) 至多调用10次
+    alipay_invoice-->>-uinvoice_backend_schedule:success(invoice_ticket_info)
+    uinvoice_backend_schedule->>+rabbitmq:pub(invoice/success(invoice_ticket_info))
+    rabbitmq-->>-uinvoice_backend_schedule:ack
+    rabbitmq->>+uinvoice_backend_schedule:sub(invoice/success(invoice_ticket_info))
+    uinvoice_backend_schedule-->>-rabbitmq:ack
+    uinvoice_backend_schedule->>+alipay_invoice:fetch(alipay_invoice_id)
+    alipay_invoice-->>-uinvoice_backend_schedule:invoice_ticket_file:pdf
+    uinvoice_backend_schedule->>+OSS:upload(invoice_ticket_file)
+    OSS-->>-uinvoice_backend_schedule:sucess(public_unique_url)
+    uinvoice_backend_schedule->>+rabbitmq:pub(invoice/mail/success(invoice_ticket_info))
+    rabbitmq-->>-uinvoice_backend_schedule:ack
+    rabbitmq->>+uinvoice_backend_schedule:sub(invoice/mail/success(invoice_ticket_info))
+    uinvoice_backend_schedule-->>-rabbitmq:ack
+    uinvoice_backend_schedule->>+mail_gateway:mail/send(invoice_ticket_info_template)
+    mail_gateway-->>-uinvoice_backend_schedule:mail/send:success()
+    uinvoice_backend_schedule->>+rabbitmq:pub(invoice/merchant/notification/push(invoice_ticket_info))
+    rabbitmq-->>-uinvoice_backend_schedule:ack
+    rabbitmq->>+uinvoice_backend_schedule:sub(invoice/merchant/notification/push(invoice_ticket_info))
+    uinvoice_backend_schedule-->>-rabbitmq:ack
+    uinvoice_backend_schedule->>+merchant_service:notify_url(invoice_ticket_info)
+    merchant_service-->>-uinvoice_backend_schedule:success()
+    
+    
+    
+  

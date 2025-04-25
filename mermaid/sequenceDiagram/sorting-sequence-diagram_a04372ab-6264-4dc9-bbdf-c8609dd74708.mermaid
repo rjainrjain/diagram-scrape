@@ -1,0 +1,20 @@
+sequenceDiagram
+    participant M as Main
+    participant O as Outer Loop
+    participant I as Inner Loop
+    participant A as Array
+
+    M->>O: Start sorting
+    loop For each element i
+        O->>A: Get element at i
+        O->>I: Start inner loop
+        loop While j >= 0 and A[j] > key
+            I->>A: Compare elements
+            alt Element needs shifting
+                I->>A: Shift element right
+            end
+            I->>I: Decrement j
+        end
+        O->>A: Insert key at correct position
+    end
+    O->>M: Array sorted

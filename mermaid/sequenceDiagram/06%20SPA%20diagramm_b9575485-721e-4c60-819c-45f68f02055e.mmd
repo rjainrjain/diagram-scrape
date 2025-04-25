@@ -1,0 +1,12 @@
+sequenceDiagram
+  participant User as User
+  participant Browser as Browser
+  participant Server as Server
+
+  User ->> Browser: Navigates to SPA version
+  User ->> Browser: type new Note
+  Browser ->> Server: Requests SPA content
+  Server -->> Browser: Sends SPA content
+  Browser ->> Server: Send note
+  Server -->> Browser: Response with new note
+

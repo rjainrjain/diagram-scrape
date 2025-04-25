@@ -1,0 +1,23 @@
+sequenceDiagram
+    participant User as User
+    participant Browser as Browser
+    participant Server as Server
+    participant NotesArray as "Server's notes array"
+
+    User->>Browser: Clicks submit button
+    Browser->>Server: HTTP POST /new_note
+    Server->>NotesArray: Add new note to array
+    alt Validation Successful
+        Server-->>Browser: Responds with HTTP 302
+        Browser->>Server: HTTP GET /notes
+        Server-->>Browser: Responds with Notes page
+        Browser->>Server: HTTP GET main.css
+        Server-->>Browser: Responds with main.css
+        Browser->>Server: HTTP GET main.js
+        Server-->>Browser: Responds with main.js
+        Browser->>Server: HTTP GET data.json
+        Server-->>Browser: Responds with data.json
+        Browser-->>User: Displays updated Notes page
+    else Validation Failed
+        Server-->>Browser: Responds with validation error
+    end

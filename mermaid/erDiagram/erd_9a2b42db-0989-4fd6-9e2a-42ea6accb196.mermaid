@@ -1,0 +1,66 @@
+erDiagram
+    users {
+        SERIAL id PK
+        VARCHAR(200) password
+        VARCHAR(100) email
+    }
+
+    pokemon_species {
+        SERIAL id PK
+        VARCHAR(100) name
+        VARCHAR(50) type
+        VARCHAR(1000) entry
+        VARCHAR(1000) category
+        VARCHAR(255) userImageURL
+    }
+
+    box {
+        SERIAL id PK
+        VARCHAR(100) name
+        INTEGER user_id FK
+    }
+
+    box_species {
+        SERIAL id PK
+        INTEGER pokemon_id FK
+        INTEGER user_id FK
+        INTEGER box_id FK
+        INTEGER level
+        VARCHAR(50) nature
+        VARCHAR(50) ability
+    }
+
+    team {
+        SERIAL id PK
+        VARCHAR(100) name
+        INTEGER user_id FK
+    }
+
+    team_positions {
+        INT team_id PK
+        INT box_species_id PK
+        INT position
+    }
+
+    moves {
+        SERIAL id PK
+        VARCHAR(100) name
+        INT accuracy
+        INT effect_chance
+        INT pp
+        INT power
+    }
+
+    pokemon_moves {
+        INT box_species_id PK
+        INT move_id PK
+    }
+
+    users ||--o{ box : "has"
+    users ||--o{ team : "has"
+    users ||--o{ box_species : "has"
+    box ||--o{ box_species : "contains"
+    box_species ||--o| pokemon_species : "refers to"
+    box_species ||--o| moves : "uses"
+    team ||--o{ team_positions : "includes"
+    team_positions ||--o| box_species : "refers to"

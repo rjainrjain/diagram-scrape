@@ -1,0 +1,37 @@
+sequenceDiagram
+    actor u as User
+    participant a as GitHub Actions
+    participant s as Repository secrets
+    participant b as Build Action (Docker)
+    participant g as Github Container Registry (ghcr)
+    participant d as Docker Compose Remote Action
+    participant r as Remote host (Docker Engine + Compose)
+    activate r
+    u-->>+a: push happened
+    a->>+b: build the images
+    b->>-a: OK
+    a->>+s: Get ghcr password
+    s->>-a: <<ghcr password>>
+    a->>+g: login(ghcr password)
+    g->>-a: OK
+    a->>+b: push images
+    b->>+g: store(images)
+    g->>-b: OK
+    b->>-a: OK
+    a->>+s: Get remote host credentials
+    s->>-a: <<remote host credentials>>
+    a->>+d: configure_remote_host(compose.yaml, remote host credentials)
+    d->>+r: login(remote host credentials)
+    r->>d: OK
+    d->>r: docker compose up -d -f compose.yaml
+    par
+        r->>-d: OK
+        d->>-a: OK
+    and
+        r->>+g: get_images(image1,image2...)
+        g->>-r: <<images>>
+        note over r: rollout new<br>versions of changed containers
+    end
+    note over a: Action finished
+    deactivate a
+    deactivate r

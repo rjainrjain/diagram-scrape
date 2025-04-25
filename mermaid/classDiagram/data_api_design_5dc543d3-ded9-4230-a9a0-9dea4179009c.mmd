@@ -1,0 +1,27 @@
+classDiagram
+    class User{
+        +str username
+        +str email
+        +str password_hash
+        +list[Item] items
+        +list[Review] reviews
+        +__init__(username: str, email: str, password: str)
+        +check_password(password: str): bool
+    }
+    class Item{
+        +str title
+        +str description
+        +float price
+        +User owner
+        +__init__(title: str, description: str, price: float, owner: User)
+    }
+    class Review{
+        +User reviewer
+        +User reviewed
+        +str content
+        +int rating
+        +__init__(reviewer: User, reviewed: User, content: str, rating: int)
+    }
+    User "1" -- "*" Item: owns
+    User "1" -- "*" Review: writes
+    User "1" -- "*" Review: receives

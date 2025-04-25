@@ -1,0 +1,12 @@
+sequenceDiagram
+    participant browser
+    participant server
+
+    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+    activate server
+    browser-->>server: JSON Data {content: "new spa note", date: "2024-09-16T07:08:01.307Z"}
+    server->>browser: JSON Data 
+    server-->>browser: {content: "new spa note", date: "2024-09-16T07:08:01.307Z"}
+    deactivate server
+
+    

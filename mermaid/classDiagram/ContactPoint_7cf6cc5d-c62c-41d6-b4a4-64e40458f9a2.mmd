@@ -1,0 +1,31 @@
+classDiagram
+  ContactPoint -- OpeningHoursSpecification
+  ContactPoint -- ContactPointOption
+  ContactPoint -- Language
+  ContactPoint -- GeoShape
+  ContactPoint -- AdministrativeArea
+  ContactPoint -- Place
+  ContactPoint -- Product
+
+
+class ContactPoint {
+
+  string telephone
+  OpeningHoursSpecification hoursAvailable
+  string email
+  ContactPointOption contactOption
+  string availableLanguage
+  Language availableLanguage
+  GeoShape serviceArea
+  AdministrativeArea serviceArea
+  Place serviceArea
+  AdministrativeArea areaServed
+  GeoShape areaServed
+  string areaServed
+  Place areaServed
+  string contactType
+  string productSupported
+  Product productSupported
+  string faxNumber
+
+ }

@@ -1,0 +1,58 @@
+erDiagram
+    Users {
+        int id PK
+        string uid "Firebase UID"
+        string email
+        string password_hash
+        string user_type "doctor or patient"
+        timestamp created_at
+        timestamp updated_at
+    }
+    Doctors {
+        int id PK
+        int user_id FK
+        string specialty
+        string location
+        timestamp created_at
+        timestamp updated_at
+    }
+    Patients {
+        int id PK
+        int user_id FK
+        timestamp created_at
+        timestamp updated_at
+    }
+    Appointments {
+        int id PK
+        int patient_id FK
+        int doctor_id FK
+        date date
+        time time
+        string status
+        timestamp created_at
+        timestamp updated_at
+    }
+    Prescriptions {
+        int id PK
+        int appointment_id FK
+        string dosage
+        text instructions
+        timestamp created_at
+        timestamp updated_at
+    }
+    DoctorSchedule {
+        int id PK
+        int doctor_id FK
+        string day_of_week
+        time start_time
+        time end_time
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    Users ||--o| Doctors : "1 user can be 1 doctor"
+    Users ||--o| Patients : "1 user can be 1 patient"
+    Doctors ||--o{ Appointments : "has many"
+    Patients ||--o{ Appointments : "has many"
+    Appointments ||--o| Prescriptions : "has one"
+    Doctors ||--o{ DoctorSchedule : "has many"

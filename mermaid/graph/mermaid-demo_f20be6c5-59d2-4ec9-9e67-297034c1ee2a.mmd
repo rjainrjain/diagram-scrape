@@ -1,0 +1,24 @@
+---
+title: Title
+---
+graph TD;
+subgraph main[label1]
+    %% single space in [ ] to not display text
+    subgraph padding[ ]
+        subgraph child[ ]
+            %% child nodes
+            GQL[label2]
+            C[label3]
+            O[label4]
+        end
+    end
+    %% main nodes
+end
+P[/label5/] --> O & GQL & C
+C --> C_S[label6]
+GQL --> G[label7]
+
+classDef title font-size:17px
+classDef padding fill:transparent,stroke:transparent,color:transparent
+class main title
+class padding padding

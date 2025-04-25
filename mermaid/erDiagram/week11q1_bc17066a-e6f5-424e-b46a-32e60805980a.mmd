@@ -1,0 +1,44 @@
+---
+title: Week 11 Quiz 01 Star Schema
+---
+
+erDiagram
+    Customer ||--o{ Sales : ""
+    Time ||--o{ Sales : ""
+    Channel ||--o{ Sales : ""
+    Product ||--o{ Sales : ""
+
+    Customer {
+        INTEGER id PK
+        TEXT suburb
+        TEXT city
+        TEXT country
+    }
+
+    Time {
+        INTEGER timeID PK
+        INTEGER year
+        INTEGER month
+        INTEGER week
+    }
+
+    Channel {
+        INTEGER channelID PK
+        TEXT channelName
+    }
+
+    Product {
+        INTEGER prodID PK
+        TEXT subCategory
+        TEXT category
+    }
+
+    Sales {
+        INTEGER prodID PK, FK
+        INTEGER timeID PK, FK
+        INTEGER channelID PK, FK
+        INTEGER customerID PK, FK
+        REAL dollarSold
+        INTEGER unitSold
+        REAL dollarCost
+    }

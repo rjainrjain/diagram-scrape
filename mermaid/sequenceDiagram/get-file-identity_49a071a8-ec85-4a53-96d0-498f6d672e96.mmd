@@ -1,0 +1,11 @@
+sequenceDiagram
+Title: ファイルの検証
+participant USER AS 検証者
+participant DAPPS
+participant FIL AS FileIdentityList
+
+
+USER ->>+ DAPPS: ファイルの登録
+    DAPPS ->>+ FIL: ファイル情報を照会
+    FIL -->>- DAPPS : 応答
+DAPPS -->>- USER : 応答

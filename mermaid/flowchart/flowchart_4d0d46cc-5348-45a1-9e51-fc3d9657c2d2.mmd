@@ -1,0 +1,65 @@
+flowchart TD
+  %% Initial User Input Section
+  A[User Enters URL] --> B{Analyze Website}
+  B -->|Success| C[Display Feed Preview]
+  B -->|Failure| D[Show Interactive Selector]
+
+  %% Automatic Analysis Path
+  C --> E[Show Element Mappings]
+  E --> F{User Edits Mappings?}
+  F -->|Yes| G[Update Feed Preview]
+  G --> F
+  F -->|No| H[Generate RSS Feed]
+
+  %% Manual Selection Path
+  D --> I[User Selects Elements]
+  I --> J[Update Element Mappings]
+  J --> E
+
+  %% Final Output and Iteration
+  H --> K[Display RSS Feed URL/XML]
+  K --> L{User Wants Changes?}
+  L -->|Yes| E
+  L -->|No| M[Done]
+ 
+  %% Automatic Analysis Details
+  subgraph "Automatic Analysis"
+    direction TB
+    B --> N[Extract Page Content]
+    N[Extract Page Content] -->|"Uses fetch/axios to get HTML"| O[Identify Common Patterns]
+    O[Identify Common Patterns] -->|"Find repeated elements<br>like articles/posts"| P[Map to RSS Fields]
+    P -->|"Match elements to:<br>title, date, content, etc."| C
+    end
+
+    %% Comments for each section
+    subgraph "User Input Phase"
+      direction TB
+      A -->|"Simple form with<br>URL validation"| B
+    end
+
+    subgraph "Manual Selection Interface"
+      direction TB
+      D -->|"Interactive overlay on<br>iframe/rendered content"| I
+    end
+
+    subgraph "Feed Editing Interface"
+      direction TB
+      E -->|"Shows current mappings:<br>title, content, date patterns"| F
+    end
+
+    subgraph "Output Phase"
+      direction TB
+      H -->|"Generates valid RSS XML<br>with selected mappings"| K
+    end
+
+    classDef inputPhase fill:#e1f5fe
+    classDef manualPhase fill:#fff3e0
+    classDef editorPhase fill:#e8f5e9
+    classDef outputPhase fill:#f3e5f5
+    classDef analysisPhase fill:#fff8e1
+
+    class A,B inputPhase
+    class D,I manualPhase
+    class E,F,G editorPhase
+    class H,K,L,M outputPhase
+    class N,O,P analysisPhase

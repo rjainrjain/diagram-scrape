@@ -1,0 +1,8 @@
+flowchart TB
+    S[Sorgente:\n sequenza di caratteri] --> Lexer
+    Lexer --> |Sequenza di token| Parser
+    Parser --> |Abstract Syntax Tree| Checker
+    Checker -->|AST con annotazioni:\n tipi, dichiarazioni| CodeGen[Code Generator]
+    CodeGen --> F[Codice Macchina]
+    style S fill:#ffff,stroke:#ffff
+    style F fill:#ffff,stroke:#ffff

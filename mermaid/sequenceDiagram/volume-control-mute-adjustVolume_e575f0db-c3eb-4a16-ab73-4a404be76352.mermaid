@@ -1,0 +1,27 @@
+```mermaid
+sequenceDiagram
+    participant Recording Device
+    participant Playback Device
+    participant Sound File
+    participant Audio Engine
+    participant Sender
+    participant Receiver
+
+    Sender->>Audio Engine: Trigger functions
+    Playback Device->>Sound File: Adjust local playback
+    Playback Device->>Audio Engine: Signal processing
+
+    Receiver->>Audio Engine: Receive and process
+
+    Recording Device->>Recording Device: adjustRecording_fc: adjustRecordingSignalVolume
+    Recording Device->>Recording Device: setInEarMonitoringVol: setInEarMonitoringVolume
+
+    Playback Device->>Playback Device: adjustAudioMixingPlayoutVol: adjustAudioMixingPlayoutVolume
+    Playback Device->>Playback Device: setEffectsVol: setEffectsVolume
+    Playback Device->>Sound File: setVolOfEffect: setVolumeOfEffect
+
+    Sound File->>Sound File: setVolOfEffect: setVolumeOfEffect
+
+    Audio Engine->>Audio Engine: adjustAudioMixingPublishVol: adjustAudioMixingPublishVolume
+    Audio Engine->>Audio Engine: adjustAudioMixingVol: adjustAudioMixingVolume
+```

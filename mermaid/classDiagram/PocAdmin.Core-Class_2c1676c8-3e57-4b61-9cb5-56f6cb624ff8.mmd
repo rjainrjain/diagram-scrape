@@ -1,0 +1,36 @@
+classDiagram 
+	
+	class FileEvent  {
+		+ Id : int
+		+ FileName : string
+		+ Directory : string
+		+ Created : DateTime
+	}
+	class InvalidData  {
+		+ MappedId : int
+		+ Event_Id : int
+		+ Event_ActionId : int
+		+ Event_SecId : int
+		+ Event_FileId : int
+		+ Event_EffectiveDate : DateTime
+		+ Event_AmmendmentDate : DateTime
+		+ Event_FileName : string
+		+ CA_Id : int
+		+ CA_EffectiveDate : int
+		+ CA_AmmendmentDate : int
+		+ CA_Created : DateTime
+		+ CA_RefId : string?
+	}
+	class IQueryRepository ~T~ {
+		-GetAll() IQueryable~T~
+		-GetById(int id) IQueryable~T~
+	}
+	class IRepository ~T~ {
+		-GetByIdAsync(int id) Task~T~
+		-GetAllAsync() Task~IEnumerable~T~~
+		-AddAsync(T entity) Task~T~
+		-UpdateAsync(T entity) Task~T~
+		-DeleteAsync(int id) Task
+	}
+	
+	

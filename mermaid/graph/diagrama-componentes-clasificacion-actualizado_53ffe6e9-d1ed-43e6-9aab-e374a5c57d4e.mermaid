@@ -1,0 +1,38 @@
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#00b1c7', 'secondaryColor': '#414042', 'tertiaryColor': '#6c757d', 'primaryBorderColor': '#00c2db'}}}%%
+graph TB
+    subgraph "Servicio de Clasificación de Imágenes"
+        API[API REST]
+        PP[Preprocesador de Imágenes]
+        MC[Modelo de Clasificación]
+        GM[Gestor de Modelos]
+        CR[Caché de Resultados]
+        LOG[Logger]
+    end
+
+    subgraph "Externos"
+        MINIO[MinIO]
+        DB[(PostgreSQL)]
+        RMQ[RabbitMQ]
+        ELK[ELK Stack]
+    end
+
+    API --> PP
+    PP --> MC
+    MC --> GM
+    MC --> CR
+    API --> CR
+    API --> LOG
+    PP --> LOG
+    MC --> LOG
+    GM --> LOG
+
+    API -.-> MINIO
+    API -.-> DB
+    API -.-> RMQ
+    LOG -.-> ELK
+
+    classDef primary fill:#00b1c7,stroke:#00c2db,stroke-width:2px,color:#fff;
+    classDef secondary fill:#414042,stroke:#00c2db,stroke-width:2px,color:#fff;
+    
+    class API,PP,MC,GM,CR,LOG primary;
+    class MINIO,DB,RMQ,ELK secondary;

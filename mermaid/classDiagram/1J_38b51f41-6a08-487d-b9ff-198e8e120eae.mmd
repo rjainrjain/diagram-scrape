@@ -1,0 +1,57 @@
+classDiagram
+  JobAnnouncer --> UI : 1. clickRegister()
+  UI --> UI : 2. redirectToRegisterPage()
+  JobAnnouncer --> UI : 3. submitAccountForm(email, username, password, confirmPassword)
+  UI --> AccountFormController: 4. validateAccountForm(formData)
+  AccountFormController --> AccountFormController: 5. validateFormat()
+  AccountFormController --> UserRepository : 6. checkDuplicates(username, email)
+  UserRepository --> DBConnector : 7. executeQuery(Q1J1, Q1J2)
+  DBConnector --> UserRepository : 8. return duplicateCheckResult
+  UserRepository --> AccountFormController : 9. return duplicateStatus
+  AccountFormController --> UI : 10.1. showValidationErrors()
+  AccountFormController --> UI : 10.2. redirectToPersonalInfoPage()
+  JobAnnouncer --> UI : 11. submitPersonalInfo(title, firstName, lastName, phone)
+  UI --> PersonalFormController : 12. validatePersonalInfo(personalData)
+  PersonalFormController --> PersonalFormController : 13. validateFormat()
+  PersonalFormController --> UI : 13.1. showValidationErrors()
+  PersonalFormController --> UI : 13.2.  redirectToCompanySelectionPage()
+  JobAnnouncer --> UI : 14. selectCompanyOption(hasExistingCompany)
+  UI --> CompanySelectionController : 15. handleCompanySelection(hasExistingCompany)
+
+  class JobAnnouncer {
+  
+  }
+
+  class UI {
+    +clickRegister()
+    +submitAccountForm()
+    +submitPersonalInfo()
+    +redirectToRegisterPage()
+    +showValidationErrors()
+    +redirectToPersonalInfoPage()
+    +redirectToCompanySelectionPage()
+  }
+
+  class AccountFormController {
+    +validateAccountForm()
+    +validateFormat()
+  }
+
+  class PersonalFormController {
+    +validatePersonalInfo()
+    +showValidationErrors()
+    +redirectToPersonalInfoPage()
+    +validateFormat()
+  }
+
+  class CompanySelectionController {
+    +handleCompanySelection()
+  }
+
+  class UserRepository {
+    +checkDuplicates()
+  }
+
+  class DBConnector {
+    +executeQuery()
+  }

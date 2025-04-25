@@ -1,0 +1,39 @@
+sequenceDiagram
+    participant User
+    participant LandingPage
+    participant InventoryDashboard
+    participant Firebase
+    participant Storage
+    participant OpenRouterAI
+
+    User->>LandingPage: Enter group ID
+    LandingPage->>Firebase: Sign in anonymously with group ID
+    Firebase->>LandingPage: Return user object
+    LandingPage->>InventoryDashboard: Redirect to dashboard
+    InventoryDashboard->>Firebase: Fetch inventory items
+    Firebase->>InventoryDashboard: Return inventory data
+    User->>InventoryDashboard: Add/Edit/Delete item
+
+    alt Add/Edit item
+        InventoryDashboard->>Storage: Upload item image (if provided)
+        Storage->>InventoryDashboard: Return image URL
+    end
+
+    InventoryDashboard->>Firebase: Update Firestore
+    Firebase->>InventoryDashboard: Return updated data
+    User->>InventoryDashboard: Generate recipe
+    InventoryDashboard->>OpenRouterAI: Send ingredients list
+    OpenRouterAI->>InventoryDashboard: Return recipe suggestion
+    User->>InventoryDashboard: Export inventory
+    InventoryDashboard->>User: Download CSV/PDF
+
+    alt User tries to access LandingPage while logged in
+        User->>LandingPage: Navigate to landing page
+        LandingPage->>Firebase: Check authentication status
+        Firebase->>LandingPage: Return authenticated user
+        LandingPage->>InventoryDashboard: Redirect back to dashboard
+    end
+
+    User->>InventoryDashboard: Leave group
+    InventoryDashboard->>Firebase: Sign out user
+    Firebase->>LandingPage: Redirect to landing page

@@ -1,0 +1,232 @@
+erDiagram
+
+Org ||--|| Usuario : tiene
+Org ||--|{ Donacion : guarda
+Org ||--|{ Operacion : realiza
+Org ||--|{ Tarea : crea
+Org ||--|{ Sede : tiene
+Org ||--|{ Candidato : tiene
+Org ||--|{ Video : sube
+TipoUsuario ||--|{ Usuario : tiene
+Usuario ||--|| Persona : tiene
+Sede ||--|| Inventario : tiene
+Inventario ||--|{ ProductoXInventario : tiene
+Producto ||--|{ ProductoXInventario : tiene
+Producto }|--|| Categoria : tiene
+Producto }|--|| EstadoProducto : tiene
+Producto ||--|{ ProductoXOperacion : tiene
+DonacionXProducto }|--|| Producto : tiene
+DonacionXProducto }|--|| Donacion : tiene
+TareaXPersona }|--|| Persona : tiene
+Persona ||--|{ PersonaXEvento : tiene
+Persona ||--|{ PersonaXEtiqueta : tiene
+Etiqueta ||--|{ EtiquetaXCandidato : tiene
+Etiqueta }|--|| TipoEtiqueta : tiene
+Etiqueta ||--|{ PersonaXEtiqueta : tiene
+Operacion }|--|| TipoOperacion : tiene
+Operacion ||--|{ ProductoXOperacion : tiene
+Evento ||--|| Reporte : genera
+PersonaXEvento }|--|| Evento : tiene
+Evento ||--|{ Invitado : tiene
+Tarea ||--|{ TareaXPersona : tiene
+EtiquetaXCandidato }|--|| Candidato : tiene
+Candidato ||--|| Persona : es
+Persona ||--|{ PersonaXOrg : tiene
+PersonaXOrg }|--|| Org : tiene
+
+    TipoUsuario {
+        int idTipoUsuario PK
+        varchar descripcion
+        int nivelPermiso
+    }
+
+    Inventario{
+        int idInventario PK
+        int idSede FK
+    }
+
+    Sede{
+        int idSede PK
+        varchar nombre
+        varchar direccion
+    }
+
+    Producto{
+        int idProducto PK
+        varchar nombre
+        varchar descripcion
+        int idCategoria FK
+        int idEstadoProducto FK
+    }
+
+    Categoria{
+        int idCategoria PK
+        varchar nombre
+    }
+
+    ProductoXInventario{
+        int idProductoXInventario PK
+        int idProducto FK
+        int idInventario FK
+        int Cantidad 
+    }
+
+    EstadoProducto{
+        int idEstadoProducto PK
+        varchar descripcion
+    }
+   
+    Donacion{
+        int idDonacion PK
+        int idProducto FK
+        int idUsuario FK
+        date fecha
+        varchar descripcion
+    }
+
+    DonacionXProducto{
+        int idDonacionXProducto PK
+        int idDonacion FK
+        int idProducto FK
+    }
+
+    Operacion{
+        int idOperacion PK
+        int idTipoOperacion FK
+        int idUsuario FK
+        date fecha
+        varchar descripcion
+    }
+
+    TipoOperacion{
+        int idTipoOperacion PK
+        varchar descripcion
+    }
+
+    ProductoXOperacion{
+        int idProductoXOperacion PK
+        int idProducto FK
+        int idOperacion FK
+    }
+
+    Video{
+        int idVideo PK
+        varchar titulo
+        varchar url
+        varchar descripcion
+        int idUsuario FK
+    }
+    
+    Tarea{
+        int idTarea PK
+        varchar titulo
+        varchar descripcion
+        date fecha
+        time hora
+        int idUsuario FK
+    }
+    
+    PersonaXOrg{
+	int idPersona FK
+        int idOrg FK
+    }
+ 
+    Evento{
+        int idEvento PK
+        varchar titulo
+        varchar descripcion
+        date fecha
+        time hora
+        int idUsuario FK
+    }
+
+    Reporte{
+        int idReporte PK
+        varchar titulo
+        varchar descripcion
+        int idEvento FK
+        int idUsuario FK
+    }
+
+    Usuario{
+        int idUsuario PK 
+        varchar correo
+        varchar contrasena
+        int idTipoUsuario FK
+    }
+
+    Persona{
+        int idPersona PK
+        varchar nombre
+        varchar apellido
+        varchar telefono
+        varchar contrasena
+        int IDUsuario FK
+    }
+
+    Etiqueta{
+        int idEtiqueta PK
+        varchar nombre
+    }
+
+    TipoEtiqueta{
+        int idTipoEtiqueta PK
+        varchar descripcion
+    }
+
+    PersonaXEtiqueta{
+        int idPersonaXEtiqueta PK
+        int idPersona FK
+        int idEtiqueta FK
+    }
+
+    Candidato{
+        int idCandidato PK
+        varchar nombre
+        varchar apellido
+        varchar telefono
+        time disponibilidad
+        date fechaNacimiento
+	int idUsuario FK
+    }
+
+    EtiquetaXCandidato{
+        int idEtiquetaXCandidato PK
+        int idEtiqueta FK
+        int idCandidato FK
+    }
+
+    Org{
+        int idOrgPK
+        varchar nombre
+        varchar descripcion
+        varchar direccion
+        varchar telefono
+        varchar logo
+        varchar correo
+        varchar web
+        int idUsuario FK
+    }
+
+    Invitado{
+        int idInvitado PK
+        varchar nombre
+        varchar apellido
+        varchar telefono
+        int idEvento FK
+    }
+
+    TareaXPersona{
+        int idTareaxPersona PK
+        int idTarea FK
+        int idPersona FK
+    }
+
+    PersonaXEvento{
+        int idPersonaxEvento PK
+        int idEvento FK
+        int idPersona FK
+    }
+
+
+

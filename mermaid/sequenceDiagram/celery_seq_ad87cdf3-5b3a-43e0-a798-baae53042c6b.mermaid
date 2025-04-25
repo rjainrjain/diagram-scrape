@@ -1,0 +1,16 @@
+sequenceDiagram
+    participant C as Controller
+    participant CT as Celery Task
+    participant CW as Celery Worker
+    participant MQ as Message Queue
+
+    C->>CT: delay(task_args)
+    CT->>MQ: Enqueue Task
+    MQ-->>CT: Task ID
+    CT-->>C: Task ID
+    CW->>MQ: Poll for Tasks
+    MQ-->>CW: Task Details
+    CW->>CW: Execute Task
+    CW->>MQ: Store Result
+    C->>MQ: Check Result (if needed)
+    MQ-->>C: Task Result

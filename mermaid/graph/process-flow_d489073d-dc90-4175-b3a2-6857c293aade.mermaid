@@ -1,0 +1,47 @@
+graph TB
+    subgraph Input
+        A[Input] --> B[Input Criteria]
+    end
+
+    subgraph Process
+        C[Tasks and Sub-tasks]
+        C1[User Story 1]
+        C2[User Story 2]
+        C --> C1 & C2
+        
+        D[Checklist]
+        D1[Verification]
+        D2[Validation]
+        D --> D1 & D2
+    end
+
+    subgraph Output
+        E[Definition of Done]
+        F[Exit Criteria]
+    end
+
+    subgraph Roles
+        G[Customer]
+        H[Uncia]
+    end
+
+    %% Main flow connections
+    B --> C
+    C --> D
+    D --> E
+    E --> F
+
+    %% Role connections
+    G -.-> C
+    H -.-> C
+    G -.-> D
+    H -.-> D
+
+    %% Styling
+    classDef criteria fill:#f9f,stroke:#333,stroke-width:2px
+    classDef process fill:#bbf,stroke:#333,stroke-width:2px
+    classDef roles fill:#bfb,stroke:#333,stroke-width:2px
+    
+    class B,F criteria
+    class C,D,E process
+    class G,H roles

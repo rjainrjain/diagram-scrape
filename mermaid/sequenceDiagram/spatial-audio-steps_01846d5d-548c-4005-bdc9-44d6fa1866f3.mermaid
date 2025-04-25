@@ -1,0 +1,30 @@
+sequenceDiagram
+    participant App as App &#9723;
+    participant Agora as Agora Engine &#9723;&#9723;
+    participant Spatial as Spatial Audio Engine &#9723;&#128266;
+
+    App->>Agora: Create and initialize Agora engine
+    App->>Spatial: Initialize the spatial audio engine
+    App->>App: Set up an audio profile and audio scenario
+    App->>App: Set up a channel profile and client role
+    App->>App: Join a channel
+    App->>App: Mute all remote audio streams
+    App->>App: Set the number of receivable audio streams
+    App->>App: Set the audio receiving range
+    App->>App: Set the distance unit in meters
+
+    rect rgb(255,255,255)
+      note right of App: Spatial audio effect for users
+      App->>App: Update self position
+      App->>App: Update remote user positions
+    end
+
+    rect rgb(255,255,255)
+      note right of App: Spatial audio effect for media player
+      App->>App: Update player position
+    end
+
+    App->>App: Clear remote positions
+    App->>Spatial: Destroy the spatial audio engine
+    App->>App: Leave the channel
+    App->>Agora: Destroy Agora engine

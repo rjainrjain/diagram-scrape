@@ -1,0 +1,31 @@
+sequenceDiagram
+
+    # title Minimal Mixer Overview
+
+    participant S as Sender
+    participant F as Front-end
+    participant M as Mixer smart contract
+    participant B as Broadcaster
+    participant BR as Broadcaster register
+    participant R as Receiver
+
+    Note over S,R: Sender wants to send 1 ETH to receiver.
+    S->>F: Request deposit
+    Note over F: Create ephemeral key pair
+    F->>M: Invokes deposit(public key), value= 1 ETH 
+
+   Note over S,R: Withdraw procedure
+
+   F->>BR: Select a broadcaster
+   BR->>F: Selected broadcaster address/url + fee
+
+   Note over F: Signs message </br>(recipient, broadcaster, fee) </br>Invokes SNARK proof with signed message</br>SNARK outputs proof
+
+   F-->>B: Connect via tor
+   F->>B: Sends proof
+
+   Note over B: Validates request </br>Waits a random time</br>Broadcasts request</br>
+   B->>M: Requests withdrawal, as part of a batch of requests
+   Note over M: Validates proof, nullifier</br>Burns fee </br>Adds nullifier to spent list</br>Adds to broadcaster fee total
+   M->>R: Sends 1 ETH - 2 * fee
+   M->>B: Sends fee

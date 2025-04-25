@@ -1,0 +1,3 @@
+flowchart LR
+  Actor-- Create PR -->action{{Github Action runs unit-test & build binary}}
+  action-- CI passed -->merged([PR can be merged])

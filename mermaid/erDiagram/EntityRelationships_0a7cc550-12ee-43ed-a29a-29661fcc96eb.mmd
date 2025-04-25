@@ -1,0 +1,47 @@
+erDiagram
+	User {
+		int Id PK
+		string Name
+		int Age
+		float Height
+	}
+	Exercise {
+		int Id PK
+		string Name
+		string InstructionalVideoUrl
+	}
+	TrainingDayExercise {
+		int Id PK
+		int TrainingDayId FK
+		int NumberOfSets
+		int NumberOfRepetitions
+		int ExerciseId FK
+	}
+	TrainingDay {
+		int Id PK
+		int TrainingPlanId FK
+		int DayOfTheWeek
+	}
+	TrainingPlan {
+		int Id PK
+		int UserId FK
+	}
+	WeightMeasurement {
+		int Id PK
+		date DateTaken
+		float Measurement
+		int UserId FK
+	}
+	WeightGoal {
+		int Id PK
+		float Weight
+		int UserId FK
+	}
+
+	User ||--o{ WeightMeasurement : saves
+	User ||--|| WeightGoal : sets
+	User ||--|| TrainingPlan : "is assigned"
+	TrainingPlan ||--|{ TrainingDay : "consists of"
+	TrainingDay ||--|{ TrainingDayExercise : "consists of"
+	Exercise ||--|{ TrainingDayExercise : describes
+	

@@ -1,0 +1,35 @@
+sequenceDiagram
+    autonumber
+    actor Test as Tester
+    actor Dev as Developer
+    Box white Branches
+    participant A as feature/jira-01
+    participant B as develop
+    participant C as release/v1.0.0
+    participant D as Master
+    participant H as hotfix/v1.0.1
+    end
+
+
+    box white Tags
+    participant G as Tag v1.0.0
+    participant K as Tag v1.0.1
+    end
+
+    B->>Dev: Checkout Develop Branch
+    Dev->>A: create new brranch feature/jira-01
+    A-->>B:  merge to Develop
+    Dev->>C:  create Release branch
+    Test->>C: test the release branch
+    C-->>D:  On successful testing merge to Master
+    Dev->>C:  In case of bug found in release branch, commit to this branch
+    C-->>B:  Back-merge bug fixes to develop
+    D-->>G:  On successful deployment, tag v1.0.0
+    D-->>H:  Creates hotfix branch to fix issue found post release
+    Dev->>H:  developer commits to hotfix branch
+    H-->>D:  Merge back to master
+    D-->>K:  Tag next minor version
+    H-->>B: Merge back to develop branch
+    Test->>D: Do sanity in production
+
+   

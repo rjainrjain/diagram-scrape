@@ -1,0 +1,331 @@
+erDiagram
+    USER["USER (Collection)"] {
+        string userId PK
+        USER_DETAILS userDetails
+        CONSENT[] consents
+        PREOFFER[] preoffers
+        CREDIT_APPLICATION[] creditApplications
+        OLD_PHONE_NUMBER[] oldPhoneNumbers
+    }
+
+    USER only one to only one USER_DETAILS : ""
+    USER only one to zero or more CONSENT : ""
+    USER only one to zero or many OLD_PHONE_NUMBER : ""
+    USER only one to zero or many PREOFFER : ""
+    USER only one to zero or many CREDIT_APPLICATION : ""
+
+    USER_DETAILS {
+        string userId FK "Parent Id = 'USR#${userId}', Component id = 'UDE'"
+        string createdDateTime "Instant, ISO 8601 format datetime"
+        string lastModifiedDateTime "Instant, ISO 8601 format datetime"
+        string clientNumber
+        string phoneNumber
+        string userName
+        string email
+        string provider "review: should this be a catalog? also we should discuss regarding cardinality of the provider, AFAIK providers are defined by offers, user 1-N offer 1-1 provider"
+        string isBeneficialOwner "review: should this be a string?"
+        string currentLoginDate "review: should this be an ISO datetime?"
+        string lastLoginDate "review: should this be an ISO datetime?"
+    }
+    
+    CONSENT {
+        string userId FK "Parent Id = 'USR#${userId}', Component id = 'CST#${policyType}'"
+        string createdDateTime "Instant, ISO 8601 format datetime"
+        string lastModifiedDateTime "Instant, ISO 8601 format datetime"
+        POLICY policyType
+        string acceptedDate "review: should this be an ISO datetime?"
+        string policyVersion "review: should this be an integer?"
+    }
+
+    CONSENT only one to one or many POLICY : ""
+
+    POLICY {
+        string createdDateTime "Instant, ISO 8601 format datetime"
+        string lastModifiedDateTime "Instant, ISO 8601 format datetime"
+        string policyType PK "Parent Id = '${policyType}', Component id = 'V#${version}'"
+        string date "review: should this be an ISO datetime?"
+        string version "review: should this be a number?"
+        string data
+    }
+
+    OLD_PHONE_NUMBER {
+        string userId FK "Parent Id = 'USR#${userId}', Component id = 'OPN'. Review: we can improve on the definition of this entity by renaming it to ContactInfo (CIF) and define its composite key as CIF#${createdDateTime}."
+        string createdDateTime "Instant, ISO 8601 format datetime"
+        string lastModifiedDateTime "Instant, ISO 8601 format datetime"
+        string oldPhoneNumber
+        string updatedDate "review: is this attribute required? every declared Entity class inherits 'createdDateTime' and 'lastModifiedDateTime' by default."
+    }
+
+    PREOFFER {
+        string userId FK "Parent Id = 'USR#${userId}', Component id = 'OPN'. Review: current cardinality in preofferings implementation is 1-1, user should have 0 to many preoffers."
+        string createdDateTime "Instant, ISO 8601 format datetime"
+        string lastModifiedDateTime "Instant, ISO 8601 format datetime"
+        string initialOffering "review: should this be a BigDecimal?"
+        string provider "review: should this be a catalog?"
+    }
+    
+    CREDIT_APPLICATION["CREDIT_APPLICATION (Collection)"] {
+        string creditApplicationId PK
+        string prospectId FK 
+        CREDIT_APPLICATION_DETAILS creditApplicationDetails
+        CREDIT_DETAILS creditDetails
+        INCODE_SESSION incodeSession
+        PROSPECT_IDENTITY prospectIdentity
+        PROSPECT_ADDRESS prospectAddress
+        PROSPECT_HOUSING prospectHousing
+        PROSPECT_REFERENCES prospectReferences
+        STEP_DETAILS stepDetails
+        PROSPECT_VALIDATION[] prospectValidations
+    }
+
+    CREDIT_APPLICATION  only one to only one CREDIT_DETAILS : ""
+    CREDIT_APPLICATION  only one to only one CREDIT_APPLICATION_DETAILS : ""
+    CREDIT_APPLICATION  only one to only one STEP_DETAILS : ""
+    CREDIT_APPLICATION only one to only one INCODE_SESSION : ""
+    CREDIT_APPLICATION only one to only one PROSPECT_IDENTITY : ""
+    CREDIT_APPLICATION only one to only one PROSPECT_ADDRESS : ""
+    CREDIT_APPLICATION only one to only one PROSPECT_HOUSING : ""
+    CREDIT_APPLICATION only one to only one PROSPECT_REFERENCES : ""
+    CREDIT_APPLICATION only one to zero or many PROSPECT_VALIDATION : ""
+
+    CREDIT_APPLICATION_DETAILS {
+        string creditApplicationId PK "Parent Id = 'CAP#${creditApplicationId}', Component id = 'CAD'"
+        string prospectId FK 
+        string createdDateTime "Instant, ISO 8601 format datetime"
+        string lastModifiedDateTime "Instant, ISO 8601 format datetime"
+        number invoice "review: should this be a string? we should handle scenarios with prefixed 0. E.g: '0000000001'"
+        CAT_CREDIT_APPLICATION_STATUS status 
+        CAT_CREDIT_APPLICATION_SUBSTATUS subStatus 
+        string userEmail "userDetails.email"
+        string userPhone "userDetails.phoneNumber"
+        string userOcupation "review: fix typho 'userOccupation'"
+    }
+
+    CREDIT_APPLICATION_DETAILS  only one to only one CAT_CREDIT_APPLICATION_STATUS : ""
+    CREDIT_APPLICATION_DETAILS  only one to only one CAT_CREDIT_APPLICATION_SUBSTATUS : ""
+
+    CREDIT_DETAILS {
+        string creditApplicationId PK "Parent Id = 'CAP#${creditApplicationId}', Component id = 'CDE'"
+        string prospectId FK
+        string createdDateTime "Instant, ISO 8601 format datetime"
+        string lastModifiedDateTime "Instant, ISO 8601 format datetime"
+        string accountId "mambu client account id"
+        string creditArrangementId "mambu credit arrangement id"
+        number availableAmount "BigDecimal" 
+        string paymentTermUnit "review: should this be a catalog? refer to mambu api"
+        number paymentTermValue "review: currently an integer, should this be a BigDecimal?" 
+        number interestRate "BigDecimal"
+        number cashWithdrawalFee "BigDecimal"
+        boolean creditApproval 
+        string operationDate "LocalDate"
+        string provider "review: should this be a catalog?"
+        string channel "review: should this be a catalog?"
+        number commisionRate "BigDecimal"
+        string productId "review: should this be a catalog?"
+        boolean isUserBeneficialOwner
+        boolean isOwnerDocumentationAvailable
+    }
+
+    STEP_DETAILS {
+        string creditApplicationId PK "Parent Id = 'CAP#${creditApplicationId}', Component id = 'STD'"
+        string prospectId FK
+        string createdDateTime "Instant, ISO 8601 format datetime"
+        string lastModifiedDateTime "Instant, ISO 8601 format datetime"
+        CAT_STEP_TYPE currentStep   "STEP_1|STEP_2|STEP_3|STEP_4|STEP_5"
+        STEP[] stepMap "stringified JSON. {STEP_1:{required: true, status: 'EN_PROCESO'},...}"
+    }
+
+    STEP_DETAILS only one to one or many STEP : ""
+
+    STEP {
+        CAT_STEP_TYPE stepType  "STEP_1|STEP_2|STEP_3|STEP_4|STEP_5"
+        boolean required
+        CAT_STEP_STATUS status "COMPLETED|IN_PROGRESS|NOT_STARTED"
+    }
+    
+    STEP only one to only one CAT_STEP_TYPE : ""
+    STEP only one to only one CAT_STEP_STATUS : ""
+
+    INCODE_SESSION {
+        string creditApplicationId PK "Parent Id = 'CAP#${creditApplicationId}', Component id = 'ISE'"
+        string prospectId FK
+        string createdDateTime "Instant, ISO 8601 format datetime"
+        string lastModifiedDateTime "Instant, ISO 8601 format datetime"
+        string interviewId "incode.start.interviewId"
+        string configurationId "incode.start.configurationId"
+    }
+
+    PROSPECT_IDENTITY {
+        string creditApplicationId PK "Parent Id = 'CAP#${creditApplicationId}', Component id = 'PID'"
+        string prospectId FK
+        string createdDateTime "Instant, ISO 8601 format datetime"
+        string lastModifiedDateTime "Instant, ISO 8601 format datetime"
+        string firstName "incode.ocr.name.firstName"
+        string paternalLastname "incode.ocr.name.paternalLastName"
+        string maternalLastname "incode.ocr.name.maternalLastName"
+        CAT_GENDER gender "incode.ocr.gender"
+        string birthDate "LocalDate, incode.ocr.birthDate, presented in UTC miliseconds"
+        string curp "incode.ocr.curp"
+        CAT_COUNTRY country "incode.ocr.issuingCountry"
+        CAT_NATIONALITY nationality "incode.ocr.nationality"
+        string rfc "no availability from incode"
+        boolean modifiedByUser
+        boolean validUser
+    }
+
+    PROSPECT_IDENTITY only one to only one CAT_GENDER : ""
+    PROSPECT_IDENTITY only one to only one CAT_COUNTRY : ""
+    PROSPECT_IDENTITY only one to only one CAT_NATIONALITY : ""
+
+    PROSPECT_ADDRESS {
+        string creditApplicationId PK "Parent Id = 'CAP#${creditApplicationId}', Component id = 'PAD'"
+        string prospectId FK
+        string createdDateTime "Instant, ISO 8601 format datetime"
+        string lastModifiedDateTime "Instant, ISO 8601 format datetime"
+        string streetName "incode.ocr.addressFields.street"
+        string exteriorNumber "incode.ocr.exteriorNumber"
+        string interiorNumber "incode.ocr.interiorNumber"
+        CAT_STATE state "incode.ocr.addressFields.state"
+        string postalCode "incode.ocr.addressFields.postalCode"
+        CAT_COLONY colony "incode.ocr.addressFields.colony"
+        CAT_CITY city "incode.ocr.addressFields.city"
+        CAT_MUNICIPALITY municipality "no availability from incode"
+        boolean modifiedByUser
+    }
+
+    PROSPECT_ADDRESS only one to only one CAT_STATE : ""
+    PROSPECT_ADDRESS only one to only one CAT_COLONY : ""
+    PROSPECT_ADDRESS only one to only one CAT_CITY : ""
+    PROSPECT_ADDRESS only one to only one CAT_MUNICIPALITY : ""
+
+    PROSPECT_HOUSING {
+        string creditApplicationId PK "Parent Id = 'CAP#${creditApplicationId}', Component id = 'PHO'"
+        string prospectId FK
+        string createdDateTime "Instant, ISO 8601 format datetime"
+        string lastModifiedDateTime "Instant, ISO 8601 format datetime"
+        CAT_HOUSING_TYPE housingType
+        CAT_TENANCY_LENGTH tenancyLength
+        CAT_ECONOMIC_DEPENDENTS economicDependents
+    }
+
+    PROSPECT_HOUSING only one to only one CAT_HOUSING_TYPE : ""
+    PROSPECT_HOUSING only one to only one CAT_TENANCY_LENGTH : ""
+    PROSPECT_HOUSING only one to only one CAT_ECONOMIC_DEPENDENTS : ""
+
+    PROSPECT_REFERENCES {
+        string creditApplicationId PK "Parent Id = 'CAP#${creditApplicationId}', Component id = 'PPR'"
+        string prospectId FK
+        string createdDateTime "Instant, ISO 8601 format datetime"
+        string lastModifiedDateTime "Instant, ISO 8601 format datetime"
+        PROSPECT_REFERENCE_ITEM[] references "Stringified JSON. [{fullName:'Omar Rodriguez Lopez', relationship: 'amigo', contactInfo: {phone: '3221233610', countryCode: 'MX'}},...]"
+    }
+
+    PROSPECT_REFERENCES only one to zero or many PROSPECT_REFERENCE_ITEM : ""
+
+    PROSPECT_REFERENCE_ITEM {
+        string full_name
+        string relationship
+        string phone
+        CAT_PHONE_COUNTRY_CODE phoneCountryCode
+    }
+
+    PROSPECT_REFERENCE_ITEM only one to only one CAT_PHONE_COUNTRY_CODE : ""
+
+    PROSPECT_VALIDATION {
+        string creditApplicationId PK "Parent Id = 'CAP#${creditApplicationId}', Component id = 'PVA'. Review: component id to be defined"
+        string prospectId FK
+        string createdDateTime "Instant, ISO 8601 format datetime"
+        string lastModifiedDateTime "Instant, ISO 8601 format datetime"
+        CAT_VALIDATION_TYPE validationType
+        string resolution "SUCCESSFUL/FAILURE. Review: should this be a catalog?" 
+    }
+
+    PROSPECT_VALIDATION only one to only one CAT_VALIDATION_TYPE : ""
+
+    CAT_CREDIT_APPLICATION_STATUS {
+        id number
+        string description
+    }
+
+    CAT_CREDIT_APPLICATION_SUBSTATUS {
+        id number
+        string description
+    }
+
+    CAT_STEP_STATUS {
+        id number
+        string description "COMPLETED|IN_PROGRESS"
+    }
+
+    CAT_GENDER {
+        id number
+        string description
+    }
+
+    CAT_NATIONALITY {
+        id number
+        string description
+    }
+
+    CAT_COUNTRY {
+        id number
+        string description 
+        STATE[] states
+    }
+
+    CAT_STATE {
+        id number
+        string description
+        country COUNTRY
+        MUNICIPALITY[] municipalities
+    }
+
+    CAT_MUNICIPALITY {
+        id number
+        string description
+        state STATE
+        CITY[] cities
+    }
+
+    CAT_CITY {
+        id number
+        string description
+        municipality MUNICIPALITY
+        COLONY[] colonies
+    }
+
+    CAT_COLONY {
+        id number
+        string description
+        city CITY
+    }
+
+    CAT_HOUSING_TYPE {
+        id number
+        string description "Casa propia|Casa rentada|Casa familiar (Vives con tus padres y familiares)|Casa compartida (Vives con amigos)|Casa hipotecada|Otro"
+    }
+
+    CAT_TENANCY_LENGTH {
+        id number
+        string description "Menos de 1 año|1 a 3 años|3 a 5 años|5 a 10 años|Más de 10 años"
+    }
+
+    CAT_ECONOMIC_DEPENDENTS {
+        id number
+        string description "Nadie|1|2|3|4|5 o más"
+    }
+
+    CAT_PHONE_COUNTRY_CODE {
+        id number
+        string description "MX|US"
+    }
+
+    CAT_VALIDATION_TYPE {
+        id number
+        string description "ID_INCODE|ID_BACKOFFICE|ADDRESS_INCODE"
+    }
+
+    CAT_STEP_TYPE {
+        id number
+        string description "step_1|step_2|step_3|step_4|step_5"
+    }

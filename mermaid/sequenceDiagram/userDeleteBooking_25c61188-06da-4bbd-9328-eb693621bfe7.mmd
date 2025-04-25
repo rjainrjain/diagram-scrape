@@ -1,0 +1,28 @@
+sequenceDiagram
+    participant Client
+    participant #58;AppModule
+    participant #58;AuthService
+    participant #58;BookingController
+    participant #58;BookingService
+    participant #58;DB
+
+    Client ->>+ #58;AppModule : DELETE /booking/:id 
+
+    #58;AppModule ->>+ #58;AuthService : Validate token
+    #58;AuthService -->>- #58;AppModule : Response
+    
+    alt userId matched
+        #58;AppModule->>+#58;BookingController: Delete booking
+        #58;BookingController->>+#58;BookingService: Delete booking
+        #58;BookingService->>+#58;DB: Delete booking
+        #58;DB-->>-#58;BookingService: Response
+        #58;BookingService-->>-#58;BookingController: Response
+        #58;BookingController-->>-#58;AppModule: Response
+    else
+        #58;AppModule->>+#58;BookingController: Delete booking
+        #58;BookingController-->>-#58;AppModule: Error: Unauthorized operation
+    end
+
+    
+    
+    #58;AppModule-->>-Client: Response

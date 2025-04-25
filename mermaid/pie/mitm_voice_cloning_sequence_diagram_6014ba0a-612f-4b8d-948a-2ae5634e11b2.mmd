@@ -1,0 +1,28 @@
+sequenceDiagram
+    participant Caller as Target User
+    participant MITMAgent as MITM Agent (D1)
+    participant VoiceCloner as Voice Cloning Module (C2)
+    participant LanguageModel as Language Model (B1, B2)
+    participant Victim as Legitimate Recipient
+    participant Monitor as Real-Time Monitoring (G1)
+    participant Analyzer as Data Analysis (F1, F2)
+
+    Caller->>+MITMAgent: Initiates Call
+    MITMAgent->>+VoiceCloner: Request Voice Clone
+    VoiceCloner->>+LanguageModel: Access Voice Data
+    LanguageModel-->>-VoiceCloner: Return Voice Profile
+    VoiceCloner-->>-MITMAgent: Provide Cloned Voice
+    MITMAgent->>+Victim: Establish Connection (Cloned Voice)
+    MITMAgent->>Monitor: Send Call Data
+    loop Conversation
+        Caller->>MITMAgent: Speak
+        MITMAgent->>+LanguageModel: Process Speech
+        LanguageModel-->>-MITMAgent: Generate Response
+        MITMAgent->>Victim: Relay Response (Cloned Voice)
+        Monitor->>Analyzer: Forward Call Data
+    end
+    Monitor->>Analyzer: End of Call Signal
+    Analyzer->>Analyzer: Perform Analysis (J1, J2)
+    alt Anomaly Detected (G2)
+        Analyzer->>H1: Trigger Alert (H1, H2)
+    end

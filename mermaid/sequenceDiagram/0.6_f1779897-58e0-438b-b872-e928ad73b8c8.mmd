@@ -1,0 +1,14 @@
+sequenceDiagram
+    participant browser
+    participant server
+    
+    Note right of browser : User fills input field with the new note and presses Save Button
+    Note right of browser : The browser executes the code from spa.js that does the POST request
+    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note
+    activate server
+    Note left of server : server updates notes by pushing the new note
+    server-->>browser: HTTP status code 201 Created
+    deactivate server
+
+ 
+    Note right of browser: The browser starts executing the JavaScript code that renders the notes with the new note added

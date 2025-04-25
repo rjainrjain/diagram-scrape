@@ -1,0 +1,8 @@
+graph TD
+    A[Desktop Computer] -->|Preprocess audio & generate LED data| B[lshow file]
+    B -->|Transfer to| C[MicroSD Card]
+    C -->|Insert into| D[SD Card Reader]
+    D -->|Connected to| E[Raspberry Pi Pico]
+    E -->|Control| F[LED Strips]
+    E -->|Digital Audio| G[I2S DAC]
+    G -->|Analog Audio| H[Amplifier & Speakers]

@@ -1,0 +1,18 @@
+sequenceDiagram
+    participant Client
+    participant LensA
+    participant LensB
+    participant PairedLens
+    participant ChainedLens
+    participant Compatible
+
+    Client->>LensA: Create LensA
+    Client->>LensB: Create LensB
+    Client->>Compatible: claim(LensA, LensB)
+    Compatible-->>Client: Compatible instance
+    Client->>LensA: LensA | LensB
+    LensA->>PairedLens: new PairedLens(LensA, LensB, Compatible)
+    PairedLens-->>Client: PairedLens instance
+    Client->>LensA: LensA -> LensB
+    LensA->>ChainedLens: new ChainedLens(LensA, LensB)
+    ChainedLens-->>Client: ChainedLens instance

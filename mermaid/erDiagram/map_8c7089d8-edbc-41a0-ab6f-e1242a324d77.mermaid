@@ -1,0 +1,94 @@
+erDiagram
+    USER|o--o| STORE : OneToOne
+    STORE|o--o{ STORE_PRODUCT : ManyToOne
+    STORE||--|| STORE_DETAIL : OneToOne
+    STORE||--|{ STORE_REVIEW : OneToMany
+    PRODUCT|o--o{ STORE_PRODUCT : OneToMany
+    ORDERS|o--o{ ORDERS_PRODUCT : OneToMany
+    ORDERS}o--|| USER : ManyToOne
+    ORDERS}o--|| STORE : ManyToOne
+    PRODUCT|o--o{ ORDERS_PRODUCT : OneToMany
+    REVIEW}o--|{ USER : ManyToOne
+    REVIEW}o--|{ STORE : ManyToOne
+    REVIEW||--|{ REVIEW_DETAIL : OneToMany
+
+
+    USER{
+        bigint USER_ID PK "사용자번호"
+        varchar USER_NAME "사용자이름"
+        varchar USER_ROLE "사용자권한"
+        varchar USER_EMAIL "사용자이메일"
+        varchar USER_PHONE_NO "사용자휴대폰번호"
+        bigint USER_STORE_ID "사용자"
+        varchar USER_STATUS	"사용자계정상태"
+    }
+
+    STORE{
+        bigint STORE_ID PK "가게번호"
+        bigint USER_ID FK "사용자번호"
+        varchar STORE_STATUS_FLG "가게 영업 상태"
+        bigint STORE_DETAIL_ID FK "가게세부번호"
+    }
+
+    STORE_DETAIL{
+        bigint STORE_DETAIL_ID "가게세부번호"
+        varchar STORE_NAME "가게이름"
+        varchar STORE_ADRESS_NO "가게주소번호"
+        varchar STORE_BASIC_ADDRESS "가게기본주소"
+        varchar STORE_DETAIL_ADDRESS "가게세부주소"
+        varchar STORE_ROAD_CODE "가게도로명주소코드"
+        varchar STORE_OFFICIAL_CODE "가게행정부주소코드"
+        varchar STORE_OPEN_TIME "가게 오픈 시간"
+        varchar STORE_CLSE_TIME "가게 종료 시간"
+        blob STORE_INTRO "가게간단소개"
+        varchar STORE_THUMBNAIL_IMG "가게썸네일이미지"
+    }
+
+    STORE_PRODUCT{
+        bigint STORE_PRODUCT_ID PK "가게_상품번호"
+        bigint STORE_ID FK "가게번호"
+        bigint PRODUCT_ID FK "상품번호"
+        varchar PRODUCT_STATUS_FLAG "상품재고상태"
+    }
+
+    PRODUCT{
+        bigint PRODUCT_ID PK "상품번호"
+        varchar PRODUCT_NAME "상품이름"
+        bigint PRODUCT_CATEGORY "상품카테고리"
+    }
+
+    ORDERS{
+        bigint ORDERS_ID PK "주문번호"
+        bigint USER_ID FK "사용자번호"
+        bigint STORE_ID FK "가게번호"
+    }
+
+
+    ORDERS_PRODUCT{
+        bigint ORDERS_PRODUCT_ID PK "주문_상품번호"
+        bigint PRODUCT_ID FK "상품번호"
+        bigint ORDERS_ID FK "주문번호"
+        bigint QUANTITY "주문수량"
+        varchar ARRIVAL_TIME "사용자방문시간"
+    }
+
+    STORE_REVIEW{
+        bigint STORE_REVIEW_ID PK "가게리뷰번호"
+        bigint STORE_ID FK "가게번호"
+        bigint STORE_REVIEW_CNT "가게리뷰개수"
+        bigint STORE_REVIEW_SCORE_AVG "가게평균점수"
+    }
+
+    REVIEW{
+        bigint REVIEW_ID PK "리뷰번호"
+        bigint STORE_ID FK "가게번호"
+        bigint USER_ID FK "유저번호"
+        bigint PRODUCT_ID FK "상품번호"
+    }
+
+    REVIEW_DETAIL{
+        bigint REVIEW_DETAIL_ID PK "리뷰상세번호"
+        varchar REVIEW_DETAIL_SCORE "리뷰점수"
+        varchar REVIEW_DETAIL_MESSAGE "리뷰메세지"
+    }
+

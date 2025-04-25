@@ -1,0 +1,19 @@
+graph TB
+    AWX["`**awx-1** 
+    *AWX Installation (awx.example.com)*`"]
+    ScaleAWX["`**awx-2** 
+    *Scale-Out AWX Machine*`"]
+    subgraph ManagedNodes["Managed Nodes"]
+        Nebula(("nebula"))
+        Solara(("solara"))
+    end
+
+    AWX -- "Manages" --> ManagedNodes
+    ScaleAWX -- "Assists in managing" --> ManagedNodes
+    
+
+    style AWX fill:#f9d7da,stroke:#333,stroke-width:2px,shape:rectangle
+    style ScaleAWX fill:#f9f7d9,stroke:#333,stroke-width:2px,shape:rectangle
+    style ManagedNodes fill:#f4f4f4,stroke:#333,stroke-width:1px
+    style Nebula fill:#d0f9d7,stroke:#333,stroke-width:2px,shape:rectangle
+    style Solara fill:#d7e3f9,stroke:#333,stroke-width:2px,shape:rectangle,size:300

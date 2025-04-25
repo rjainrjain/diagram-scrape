@@ -1,0 +1,16 @@
+classDiagram
+  MedicalDevice -- MedicalEntity
+  MedicalDevice -- MedicalContraindication
+
+
+class MedicalDevice {
+
+  MedicalEntity adverseOutcome
+  string preOp
+  MedicalEntity seriousAdverseOutcome
+  string postOp
+  string procedure
+  string contraindication
+  MedicalContraindication contraindication
+
+ }

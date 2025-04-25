@@ -1,0 +1,61 @@
+stateDiagram-v2
+    [*] --> IngresarDatos
+    IngresarDatos --> ValidarDatos
+    ValidarDatos --> CalcularCorrienteNominal : datos válidos
+    ValidarDatos --> IngresarDatos : datos inválidos
+
+    CalcularCorrienteNominal --> SeleccionarInterruptor
+    SeleccionarInterruptor --> CalcularCapacidadConduccion
+    CalcularCapacidadConduccion --> CalcularCaidaTension
+    CalcularCaidaTension --> SeleccionarConductor
+    SeleccionarConductor --> SeleccionarCanalizacion
+    SeleccionarCanalizacion --> MostrarInformacionCompleta
+    MostrarInformacionCompleta --> GenerarMemoriaCalculo
+    GenerarMemoriaCalculo --> [*]
+
+    state IngresarDatos {
+        IngresarVoltaje : "Ingresar voltaje"
+        IngresarCorriente : "Ingresar corriente"
+        IngresarFactorPotencia : "Ingresar factor de potencia"
+        IngresarTipoCircuito : "Ingresar tipo de circuito"
+        IngresarTemperatura : "Ingresar temperatura"
+        IngresarNumeroHilos : "Ingresar número de hilos"
+    }
+    
+    state ValidarDatos {
+        ValidarEntrada : "Validar datos de entrada"
+    }
+
+    state CalcularCorrienteNominal {
+        Monofasico : "Calcular corriente nominal monofásico"
+        Bifasico : "Calcular corriente nominal bifásico"
+        Trifasico : "Calcular corriente nominal trifásico"
+    }
+
+    state SeleccionarInterruptor {
+        Seleccionar : "Seleccionar interruptor termomagnético"
+    }
+
+    state CalcularCapacidadConduccion {
+        CapacidadConduccion : "Calcular capacidad de conducción"
+    }
+
+    state CalcularCaidaTension {
+        CaidaTension : "Calcular caída de tensión"
+    }
+
+    state SeleccionarConductor {
+        Conductor : "Seleccionar conductor adecuado"
+    }
+
+    state SeleccionarCanalizacion {
+        Canalizacion : "Seleccionar canalización adecuada"
+    }
+
+    state MostrarInformacionCompleta {
+        InformacionCompleta : "Mostrar información completa"
+    }
+
+    state GenerarMemoriaCalculo {
+        MemoriaCalculo : "Generar memoria de cálculo"
+    }

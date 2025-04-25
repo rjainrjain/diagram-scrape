@@ -1,0 +1,15 @@
+sequenceDiagram
+note over Client: Generate public/private key
+note over ClientHandler: Generate public/private key
+note over ClientHandler: Accept connection from clients
+note over Client: Open socket to the server
+participant Client
+participant ClientHandler
+Client->>ClientHandler: REQUEST_PUBLIC_KEY_OF_CENTRAL_SERVER (client's public key)
+note over ClientHandler: Perform key agreement
+alt success
+    ClientHandler->>Client: REQUEST__PUBLIC_KEY_OF_CENTRAL_SERVER_OK (server's public key)
+    note over Client: Perform key agreement
+else failure
+    ClientHandler->>Client: REQUEST__PUBLIC_KEY_OF_CENTRAL_SERVER_KO (message)
+end

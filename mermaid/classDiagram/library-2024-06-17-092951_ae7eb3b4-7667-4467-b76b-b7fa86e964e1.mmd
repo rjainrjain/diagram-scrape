@@ -1,0 +1,28 @@
+classDiagram
+
+class Book{
+    -bookId: string
+    -title: string
+    -author: string
+    -publisher: string
+    -yearPublished: int
+    +createBook(bookID)
+}
+
+class Author{
+    -authorId: string
+    -name: string
+    -bio: string
+}
+
+class Borrower{
+    -borrowerId: string
+    -name: string
+    -email: string
+}
+
+Book "*" --* "1" Author
+Borrower "1" --* "*" Book
+
+
+

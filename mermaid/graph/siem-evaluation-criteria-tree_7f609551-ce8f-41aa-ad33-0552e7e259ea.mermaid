@@ -1,0 +1,36 @@
+graph TD
+    A[Critères d'évaluation des SIEM]
+    B[Critères Critiques]
+    C[Critères Très Importants]
+    D[Critères Importants]
+    E[Critères Secondaires]
+
+    A --> B
+    A --> C
+    A --> D
+    A --> E
+
+    B --> B1[1. Capacités de détection et d'analyse]
+    B --> B2[2. Coût total de possession]
+
+    C --> C1[3. Performance et évolutivité]
+    C --> C2[4. Conformité et rapports]
+    C --> C3[5. Flexibilité et personnalisation]
+
+    D --> D1[6. Facilité d'utilisation et interface]
+    D --> D2[7. Sécurité intrinsèque]
+    D --> D3[8. Déploiement et maintenance]
+
+    E --> E1[9. Intégration et compatibilité]
+    E --> E2[10. Support et communauté]
+
+    classDef default fill:#f9f9f9,stroke:#333,stroke-width:1px
+    classDef critical fill:#ff9999,stroke:#333,stroke-width:2px
+    classDef veryImportant fill:#ffcc99,stroke:#333,stroke-width:2px
+    classDef important fill:#ffffcc,stroke:#333,stroke-width:2px
+    classDef secondary fill:#ccffcc,stroke:#333,stroke-width:2px
+
+    class B,B1,B2 critical
+    class C,C1,C2,C3 veryImportant
+    class D,D1,D2,D3 important
+    class E,E1,E2 secondary

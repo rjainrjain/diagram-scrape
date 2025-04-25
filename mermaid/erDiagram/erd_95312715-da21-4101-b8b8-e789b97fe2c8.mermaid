@@ -1,0 +1,60 @@
+erDiagram
+    User ||--|| Game_Profile: has
+    Game_Profile ||--|| Stats: has
+    Game_Profile }o--|| Platform: "is on"
+    Game_Profile }o--o{ Favourites: has
+    Game_Profile ||--o{ Session: has
+    User ||--o{ Favourites: has
+
+
+    User {
+        int user_ID PK
+        int profile_ID FK
+        string name
+        string email
+        string password
+        string created_at
+        string edited_at
+        string profile_picture
+    }
+    Favourites{
+        int user_Id PK,FK
+        int profile_ID PK,FK
+    }
+    Game_Profile{
+        int profile_ID PK
+        string platform_ID FK
+        string username
+        bool online
+    }
+    Platform{
+        string platform_ID PK
+        string platform_name
+    }
+    Stats {
+        int stats_ID PK
+        int profile_ID FK
+        int level
+        int total_kills
+        int total_deaths
+        int KD
+        int total_damage
+        int total_wins
+        string rank
+        int party_space
+    }
+    Session{
+        int session_ID PK
+        int profile_ID FK
+        date start_time
+        date end_time
+        int games_played
+        int kills
+        int deaths
+        int KD
+    }
+    Map{
+        int time_for_next_map
+        string map_name
+        string map_img
+    }

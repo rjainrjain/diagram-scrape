@@ -1,0 +1,24 @@
+stateDiagram-v2
+    
+    direction LR
+    
+    state Creation {
+        state "NetworkChaos" as nc0
+        state "Labels" as l0
+        [*] --> nc0: Create and adopt
+        nc0 --> l0: Patch
+        l0 --> [*]
+    }
+    [*] --> Creation
+
+    Creation --> Running
+    
+    state Deletion {
+        state "NetworkChaos" as nc1
+        state "Labels" as l1
+        [*] --> l1: Cascade deletion
+        l1 --> nc1: Patch
+        nc1 --> [*]
+    }
+    Running --> Deletion
+    Deletion --> [*]

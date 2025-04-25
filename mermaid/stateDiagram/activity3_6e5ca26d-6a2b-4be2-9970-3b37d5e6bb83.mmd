@@ -1,0 +1,175 @@
+   stateDiagram
+   direction TB
+
+   classDef deny fill:#FF0000, color:white ,font-weight:bold,stroke-width:2px,stroke:green
+   classDef start fill:#0000FF, color:white ,font-weight:bold,stroke-width:2px,stroke:green
+
+   classDef accept fill:#55FF33, color:black ,font-weight:bold,stroke-width:2px,stroke:green
+
+
+   Start --> int:digit
+   Start --> sign: +|-
+   Start --> var: letter|_|digit
+   Start --> opar: (
+   Start --> ispa: space
+   
+   sign --> int:digit
+   sign --> opar: (
+   
+   int --> int:digit
+   int --> e: e|E
+   int --> spa: space
+   int --> dot: dot
+   int --> mult: *
+   int --> div: /
+   int --> add: +
+   int --> sub: -
+   int --> eq: =
+   int --> cpar: )
+   
+   var --> var: letter|digit|_
+   var --> mult: *
+   var --> div: /
+   var --> add: +
+   var --> sub: -
+   var --> eq: =
+   var --> cpar: )
+   var --> spa: space
+   
+   dot --> float:digit
+   
+   float --> float:digit
+   float --> mult: *
+   float --> div: /
+   float --> add: +
+   float --> sub: -
+   float --> eq: =
+   float --> spa: space
+   float --> e: e|E
+   float --> cpar: )
+    
+    e --> cpar: (
+    e --> e_sign: +|-
+    e --> exp: digit
+    
+    e_sign --> exp: digit
+    
+    exp --> exp: digit
+    exp --> mult: *
+    exp --> div: /
+    exp --> add: +
+    exp --> sub: -
+    exp --> eq: =
+    exp --> spa: space
+    exp --> cpar: )
+    
+    spa --> spa: space
+    spa --> mult: *
+    spa --> div: /
+    spa --> add: +
+    spa --> sub: -
+    spa --> eq: =
+    spa --> cpar: )
+    spa --> opar: (
+
+    ospa --> ospa: space
+    ospa --> int: digit
+    ospa --> sign: +|-
+    ospa --> var: letter|
+    ospa --> opar: (
+
+    mult --> var: letter|digit|_
+    mult --> int: digit
+    mult --> sign: +|-
+    mult --> opar: (
+    mult --> ospa: space
+    
+    div --> var: letter|digit|_
+    div --> int: digit
+    div --> sign: +|-
+    div --> comment: /
+    div --> opar: (
+    div --> ospa: space
+    
+    comment --> comment: letter|digit|specialchar
+    
+    add --> var: letter|digit|_
+    add --> int: digit
+    add --> sign: +|-
+    add --> opar: (
+    add --> ospa: space
+
+    sub --> var: letter|digit|_
+    sub --> int: digit
+    sub --> sign: +|-
+    sub --> opar: (
+    sub --> ospa: space
+
+    
+    eq --> var: letter|digit|_
+    eq --> int: digit
+    eq --> sign: +|-
+    eq --> opar: (
+    eq --> ospa: space
+
+   pspa --> pspa: space
+   pspa --> int: digit
+   pspa --> sign: +|-
+   pspa --> var: letter|digit|_
+   pspa --> opar: (
+   
+    opar --> var: letter|digit|_
+    opar --> int: digit
+    opar --> sign: +|-
+    opar --> cpar: )
+    opar --> opar: (
+    opar --> pspa: space
+
+   ispa --> int:digit
+   ispa --> sign: +|-
+   ispa --> var: letter|_|digit
+   ispa --> opar: (
+    
+    cpar --> e: e|E
+    cpar --> mult: *
+    cpar --> div: /
+    cpar --> add: +
+    cpar --> sub: -
+    cpar --> eq: =
+    cpar --> spa: space
+    cpar --> cpar: )
+    
+
+    
+
+
+    
+    
+
+   class Start start
+   class int accept
+   class float accept
+   class var accept
+   class spa accept
+   class comment accept 
+   class cpar accept
+   
+   class opar deny
+   class ospa deny
+   class mult deny
+   class add deny
+   class div deny
+   class sub deny
+   class eq deny
+   class dot deny
+   class e deny
+   class e_sign deny
+   class exp deny
+   class sign deny
+   class pspa deny
+   class ispa deny
+
+
+
+
+

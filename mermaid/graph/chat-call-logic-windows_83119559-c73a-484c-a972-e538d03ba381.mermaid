@@ -1,0 +1,60 @@
+sequenceDiagram
+    participant User
+    participant Your_app as Your app
+    participant Agora
+
+    subgraph Your_app
+        participant Chat_SDK as Chat SDK
+    end
+
+    subgraph Agora
+        participant Agora_Chat as Agora Chat
+    end
+
+    %% User actions
+    User ->>+ Your_app: Join a chat
+    Your_app ->>+ Chat_SDK: Open app
+
+    %% Initialization subgraph
+    rect rgb(255, 255, 255)
+    note right of Chat_SDK: Initialize
+    Chat_SDK ->>+ Chat_SDK: Get a AgoraChat SDKClient instance<br/>SDKClient.Instance
+    Chat_SDK ->> Chat for SDKClient.Instance.InitializeWithOptions(options)
+    Chat_SDK ->> Chat_SDK: Add message event callbacks:<br/>SDKClient.Instance.ChatManager.AddChatManagerDelegate(...)
+    Chat_SDK ->> Chat_SDK: Add connection event callbacks:<br/>SDKClient.Instance.AddConnectionDelegate(...)
+    end
+
+    %% Login subgraph
+    rect rgb(255, 255, 255)
+    note right of Chat_SDK: Log in
+    Chat_SDK ->> Chat_SDK: Retrieve authentication token for the user
+    Chat_SDK ->> Agora_Chat: Log in to Agora Chat:<br/>SDKClient.Instance.LoginWithAgoraToken(...)<br/>onConnected() callback
+    end
+
+    %% Send messages subgraph
+    rect rgb(255, 255, 255)
+    note right of Chat_SDK: Send messages
+    Your_app ->> Chat_SDK: Create a ChatMessage
+    Chat_SDK ->> Agora_Chat: Send the ChatMessage:<br/>SDKClient.Instance.ChatManager.SendMessage(...)
+    end
+
+    %% Receive messages group
+    rect rgb(255, 255, 255)
+    note right of Chat_SDK: Receive messages
+    Agora_Chat -->> Chat_SDK: onMessageReceived(messages) callback
+    Chat_SDK -->> Your_app: Display message
+    end
+
+    %% Close group
+    rect rgb(255, 255, 255)
+    note right of Chat_SDK: Close
+    Your_app ->> Chat_SDK: Leave the chat
+    Chat_SDK ->> Chat_SDK: Log out:<br/>SDKClient.Instance.Logout(...)
+    end
+
+    %% Concluding the session
+    Chat_SDK -->> Your_app: onDisconnected() callback
+    Your_app -->> User: Leave the chat
+
+    User ->> Your_app: Send a message
+    User -->>- Your_app: Leave the chat

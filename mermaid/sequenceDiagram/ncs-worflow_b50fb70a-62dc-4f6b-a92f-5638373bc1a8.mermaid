@@ -1,0 +1,36 @@
+sequenceDiagram
+    participant User
+    participant WebServer as Web server
+    participant App
+    participant SD_RTUN as SD-RTN
+    Note over WebServer, App : Implemented by you
+    Note right of SD_RTUN : Provided by Agora
+
+    User->>+WebServer: Login
+    WebServer->>-User: 201 Created
+    WebServer->>+SD_RTUN : Login authentication
+    SD_RTUN-->>-WebServer: No notification
+
+    WebServer->>+App: Create channel
+    App-->>-WebServer: 200 OK
+
+    rect rgb(255, 255, 255)
+    Note over WebServer, App: Notifications sent and acknowledged for all channel events
+    WebServer->>+App: Notification 101: 'channel name' opened at 'time'
+    App->>+WebServer: Authenticate notification signature
+    App-->>-WebServer: 200 OK
+    end
+
+    WebServer->>+App: Close channel
+    App-->>-WebServer: 200 OK
+
+    rect rgb(255, 255, 255)
+    WebServer->>+App: Notification 102: 'channel name' destroyed at 'time'
+    App->>+WebServer: Authenticate notification signature
+    App-->>-WebServer: 200 OK
+    end
+
+    WebServer->>+SD_RTUN : Logout
+    SD_RTUN-->>-WebServer: No notification
+    User->>+WebServer: Logout
+    WebServer-->>-User: 200 OK

@@ -1,0 +1,26 @@
+erDiagram
+    ARRAY ||--o{ ELEMENT : contains
+    ALGORITHM ||--|{ COMPARISON : performs
+    ALGORITHM ||--|{ SWAP : executes
+    ELEMENT ||--|| POSITION : has
+    COMPARISON }|--|| ELEMENT : involves
+    SWAP }|--|| ELEMENT : affects
+    ALGORITHM {
+        string name
+        int time_complexity
+    }
+    ELEMENT {
+        int value
+        int index
+    }
+    COMPARISON {
+        int first_index
+        int second_index
+    }
+    SWAP {
+        int first_index
+        int second_index
+    }
+    POSITION {
+        int index
+    }

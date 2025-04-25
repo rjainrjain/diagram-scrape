@@ -1,0 +1,17 @@
+%%{
+  init: {
+    'theme': 'default',
+    'fontFamily': 'system-ui'
+  }
+}%%
+
+flowchart LR
+    id["This ❤ Unicode"]
+    head["头部节点
+    不保存任何信息"]
+    tail["尾部节点
+    thread1"]
+    node["中间节点
+    thread2"]
+
+    head <--> node <--> tail

@@ -1,0 +1,75 @@
+sequenceDiagram
+    actor User
+    participant Gateway as Gateway Service
+    participant Booking as Booking Service
+    participant Payment as Payment Service
+    participant FlightSearch as Flights Search Service
+    participant ExternalAPI as External API Integration Service
+    participant Amadeus as Amadeus API
+
+    User->>Gateway: Create flight order
+    Gateway->>Booking: Forward create order request
+    Booking->>FlightSearch: Get flight price
+    FlightSearch->>ExternalAPI: Request flight price
+    ExternalAPI->>Amadeus: Query for flight price
+    Amadeus-->>ExternalAPI: Return flight price
+    ExternalAPI-->>FlightSearch: Return processed price
+    FlightSearch-->>Booking: Return flight price
+    Booking->>Payment: Create payment order
+    Payment-->>Booking: Return payment order ID
+    Booking->>Booking: Create transaction
+    Booking-->>Gateway: Return payment order details
+    Gateway-->>User: Respond with payment order
+
+    User->>Gateway: Confirm flight order
+    Gateway->>Booking: Forward confirm order request
+    Booking->>Payment: Check payment authorization
+    alt Payment authorized
+        Payment-->>Booking: Return authorization status (success)
+        Booking->>ExternalAPI: Create flight order
+        ExternalAPI->>Amadeus: Create order in Amadeus
+        alt Amadeus successful
+            Amadeus-->>ExternalAPI: Return order details
+            ExternalAPI-->>Booking: Return flight order details
+            Booking->>Booking: Save flight booking
+            Booking->>Payment: Capture payment
+            Payment-->>Booking: Confirm payment captured
+            Booking-->>Gateway: Confirm order finalized
+            Gateway-->>User: Respond with booking confirmation
+        else Amadeus unavailable or order creation failed
+            Amadeus-->>ExternalAPI: Error or no response
+            ExternalAPI-->>Booking: Return error
+            Booking->>Payment: Void payment authorization
+            Payment-->>Booking: Confirm authorization voided
+            Booking->>Booking: Update transaction status
+            Booking-->>Gateway: Return order creation failure
+            Gateway-->>User: Respond with order creation failure
+        end
+    else Payment unauthorized
+        Payment-->>Booking: Return authorization status (failure)
+        Booking->>Booking: Update transaction status
+        Booking-->>Gateway: Return payment failure
+        Gateway-->>User: Respond with payment failure
+    end
+
+
+
+
+
+
+
+
+1. The initial flow for creating a flight order, including getting the flight price from Amadeus through the flight search and external API integration services.
+2. Creating a payment order based on the retrieved price.
+3. When the user confirms the flight order, the booking-service checks the payment authorization with the payment-service.
+4. If the payment is authorized (success path):
+   - The booking-service attempts to create the flight order through the external-api-integration service.
+   - If Amadeus successfully creates the order:
+     - The process continues, saving the booking and capturing the payment.
+   - If Amadeus is unavailable or fails to create the order:
+     - The booking-service voids the payment authorization.
+     - The transaction status is updated to reflect the failure.
+     - The user is informed about the order creation failure.
+5. If the payment is unauthorized (failure path):
+   - The transaction status is updated to reflect the failed payment.
+   - The user is informed about the payment failure.

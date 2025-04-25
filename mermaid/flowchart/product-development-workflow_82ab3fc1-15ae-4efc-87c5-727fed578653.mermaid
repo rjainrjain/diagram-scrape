@@ -1,0 +1,15 @@
+flowchart TD
+    A[Idea Generation] --> B{Feasibility Study}
+    B -->|Feasible| C[Market Research]
+    B -->|Not Feasible| J[Reject Idea]
+    C --> D[Product Design]
+    D --> E[Prototype Development]
+    E --> F{Prototype Testing}
+    F -->|Successful| G[Manufacturing Planning]
+    F -->|Needs Improvement| D
+    G --> H[Production]
+    H --> I[Launch and Marketing]
+    I --> K[Post-Launch Evaluation]
+    K --> L{Success Evaluation}
+    L -->|Successful| M[Scale Up]
+    L -->|Unsuccessful| N[Product Redesign/Discontinuation]

@@ -1,0 +1,77 @@
+classDiagram
+    class Card {
+        -value: String
+        -suit: String
+        +model.Card(value: String, suit: String)
+        +getValue(): String
+        +getSuit(): String
+        +convertVal(): int
+        +getImg(): Image
+    }
+
+    class Person {
+        -name: String
+        -balance: int
+        -cards: ArrayList<model.Card>
+        +model.Person(name: String, balance: int)
+        +getName(): String
+        +getBalance(): int
+        +getCards(): ArrayList<model.Card>
+        +setBalance(balance: int): void
+        +giveCard(card: model.Card): void
+        +allCardVal(): int
+        +isBust(): boolean
+    }
+
+    class Player {
+        -playerID: int (static)
+        +model.Player(name: String, balance: int)
+        +incrementID(): void (static)
+    }
+
+    class Dealer {
+        +model.Dealer()
+        +dealCards(player: model.Player, deck: model.Deck): void
+        +underSeventeen(deck: model.Deck): void
+        +hitCard(player: model.Player, deck: model.Deck): void
+    }
+
+    class Deck {
+        -cards: ArrayList<model.Card>
+        +model.Deck()
+        +getCards(): ArrayList<model.Card>
+        +shuffle(): void
+        +getCardAt(index: int): model.Card
+    }
+
+    class GameGui {
+        -gameOver: boolean
+        -playerWon: boolean
+        -enteredBal: int
+        +isPlayerWon(): boolean
+        +getEnteredBal(): int
+        +setEnteredBal(enteredBal: int): void
+        +playerWon(): boolean
+        +setPlayerWon(playerWon: boolean): void
+        +isGameOver(): boolean
+        +setGameOver(gameOver: boolean): void
+        +renderFrameGame(player: model.Player, dealer: model.Dealer, deck: model.Deck): void
+    }
+
+    class BackgroundPanel {
+        -background: Image
+        -cards: model.Card[]
+        -dealerCards: model.Card[]
+        +view.BackgroundPanel(background: Image, player: model.Player, dealer: model.Dealer, deck: model.Deck)
+    }
+
+    Card --* Person
+    Person --|> Player
+    Person --|> Dealer
+    Player --|> Person
+    Dealer --|> Person
+    Person *-- Deck
+    GameGui --* Player
+    GameGui --* Dealer
+    GameGui --* Deck
+    BackgroundPanel --* Card

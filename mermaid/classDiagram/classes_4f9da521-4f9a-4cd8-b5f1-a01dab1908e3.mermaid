@@ -1,0 +1,584 @@
+%% https://creately.com/guides/class-diagram-relationships/ good reference for the types of arrows
+classDiagram
+
+    %% Example on how each class should be defined
+
+    %% CLASSROOM
+    %% Connections to other classes
+    Classroom "1" *-- "*" Post
+    Classroom "1" *-- "*" Assignment
+    class Classroom{
+        %% Attributes
+        -uuid id
+        -String name
+        -String joinCode
+        -User createdBy
+        -DateTime createdAt
+        -List~Assignment~ assignments
+        -List~Post~ posts
+        -List~User~ members
+        -List~File~ files
+
+        %% Constructor
+        +~~Create~~ Classroom(\n name: String,\n createdBy: User)
+        %% Attribute getters
+        +getId() uuid
+        +getName() String
+        +getCreatedBy() User
+        +getCreatedAt() DateTime
+        +getAssignments() List~Assignment~
+        +getPosts() List~Post~
+        +getMembers() List~User~
+
+        %% Custom getters
+        +getPaginatedPosts(int page, int pageSize) List~Post~
+        +getPaginatedAssignments(int page, int pageSize) List~Assignment~
+        +getPaginatedMembers(int page, int pageSize) List~User~
+
+        %% Attribute setters
+        +setName(string name) void
+
+        %% Custom functions
+        +addAssignment(Assignment assignment) void
+        +addPost(Post post) void
+        +addMember(User member) void
+
+        +removeAssignment(uuid assignmentId) void
+        +removePost(uuid PostId) void
+        +removeMember(uuid memberId) void
+    }
+
+    %% POST
+    Post "1" o-- "*" File
+    class Post{
+        -uuid Id
+        -String title
+        -String contents
+        -User createdBy
+        -DateTime createdAt
+        -Classroom classroom
+        -List~File~ attachments
+
+        +~~Create~~ Classroom(\n title: String,\n contents: String, \n createdBy: String, \n createdBy: User, \n attachments: List~File~)
+        +getId() uuid
+        +getTitle() String
+        +getContents() String
+        +getCreatedBy() User
+        +getClassroom() Classroom
+        +getAttachments() List~File~
+
+        +getPaginatedAttachments(int page, int pageSize) List~File~
+
+        +setTitle(string title) void
+        +setContents(string contents) void
+        +setAttachments(List~File~ attachments) void
+
+        +addAttachments(File attachments) void
+        +removeAttachment(uuid attachmentId) void
+
+    }
+
+    %% ASSIGNMENT
+    Assignment "1" o-- "*" File
+    class Assignment {
+        -uuid id
+        -String name
+        -String contents
+        -User createdBy
+        -dateTime createdAt
+        -List~File~ files
+
+        +~~Create~~ Assignment(\n name: String, \n contents: String, \n createdBy: User, \n files: List~File~)
+        +getId() uuid
+        +getContents() String
+        +getCreatedBy() User
+        +getCreatedAt() dateTime
+        +getFiles() List~File~
+        +getCreatedByUsername() String
+        +getClassroomName() String
+
+        +getPaginatedFiles(int page, int pageSize) List~File~
+
+        +setName(string name) void
+        +setContents(string contents) void
+        +setFiles(List~File~ files) void
+
+        +addFile(File file) void
+
+        +removeFile(uuid fileId) void
+
+    }
+
+    %% USER
+    User "0..*" -- "0..*" User
+    User "1" --> "*" File
+    User "1" --> "*" Post
+    User "1" --> "*" Classroom
+    User "1" --> "*" Assignment
+    User "1" --> "1" ChatMember
+    User "1" --> "*" Chat
+    User "1" --> "*" ChatMessage
+    User "1" --> "*" Quiz
+    User -- Submission
+    class User {
+        -uuid subjectId
+        -File profilePicture
+        -enum role
+
+        +getSubjectId() uuid
+        +getProfilePicture() File
+        +getRole() enum
+
+        +setRole(enum role) void
+        +setProfilePicture(File profilePicture) void
+    }
+
+    %% This class is responsible for the submissions of the assignments,
+    %% and all the different types of answers, by a specific user
+    Submission <|-- QuizSubmission
+    Submission <|-- AssignmentSubmission
+    class Submission {
+        <<abstract>>
+        -uuid id
+        -User submittedBy
+        -DateTime submittedAt
+
+        +~~Create~~ Submission(\n submittedBy: User, \n submittedAt: DateTime)
+        +getId() uuid
+        +getSubmittedBy() User
+        +getSubmittedAt() DateTime
+    }
+
+    AssignmentSubmission "1" *-- "1" SubmittedAssignment
+    class AssignmentSubmission {
+        -SubmittedAssignment submittedAssignment
+
+        +~~Create~~ AssignmentSubmission(\n assignment: Assignment, \n isMarkedAsDone: Boolean)
+        +getSubmittedAssignment() SubmittedAssignment
+
+        +setSubmittedAssignment(submittedAssignment: SubmittedAssignment) void
+    }
+
+    class SubmittedAssignment {
+        -Assignment assignment
+        -List~File~ files
+        -Boolean isMarkedAsDone
+
+        +~~Create~~ SubmittedAssignment(\n assignment: Assignment, \n isMarkedAsDone: Boolean)
+        +getAssignment() Assignment
+        +getFiles() List~File~
+        +isMarkedAsDone() Boolean
+
+        +getPaginatedFiles(int page, int pageSize) List~File~
+
+        +setMarkedAsDone(Boolean isMarkedAsDone) void
+        +setFiles(List~File~ files) void
+    }
+
+    QuizSubmission "1" *-- "*" QuestionPairAnswer
+    QuizSubmission "1" *-- "*" QuestionFileAnswer
+    QuizSubmission "1" *-- "*" QuestionOrderAnswer
+    QuizSubmission "1" *-- "*" QuestionCheckboxAnswer
+    QuizSubmission "1" *-- "*" QuestionRadioAnswer
+    QuizSubmission "1" *-- "*" QuestionTextAnswer
+    class QuizSubmission {
+        -Quiz quiz
+        -List~QuestionAnswer~T~~ userSubmittedAnswers
+
+        +~~Create~~ QuizSubmission(\n quiz: Quiz)
+        +getQuiz() Quiz
+        +getUserSubmittedAnswers() List~QuestionAnswer~T~~
+
+        +getPaginatedUserSubmittedAnswers(int page, int pageSize) List~QuestionAnswer~T~~
+
+        +addToUserSubmittedAnswers(Question question) void
+
+        +createQuestionPairAnswer(QuestionPair answerTo, List~QuestionPairOption~ userSubmittedQuestionPairs) QuestionPairAnswer
+        +createQuestionFileAnswer(QuestionFile answerTo, File userSubmittedFile) QuestionFileAnswer
+        +createQuestionOrderAnswer(QuestionOrder answerTo, List~QuestionOrderOption~ userSubmittedOrder) QuestionOrderAnswer
+        +createQuestionCheckboxAnswer(QuestionCheckbox answerTo, List~QuestionCheckboxOption~ userSubmittedAnswers) QuestionCheckboxAnswer
+        +createQuestionRadioAnswer(QuestionRadio answerTo, List~QuestionRadioOption~ userSubmittedAnswer) QuestionRadioAnswer
+        +createQuestionTextAnswer(QuestionText answerTo, String userSubmittedAnswer) QuestionTextAnswer
+
+    }
+
+    QuestionAnswer <|-- QuestionFileAnswer
+    QuestionAnswer <|-- QuestionOrderAnswer
+    QuestionAnswer <|-- QuestionCheckboxAnswer
+    QuestionAnswer <|-- QuestionRadioAnswer
+    QuestionAnswer <|-- QuestionTextAnswer
+    QuestionAnswer <|-- QuestionPairAnswer
+    class QuestionAnswer {
+        <<abstract>>
+        -~T~ answerTo
+
+        +~~Create~~ QuestionAnswer(\n answerTo: T)
+        +getAnswerTo() T
+    }
+
+    class QuestionPairAnswer {
+        -QuestionPair answerTo
+        -List~QuestionPairOption~ userSubmittedQuestionPairs
+        
+        +~~Create~~ QuestionPairAnswer(\n answerTo: QuestionPair, \n userSubmittedQuestionPairs: List~QuestionPairOption~)
+        +getUserSubwmittedQuestionPairs() List~QuestionPairOption~
+    }
+
+    class QuestionFileAnswer {
+        -QuestionFile answerTo
+        -File userSubmittedFile
+
+        +~~Create~~ QuestionFileAnswer(\n answerTo: QuestionFile, \n userSubmittedFile: File)
+        +getUserSubmittedFile() File
+    }
+
+    class QuestionOrderAnswer {
+        -QuestionOrder answerTo
+        -List~QuestionOrderOption~ userSubmittedOrder
+
+        +~~Create~~ QuestionOrderAnswer(\n answerTo: QuestionOrder, \n userSubmittedOrder: List~QuestionOrderOption~)
+        +getUserSubmittedOrder() List~QuestionOrderOption~
+    }
+
+    class QuestionCheckboxAnswer {
+        -QuestionCheckbox answerTo
+        -List~QuestionCheckboxOption~ userSubmittedAnswers
+
+        +~~Create~~ QuestionCheckboxAnswer(\n answerTo: QuestionCheckbox, \n userSubmittedAnswers: List~QuestionCheckboxOption~)
+        +getUserSubmittedAnswers() List~QuestionCheckboxOption~
+    }
+
+    class QuestionRadioAnswer {
+        -QuestionRadio answerTo
+        -List~QuestionRadioOption~ userSubmittedAnswer
+
+        +~~Create~~ QuestionRadioAnswer(\n answerTo: QuestionRadio, \n userSubmittedAnswer: List~QuestionRadioOption~)
+        +getUserSubmittedAnswer() List~QuestionRadioOption~
+    }
+
+    class QuestionTextAnswer {
+        -QuestionText answerTo
+        -String userSubmittedAnswer
+
+        +~~Create~~ QuestionTextAnswer(\n answerTo: QuestionText, \n userSubmittedAnswer: String)
+        +getUserSubmittedAnswer() String
+    }
+
+    %% FILE
+    class File {
+        -uuid id
+        -String name
+        -String mimeType
+        -DateTime createdAt
+        -Classroom classroom
+        -User owner
+        -List~User~ sharedWith
+        -string key
+        -bool systemFile
+
+        +~~Create~~ File(\n name: String, \n mimeType: String, \n Classroom: classroom, \n owner: User, \n sharedWith: List~User~, \n key: string, \n systemFile: bool)
+        +getId() uuid
+        +getName() String
+        +getMimeType() String
+        +getCreatedAt() DateTime
+        +getClassroom() Classroom
+        +getOwner() User
+        +getSharedWith() List~User~
+        +getKey() string
+        +isSystemFile() bool
+
+        +getPaginatedSharedWith(int page, int pageSize) List~User~
+
+        +setName(string name) void
+        +setSharedWith(List~User~ sharedWith) void
+
+        +addToSharedWith(List~User~) void
+        +addToSharedWith(User) void
+
+        +removeFromSharedWith(List~User~) void
+        +removeFromSharedWith(User) void
+    }
+
+    %% CHAT
+    Chat "1" *-- "*" ChatMember
+    Chat "1" *-- "*" ChatMessage
+    class Chat {
+        -uuid id
+        -String name
+        -DateTime createdAt
+        -User createdBy
+        -List~ChatMember~ members
+        -List~ChatMessage~ messages
+
+        +~~Create~~ Chat(\n name: String, \n createdBy: User, \n members: List~ChatMember~, \n messages: List~ChatMessage~)
+        +getId() uuid
+        +getName() String
+        +getCreatedAt() DateTime
+        +getCreatedBy() User
+        +getMembers() List~ChatMember~
+        +getMessages() List~ChatMessage~
+
+        +getPaginatedMembers(int page, int pageSize) List~ChatMember~
+        +getPaginatedMessages(int page, int pageSize) List~ChatMessage~
+
+        +setName(string name) void
+        +setMembers(List~ChatMember~ members) void
+        +setMessages(List~ChatMessage~ messages) void
+
+        +addMember(ChatMember member) void
+        +addMessage(ChatMessage message) void
+
+        +removeMember(uuid chatMemberId) void
+        +removeMessage(uuid chatMessageId) void
+    }
+
+    %% CHAT MEMBER
+    class ChatMember {
+        -uuid id
+        -User user
+
+        +~~Create~~ ChatMember(\n user: User)
+        +getId() uuid
+        +getUser() User
+
+        +setUser(User user) void
+    }
+
+    %% CHAT MESSAGE
+    ChatMessage "1" *-- "*" ChatMessageAttachment
+    class ChatMessage {
+        -uuid id
+        -DateTime createdAt
+        -User createdBy
+        -String contents
+        -DateTime sentAt
+        -List~ChatMessageAttachment~ attachments
+
+        +~~Create~~ ChatMessage(\n createdBy: User, \n contents: String, \n attachments: List~ChatMessageAttachment~)
+        +getId() uuid
+        +getCreatedAt() DateTime
+        +getCreatedBy() User
+        +getContents() String
+        +getSentAt() DateTime
+        +getAttachments() List~ChatMessageAttachment~
+
+        +getPaginatedAttachments(int page, int pageSize) List~ChatMessageAttachment~
+
+        +setContents(string contents) void
+        +setAttachments(List~ChatMessageAttachment~ attachments) void
+
+        +addAttachment(ChatMessageAttachment attachment) void
+
+        +removeAttachment(uuid attachmentId) void
+    }
+
+    %% CHAT MESSAGE ATTACHMENT
+    ChatMessageAttachment "1" o-- "*" File
+    class ChatMessageAttachment {
+        -uuid id
+        -File file
+
+        +~~Create~~ ChatMessageAttachment(\n file: File)
+        +getId() uuid
+        +getFile() File
+    }
+
+    %% QUIZ
+    Quiz "1" *-- "*" Question
+    class Quiz {
+        -uuid id
+        -String name
+        -User createdBy
+        -DateTime createdAt
+        -List~Question~ questions
+
+        +~~Create~~ Quiz(\n name: String, \n createdBy: User)
+        +getId() uuid
+        +getName() String
+        +getCreatedBy() User
+        +getCreatedAt() DateTime
+        +getQuestions() List~Question~
+
+        +getPaginatedQuestions(int page, int pageSize) List~Question~
+
+        +setName(string name) void
+
+        +addQuestion(Question question) void
+        +removeQuestion(uuid questionId) void
+
+        +createQuestionPair(String title, List~QuestionPairOption~ questionPairs) QuestionPair
+        +createQuestionFile(String contents, File file) QuestionFile
+        +createQuestionOrder(List~QuestionOrderOption~ options) QuestionOrder
+        +createQuestionOrderOption(String title, int place) QuestionOrderOption
+        +createQuestionCheckbox(List~QuestionCheckboxOption~ options) QuestionCheckbox
+        +createQuestionCheckboxOption(String name, bool answer) QuestionCheckboxOption
+        +createQuestionRadio(List~QuestionRadioOption~ options) QuestionRadio
+        +createQuestionRadioOption(String title, bool answer) QuestionRadioOption
+        +createQuestionText(String title, String answer) QuestionText
+    }
+
+    %% QUESTION
+    Question <|-- QuestionAnswer
+
+    Question <|-- QuestionPair
+    Question <|-- QuestionFile
+    Question <|-- QuestionOrder
+    Question <|-- QuestionCheckbox
+    Question <|-- QuestionRadio
+    Question <|-- QuestionText
+    class Question {
+        <<abstract>>
+        -uuid id
+        -String title
+
+        +~~Create~~ Question(\n title: String)
+        +getId() uuid
+        +getTitle() String
+
+        +setTitle(string title) void
+    }
+
+    QuestionPair "1" *-- "*" QuestionPairOption
+    class QuestionPair {
+        -String contents
+        -List~QuestionPairOption~ questionPairs
+
+        +~~Create~~ QuestionPair(\n contents: String, \n questionPairs: List~QuestionPairOption~)
+        +getContents() String
+        +getQuestionPairs() List~QuestionPairOption~
+
+        +setContents(string contents) void
+        +setQuestionPairs(List~QuestionPairOption~ questionPairs) void
+
+        +addQuestionPair(QuestionPairOption questionPair) void
+        +removeQuestionPair(uuid questionPairId) void
+
+        +createQuestionPairOption(String left, String right) QuestionPairOption
+    }
+
+    class QuestionPairOption {
+        -uuid id
+        -String left
+        -String right
+
+        +~~Create~~ QuestionPairOption(\n key: String, \n value: String)
+        +getId() uuid
+        +getLeft() String
+        +getRight() String
+
+        +setLeft(string left) void
+        +setRight(string right) void
+    }
+
+    class QuestionFile {
+        -String contents
+        -File file
+
+        +~~Create~~ QuestionFile(\n contents: String, \n file: File)
+        +getContents() String
+        +getFile() File
+
+        +setContents(string contents) void
+        +setFile(File file) void
+    }
+
+    QuestionOrder "1" *-- "*" QuestionOrderOption
+    class QuestionOrder {
+        %% This will be sorted by the QUESTION-ORDER-OPTIONS table's column
+        -List~QuestionOrderOptions~ options
+
+        +~~Create~~ QuestionOrder(\n options: List~QuestionOrderOption~)
+        +getOptions() List~QuestionOrderOption~
+
+        +setOptions(List~QuestionOrderOption~ options) void
+
+        +addOption(QuestionOrderOption option) void
+        +removeOption(uuid optionId) void
+
+        +createOption(String title, int place) QuestionOrderOption
+    }
+
+    class QuestionOrderOption {
+        -uuid id
+        -String title
+        -int place
+
+        +~~Create~~ QuestionOrderOption(\n title: String, \n place: int)
+        +getId() uuid
+        +getTitle() String
+        +getPlace() int
+
+        +setTitle(string title) void
+        +setPlace(int place) void
+    }
+
+    QuestionCheckbox "1" *-- "*" QuestionCheckboxOption
+    class QuestionCheckbox {
+        -List~QuestionCheckboxOption~ options
+
+        +~~Create~~ QuestionCheckbox(\n options: List~QuestionCheckboxOption~)
+        +getOptions() List~QuestionCheckboxOption~
+
+        +setOptions(List~QuestionCheckboxOption~ options) void
+        
+        +addOption(QuestionCheckboxOption option) void
+        +removeOption(uuid optionId) void
+
+        +createOption(String name, bool answer) QuestionCheckboxOption
+    }
+
+    class QuestionCheckboxOption {
+        -uuid id
+        -String name
+        -bool answer
+
+        +~~Create~~ QuestionCheckboxOption(\n name: String, \n answer: bool)
+        +getId() uuid
+        +getName() String
+
+        +setName(string name) void
+        +setAnswer(bool answer) void
+    }
+
+    QuestionRadio "1" *-- "*" QuestionRadioOption
+    class QuestionRadio {
+        -List~QuestionRadioOption~ options
+
+        +~~Create~~ QuestionRadio(\n options: List~QuestionRadioOption~)
+        +getOptions() List~QuestionRadioOption~
+
+        +setOptions(List~QuestionRadioOption~ options) void
+
+        +addOption(QuestionRadioOption option) void
+        +removeOption(uuid optionId) void
+
+        +createOption(String title, bool answer) QuestionRadioOption
+    }
+
+    class QuestionRadioOption {
+        -uuid id
+        -String title
+        -bool answer
+
+        +~~Create~~ QuestionRadioOption(\n title: String, \n answer: bool)
+        +getId() uuid
+        +getTitle() String
+        +getAnswer() bool
+
+        +setTitle(string title) void
+        +setAnswer(bool answer) void
+    }
+
+    class QuestionText {
+        -uuid id
+        -String title
+        -String answer
+
+        +~~Create~~ QuestionText(\n title: String, \n answer: String)
+        +getId() uuid
+        +getTitle() String
+        +getAnswer() String
+
+        +setTitle(string title) void
+        +setAnswer(string answer) void
+    }

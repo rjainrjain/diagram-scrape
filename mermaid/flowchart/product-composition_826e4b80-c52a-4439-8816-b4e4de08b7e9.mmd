@@ -1,0 +1,30 @@
+%%{init: {'theme': 'base', 'themeVariables': {
+  'lineColor': '#a8201a',
+  'primaryColor': '#fae5c7',
+  'primaryBorderColor': '#0f8b8d'
+}}}%%
+flowchart LR
+  streaming(Streaming product)
+  storage(Storage product)
+  network(Network product)
+  telemetry(Telemetry product)
+
+  streaming --> storage
+  streaming --> network
+  streaming --> telemetry
+  telemetry --> storage
+  telemetry --> network
+  storage --> network
+  storage --> telemetry
+
+  classDef domain fill:#fffff7
+  class streaming domain
+
+  classDef offer fill:#d6e8d5
+  class storage offer
+
+  classDef provider fill:#ffe6cc
+  class network provider
+
+  classDef actor fill:#dae8fc
+  class telemetry actor

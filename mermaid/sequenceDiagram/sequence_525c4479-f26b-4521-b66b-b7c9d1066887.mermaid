@@ -1,0 +1,21 @@
+sequenceDiagram
+  participant User
+  participant Krakend as Krakend (API Gateway)
+  participant Keycloak
+  participant Shortener
+  participant MongoDB
+
+  User->>Krakend: Send JWT
+  Krakend->>Keycloak: Validate JWT
+  alt JWT is valid
+    Keycloak-->>Krakend: JWT validation success
+    Krakend->>Shortener: Make request
+    Shortener->>MongoDB: Use MongoDB
+    MongoDB-->>Shortener: Return response
+    Shortener-->>Krakend: Return response
+    Krakend-->>User: Return response
+  else JWT is not valid
+    Keycloak-->>Krakend: JWT validation failure
+    Krakend->>User: Return 401
+  end
+  Note over User, MongoDB: End of interactions

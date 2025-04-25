@@ -1,0 +1,22 @@
+classDiagram
+    Iphone <|-- ReprodutorMusical
+    Iphone <|-- AparelhoTelefonico
+    Iphone <|-- NavegadorInternet
+
+    class ReprodutorMusical{
+      #selecionarMusica(String musica)
+      #tocar()
+      #pausar()
+    }
+
+    class AparelhoTelefonico{
+      #ligar(String numero)
+      #atender()
+      #iniciarCorreioVoz()
+    }
+
+    class NavegadorInternet{
+      #exibirPagina(String url)
+      #adicionarNovaAba()
+      #atualizarPagina()
+    }

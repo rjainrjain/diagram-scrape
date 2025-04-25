@@ -1,0 +1,72 @@
+erDiagram
+
+    %% Entities
+    BaseModel {
+        int id PK
+        string modelName
+        string modelType
+    }
+
+    Fabric {
+        int id PK
+        string fabricName
+        string fabricDescription
+        string GSM
+        string color
+        string fabricType
+        string material
+        string sampleImages
+        json labels
+    }
+
+    Dataset {
+        int id PK
+        string datasetName
+        json tasks
+        int fabric_id FK
+    }
+
+    YoloModel {
+        int id PK
+        string modelName
+        int epochs
+        int imgsz
+        int fabric_id FK
+        int dataset_id FK
+        int baseModel_id FK
+    }
+
+    Annotator {
+        int id PK
+        string annotatorId
+        string annotatorName
+        string annotatorEmail
+    }
+
+    Imagegallery {
+        int id PK
+        string imageType
+        string image
+        string imageLabel
+        int fabric_id FK
+        int dataset_id FK
+    }
+
+    PredictionData {
+        int id PK
+        datetime time
+        string centroid
+        string boundingBox
+        string imageRaw
+        string imageAnnotated
+        float confidence
+        int fabric_id FK
+    }
+
+    %% Relationships
+    Fabric ||--o{ Dataset: "has datasets"
+    Fabric ||--o{ Imagegallery: "has image galleries"
+    Fabric ||--o{ PredictionData: "has predictions"
+    Dataset ||--o{ YoloModel: "trains yolo models"
+    YoloModel ||--|| BaseModel: "uses base model"
+    Dataset ||--o{ Imagegallery: "has images"

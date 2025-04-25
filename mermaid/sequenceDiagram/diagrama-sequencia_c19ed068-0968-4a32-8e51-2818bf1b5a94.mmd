@@ -1,0 +1,16 @@
+
+sequenceDiagram
+    participant Client
+    participant Backend
+    participant Database
+
+    Client->>Backend: POST /authenticate
+    Backend->>Database: Validate user credentials
+    Database-->>Backend: Valid user
+    Backend-->>Client: JWT Token
+
+    Client->>Backend: GET /products
+    Backend->>Backend: Validate JWT
+    Backend->>Database: Fetch products
+    Database-->>Backend: List of products
+    Backend-->>Client: List of products

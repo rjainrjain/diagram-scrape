@@ -1,0 +1,24 @@
+erDiagram
+    faculty_name {
+        int id PK "Primary Key"
+        varchar name "Faculty Name"
+    }
+    subject_type {
+        int id PK "Primary Key"
+        varchar name "Subject Type Name"
+    }
+    students {
+        int id PK "Primary Key"
+        varchar name "Student Name"
+        int faculty_id FK "References faculty_name"
+    }
+    mark {
+        int id PK "Primary Key"
+        int student_id FK "References students"
+        int subject_id FK "References subject_type"
+        int mark "Mark Score"
+    }
+
+    faculty_name ||--o{ students : "has"
+    subject_type ||--o{ mark : "evaluates"
+    students ||--o{ mark : "receives"

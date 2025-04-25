@@ -1,0 +1,19 @@
+```mermaid
+sequenceDiagram
+    participant User
+    participant Web_Server as Web server
+    participant App
+    participant SD_RTN as SD-RTN
+    participant ActiveFence
+
+    User->>Web_Server: Login
+    Web_Server->>SD_RTN: Login authentication
+    User->>Web_Server: Join channel
+    Web_Server->>SD_RTN: Join channel with ActiveFence activated
+    SD_RTN->>ActiveFence: Monitor content in channel
+    ActiveFence->>Web_Server: Action webhook
+    ActiveFence->>SD_RTN: Content matches workflow risk
+    Web_Server->>SD_RTN: Act on webhook.
+    User->>Web_Server: Logout
+    Web_Server->>SD_RTN: Log user out
+```

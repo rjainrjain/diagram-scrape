@@ -1,0 +1,123 @@
+classDiagram
+    class 用户 {
+        -用户名: String
+        -密码: String
+        +登录() : boolean
+    }
+
+    class 管理员 {
+        +查看教师信息() : List[教师]
+        +删除教师信息(教师ID: int) : boolean
+    }
+
+    class 教师 {
+        -教师ID: int
+        -姓名: String
+        -科目: String
+        -邮箱: String
+        -电话: String
+        -地址: String
+        -登录密码: String
+        -空闲时间列表: List[空闲时间]
+        +添加空闲时间(空闲时间: AvailabilitySlot) : boolean
+        +修改状态(状态: String) : boolean
+        +查看空闲时间() : List[空闲时间]
+    }
+
+    class 学生 {
+        -学生ID: int
+        -姓名: String
+        -邮箱: String
+        +查看教师空闲时间() : List[空闲时间]
+        +预约教师(空闲时间: AvailabilitySlot) : boolean
+    }
+
+    class 预约 {
+        -预约ID: int
+        -学生: 学生
+        -教师: 教师
+        -时间: DateTime
+        -状态: String
+        +批准() : boolean
+        +拒绝() : boolean
+        +取消() : boolean
+    }
+
+    class 空闲时间 {
+        -时间段ID: int
+        -教师: 教师
+        -开始时间: DateTime
+        -结束时间: DateTime
+        -状态: String
+        +预约(学生: 学生) : boolean
+        +释放() : boolean
+    }
+
+    class 评论 {
+        -评论ID: int
+        -学生: 学生
+        -教师: 教师
+        -内容: String
+        -评分: int
+    }
+
+    class 登录界面类 {
+        +登录(用户: 用户) : boolean
+    }
+
+    class 查看教师信息界面类 {
+        +显示教师信息(教师: 教师) : void
+    }
+    
+    %% 控制类
+    class 添加教师控制类 {
+        +添加教师信息(教师: 教师) : boolean
+    }
+    
+    class 删除教师控制类 {
+        +删除教师信息(教师ID: int) : boolean
+    }
+    
+    class 增加空闲时间控制类 {
+        +增加教师空闲时间(教师: 教师, 空闲时间: AvailabilitySlot) : boolean
+    }
+    
+    class 修改状态控制类 {
+        +修改空闲时间状态(空闲时间: AvailabilitySlot, 状态: String) : boolean
+    }
+    
+    class 修改预约状态控制类 {
+        +修改预约状态(预约: 预约, 状态: String) : boolean
+    }
+    
+    class 查找空闲时间控制类 {
+        +查找教师空闲时间(教师: 教师) : List[空闲时间]
+    }
+    
+    class 预约控制类 {
+        +处理学生预约(学生: 学生, 空闲时间: AvailabilitySlot) : boolean
+    }
+
+    %% 关系
+    用户 <|-- 管理员
+    用户 <|-- 教师
+    用户 <|-- 学生
+
+    教师 "1" -- "0..*" 空闲时间 : 有空闲时间
+    学生 "1" -- "0..*" 预约 : 有预约
+    教师 "1" -- "*" 预约 : 有预约
+    预约 "0..*" -- "0..*" 评论 : 包含评论
+
+    %% 界面类与控制类的关联
+    登录界面类 -- 添加教师控制类 : 使用
+    登录界面类 -- 删除教师控制类 : 使用
+    查看教师信息界面类 -- 查找空闲时间控制类 : 使用
+
+    %% 控制类与实体类的关联
+    添加教师控制类 -- 教师 : 操作教师信息
+    删除教师控制类 -- 教师 : 操作教师信息
+    增加空闲时间控制类 -- 教师 : 操作教师空闲时间
+    修改状态控制类 -- 空闲时间 : 操作空闲时间状态
+    修改预约状态控制类 -- 预约 : 操作预约状态
+    查找空闲时间控制类 -- 教师 : 查找教师空闲时间
+    预约控制类 -- 学生 : 处理学生预约

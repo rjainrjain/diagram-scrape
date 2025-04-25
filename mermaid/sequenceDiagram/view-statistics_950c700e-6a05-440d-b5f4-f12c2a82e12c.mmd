@@ -1,0 +1,9 @@
+sequenceDiagram
+    participant User
+    participant App
+    participant Server
+    User->>App: Solicita ver estadísticas del hábito
+    App->>Server: Solicita datos de estadísticas del hábito
+    Server->>App: Retorna datos de estadísticas del hábito
+    App->>User: Muestra estadísticas en la interfaz de usuario
+

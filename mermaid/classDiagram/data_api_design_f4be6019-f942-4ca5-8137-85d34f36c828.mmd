@@ -1,0 +1,25 @@
+classDiagram
+    class User{
+        +str name
+        +str email
+        +str immigration_status
+        +str immigration_goal
+        +__init__(name: str, email: str, immigration_status: str, immigration_goal: str)
+        +get_immigration_plan()
+    }
+    class AIAgent{
+        +str model
+        +str data
+        +__init__(model: str, data: str)
+        +answer_question(question: str)
+        +create_plan(user: User)
+    }
+    class ChatInterface{
+        +str user
+        +str ai_agent
+        +__init__(user: User, ai_agent: AIAgent)
+        +send_message(message: str)
+        +receive_message()
+    }
+    User "1" -- "1" AIAgent: interacts with
+    AIAgent "1" -- "1" ChatInterface: interacts with

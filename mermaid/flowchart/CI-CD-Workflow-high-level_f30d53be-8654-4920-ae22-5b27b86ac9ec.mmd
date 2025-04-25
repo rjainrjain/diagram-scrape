@@ -1,0 +1,8 @@
+flowchart TD
+  A(start) --> |git push <br>git request-pull|B["Continuous Integration (CI)"]
+  B --> C{build<br>type?}
+  C --> |development|D[github release]
+  C --> |production|E[npm publish]
+  F["Continuous Deployment(CD)"]
+  D --> F
+  E --> F

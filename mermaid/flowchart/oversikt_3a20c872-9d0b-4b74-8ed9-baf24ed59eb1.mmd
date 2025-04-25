@@ -1,0 +1,27 @@
+%%{init: {'theme':'neutral'}}%%
+flowchart LR
+    subgraph I["`_Internet_`"]
+        IX1["`_Knutpunkt_`"]
+        IX2["`_Knutpunkt_`"]
+    end
+    subgraph OP ["`Operatör`"]
+        subgraph CS ["`Core-nät`"]
+            C1["`_Core_`"]
+            C2["`_Core_`"]
+        end
+        O["`_Överlämningsenhet_`"]
+    end
+    subgraph SK ["`Enheter hos slutkund`"]
+        direction TB
+        D1["`_Enhet med access_`"]
+        D2["`_Enhet med access_`"]
+        D16["`_(... x16)_`"]
+    end 
+
+    IX1 & IX2 <-->C1 & C2
+    C1 & C2 <-->O
+    O<-->|Överlämning|D1
+    O<-->|Överlämning|D2
+    O<-..->|Överlämning|D16
+    
+    

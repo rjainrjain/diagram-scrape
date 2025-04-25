@@ -1,0 +1,8 @@
+flowchart TD
+    ELN(eln_data.yaml) -->|Metadata entered via an ELN| APM(pynxtools-apm)
+    CFG(apm.specific.config.yaml) --> | Configuration inputted via given RDM| APM
+    RECON(reconstruction) -->|Reconstruction| APM
+    RANGE(ranging) -->|Ranging definitions| APM
+    APM --> |Interface to the dataconverter| DCONV(pynxtools)
+    DCONV --> |Verification of content against NXapm, file I/O thereafter| NXS(NeXus/HDF5 NXapm-compliant)
+  

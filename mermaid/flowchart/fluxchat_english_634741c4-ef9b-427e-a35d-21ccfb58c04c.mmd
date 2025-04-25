@@ -1,0 +1,104 @@
+flowchart TD
+    A[Start] --> B[CameraFollow Class Initialized]
+    B --> C[Player Movement Detected]
+    C --> D{Input Key Q or E?}
+    D -- Yes --> E[Rotate Camera]
+    D -- No --> F[Update Camera Position]
+    F --> G[LateUpdate Position & LookAt Target]
+
+    A --> H[Projectile Collision Logic]
+    H --> I{Collision with Enemy?}
+    I -- Yes --> J[Apply Damage to Enemy]
+    J --> K[Destroy Projectile]
+    I -- No --> L{Collision with Water?}
+    L -- Yes --> M[Destroy Projectile]
+
+    A --> N[CannonController - Target Detection]
+    N --> O{Enemy Detected?}
+    O -- Yes --> P[Aim and Fire Cannon]
+    P --> Q[Instantiate Cannonball & Apply Force]
+
+    A --> R[PlayerController - Sword Handling]
+    R --> S{Attack Triggered?}
+    S -- Yes --> T[Start Attack Coroutine]
+    T --> U[Play Attack Animation]
+
+    A --> V[EnemyBoat - Moving Towards Island]
+    V --> W{Closest Island Block Found?}
+    W -- Yes --> X[Move Towards Island Block]
+    X --> Y{Reached Block?}
+    Y -- Yes --> Z[Log Message: Reached Island]
+    Z --> AA{Block Below Player?}
+    AA -- Yes --> AB[End Game]
+
+    A --> AC[EnemySpawner - Spawn Enemies]
+    AC --> AD{Island Blocks Initialized?}
+    AD -- Yes --> AE[Spawn Enemy Boats at Intervals]
+    AE --> AF[Move Enemies Towards Closest Block]
+
+    A --> AG[IslandGenerator - Generate Island Blocks]
+    AG --> AH[Instantiate Blocks and Add Vegetation]
+    AH --> AI[Output Block Positions]
+
+    A --> AJ[PlayerSpawner - Spawn Player]
+    AJ --> AK{Player Exists?}
+    AK -- Yes --> AL[Move Existing Player to Spawn]
+    AK -- No --> AM[Instantiate New Player]
+
+    A --> AN[WeaponPlacement - Handle Weapon Placement]
+    AN --> AO{Input Key B Pressed?}
+    AO -- Yes --> AP[Start Placing Weapon]
+    AP --> AQ{Mouse Left Click?}
+    AQ -- Yes --> AR[Place Weapon]
+
+    AR --> AS{Weapon in Water?}
+    AS -- Yes --> AT[Apply Physics to Weapon in Water]
+    AT --> AU[Destroy Weapon after Delay]
+
+    style A fill:#f9f,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style B fill:#bbf,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style C fill:#bbf,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style D fill:#ffc,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style E fill:#bbf,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style F fill:#bbf,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style G fill:#bbf,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style H fill:#f96,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style I fill:#ffc,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style J fill:#f96,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style K fill:#f96,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style L fill:#ffc,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style M fill:#f96,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style N fill:#bbf,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style O fill:#ffc,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style P fill:#bbf,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style Q fill:#bbf,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style R fill:#bbf,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style S fill:#ffc,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style T fill:#bbf,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style U fill:#bbf,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style V fill:#bbf,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style W fill:#ffc,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style X fill:#bbf,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style Y fill:#ffc,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style Z fill:#bbf,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style AA fill:#ffc,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style AB fill:#f00,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style AC fill:#bbf,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style AD fill:#ffc,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style AE fill:#bbf,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style AF fill:#bbf,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style AG fill:#bbf,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style AH fill:#bbf,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style AI fill:#bbf,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style AJ fill:#bbf,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style AK fill:#ffc,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style AL fill:#bbf,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style AM fill:#bbf,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style AN fill:#bbf,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style AO fill:#ffc,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style AP fill:#bbf,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style AQ fill:#ffc,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style AR fill:#bbf,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style AS fill:#ffc,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style AT fill:#bbf,stroke:#333,stroke-width:2px,color:#000,font-weight:bold
+    style AU fill:#f96,stroke:#334,stroke-width:2px,color:#000,font-weight:bold

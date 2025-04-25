@@ -1,0 +1,17 @@
+sequenceDiagram
+    participant M as Main
+    participant NG as NovelGenerator
+    participant DE as DialogueEnhancer
+    participant ST as ScriptTransitioner
+    participant ES as EmbeddingStorage
+    participant CA as CustomAgent
+    M->>NG: create novel generator
+    NG->>DE: enhance dialogue
+    DE-->>NG: return enhanced dialogue
+    NG->>ST: transition to script
+    ST-->>NG: return script
+    NG->>ES: store embedding
+    ES-->>NG: return stored embedding
+    NG->>CA: learn from text
+    CA-->>NG: return learned text
+    NG-->>M: return generated novel

@@ -1,0 +1,57 @@
+sequenceDiagram
+    participant UI
+    participant Backend
+    participant Redis
+    participant Database
+    UI->>Backend: workout time
+    Backend->>Redis: fetch workout
+    Redis-->>Backend: no active workout
+    Backend->>Database: fetch today's focus (lower, core, upper)
+    Database-->>Backend: core
+%%    Have at least one exercise assigned per muscle-group then filler to reach 12
+    Backend-->>Database: fetch 12 random core exercises, full coverage
+    Backend->>Redis: store workout 6 hour expiration
+    Redis-->>Backend: stored
+    Backend-->>UI: provide workout
+%%    We are selecting all exercises in the superset before starting them
+%%    so we can prepare our workout area for the 3 exercises.
+    UI->>UI: start first set confirmation
+%%    This means the user switched out the second exercise for a different exercise
+    UI->>Backend: replace exercise 2 of 3
+%%    Assigned to one muscle-group exercises will be exchanged for another exercise that targets the same
+%%    same muscle group. Filler can be replaced with any exercise.
+    Backend->>Database: fetch replacement for exercises 2 of 3
+    Database-->>Backend: provide replacement
+    Backend->>Redis: update workout
+    Redis-->> Backend: updated
+    Backend-->>UI: provide update
+%%    We are keeping track of workout progress on both the client and server to switching devices or page refresh
+%%    Going to flatten the workout into a single list of steps to make it much simpler to iterate
+%%    Simpler for the computing because now we can just increment a counter in redis. Simpler,
+%%    for the developer because now we don't have to think about resetting counters to simulate loops.
+    UI->>Backend: confirm superset exercise selection (async)
+    Backend->>Redis: move pointer from confirmed to exercise 1
+    UI->>UI: move local pointer from confirmed to exercise 1
+    UI->>Backend: move exercise pointer to 2 (async)
+    Backend->>Redis: move pointer to exercise 2
+    UI->>UI: move local pointer from exercise 1 to exercise 2
+    UI->>UI: increase measurement value
+    UI->>Backend: increase measurement value (async)
+    Backend->>Redis: add updated measurement value to hash
+    UI->>Backend: move exercise pointer to 2 (async)
+    Backend->>Redis: move pointer to exercise 2
+    UI->>UI: move local pointer from exercise 2 to exercise 2
+    UI->>Backend: move exercise pointer to 3 (async)
+    Backend->>Redis: move pointer to exercise 3
+    UI->>UI: move local pointer from exercise 2 to exercise 3
+    UI-->UI: set almost finished
+    UI->>UI: move local pointer to last exercise in first set
+    UI->>Backend: move exercise pointer to last exercise in first set (async)
+    Backend->>Redis: move pointer to last exercise in first set
+    UI->>Backend: move pointer to set 2 first exercise selection
+    %%    Moving the next day muscle groups at the end of the first set in-case the workout
+%%    gets cut short or the user forgets to check all exercises as completed on later sets.
+    Backend->>Database: move next day muscle groups to upper
+    Backend->>Database: update all updated exercise measurement values
+    UI-->UI: finish all super sets (hand wave)
+    UI->>Backend: move

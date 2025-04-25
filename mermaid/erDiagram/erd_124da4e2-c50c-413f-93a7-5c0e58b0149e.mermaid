@@ -1,0 +1,58 @@
+---
+title: Simple Login
+---
+erDiagram
+    USER_DATA ||--||USER : has
+    USER ||--o{ OLD_PASSWORD : have
+    USER |o--o{ USER_CHAT_USER : have
+    USER_CHAT_USER ||--|| CHAT : has
+
+    USER_DATA {
+        serial id PK
+        int user_id FK
+        string first_name
+        string last_name
+        date date_of_birth
+        string gender
+        string phone_number
+        string profile_picture
+        string cover_picture
+        datetime created_at
+        datetime updated_at
+    }
+
+    USER {
+        serial id PK
+        string username
+        string email
+        string password
+        datetime created_at
+        datetime updated_at
+    }
+
+    OLD_PASSWORD {
+        serial id PK
+        int user_id FK
+        string password
+        datetime created_at
+        datetime updated_at
+    }
+
+    CHAT {
+        serial id PK
+        string body
+        string attachment
+        string attachment_type
+    }
+
+    USER_CHAT_USER {
+        serial id PK
+        int chat_id FK
+        int from_id FK
+        int to_id FK
+        bool is_read
+        datetime created_at
+        datetime updated_at
+    }
+
+

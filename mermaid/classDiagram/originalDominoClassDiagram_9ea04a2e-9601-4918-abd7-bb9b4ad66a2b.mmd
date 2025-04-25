@@ -1,0 +1,96 @@
+classDiagram
+
+Player"2..4" --o "1"GameController
+Card "1..*" --o "1"GameController
+IPlayer --|> Player:implements
+Card ..|> CardTitle : uses
+Card ..|> Node : uses
+Card "1..*" --o "1" Deck
+Deck "1" --* "1" GameController
+GameController ..|> GameStatus : uses
+GameController..|>CardStatus :uses
+
+class Player{
+    - int _id
+    - string _name
+}
+
+class IPlayer{
+    <<Interface>>
+    + GetName():string
+    + SetName(string):void
+    + GetId():Int
+    + SetId(int):void
+}
+
+class Card{
+    - int _id
+    - int[4] node
+    + int head :readonly
+    + int tail: readonly
+    + IsDouble():bool
+    + GetId():int
+    + GetNode(int CardId):Node
+   
+}
+class Deck{
+    - List~Card~ CardDeck
+    + GetCard():Card
+    + ShuffleCard() : bool
+}
+
+
+
+class GameController{
+    + Board Board
+    + int Round
+    - IPlayer currentPlayer
+    - Dictionary~IPlayer.List~Card~~ PlayerCardDict
+    - Dictionary~IPlayer.int~ PlayerScore
+    - List~Card~ tableCard
+    - Deck deckcard
+    + AddPlayer(IPlayer): bool
+    + GetPlayer() :List~IPlayer~ Player
+    + GetOriention(IsDouble): bool
+    + CheckGameStatus(): GameStatus
+    + CheckSetCardStatus(): CardStatus
+    + SetNextTurn(IPlayer Player, List~Card~ CardHand)
+    + PutCard(Player, Card card, Card target,Node node)
+    + GetCards(int CardId): Card?[4]
+    + ShowCard(IPlayer player)
+    + CardOnTable():List~Card~ tableCard
+    + ResetRound() : bool
+    + CheckScore(player) : int 
+}
+
+class GameStatus{
+    <<Enumeration>>
+    NOTSTARTED
+    ONGOING
+    WIN
+}
+class CardTitle{
+    <<Enumeration>>
+    ZERO
+    ONE
+    TWO
+    THREE
+    FOUR
+    FIVE
+    SIX
+}
+
+class CardStatus{
+    <<Enumeration>>
+    SETCARD
+    TAKECARD
+    PASS
+}
+
+class Node{
+    <<Enumeration>>
+    NODE1
+    NODE2
+    NODE3
+    NODE4
+}

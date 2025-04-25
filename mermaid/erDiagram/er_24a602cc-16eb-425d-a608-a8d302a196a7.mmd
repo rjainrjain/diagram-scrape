@@ -1,0 +1,20 @@
+erDiagram
+    PRICES {
+        int id
+        string itemName
+        decimal price
+    }
+    
+    ORDER {
+        int id
+        datetime orderDate
+        int javaQuantity
+        decimal javaSubtotal
+        int cafeQuantity
+        int cafeDrinkId
+        decimal cafeSubtotal
+        int cappQuantity
+        int cappDrinkId
+        decimal cappSubtotal
+        decimal totalPrice
+    }

@@ -1,0 +1,18 @@
+%% Subcircuit FF to ZS
+flowchart TD
+    b((broadcaster)) --> ff
+    ff[%ff] --> vl & cx
+    vl[%vl] --> vx & cx
+    vx[%vx] --> cv
+    cv[%cv] --> jp & cx
+    jp[%jp] --> cx & kt
+    cx([&cx]) --> ff & vx & zs
+    zs([&zs]) --> gf
+    gf([&gf]) --> rx
+    kt[%kt] --> hm & cx
+    hm[%hm] --> cx & tz
+    tz[%tz] --> mf & cx
+    mf[%mf] --> cx & sx
+    sx[%sx] --> cx & rj
+    rj[%rj] --> xt & cx
+    xt[%xt] --> cx

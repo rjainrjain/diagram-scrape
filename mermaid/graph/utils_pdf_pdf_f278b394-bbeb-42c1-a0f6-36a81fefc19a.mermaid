@@ -1,0 +1,54 @@
+flowchart TD
+    A[Start] --> B[GeneratePDFReport]
+    B --> C[GetMaroto]
+    C --> D[Create Maroto instance]
+    D --> E[Register Header]
+    E --> F[Register Footer]
+    F --> G[Add All Devices Table]
+    G --> H[Add Ineligible Hardware Table]
+    H --> I[Add Unsupported Versions Table]
+    I --> J[Add Registration Candidates Table]
+    J --> K[Generate PDF]
+    K --> L{Save PDF}
+    L -->|Success| M[End]
+    L -->|Error| N[Return Error]
+
+    subgraph GetMaroto Function
+        C --> O[Create config]
+        O --> P[Create Maroto instance]
+        P --> Q[Create MetricsDecorator]
+        Q --> R[Register Header]
+        R --> S[Register Footer]
+        S --> T[Add Tables]
+    end
+
+    subgraph Add Tables
+        U[addDevicesTable] --> V[Add Title]
+        V --> W[Add Description]
+        W --> X[Add Device Rows]
+    end
+
+    subgraph Get Device Rows
+        Y[getDeviceRows] --> Z{Determine Table Type}
+        Z -->|All Devices| AA[getAllDevicesHeaderRow]
+        Z -->|Ineligible Hardware| AB[getIneligibleHardwareHeaderRow]
+        Z -->|Unsupported Versions| AC[getUnsupportedVersionsHeaderRow]
+        Z -->|Registration Candidates| AD[getRegistrationCandidatesHeaderRow]
+        AA --> AE[getAllDevicesContentRows]
+        AB --> AF[getIneligibleHardwareContentRows]
+        AC --> AG[getUnsupportedVersionsContentRows]
+        AD --> AH[getRegistrationCandidatesContentRows]
+    end
+
+    subgraph Helper Functions
+        AI[getPageHeader]
+        AJ[getPageFooter]
+        AK[getDarkGrayColor]
+        AL[getGrayColor]
+        AM[getBlueColor]
+    end
+
+    style GetMaroto Function fill:#f9f,stroke:#333,stroke-width:2px
+    style Add Tables fill:#ccf,stroke:#333,stroke-width:2px
+    style Get Device Rows fill:#cfc,stroke:#333,stroke-width:2px
+    style Helper Functions fill:#fcc,stroke:#333,stroke-width:2px

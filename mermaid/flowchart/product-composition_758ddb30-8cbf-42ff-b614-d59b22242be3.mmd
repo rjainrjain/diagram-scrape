@@ -1,0 +1,19 @@
+%%{init: {'theme': 'base', 'themeVariables': {
+  'lineColor': '#a8201a',
+  'primaryColor': '#fae5c7',
+  'primaryBorderColor': '#0f8b8d'
+}}}%%
+flowchart LR
+  meta(MetaVerse Bundle)
+  room(Virtual Room)
+  ads(Advertisements)
+
+  meta --> room
+  meta --> ads
+
+classDef domain fill:#fffff7
+class meta domain
+
+classDef offer fill:#d6e8d5
+class room offer
+class ads offer

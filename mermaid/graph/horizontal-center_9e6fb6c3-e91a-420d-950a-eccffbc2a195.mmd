@@ -1,0 +1,7 @@
+graph TD;
+    1(["inline 要素(inline-block, inline-flex 等も含む)"])-- YES -->2[親要素に text-aling: center;];
+    1-- NO -->3([width or max-width を指定できる]);
+    3-- YES -->4[margin-left: auto;\nmargin-right: auto;]
+    3-- NO -->5([親要素に display: flex or disply: grid を指定できる])
+    5-- YES -->6[親要素に justify-content: center;]
+    5-- NO -->7["position: absolute;\ntransform: translateX(-50%);\nleft: 50%"]

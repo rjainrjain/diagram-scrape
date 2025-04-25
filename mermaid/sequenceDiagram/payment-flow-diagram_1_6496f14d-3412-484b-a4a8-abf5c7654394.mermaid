@@ -1,0 +1,25 @@
+
+
+sequenceDiagram
+    participant C as Client
+    participant OS as Order Service
+    participant PS as Payment Service
+    participant S as Stripe (Payment Gateway)
+
+    C->>OS: 1. Place order
+    OS->>PS: 2. Request payment intent
+    PS->>S: 3. Create payment intent
+    S-->>PS: 4. Return client secret
+    PS-->>OS: 5. Return client secret
+    OS-->>C: 6. Return order details with client secret
+    C->>C: 7. Collect payment info
+    C->>S: 8. Confirm payment with client secret
+    S-->>C: 9. Payment result
+    C->>OS: 10. Confirm order with payment result
+    OS->>PS: 11. Verify payment status
+    PS->>S: 12. Check payment intent status
+    S-->>PS: 13. Return payment status
+    PS-->>OS: 14. Confirm payment status
+    OS->>OS: 15. Update order status
+    OS-->>C: 16. Return final order status
+

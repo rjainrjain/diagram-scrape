@@ -1,0 +1,9 @@
+sequenceDiagram
+    participant User
+    participant App
+    participant Server
+    User->>App: Solicita eliminar un recordatorio
+    App->>Server: Envia solicitud de eliminación de recordatorio
+    Server-->>App: Confirma eliminación de recordatorio
+    App-->>User: Muestra mensaje de confirmación de eliminación
+

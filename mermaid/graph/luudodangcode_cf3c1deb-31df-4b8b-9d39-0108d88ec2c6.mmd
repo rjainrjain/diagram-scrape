@@ -1,0 +1,108 @@
+graph TD;
+    A1[Bắt đầu]:::start --> A2[Khởi tạo hệ thống]:::start
+    
+    %% Khởi tạo kết nối WiFi
+    A2 --> B1[In ra tên WiFi]:::action
+    B1 --> B2["WiFi.begin() Kết nối WiFi"]:::action
+    B2 --> B3{Kết nối thành công?}:::decision
+    B3 -->|Không| B4[Tăng bộ đếm wifiRetries]:::action
+    B4 --> B5{Đếm đến giới hạn?}:::decision
+    B5 -->|Có| B6[Thông báo không kết nối được WiFi]:::error
+    B5 -->|Không| B2
+    B3 -->|Có| B7[In ra IP của hệ thống]:::success
+
+    %% Khởi tạo kết nối Blynk
+    B7 --> C1[Kết nối tới Blynk]:::action
+    C1 --> C2{Blynk kết nối thành công?}:::decision
+    C2 -->|Không| C3[Tăng bộ đếm blynkRetries]:::action
+    C3 --> C4{Đếm đến giới hạn?}:::decision
+    C4 -->|Có| C5[Thông báo không kết nối được Blynk]:::error
+    C4 -->|Không| C1
+    C2 -->|Có| C6[In thông báo kết nối Blynk thành công]:::success
+    C6 --> C7[Gửi email xác nhận kết nối Blynk thành công]:::action
+
+    %% Cấu hình các chân và khởi động các module
+    C7 --> D1[Thiết lập chân LED và Relay]:::action
+    D1 --> D2[Cấu hình NTP Client lấy thời gian thực]:::action
+    D2 --> D3[Khởi tạo timer định kỳ 1 giây]:::action
+
+    %% Vòng lặp chính của hệ thống
+    D3 --> E1["Vòng lặp chính (loop)"]:::loop
+    E1 --> E2[Kiểm tra kết nối WiFi]:::action
+    E2 --> E3{WiFi còn kết nối?}:::decision
+    E3 -->|Không| E4[In ra mất kết nối WiFi]:::error
+    E4 --> E5["WiFi.begin() Kết nối lại"]:::action
+    E5 --> E6{Kết nối lại thành công?}:::decision
+    E6 -->|Có| E7[In ra kết nối lại thành công]:::success
+    E6 -->|Không| E8[Tăng bộ đếm wifiReconnectRetries]:::action
+    E8 --> E9{Đếm đến giới hạn?}:::decision
+    E9 -->|Có| E10[Thông báo kết nối lại WiFi thất bại]:::error
+    E9 -->|Không| E5
+    
+    %% Kiểm tra kết nối Blynk
+    E1 --> F1[Kiểm tra kết nối Blynk]:::action
+    F1 --> F2{Blynk còn kết nối?}:::decision
+    F2 -->|Không| F3[In ra mất kết nối Blynk]:::error
+    F3 --> F4["Blynk.connect() Kết nối lại"]:::action
+    F4 --> F5{Kết nối lại thành công?}:::decision
+    F5 -->|Có| F6[In ra kết nối lại thành công]:::success
+    F5 -->|Không| F7[Tăng bộ đếm blynkReconnectRetries]:::action
+    F7 --> F8{Đếm đến giới hạn?}:::decision
+    F8 -->|Có| F9[Thông báo kết nối lại Blynk thất bại]:::error
+    F8 -->|Không| F4
+
+    %% Đọc cảm biến và cập nhật Blynk
+    E1 --> G1[Đọc cảm biến độ ẩm đất]:::action
+    G1 --> G2[Tính giá trị phần trăm độ ẩm từ cảm biến]:::action
+    G2 --> G3[Cập nhật độ ẩm lên Blynk]:::action
+    G2 --> G4[Kiểm tra ngưỡng độ ẩm]:::action
+
+    %% Kiểm tra ngưỡng độ ẩm và gửi cảnh báo
+    G4 --> H1{Độ ẩm cao hơn ngưỡng?}:::decision
+    H1 -->|Có| H2["Chuyển màu LED cảnh báo (vàng)"]:::warning
+    H2 --> H3[Gửi thông báo độ ẩm cao qua Blynk]:::action
+    H3 --> H4[Gửi email cảnh báo độ ẩm cao]:::action
+    H4 --> H5[Hiển thị 'Độ ẩm cao' trên LCD]:::action
+    H1 -->|Không| H6{Độ ẩm thấp hơn ngưỡng?}:::decision
+    H6 -->|Có| H7["Chuyển màu LED cảnh báo (đỏ)"]:::warning
+    H7 --> H8[Gửi thông báo độ ẩm thấp qua Blynk]:::action
+    H8 --> H9[Gửi email cảnh báo độ ẩm thấp]:::action
+    H9 --> H10[Hiển thị 'Độ ẩm thấp' trên LCD]:::action
+    H6 -->|Không| H11[Chuyển LED xanh cho độ ẩm bình thường]:::success
+    H11 --> H12[Hiển thị 'Độ ẩm bình thường' trên LCD]:::action
+
+    %% Điều khiển relay dựa trên chế độ
+    G4 --> I1[Kiểm tra chế độ điều khiển]:::action
+    I1 --> I2{Chế độ tự động?}:::decision
+    I2 -->|Có| I3[Điều khiển relay tự động]:::action
+    I3 --> I4{Độ ẩm dưới ngưỡng thấp?}:::decision
+    I4 -->|Có| I5[Bật bơm nước]:::action
+    I4 -->|Không| I6{Độ ẩm trên ngưỡng cao?}:::decision
+    I6 -->|Có| I7[Tắt bơm nước]:::action
+    I6 -->|Không| I8[Bơm nước giữ trạng thái OFF]:::action
+
+    I2 -->|Không| I9{Chế độ thủ công?}:::decision
+    I9 -->|Có| I10[Điều khiển relay theo nút nhấn trên app]:::action
+    I10 --> I11{Nút nhấn bật?}:::decision
+    I11 -->|Có| I12[Bật bơm nước]:::action
+    I11 -->|Không| I13[Tắt bơm nước]:::action
+
+    I2 -->|Không| I14{Chế độ hẹn giờ?}:::decision
+    I14 --> I15[Kiểm tra thời gian hiện tại]:::action
+    I15 --> I16{Trong khoảng thời gian đã hẹn?}:::decision
+    I16 -->|Có| I17[Bật bơm nước]:::action
+    I16 -->|Không| I18[Tắt bơm nước]:::action
+
+    %% Cập nhật thời gian hiện tại và ngày tháng lên app
+    E1 --> J1[Cập nhật thời gian từ NTP Server]:::action
+    J1 --> J2[Hiển thị thời gian hiện tại lên Blynk]:::action
+    J1 --> J3[Hiển thị ngày tháng hiện tại lên Blynk]:::action
+
+    %% Class definitions for colors
+    classDef start fill:#f882fa,stroke:#000,stroke-width:1px;
+    classDef action fill:#add8e6,stroke:#000,stroke-width:1px;
+    classDef decision fill:#f9f9a8,stroke:#000,stroke-width:1px;
+    classDef success fill:#a8f9a8,stroke:#000,stroke-width:1px;
+    classDef warning fill:#ffdd57,stroke:#000,stroke-width:1px;
+    classDef error fill:#ff6b6b,stroke:#000,stroke-width:1px;
+    classDef loop fill:#ffe6e6,stroke:#000,stroke-width:1px;

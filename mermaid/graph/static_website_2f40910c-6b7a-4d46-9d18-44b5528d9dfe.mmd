@@ -1,0 +1,14 @@
+graph TD
+    User[User] -->|Access| CloudFront[Amazon CloudFront]
+    CloudFront -->|Serve Content| S3[Amazon S3 Bucket]
+    
+    Developer[Developer] -->|Upload Content| S3
+    
+    Route53[Amazon Route 53] -->|DNS| CloudFront
+    
+    ACM[AWS Certificate Manager] -->|SSL/TLS| CloudFront
+    
+    CloudWatch[Amazon CloudWatch] -->|Monitor| CloudFront
+    CloudWatch -->|Monitor| S3
+    
+    User -->|Access Website| CloudFront

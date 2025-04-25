@@ -1,0 +1,18 @@
+sequenceDiagram
+    participant User
+    participant App
+    participant MSAL
+    participant AzureAD
+
+    User->>App: 1. Requests access to resource
+    App->>MSAL: 2. Redirect user to Azure AD login
+    MSAL->>AzureAD: 3. Sends authentication request
+    AzureAD-->>User: 4. Presents login page
+    User->>AzureAD: 5. User submits credentials
+    AzureAD-->>MSAL: 6. Sends authentication response (ID Token/Authorization Code)
+    MSAL->>AzureAD: 7. Sends request for Access Token (using Authorization Code)
+    AzureAD-->>MSAL: 8. Responds with Access Token (and optionally Refresh Token)
+    MSAL-->>App: 9. Returns Access Token
+    App->>Resource: 10. Access protected resource using Access Token
+    Resource-->>App: 11. Returns resource data
+    App-->>User: 12. Displays resource data

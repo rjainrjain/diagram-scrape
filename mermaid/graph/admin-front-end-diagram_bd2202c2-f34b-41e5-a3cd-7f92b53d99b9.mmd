@@ -1,0 +1,12 @@
+graph TD
+  subgraph Admin Front-End Deps.
+    admin-app --> admin-gateway-api
+  end
+
+  subgraph Admin Gateway Deps.
+    admin-gateway-api --> admin-auth-service
+    admin-gateway-api --> bots-service
+    admin-gateway-api --> events-service
+    admin-gateway-api --> event-subscription-service
+    admin-gateway-api --> event-simulation-service
+  end

@@ -1,0 +1,15 @@
+sequenceDiagram
+    participant Workflow
+    participant GHR as GitHub Repo
+    participant S3 as AWS S3
+    Workflow->>GHR: Hello does update-ranges exist?
+    GHR-->>Workflow: Yes, it does!
+    Workflow->>Workflow: Imma gonna use update-ranges
+    Workflow->>GHR: Ok, gimme that one.
+    GHR-->>Workflow: Sure thing.
+    Workflow->>GHR: When was the last time the file was touched?
+    GHR-->>Workflow: Happened on 20-12-2023 at 12:11
+    Workflow->>S3: Yo, gimme all them files
+    S3-->>Workflow: Here you go
+    Workflow->>Workflow: Processing files since 20-12-2023 at 12:11
+    Workflow->>GHR: These are my commits!

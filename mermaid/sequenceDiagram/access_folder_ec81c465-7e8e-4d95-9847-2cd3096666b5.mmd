@@ -1,0 +1,10 @@
+sequenceDiagram
+    actor C as Client
+    participant S as Server
+
+    note over C,S: Assume the user has already logged in <br> and is in possession of the parent folder key
+
+    C->>S: Ask the server for the folder metadata
+    S-->>C: Send the folder metadata
+
+    C->>C: Derive the folder key from the parent folder key <br> and the folder key nonce

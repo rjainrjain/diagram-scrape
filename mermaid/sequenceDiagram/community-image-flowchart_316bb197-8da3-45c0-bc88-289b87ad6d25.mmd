@@ -1,0 +1,21 @@
+sequenceDiagram
+    participant U as 사용자
+    participant CS as 커뮤니티 서버
+    participant S3 as AWS S3
+    participant CS2 as 이미지 변환 서버
+
+    U->>CS: 이미지 업로드 요청
+    Note right of CS: 사용자 요청 확인
+    CS->>S3: 사전 서명된 URL 요청
+    S3->>CS: 사전 서명된 URL
+    CS->>U: 사전 서명된 URL 제공
+    Note left of U: S3에 이미지 업로드
+    U->>S3: URL 사용하여 이미지 업로드
+    Note right of U: 이미지 URL 포함하여 게시물 생성
+    U->>CS: 이미지 URL이 포함된 컨텐츠 게시, 이미지 meta 정보전달
+    CS->>U: 게시물 생성 확인
+    CS->>CS2: meta 정보에 이미지 변환 조건이 부합하면 MQ를 통해 이미지 변환 요청
+    S3->>CS2: 이미지 URL의 이미지를 불러옴
+    CS2 ->> S3: 이미지를 불러와 변환 후 저장(썸네일, 저용량 / gif->mpeg)
+    CS2 ->> CS: 변환된 이미지 정보로 게시물 정보 정정
+

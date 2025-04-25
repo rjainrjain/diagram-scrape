@@ -1,0 +1,68 @@
+sequenceDiagram
+    title Account Details
+
+    participant B as Browser
+    participant CNS as CreateNoteScreen
+    participant CTS as CreateTaskScreen
+    participant CES as CreateEventScreen
+    participant EDS as EventDetailScreen
+    participant TDS as TaskDetailScreen
+    participant NDS as NoteDetailScreen
+    participant ADS as AccountDetailScreen
+    participant ADSVM as AccountDetailScreenViewModel
+    participant NDSVM as NoteDetailScreenViewModel
+    participant TVM as ToastViewModel
+    participant AS as ApiService
+    participant S as Server
+
+
+    ADS->>ADSVM: Request to fetch Account Details with Account ID
+    ADSVM->>AS: Request to fetch Account Details
+    AS-->>S: Send API Request
+    note right of AS: GET {api_base_url}/v1/accounts/{accountId}
+    ADSVM->>AS: Request to fetch Account Notes List
+    AS-->>S: Send API Request
+    note right of AS: GET {api_base_url}/v1/accounts/{accountId}/notes
+    ADSVM->>AS: Request to fetch Account Tasks List
+    AS-->>S: Send API Request
+    note right of AS: GET {api_base_url}/v1/accounts/{accountId}/tasks
+    ADSVM->>AS: Request to fetch Account Events List
+    AS-->>S: Send API Request
+    note right of AS: GET {api_base_url}/v1/accounts/{accountId}/events
+    
+
+    break If any of the request fails
+        S-->>AS: Error response
+        AS->>ADSVM: response
+        ADSVM->>TVM: error message
+        TVM->>ADS: error message is displayed
+    end
+    
+    S-->>AS: Success response
+    AS->>ADSVM: response
+    ADSVM->>ADS: Propagates response
+    note over ADS: Displays account details, contact details, notes list, tasks list and events list
+    alt if user clicks on link
+        ADS ->> B: Open URL
+    end
+    alt if user clicks on a note or edit note
+        ADS ->> NDS: trigger note detail screen flow
+    else if user clicks on a task or edit task
+        ADS ->> TDS: trigger task detail screen flow
+    else if user clicks on a event or edit event
+        ADS ->> EDS: trigger event detail screen flow
+    end
+
+    alt if user clicks on add note button
+        ADS ->> CNS: navigate to create note screen
+    else if user clicks on add task button
+        ADS ->> CTS: navigate to create task screen
+    else if user clicks on add event button
+        ADS ->> CES: navigate to create event screen
+    else if user clicks on delete note button
+        ADS->>ADS: Delete note flow
+    else if user clicks on delete task button
+        ADS->>ADS: Delete task flow
+    else if user clicks on delete event button
+        ADS->>ADS: Delete event flow
+    end

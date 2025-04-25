@@ -1,0 +1,109 @@
+erDiagram
+    user[User] {
+        int id
+        string uuid
+        string username
+        string password
+        string email
+        int level_id
+        int xp
+        int currency_amount
+        timestamp created_at
+        timestamp updated_at
+    }
+    a[Association]{
+        int id
+        int user_id
+        string name
+    }
+    c[Company]{
+        int id
+        int user_id
+        string name
+        string siret
+    }
+    l[Level] {
+        int id
+        string name
+        int next_level_xp_requirement
+        int level_number
+        int currency_reward
+        timestamp created_at
+        timestamp updated_at
+    }
+    uq[UserQuest] {
+        int id
+        int user_id
+        int quest_id
+        int progression
+        boolean is_completed
+        timestamp created_at
+        timestamp updated_at
+    }
+    q[Quest] {
+        int id
+        int quest_type_id
+        string name
+        int level_id
+        string difficulty
+        int xp_reward
+        int currency_reward
+        bool done_condition
+        timestamp created_at
+        timestamp updated_at
+    }
+    qt[QuestType] {
+        int id
+        string type
+        string temporality
+        timestamp created_at
+        timestamp updated_at
+    }
+    s[Success]{
+        int id
+        string name
+        string tag
+        int xp_reward
+        string difficulty
+        bool done_condition
+        int progression_rank
+        int currency_reward
+        timestamp created_at
+        timestamp updated_at
+    }
+    us[UserSuccess]{
+        int id
+        int user_id
+        int success_id
+        int progression
+        bool is_completed
+        timestamp created_at
+        timestamp updated_at
+    }
+    g[Game]{
+        int id
+        string name
+        string tag
+        string description
+        string catch_phrase
+        bool can_be_multiplayer
+        string game_version
+        timestamp created_at
+        timestamp updated_at
+    }
+    qg["Quiz Games"]{
+        int id
+        int game_id
+        json data
+        timestamp created_at
+        timestamp updated_at
+    }
+    user ||--|| a : "can be"
+    user ||--|| c : "can be"
+    user }o--|| l : "is of level"
+    user ||--o{ uq : "is doing"
+    user }o--|| us : "is progressing"
+    us }o--|| s : "has success"
+    uq }o--|| q : "is a"
+    q }o--|| qt : "is type of"
+    g ||--|| qg : "has"

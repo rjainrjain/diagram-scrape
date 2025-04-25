@@ -1,0 +1,13 @@
+
+sequenceDiagram
+    participant S as Stopwatch
+    participant H as History
+    participant U as UI
+    U->>S: start()
+    S-->>U: time updates
+    U->>S: stop()
+    S-->>U: return elapsed time
+    U->>H: add_record(time)
+    U->>S: reset()
+    U->>H: get_records()
+    H-->>U: return records

@@ -1,0 +1,19 @@
+
+    classDiagram
+        class Game{
+            +int score
+            +start_game()
+            +end_game()
+        }
+        class Snake{
+            +list body
+            +move()
+            +grow()
+        }
+        class Apple{
+            +tuple position
+            +respawn()
+        }
+        Game "1" -- "1" Snake: controls
+        Game "1" -- "1" Apple: controls
+    

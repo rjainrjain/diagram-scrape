@@ -1,0 +1,82 @@
+graph TD
+    A[Start Daily Run] --> B[Load Configuration]
+    B --> C[Initialize Notion API]
+    
+    C --> D[Query Story Database]
+    C --> E[Query Characters Database]
+    C --> F[Query World Database]
+    C --> G[Query StoryArcs Database]
+    C --> H[Query StoryRules Database]
+    C --> I[Query Feedback Database]
+    
+    D & E & F & G & H & I --> J[Compile Context]
+    
+    J --> K[Analyze Feedback]
+    K --> L[Update AI Prompts]
+    
+    L --> M[Generate Story Outline]
+    M --> N[Check Story Arcs]
+    N --> O[Apply Story Rules]
+    
+    O --> P[Expand to Full Chapter]
+    P --> Q[Creative Critique]
+    Q --> R[Final Editing]
+    
+    R --> S{Quality Check}
+    S -->|Fail| M
+    S -->|Pass| T[Store New Chapter]
+    
+    T --> U[Update Story Database]
+    T --> V[Update Characters Database]
+    T --> W[Update World Database]
+    T --> X[Update StoryArcs Database]
+    
+    U & V & W & X --> Y[Log Process]
+    Y --> Z[End Daily Run]
+    
+    subgraph "Initial Database Queries"
+    D
+    E
+    F
+    G
+    H
+    I
+    end
+    
+    subgraph "Content Generation"
+    M
+    N
+    O
+    P
+    Q
+    R
+    end
+    
+    subgraph "Database Updates"
+    U
+    V
+    W
+    X
+    end
+    
+    subgraph "AI Agents"
+    AA[Creative Writer]
+    AB[Expander]
+    AC[Creative Critique]
+    AD[Audience Optimizer]
+    AE[Style Tone Adjuster]
+    AF[Final Editor]
+    end
+    
+    L --> AA & AB & AC & AD & AE & AF
+    
+    subgraph "Quality Check Criteria"
+    AG[Coherence with Story Arcs]
+    AH[Adherence to Story Rules]
+    AI[Character Consistency]
+    AJ[Engagement Factor]
+    AK[Writing Quality]
+    AL[Length 10 min read]
+    end
+    
+    S --> AG & AH & AI & AJ & AK & AL

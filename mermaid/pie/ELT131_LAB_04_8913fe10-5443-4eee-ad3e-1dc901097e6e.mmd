@@ -1,0 +1,149 @@
+Title:      Report ELT131 LAB 04
+Author:     Del Basso, Manuel
+Date:       02-04-2017
+Location:   WHZ
+Footicon:   ./pics/whz.png
+
+ELT131 - Lab 04 report
+==============================
+[TOC]
+
+## Introduction ##
+
+__Used components:__
+
+ - Hardware
+     - TI TMS320F28335 Explorer Kit for TI C2000™ F28x family of microprocessors, controller card Delfino
+     - Oscilloscope: PC-USB Scope _PCSU1000, velleman_
+ - Software
+     - Code Composer Studio Version: 7.1.0.00015 (CCS7)
+     - Board support via ti's [__controlSUITE__](http://www.ti.com/tool/controlsuite?DCMP=mcu_controlsuite&HQS=controlsuite) v3.4.5
+     - SYS/BIOS
+         + Version: 6.33.4.39
+     - TI-RTOS for C2000
+         + Version: 2.16.1.14
+ - Development Plattform
+     + ```lsb_release -d``` <span style="margin-left: 1em;">Linux Mint 18 Sarah (LinuxMint)</span>
+     + ```uname -rpo``` <span style="margin-left: 1em;">4.4.0-57-generic x86_64 GNU/Linux</span>
+
+
+## Explore the RTOS Object Viewer (ROV) (Part 1) ##
+>Answer the questions from procedure step 2.
+
+<h4 class="sp"><span>ROV-Hwi (Module/Basic tabs)</span></h4>
+<span class="quest">What is the current size of the stack? What was the peak used?</span>
+The overall available stack size for TI-RTOS (soft-) IRQ-handlers can be configured via the app.cfg. As configured, the stack memory allocated is 1 kByte.
+
+<span class="quest">What is the current size of the stack? What was the peak used?</span>
+The overall available stack size for TI-RTOS (soft-) IRQ-handlers can be configured via the app.cfg. As configured, the stack memory allocated is 1 kByte.
+
+
+```java
+/*
+ * The BIOS module will create the default heap for the system.
+ * Specify the size of this default heap.
+ */
+BIOS.heapSize = 256;
+/* System stack size (used by ISRs and Swis) */
+Program.stack = 1024;
+/* Circular buffer size for System_printf() */
+SysMin.bufSize = 128;
+```
+
+The stack __peak__ (or max. stack depth) is showed to be only 72 Bytes from the 1024 Bytes available. Since the stack (program stack) is only used to handle (soft-) IRQs (the OS-heap memory is BIOS.heapSize = 256;), the 72 Bytes are mostly charged for context save operations when the interrupt callback handlers (hwi and swi) are invoked.
+
+In the ROV under module _HeapMemory_, the configured ```BIOS.heapSize = 256;``` could be inspected and is viewed to be 0x100 = 0xff + 1.
+
+<span class="quest">How many Hwi’s are configured in your system?</span>
+Only 1 Hwi object is explicitly configured in the actual app.cfg.
+
+<span class="quest">What is the name of your own HWI? Which interrupt number is associated with it?</span>
+It's handle is Hwi2_XINT and the registered callback handler is &XINT1_GPIO1_isr. The unique interrupt identifier is 35 since the XINTx IRQs are in PIE group 1 (INT1.y) and the XINT1 IRQ is mapped to CPU interrupt number 4 (INTx.4). The equation to calculate an unique interrupt ID (__UIID__) can be pointed out as:
+
+<lmjx>$\begin{aligned}
+UIID(x, y) \,&=\, 8\cdot(x-1) + 31 + y \nonumber \\\
+x\,&=\,PIEGROUP \nonumber \\\
+y\,&=\,CPUINT \nonumber
+\end{aligned}$</lmjx>
+
+A second Hwi instance is viewed in ROV Hwi basic tab. An OS-built-in function is registered as it's callback handler (**ti_sysbios_family_c28_TimestampProvider_rolloverFunc__E**).
+
+<span class="quest">How many Swi’s are configured in your system?</span>
+Only 1 Swi object is configured in the app.cfg.
+
+<span class="quest">What is the Swi’s function name? What is the priority of your Swi?</span>
+It's handle is SWI_XINT1 and the registered callback handler is SWI_XINT1_fxn. The priority level is viewed to be 3 as pointed out in ELT131_LAB_03_RTOS_4.
+
+## Logging setup (Part 2) ##
+>Copy the final version of the cfg-script "app.cfg" to your report. To reduce the size of the file, remove all comment lines and copy the rest into you report file for inspection.
+
+<details markdown=1>
+<summary><h4 class="sp foldable"><span class="codehd">app.cfg</span></h4></summary>
+```java
+@codeimport: "./ELT131_LAB_04_01/app.cfg"
+@codeimport_nocomments
+```
+</details>
+<div style="height: 1em;"></div>
+
+## UIA Results (Part 3) ##
+>Add the oscilloscope screen shots for the interrupt latency and jitter (see page 4-5) to your report.
+
+<figure class="oszi" markdown=1> <img src="./pics/after_uia_api.png" title="Interrupt latency influence of the UIA setup" class="noborder"><figcaption>Interrupt latency influence of the UIA setup</figcaption> </figure>
+
+>Add a screen shot of the execution graph and the CPU – load (see page 4-6) to your report.
+
+<figure class="oszi" markdown=1> <img src="./pics/exec_graph_times.png" title="Execution graph and CPU load screenshot" class=""><figcaption>Screen shot of execution graph and CPU load monitor</figcaption> </figure>
+
+>Answer the questions in procedure step 3.4. at page 4-6.
+
+__"Read" the graph results__
+
+<span class="quest">How big is your CPU - load?</span>
+$\si{9\%}$
+
+<span class="quest">What is the time interval of your HWI's?</span>
+$X2 - X1 \,=\,\si{11 us}$
+
+<span class="quest">What is the time interval of your SWI's?</span>
+$X4 - X3 \,=\,\si{6 us}$
+
+<span class="quest">How long is the delay between the HWI and the SWI? </span>
+$X3 - X2 \,=\,\si{9 us}$
+
+<span class="quest">How does it correspond to the Oscilloscope measurements?</span>
+The picture below shows an execution period from CCS execution graph, overlay-ed by oscilloscope measurement. As defined in the ```gpioXintInit()``` macro, XINT1 becomes triggered on falling edge of ePWM1 signal in case of shorted GPIO0 and GPIO1. This corresponds to the Hwi thread entry point that is labeled as X1. The XINT1 Hwi thread instantiates the code section from ```XINT1_GPIO1_isr()``` which posts the statically created (app.cfg: ```Program.global.SWI_XINT1 = Swi.create("&SWI_XINT1_fxn", swi0Params);```) Swi object to the Swi manager. 
+
+Since the Hwi priority layer has a higher rank order than the Swi priority layer, the Swi manager returns CPU control to the current Hwi thread after false-evaluating the _Swis-are-enabled_ flag and after pushing the posted Swi object to an (unordered) list of already posted Swis that (maybe) pending for execution. The ```XINT1_GPIO1_isr()``` Hwi thread executes until the _return-from-interrupt_ instruction has been reached at the end of XINT IRQ handler declaration. If the PIE controller has no pending hardware IRQs in the execution queue, the Swi manager takes CPU control work off the list of pending Swis (label X2). 
+
+If Swis are not disabled via user API call, the next step for the manager is to check the priority of the posted Swi object against the priority of the thread that is currently active. If one of the following conditions are true, the Swi manager pops the posted Swi object from the list of pending Swis and passes CPU control from the running thread to start execution of the Swi function which could be reached via the Swi object handle.      
+
+- current thread is a task (priority doesn't matter),
+- is a lower priority Swi thread or
+- is the idle thread 
+
+The overall time between XINT1 ISR entry point and clearing GPIO2 (last instruction of the Swi handler) could be determined from the execution graph time markers X4-X1 an is approx. $\si{26 us}$.  
+The Swi manager is an important (and time consuming) part of the BIOS scheduler. 
+
+<a href="./pics/exec_graph_scope_2.png" target="_blank"><figure class="oszi" markdown=1> <img src="./pics/exec_graph_scope_2.png" title="Execution graph overlayed by oscilloscope measurement" class=""><figcaption>Execution graph overlay-ed by oscilloscope measurement</figcaption> </figure></a>
+
+
+## Change SWI duration (Part 4) ##
+>Edit file "ELT131_04_01.c" and extend the duration of the SWI by extending the for - loop from 10 to 200 repetitions.
+>Repeat the measurements for the CPU-Load and the Execution graph and compare the results. 
+
+<span class="quest">Where becomes the additional load of 190 more loops of the for-instruction visible?</span>
+As expected, neither the Hwi duration nor the BIOS scheduler / Swi manager work off delay is affected by the higher CPU load. 
+
+<span class="quest">How many for - loops will fit into the SWI?</span>
+
+>Increase the for - loop counter according to the following table. Measure CPU-load and make a note about the runtime of the SWI.
+
+| loop count | CPU load [%] | HWI duration [µs] | Scheduler duration | SWI duration [µs] |
+|------------|--------------|-------------------|--------------------|-------------------|
+|         10 |            9 |            10.926 |              9.433 |                   |
+|            |              |                   |                    |                   |
+|        200 |           14 |            10.926 |              9.433 |            32.887 |
+|            |              |                   |                    |                   |
+|            |           99 |                   |                    |                   |
+

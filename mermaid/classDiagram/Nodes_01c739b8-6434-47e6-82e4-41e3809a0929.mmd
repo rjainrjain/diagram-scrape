@@ -1,0 +1,77 @@
+classDiagram
+
+    Entity <|-- Variable
+    Entity <|-- Procedure
+    Entity <|-- Statement
+
+    Program "1" *-- "1..*" Procedure :contains
+
+    Procedure "1" *-- "1..*" Statement :has
+
+    Statement <|-- ReadEntity
+    Statement <|-- PrintEntity
+    Statement <|-- CallEntity
+    Statement <|-- AssignEntity
+    Statement <|-- WhileEntity
+    Statement <|-- IfEntity
+    Statement <|-- ElseEntity
+
+    class Entity {
+        <<abstract>>
+    }
+
+    class Container {
+        <<abstract>> 
+        -statement_list:list<Statement*>
+    }
+
+    class Variable {
+        -variable_name: VariableName*
+    }
+
+    class Procedure {
+        -procedure_name_: ProcedureName*
+    }
+
+    class Statement {
+        <<abstract>>
+        #line_number_: LineNumber*
+        #statement_number_: StatementNumber*
+        #parent_node_: Container*
+        #before_node: Statement*
+    }
+
+    class ReadEntity {
+        - var_name_: Variable*
+    }
+
+    class PrintEntity {
+        - var_name_: Variable*
+    }
+
+    class CallEntity {
+        - called_proc_name_: Procedure*
+    }
+
+    class AssignEntity {
+        - assigned_to: Variable*
+        - expr_: AssignmentExpression*
+    }
+
+    class WhileEntity {
+        - cond_expr_: ConditionalExpression*
+    }
+
+    class IfEntity {
+        - cond_expr_: ConditionalExpression*
+    }
+
+    class ElseEntity { }
+    
+    IfEntity "1" *-- "1" ElseEntity :contains
+
+
+    Container <|-- Procedure
+    Container <|-- WhileEntity
+    Container <|-- IfEntity
+    Container <|-- ElseEntity

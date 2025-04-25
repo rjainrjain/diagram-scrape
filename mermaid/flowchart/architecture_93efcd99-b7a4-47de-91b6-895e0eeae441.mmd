@@ -1,0 +1,84 @@
+flowchart TB
+    schedullerAPI --> MONGO
+    schedullerAPI --> Auth
+    schedullerAPI --> lines
+    schedullerAPI --> OpenSearch
+    schedullerAPI --> ElastiCache
+    schedullerAPI --> KMS
+    schedullerAPI --> SQS
+    schedullerAPI --> Rekognition
+    schedullerAPI --> tissXML
+    schedullerAPI --> tissRouter
+    schedullerAPI --> SMS
+    schedullerAPI --> edocprofiles
+    schedullerAPI --> edocimages
+    schedullerAPI --> edocofflineprofiles
+    schedullerAPI --> edocsaude-files
+    schedullerAPI --> edocsaude-faces
+    schedullerAPI --> edocsaude-ongoing-wizards
+    schedullerAPI --> edocsaude-session
+    lines --> MONGO
+    Filas --> lines
+    certificate_validator --> MONGO
+    certificate_validator --> schedullerAPI
+    scheduller_spa --> schedullerAPI
+    groups_spa --> schedullerAPI
+    jobs --> schedullerAPI
+    jobs --> Auth0
+    jobs --> SQS
+    mongo-oplog --> MONGO
+    mongo-oplog --> schedullerAPI
+    mongo-oplog --> SQS
+    slots --> schedullerAPI
+    slots --> SQS
+    slots --> MONGO
+    web_scheduler --> slots-api
+    web_scheduler --> schedullerapi-prod
+    web_scheduler --> MONGO
+    web_scheduler --> S3
+    subgraph AWS
+        direction TB
+        subgraph ElasticBeanstalk
+            subgraph schedullerAPI
+                schedullerapi-prod <--> reports
+                schedullerapi-prod <--> slots-api
+            end
+            groups_spa
+            scheduller_spa
+            lines
+            certificate_validator
+            tissXML
+            tissRouter
+            jobs
+            mongo-oplog
+            slots
+            web_scheduler
+        end
+        subgraph S3
+            edocprofiles
+            edocimages
+            edocofflineprofiles
+            edocsaude-files
+            edocsaude-faces
+            edocsaude-ongoing-wizards
+            edocsaude-session
+        end
+        OpenSearch
+        ElastiCache
+        KMS
+        SQS
+        Rekognition
+        SES
+    end
+    
+    subgraph MongoAtlas
+     MONGO[(MONGODB)]
+    end
+
+    subgraph Auth0
+     Auth[(Logins)]
+    end
+
+    subgraph Totens
+     Filas
+    end

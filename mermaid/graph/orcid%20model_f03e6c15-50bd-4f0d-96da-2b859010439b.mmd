@@ -1,0 +1,14 @@
+graph 
+P((Person)) -- affiliation --> O(Organization)
+P((Person)) -- identifier --> PI(PropertyValue)
+
+P((Person)) -- alumniOf --> O(Organization)
+O(Organization) -- identifier --> OI(PropertyValue)
+
+P((Person)) -- address --> PO(PostalAddress)
+
+W(CreativeWork) -- creator --> P((Person))
+W(CreativeWork) -- identifier --> WI(PropertyValue)
+
+O(Organization) -- funder --> P((Person))
+

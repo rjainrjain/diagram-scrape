@@ -1,0 +1,12 @@
+flowchart LR
+    idshape1[direct callback]-->B[call toast]
+    B[call toast]-->C[go to section]
+    C[go to section]-->D[internal link]
+    D[internal link]-->E[external link]
+    E[external link]-->F[external link in new tab]
+    click idshape1 flowchartCallback
+    click B call toast("Hello")
+    click C href "#title"
+    click D href "/not_found" "this page didnt exist !"
+    click E href "https://www.github.com" "https://www.notgithub.com"
+    click F href "https://www.github.com" _blank

@@ -1,0 +1,16 @@
+sequenceDiagram
+    actor C as Client
+    participant S as Server
+
+    C->>C: Ask user for a username and password
+    C->>C: Generate ed25519 keypair
+    C->>C: Hash username using BLAKE2b
+    C->>C: Compute a symetric key from the password and username hash using argon2id
+    C->>C: Encrypt the private key with the symetric key using AEGIS256
+    
+    C->>C: Generate a random salt
+    C->>C: Hash the password using argon2id and the salt
+
+    C->>S: Send the username, password hash, password salt, public key and encrypted private key to the server
+    S->>S: Store the user in the system
+    S-->>C: Confirm the registration

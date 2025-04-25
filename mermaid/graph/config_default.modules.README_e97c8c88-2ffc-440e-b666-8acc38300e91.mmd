@@ -1,0 +1,84 @@
+graph TB;
+
+subgraph Modules
+    direction LR;
+    classDef nodeCls fill:#9C57BF,stroke:#eee,color:#fff
+    classDef routeCls fill:#2080D0,stroke:#eee,color:#fff
+    classDef nodCls fill:#9C57BF,stroke:#eee,color:#fff
+    classDef serviceCls fill:#A9C9EB,stroke:#eee,color:#444
+    classDef dataCls fill:#73BF67,stroke:#eee,color:#fff
+    classDef localeCls fill:#73BF67,stroke:#eee,color:#fff
+
+subgraph generators
+direction TB;
+
+subgraph generators:routes["Routes"]
+direction LR;
+
+subgraph generators_routes1
+direction TB;
+    generate_route_doc("<b>generate_route</b><br><br><i>generate@generators</i><br><br>"):::routeCls
+
+end
+style generators_routes1 fill:#fff,stroke:#fff,color:#fff
+
+end
+style generators:routes fill:#f0f0f0,stroke:#eee,color:#444
+
+
+subgraph generators:services["Services"]
+direction LR;
+
+subgraph generators_services1
+direction TB;
+    mermaid_doc["<b>mermaid</b><br><br><i>mermaid@generators</i><br><br>"]:::serviceCls
+
+    model_doc["<b>model</b><br><br><i>model@generators</i><br><br>"]:::serviceCls
+
+    generate_doc["<b>generate</b><br><br><i>generate@generators</i><br><br>"]:::serviceCls
+
+end
+style generators_services1 fill:#fff,stroke:#fff,color:#fff
+
+
+subgraph generators_services2
+direction TB;
+    module_doc["<b>module</b><br><br><i>module@generators</i><br><br>"]:::serviceCls
+
+end
+style generators_services2 fill:#fff,stroke:#fff,color:#fff
+
+end
+style generators:services fill:#f0f0f0,stroke:#eee,color:#444
+
+end
+style generators fill:#f0f0f0,stroke:#eee,color:#444
+
+
+
+subgraph nxn/db
+direction TB;
+
+subgraph nxn/db:services["Services"]
+direction LR;
+
+subgraph nxn/db_services1
+direction TB;
+    db_doc[("<b>db</b><br><br><i>@nxn/db/firestore.service</i><br><br>Firestore")]:::dataCls
+
+    config_locale_doc>"config_locale"]:::localeCls
+
+    config_model_doc[/"config_model"/]:::dataCls
+
+end
+style nxn/db_services1 fill:#fff,stroke:#fff,color:#fff
+
+end
+style nxn/db:services fill:#f0f0f0,stroke:#eee,color:#444
+
+end
+style nxn/db fill:#f0f0f0,stroke:#eee,color:#444
+end
+style Modules fill:#fff,stroke:#999,color:#222
+
+

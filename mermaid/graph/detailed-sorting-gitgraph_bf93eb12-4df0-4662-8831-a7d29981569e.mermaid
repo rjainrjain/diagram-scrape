@@ -1,0 +1,33 @@
+gitGraph
+    commit id: "Initial Array [5, 2, 8, 12, 1, 6]"
+    branch iteration1
+    checkout iteration1
+    commit id: "Find Minimum: 1"
+    commit id: "Swap 5 and 1"
+    checkout main
+    merge iteration1 tag: "[1, 2, 8, 12, 5, 6]"
+    branch iteration2
+    checkout iteration2
+    commit id: "Find Minimum: 2"
+    commit id: "2 already in place"
+    checkout main
+    merge iteration2 tag: "[1, 2, 8, 12, 5, 6]"
+    branch iteration3
+    checkout iteration3
+    commit id: "Find Minimum: 5"
+    commit id: "Swap 8 and 5"
+    checkout main
+    merge iteration3 tag: "[1, 2, 5, 12, 8, 6]"
+    branch iteration4
+    checkout iteration4
+    commit id: "Find Minimum: 6"
+    commit id: "Swap 12 and 6"
+    checkout main
+    merge iteration4 tag: "[1, 2, 5, 6, 8, 12]"
+    branch iteration5
+    checkout iteration5
+    commit id: "Find Minimum: 8"
+    commit id: "8 already in place"
+    checkout main
+    merge iteration5 tag: "[1, 2, 5, 6, 8, 12]"
+    commit id: "Sorted Array [1, 2, 5, 6, 8, 12]"

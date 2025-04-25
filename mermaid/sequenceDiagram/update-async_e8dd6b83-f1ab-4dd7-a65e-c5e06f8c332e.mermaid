@@ -1,0 +1,17 @@
+sequenceDiagram
+	actor C as Client
+	participant S as Server
+	participant W as Worker
+
+	note left of C: handle = startUpdate()
+	C ->> S: UpdateWorkflowExecution<br>waitFor=ACCEPTED
+	W ->> S: poll for WFT
+	S -->> W: 
+	note right of W: execute user validator
+	W ->> S: command: updateResponse<br>Accepted
+	W -->> W: 
+	note right of W: execute user handler
+	S -->> C: outcome=null
+	note left of C: result = handle.result()
+	C ->> S: PollWorkflowExecutionUpdate<br>waitFor=COMPLETED
+	S -->> C: outcome=Success(payload)

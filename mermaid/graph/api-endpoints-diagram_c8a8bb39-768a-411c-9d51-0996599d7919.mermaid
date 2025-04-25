@@ -1,0 +1,13 @@
+graph TD
+    A[API] --> B[auth]
+    A --> C[surveys]
+    A --> D[hashes]
+    A --> E[verify]
+    B --> B1[POST login]
+    B --> B2[POST logout]
+    C --> C1[GET surveys]
+    C --> C2[POST surveys]
+    C --> C3[GET surveys/:id]
+    D --> D1[POST hashes]
+    D --> D2[GET hashes/:id]
+    E --> E1[POST verify]

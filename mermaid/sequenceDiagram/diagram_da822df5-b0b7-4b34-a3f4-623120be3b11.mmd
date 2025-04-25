@@ -1,0 +1,9 @@
+sequenceDiagram
+
+Note right of Browser: After clicking event handler function sends user's input body and timestamp to the server
+Browser ->> Server: POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+activate Server
+Note right of Browser: Now server doesn't ask to reload the page, only says that new note created
+Server ->> Browser: Status code 201 "created"
+deactivate Server
+Note right of Browser: After this browser use JS code to rerender the page with new note

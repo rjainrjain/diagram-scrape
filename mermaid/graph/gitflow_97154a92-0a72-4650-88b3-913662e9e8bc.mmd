@@ -1,0 +1,32 @@
+%%{init: { 'logLevel': 'debug', 'theme': 'Light', 'gitGraph': {'showBranches': true, 'showCommitLabel':true}} }%%
+gitGraph
+        commit id: "initial commit"
+        branch develop
+        checkout main
+        commit tag:"001"
+        commit tag:"002"
+        branch release/003
+        checkout release/003
+        commit tag:"featureB"
+        commit tag:"featureA"
+        checkout main
+        branch hotfix/001
+        checkout hotfix/001
+        commit
+        commit
+        checkout main
+        merge hotfix/001 tag:"hotfix 001"
+        branch feature/C
+        commit
+        commit
+        checkout develop
+        merge feature/C
+        checkout feature/C
+        commit tag:"fix bug"
+        checkout develop
+        merge feature/C
+        checkout feature/C
+        checkout release/003
+        merge feature/C
+        checkout main
+        merge release/003 tag:"003"

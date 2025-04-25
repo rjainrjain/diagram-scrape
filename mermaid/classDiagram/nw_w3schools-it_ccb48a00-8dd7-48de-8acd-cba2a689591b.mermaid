@@ -1,0 +1,74 @@
+classDiagram
+class Categoria {
+	id_categoria: INTEGER
+	nome: TEXT
+	descrizione: TEXT
+}
+
+class Cliente {
+	id_cliente: INTEGER
+	azienda: TEXT
+	referente: TEXT
+	indirizzo: TEXT
+	citta: TEXT
+	cap: TEXT
+	nazione: TEXT
+}
+
+class Fornitore {
+	id_fornitore: INTEGER
+	azienda: TEXT
+	referente: TEXT
+	indirizzo: TEXT
+	citta: TEXT
+	cap: TEXT
+	nazione: TEXT
+	telefono: TEXT
+}
+
+class Prodotto {
+	id_prodotto: INTEGER
+	nome: TEXT
+	id_fornitore: INTEGER
+	id_categoria: INTEGER
+	formato: TEXT
+	prezzo: REAL
+}
+
+class Spedizioniere {
+	id_spedizioniere: INTEGER
+	nome: TEXT
+	telefono: TEXT
+}
+
+class Venditore {
+	id_venditore: INTEGER
+	cognome: TEXT
+	nome: TEXT
+	data: TEXT
+	foto: TEXT
+	note: TEXT
+}
+
+class Ordine {
+	id_ordine: INTEGER
+	id_cliente: INTEGER
+	id_venditore: INTEGER
+	data_ordine: TEXT
+	id_spedizioniere: INTEGER
+}
+
+class Composizione {
+	id_ordine: INTEGER
+	id_prodotto: INTEGER
+	quantita: INTEGER
+}
+
+Prodotto "*" -- "1" Categoria : id_categoria
+Prodotto "*" -- "1" Fornitore : id_fornitore
+Ordine "*" -- "1" Spedizioniere : id_spedizioniere
+Ordine "*" -- "1" Venditore : id_venditore
+Ordine "*" -- "1" Cliente : id_cliente
+Composizione "*" -- "1" Prodotto : id_prodotto
+Composizione "*" -- "1" Ordine : id_ordine
+

@@ -1,0 +1,18 @@
+classDiagram
+  MedicalTest -- MedicalCondition
+  MedicalTest -- Drug
+  MedicalTest -- MedicalEnumeration
+  MedicalTest -- MedicalSign
+  MedicalTest -- MedicalDevice
+
+
+class MedicalTest {
+
+  MedicalCondition usedToDiagnose
+  Drug affectedBy
+  string normalRange
+  MedicalEnumeration normalRange
+  MedicalSign signDetected
+  MedicalDevice usesDevice
+
+ }

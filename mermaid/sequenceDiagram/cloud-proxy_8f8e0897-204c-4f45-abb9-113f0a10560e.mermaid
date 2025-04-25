@@ -1,0 +1,21 @@
+sequenceDiagram
+    participant User
+    participant Admin
+    participant App as App&#10;Implemented by you
+    participant Enterprise_Firewall
+    participant Cloud_Proxy as Cloud Proxy&#10;Provided by Agora
+    participant SD_RTN as SD-RTN&#10;Provided by Agora
+
+    User->>App: Open the app
+    App->>Enterprise_Firewall: Whitelist IP addresses and ports&#10;for Cloud Proxy in the firewall.
+    Enterprise_Firewall-->>App: Check whitelist to grant&#10;access
+    App->>Cloud_Proxy: Initialize the Signaling Engine
+    App->>Cloud_Proxy: Enable cloud proxy&#10;Call the method to enable&#10;a Cloud Proxy connection&#10;Request access to&#10;Cloud Proxy
+    Cloud_Proxy-->>App: Proxy information
+    App->>SD_RTN: Join a channel
+    SD_RTN-->>App: Join success
+    App->>SD_RTN: Send data stream
+    SD_RTN-->>App: Send and receive data stream
+    App-->>SD_RTN: Receive data stream
+    App->>SD_RTN: Leave the channel
+    SD_RTN-->>App: Channel leave

@@ -1,0 +1,154 @@
+classDiagram
+
+    User <|-- Customer
+    User <|-- Admin
+    Customer <|-- Musician
+    Customer <|-- Organizer
+
+    class User {
+        -user_id
+        +login()
+    }
+
+    class Admin {
+        -staff_id
+        
+    }
+
+    class Customer {
+        -customer_id
+        -first_name
+        -last_name
+        -phone_number
+        -email
+        -calendar_color
+        -calendar_style
+        -calendar_font_size
+        +change calendar preference()
+        +change account detail()
+        +send message(chatroom_id)
+    }
+
+    class Musician {
+        -status
+        -specialty[0..*]
+        -profile_picture
+        -introduction
+        -link
+        -latitute
+        -longitude
+        -sub_district
+        -district
+        -province
+        -zip_code
+        -picture_uri[0..*]
+        + edit portfolio()
+    }
+
+    class Credential {
+        -salt
+        -password_hash
+        +verify(password)
+    }
+    User "1" -- "1" Credential: authenticate
+
+    class Portfolio {
+        -link
+        -text
+        -profile_picture
+        -picture_uri
+    }
+    Musician *-- Portfolio
+    Portfolio "1" -- "0..*" Event: history
+
+
+    class Organizer {
+        -company
+        +search (preferences[0..*])
+        +create chatroom()
+        +confirm event completion(event_id)
+        +create review(event_id)
+        +create event request(preferences[0..*])
+    }
+
+    class Event {
+        -event_id
+        -status
+        -start_time
+        -end_time
+        -description
+        -wage
+        +activate review()
+        +create payment()
+
+    }
+
+    %%Musician "1" -- "1" Location: live_at
+    Musician "1" -- "0..*" Event: work
+    Event "0..*" -- "1" Location: at
+    Organizer "1" -- "0..*" Event: host
+    
+    class Location {
+        -location_id
+        -longitude
+        -latitude
+        -sub_district
+        -district
+        -province
+        -zip_code
+    }
+
+    class Review {
+        -review_id
+        -rating
+        -comment
+        -created_at
+    }
+
+    class Payment {
+        -payment_id
+        -status
+        -transaction_id
+        -method
+        -timestamp
+        -currency_type
+        -amount
+        -description
+        +verify transaction()
+    }
+
+    Event "1" -- "1" Review: have
+    Event "1" -- "1..*" Payment: have
+
+    Message <|-- Attachment
+    Message <|-- Text
+    Message <|-- EventRequest
+
+    class Message {
+        -message_no
+        -sent_at
+        -sender
+    }
+
+    class Attachment {
+        -uri
+    }
+
+    class Text {
+        -text
+    }
+
+    class EventRequest {
+        -start_time
+        -end_time
+        -description
+    }
+
+    class ChatRoom {
+        -chatroom_id
+    }
+    
+    ChatRoom "1" -- "0..*" Message: contain
+    Event "1..*" -- "1" ChatRoom: chat
+    Musician "1" -- "1" ChatRoom: chat
+    Organizer "1" -- "1" ChatRoom: chat

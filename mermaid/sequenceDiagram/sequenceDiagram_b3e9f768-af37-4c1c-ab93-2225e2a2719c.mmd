@@ -1,0 +1,40 @@
+sequenceDiagram
+    autonumber
+
+    actor User as ALC User
+
+    participant A as Authorization Page
+    participant API as Contractor Compliance API
+    participant Callback as Callback Page
+    participant js as CC.js
+
+    User->>A: Opens dialog window
+
+    par Create Authorization Page
+        A->>js: CC.injectAuth(...)
+        js-->>A: creates iFrame
+    end
+
+    par User Authenticates using CC Login page and authorizes 3rd-party API 
+        API-->>User: Shows Login Page
+        User->>API: Logs in
+        API-->>User: Shows Authorization Message
+        User->>API: User Authorizes ALC
+    end
+
+    par Extract code from iframe, and get Auth Bearer token
+        API->>Callback: Redirect
+        Callback->>js: CC.injectCallback(...)
+
+        User->>A: Closes window
+        A->>Callback: CC.postMessageGetCode()
+        Callback-->>A: {code: ...}
+        A->>js: CC.apiGetToken()
+        js->>API: /oauth/token?code=...
+        js-->>A: token (Authorization: Bearer {token})
+    end
+
+    par API Request
+        A->>API: /v2.0/users/current (Authorization: Bearer {token})
+        API-->>A: data
+    end

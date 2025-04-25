@@ -1,0 +1,10 @@
+sequenceDiagram
+    participant browser
+    participant server
+    browser ->> server: POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+    Note right of browser: Browser sends json data: {"content":"test","date":"2023-10-08T14:36:29.089Z"} to server, content-type is application/json
+    activate server
+    server -->> browser: 201 Created
+    Note left of server: Server responds with status code 201 and body: {"message": "note created"}
+    deactivate server
+    Note right of browser: The browser executes the callback function that renders the notes

@@ -1,0 +1,13 @@
+graph TD
+    MA[Mobile App] -->|Requests| RH[Request Handling Component]
+    RH -->|Authentication requests| OAuth[OAuth2.0 Component]
+    RH -->|Token operations| TM[Token Management Component]
+    RH -->|Member data operations| MD[Member Database Component]
+    RH -->|Session operations| SM[Session Management Component]
+    RH -->|Inter-service communication| GRPC[gRPC Interface Component]
+    OAuth -->|Stores tokens| RD[(Redis)]
+    TM -->|Stores tokens| RD
+    MD -->|Stores member data| PG[(PostgreSQL)]
+    SM -->|Stores sessions| RD
+    GRPC -->|Verifies tokens| TM
+    G[Google] -->|Authentication| OAuth

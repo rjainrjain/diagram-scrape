@@ -1,0 +1,14 @@
+flowchart LR
+classDef iteration fill:#47476B,stroke:#F9F8FF,color:#F9F8FF;
+identify_problem["Identify<br />Problem<br />& Motivate"]
+identify_problem --> define_objectives
+define_objectives["Define<br />Objectives of<br />a Solution"]
+define_objectives --> design
+design["Design &<br />Development"]:::iteration
+design --> demonstration
+demonstration["Demonstration"]:::iteration
+demonstration --> evaluation
+evaluation["Evaluation"]:::iteration
+evaluation -->|iterate| design
+evaluation --> communication
+communication["Communication"]

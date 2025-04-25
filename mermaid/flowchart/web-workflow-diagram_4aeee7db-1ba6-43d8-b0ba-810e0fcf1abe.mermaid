@@ -1,0 +1,96 @@
+flowchart TD
+    subgraph Data Analysis System
+        subgraph Configuration
+            config[config.py]
+        end
+
+        subgraph Data Collection
+            update[update_stocks.py]
+            loader[data_loader.py]
+            crawler[stock_crawler.py]
+        end
+
+        subgraph Analysis
+            analyzer[analyzer.py]
+            backtest[backtest_module.py]
+        end
+
+        subgraph Storage
+            db[(SQLite DB)]
+            database[database.py]
+            viewer[db_viewer.py]
+        end
+    end
+
+    subgraph Web Interface
+        subgraph Backend API
+            api[FastAPI Server]
+            subgraph API Endpoints
+                condition[/Portfolio Conditions/]
+                portfolio_api[Portfolio Generator]
+                analysis_api[Performance Analysis]
+            end
+        end
+
+        subgraph Frontend
+            react[React App]
+            subgraph User Interface
+                condition_form[Condition Input Form]
+                stock_filter[Stock Filter]
+            end
+            subgraph Visualizations
+                charts[Stock Charts]
+                portfolio_viz[Portfolio Composition]
+                performance[Performance Comparison]
+            end
+        end
+    end
+
+    %% Data Analysis System flow
+    config --> loader
+    config --> database
+    update --> loader
+    loader --> crawler
+    crawler --> analyzer
+    analyzer --> database
+    database --> db
+    
+    %% Web Interface flow
+    condition_form --> condition
+    stock_filter --> condition
+    condition --> portfolio_api
+    db --> portfolio_api
+    portfolio_api --> analysis_api
+    analysis_api --> charts
+    analysis_api --> portfolio_viz
+    analysis_api --> performance
+
+    %% Data types with higher contrast colors
+    classDef configNode fill:#FFE6E6,stroke:#333,stroke-width:2px,color:black
+    classDef dataNode fill:#E6F3FF,stroke:#333,stroke-width:2px,color:black
+    classDef analysisNode fill:#E6FFE6,stroke:#333,stroke-width:2px,color:black
+    classDef storageNode fill:#FFE6FF,stroke:#333,stroke-width:2px,color:black
+    classDef apiNode fill:#FFE6CC,stroke:#333,stroke-width:2px,color:black
+    classDef frontendNode fill:#E6FFFF,stroke:#333,stroke-width:2px,color:black
+    classDef vizNode fill:#F0F0F0,stroke:#333,stroke-width:2px,color:black
+    classDef inputNode fill:#FFE6E6,stroke:#333,stroke-width:2px,color:black
+
+    class config,condition_form,stock_filter configNode
+    class update,loader,crawler dataNode
+    class analyzer,portfolio_api,analysis_api analysisNode
+    class database,viewer,db storageNode
+    class api,condition apiNode
+    class react frontendNode
+    class charts,portfolio_viz,performance vizNode
+
+    %% Style for subgraphs
+    style Configuration fill:#FFF3F3,stroke:#FF9999,color:black
+    style Data Collection fill:#F3F9FF,stroke:#99CCFF,color:black
+    style Analysis fill:#F3FFF3,stroke:#99FF99,color:black
+    style Storage fill:#FFF3FF,stroke:#FF99FF,color:black
+    style Backend API fill:#FFF3E6,stroke:#FFB366,color:black
+    style Frontend fill:#F3FFFF,stroke:#66FFFF,color:black
+    style Visualizations fill:#F9F9F9,stroke:#CCCCCC,color:black
+    style User Interface fill:#FFE6E6,stroke:#FF9999,color:black
+    style Data Analysis System fill:#FFFFFF,stroke:#333333,color:black
+    style Web Interface fill:#FFFFFF,stroke:#333333,color:black

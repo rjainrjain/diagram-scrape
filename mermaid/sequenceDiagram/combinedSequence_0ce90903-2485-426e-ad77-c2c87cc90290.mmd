@@ -1,0 +1,1472 @@
+%% AcceptStoreOrders.mmd
+sequenceDiagram
+  actor Penjual
+  participant V_OP as View #10095; SellerOrderPage
+  participant P_AO as Pop-up #10095; AcceptOrder
+  participant C_O as Controller #10095; OrderController
+  participant M_O as Model #10095; Order
+
+  Penjual->>V_OP: klik tombol "Terima Pesanan" di salah satu data
+  
+  activate Penjual
+
+  activate V_OP
+
+  V_OP->>P_AO: setIsModalAcceptOpen(true)
+
+  activate P_AO
+
+  Penjual->>P_AO: klik tombl "Terima"
+  P_AO->>C_O: accept_order()
+
+  activate C_O
+
+  C_O->>M_O: update()
+  
+  activate M_O
+  
+  M_O-->>C_O: return
+
+  deactivate M_O
+
+  C_O-->>V_OP: return view
+
+  deactivate C_O
+  
+  V_OP->>P_AO: setIsModalAcceptOpen(false)
+
+  deactivate P_AO
+  deactivate V_OP
+  
+  deactivate Penjual
+
+%% AddItemToCart.mmd
+sequenceDiagram
+  actor Pembeli
+  participant V_S as View #10095; ProductPage
+  participant CTX_C as Context #10095; CartContext
+  participant LS_C as Local Storage #10095; Cart
+
+  Pembeli->>V_S: klik "Masukan Keranjang"
+
+  activate Pembeli
+  activate V_S
+
+  V_S->>CTX_C: addItem()
+
+  activate CTX_C
+
+  CTX_C->>LS_C: setItem()
+
+  activate LS_C
+
+  LS_C-->>CTX_C: data cart updated
+
+  deactivate LS_C
+
+  CTX_C-->>V_S: return view with updated cart
+
+  deactivate CTX_C
+  deactivate V_S
+  deactivate Pembeli
+
+%% AdminApproveStore.mmd
+sequenceDiagram
+  actor Admin
+  participant V_ASP as View #10095; AdminStorePage
+  participant P_AS as Pop-up #10095; ApproveStore
+  participant C_S as Controller #10095; StoreController
+  participant M_S as Model #10095; Store
+
+  Admin->>V_ASP: klik tombol "Setujui" di salah satu data
+  
+  activate Admin
+
+  activate V_ASP
+
+  V_ASP->>P_AS: setIsModalApproveOpen(true)
+
+  activate P_AS
+
+  Admin->>P_AS: klik tombl "Setujui"
+  P_AS->>C_S: update_store_status()
+
+  activate C_S
+
+  C_S->>M_S: update()
+  
+  activate M_S
+  
+  M_S-->>C_S: return
+
+  deactivate M_S
+
+  C_S-->>V_ASP: return view
+
+  deactivate C_S
+  
+  V_ASP->>P_AS: setIsModalApproveOpen(false)
+
+  deactivate P_AS
+  deactivate V_ASP
+  
+  deactivate Admin
+
+%% AdminRejectStore.mmd
+sequenceDiagram
+  actor Admin
+  participant V_ASP as View #10095; AdminStorePage
+  participant P_RS as Pop-up #10095; RejectStore
+  participant C_S as Controller #10095; StoreController
+  participant M_S as Model #10095; Store
+
+  Admin->>V_ASP: klik tombol "Tolak" di salah satu data
+  
+  activate Admin
+
+  activate V_ASP
+
+  V_ASP->>P_RS: setIsModalRejectOpen(true)
+
+  activate P_RS
+
+  Admin->>P_RS: klik tombl "Tolak"
+  P_RS->>C_S: update_store_status()
+
+  activate C_S
+
+  C_S->>M_S: update()
+  
+  activate M_S
+  
+  M_S-->>C_S: return
+
+  deactivate M_S
+
+  C_S-->>V_ASP: return view
+
+  deactivate C_S
+  
+  V_ASP->>P_RS: setIsModalRejectOpen(false)
+
+  deactivate P_RS
+  deactivate V_ASP
+  
+  deactivate Admin
+
+%% CancelStoreOrders.mmd
+sequenceDiagram
+  actor Penjual
+  participant V_OP as View #10095; SellerOrderPage
+  participant P_CO as Pop-up #10095; CancelOrder
+  participant C_O as Controller #10095; OrderController
+  participant M_O as Model #10095; Order
+  
+  Penjual->>V_OP: klik tombol "Batalkan Pesanan"
+  
+  activate Penjual
+
+  activate V_OP
+
+  V_OP->>P_CO: setIsModalCancelOpen(true)
+
+  activate P_CO
+
+  Penjual->>P_CO: klik tombl "Batalkan"
+  P_CO->>C_O: cancel_order()
+
+  activate C_O
+
+  opt Invalid Input
+    C_O-->>Penjual: return validation message
+  end
+
+  C_O->>M_O: update()
+  
+  activate M_O
+  
+  M_O-->>C_O: return
+
+  deactivate M_O
+
+  C_O-->>V_OP: return view
+
+  deactivate C_O
+  
+  V_OP->>P_CO: setIsModalCancelOpen(false)
+
+  deactivate P_CO
+  deactivate V_OP
+  
+  deactivate Penjual
+
+%% Checkout.mmd
+sequenceDiagram
+  actor Pembeli
+  participant V_C as View #10095; CheckoutPage
+  participant C_O as Controller #10095; OrderController
+  participant M_O as Model #10095; Order
+  participant M_T as Model #10095; Transaction
+  participant P_P as Pop-up #10095; Payment
+  participant V_O as View #10095; OrderPage
+
+  Pembeli->>V_C: klik "Bayar"
+
+  activate Pembeli
+  activate V_C
+
+  V_C->>C_O: get_token()
+
+  activate C_O
+
+  C_O->>M_O: create()
+
+  activate M_O
+
+  M_O-->>C_O: data order
+  
+  deactivate M_O
+  
+  C_O->>M_T: create()
+
+  activate M_T
+
+  M_T-->>C_O: data transaction
+  
+  deactivate M_T
+  
+  C_O-->>V_C: transaction token
+
+  deactivate C_O
+  
+  V_C->>P_P: pay()
+  
+  activate P_P
+
+  deactivate V_C
+
+  Pembeli->>P_P: pilih metode pembayaran
+  P_P->>C_O: update_transaction_by_token()
+
+  deactivate P_P
+  activate C_O
+
+  C_O->>M_O: update()
+
+  activate M_O
+  
+  M_O-->>C_O: data order
+  
+  deactivate M_O
+  
+  C_O->>M_T: update()
+
+  activate M_T
+  
+  M_T-->>C_O: data transaction
+  
+  deactivate M_T
+
+  activate V_O
+
+  C_O-->>V_O: return view with order list data
+
+  deactivate V_O
+  deactivate C_O
+  deactivate Pembeli
+
+%% CreateAdminCategory.mmd
+sequenceDiagram
+  actor Admin
+  participant V_ACP as View #10095; AdminCategoryPage
+  participant P_CC as Pop-up #10095; CreateCategory
+  participant C_CC as Controller #10095; CategoryController
+  participant M_C as Model #10095; Category
+
+  Admin->>V_ACP: klik tombol "Tambah Kategori"
+  
+  activate Admin
+
+  activate V_ACP
+
+  V_ACP->>P_CC: setIsModalCreateOpen(true)
+
+  activate P_CC
+
+  Admin->>P_CC: klik tombl "Submit"
+  P_CC->>C_CC: store()
+
+  activate C_CC
+
+  opt Invalid Input
+    C_CC-->>Admin: return validation message
+  end
+
+  C_CC->>M_C: create()
+  
+  activate M_C
+  
+  M_C-->>C_CC: return
+
+  deactivate M_C
+
+  C_CC-->>V_ACP: return view
+
+  deactivate C_CC
+  
+  V_ACP->>P_CC: setIsModalCreateOpen(false)
+
+  deactivate P_CC
+  deactivate V_ACP
+  
+  deactivate Admin
+
+%% CreateAdminVariantType.mmd
+sequenceDiagram
+  actor Admin
+  participant V_AVTP as View #10095; AdminVariantTypePage
+  participant P_CVT as Pop-up #10095; CreateVariantType
+  participant C_VT as Controller #10095; VariantTypeController
+  participant M_VT as Model #10095; VariantType
+
+  Admin->>V_AVTP: klik tombol "Tambah Tipe Varian"
+  
+  activate Admin
+
+  activate V_AVTP
+
+  V_AVTP->>P_CVT: setIsModalCreateOpen(true)
+
+  activate P_CVT
+
+  Admin->>P_CVT: klik tombl "Submit"
+  P_CVT->>C_VT: store()
+
+  activate C_VT
+
+  opt Invalid Input
+    C_VT-->>Admin: return validation message
+  end
+
+  C_VT->>M_VT: create()
+  
+  activate M_VT
+  
+  M_VT-->>C_VT: return
+
+  deactivate M_VT
+
+  C_VT-->>V_AVTP: return view
+
+  deactivate C_VT
+  
+  V_AVTP->>P_CVT: setIsModalCreateOpen(false)
+
+  deactivate P_CVT
+  deactivate V_AVTP
+  
+  deactivate Admin
+
+%% CreateReview.mmd
+sequenceDiagram
+  actor Pembeli
+  participant V_O as View #10095; OrderPage
+  participant P_R as Pop-up #10095; ReviewForm
+  participant C_O as Controller #10095; OrderController
+  participant M_O as Model #10095; Order
+
+  Pembeli->>V_O: klik "Beri Ulasan" di salah satu pesanan
+
+  activate Pembeli
+  activate V_O
+  
+  V_O->>P_R: setIsModalReviewOpen(true)
+  
+  deactivate V_O
+  activate P_R
+
+  Pembeli->>P_R: klik "Kirim Ulasan"
+
+
+  P_R->>C_O: create()
+
+  activate C_O
+
+  opt Invalid Form
+    C_O-->>P_R: return invalid message
+  end
+
+
+  C_O->>M_O: updateOrCreate()
+
+  activate M_O
+
+  M_O-->>C_O: data ulasan
+
+  deactivate M_O
+
+  C_O-->>V_O: return view with data ulasan
+  
+  deactivate C_O
+  activate V_O
+
+  V_O->>P_R: setIsModalReviewOpen(false)
+
+  deactivate P_R
+  deactivate V_O
+
+  deactivate Pembeli
+
+%% CreateStore.mmd
+sequenceDiagram
+  actor Pembeli
+  participant V_L as View #10095; CreateStorePage
+  participant C_S as Controller #10095; StoreController
+  participant M_S as Model #10095; Store
+  participant V_DS as View #10095; DashboardSellerPage
+
+
+  Pembeli->>V_L: Klik tombol "Selesai" di halaman buka toko
+  activate Pembeli
+
+  activate V_L
+
+  V_L->>C_S: store()
+
+  deactivate V_L
+
+  activate C_S
+
+  opt Invalid Form
+    C_S-->>Pembeli: return validation message
+  end
+
+  C_S->>M_S: create()
+
+  activate M_S
+
+  M_S-->>C_S: data user
+
+  deactivate M_S
+
+  activate V_DS
+  C_S-->>V_DS: return view with data
+  deactivate V_DS
+
+  deactivate C_S
+  deactivate Pembeli
+
+%% CreateStoreEtalase.mmd
+sequenceDiagram
+  actor Penjual
+  participant V_SCP as View #10095; SellerStoreCategoryPage
+  participant P_ASC as Pop-up #10095; AddStoreCategory
+  participant C_SC as Controller #10095; StoreCategoryController
+  participant M_SC as Model #10095; StoreCategory
+
+  Penjual->>V_SCP: klik tombol "Tambah Etalase"
+  
+  activate Penjual
+
+  activate V_SCP
+
+  V_SCP->>P_ASC: setIsModalCreateOpen(true)
+
+  activate P_ASC
+
+  Penjual->>P_ASC: klik tombl "Submit"
+  P_ASC->>C_SC: store()
+
+  activate C_SC
+
+  opt Invalid Input
+    C_SC-->>Penjual: return validation message
+  end
+
+  C_SC->>M_SC: create()
+  
+  activate M_SC
+  
+  M_SC-->>C_SC: return
+
+  deactivate M_SC
+
+  C_SC-->>V_SCP: return view
+
+  deactivate C_SC
+  
+  V_SCP->>P_ASC: setIsModalCreateOpen(false)
+
+  deactivate P_ASC
+  deactivate V_SCP
+  
+  deactivate Penjual
+
+%% CreateStoreProduct.mmd
+sequenceDiagram
+  actor Penjual
+  participant V_CP as View #10095; CreateProductPage
+  participant C_P as Controller #10095; ProductController
+  participant M_P as Model #10095; Product
+  participant V_SP as View #10095; SellerProductPage
+
+
+  Penjual->>V_CP: Klik tombol "Submit" di halaman tambah produk
+  activate Penjual
+
+  activate V_CP
+
+  V_CP->>C_P: store()
+
+  deactivate V_CP
+
+  activate C_P
+
+  opt Invalid Input
+    C_P-->>Penjual: return validation message
+  end
+
+  C_P->>M_P: create()
+
+  activate M_P
+
+  M_P-->>C_P: data produk
+
+  deactivate M_P
+
+  activate V_SP
+  C_P-->>V_SP: return view with data
+  deactivate V_SP
+
+  deactivate C_P
+  deactivate Penjual
+
+%% DeleteStoreEtalase.mmd
+sequenceDiagram
+  actor Admin
+  participant V_ACP as View #10095; AdminCategoryPage
+  participant P_DC as Pop-up #10095; DeleteCategory
+  participant C_C as Controller #10095; CategoryController
+  participant M_C as Model #10095; Category
+  
+  Admin->>V_ACP: klik icon sampah di salah satu data
+  
+  activate Admin
+
+  activate V_ACP
+
+  V_ACP->>P_DC: setIsModalDeleteOpen(true)
+
+  activate P_DC
+
+  Admin->>P_DC: klik tombl "Hapus"
+  P_DC->>C_C: destroy()
+
+  activate C_C
+
+  C_C->>M_C: delete()
+  
+  activate M_C
+  
+  M_C-->>C_C: return
+
+  deactivate M_C
+
+  C_C-->>V_ACP: return view
+
+  deactivate C_C
+  
+  V_ACP->>P_DC: setIsModalDeleteOpen(false)
+
+  deactivate P_DC
+  deactivate V_ACP
+
+  deactivate Admin
+
+%% EditAdminCategory.mmd
+sequenceDiagram
+  actor Admin
+  participant V_ACP as View #10095; AdminCategoryPage
+  participant P_EC as Pop-up #10095; EditCategory
+  participant C_C as Controller #10095; CategoryController
+  participant M_C as Model #10095; Category
+  
+  Admin->>V_ACP: klik icon pensil di salah satu data
+  
+  activate Admin
+
+  activate V_ACP
+
+  V_ACP->>P_EC: setIsModalEditOpen(true)
+
+  activate P_EC
+
+  Admin->>P_EC: klik tombl "Submit"
+  P_EC->>C_C: update()
+
+  activate C_C
+
+  opt Invalid Input
+    C_C-->>Admin: return validation message
+  end
+
+  C_C->>M_C: update()
+  
+  activate M_C
+  
+  M_C-->>C_C: return
+
+  deactivate M_C
+
+  C_C-->>V_ACP: return view
+
+  deactivate C_C
+  
+  V_ACP->>P_EC: setIsModalEditOpen(false)
+
+  deactivate P_EC
+  deactivate V_ACP
+
+  deactivate Admin
+
+%% EditStoreEtalase.mmd
+sequenceDiagram
+  actor Penjual
+  participant V_SCP as View #10095; SellerStoreCategoryPage
+  participant P_ESC as Pop-up #10095; EditStoreCategory
+  participant C_SC as Controller #10095; StoreCategoryController
+  participant M_SC as Model #10095; StoreCategory
+
+  
+  Penjual->>V_SCP: klik icon pensil di salah satu data
+  
+  activate Penjual
+
+  activate V_SCP
+
+  V_SCP->>P_ESC: setIsModalEditOpen(true)
+
+  activate P_ESC
+
+  Penjual->>P_ESC: klik tombl "Submit"
+  P_ESC->>C_SC: update()
+
+  activate C_SC
+
+  opt Invalid Input
+    C_SC-->>Penjual: return validation message
+  end
+
+  C_SC->>M_SC: update()
+  
+  activate M_SC
+  
+  M_SC-->>C_SC: return
+
+  deactivate M_SC
+
+  C_SC-->>V_SCP: return view
+
+  deactivate C_SC
+  
+  V_SCP->>P_ESC: setIsModalEditOpen(false)
+
+  deactivate P_ESC
+  deactivate V_SCP
+
+  deactivate Penjual
+
+%% EditStoreInfo.mmd
+sequenceDiagram
+  actor Penjual
+  participant V_ES as View #10095; EditStorePage
+  participant C_A as Controller #10095; AuthController
+  participant M_S as Model #10095; Store
+
+
+  Penjual->>V_ES: Klik tombol "Simpan"
+  activate Penjual
+
+  activate V_ES
+
+  V_ES->>C_A: update()
+
+  deactivate V_ES
+
+  activate C_A
+
+  opt Invalid Input
+    C_A-->>Penjual: return validation message
+  end
+
+  C_A->>M_S: update()
+
+  activate M_S
+
+  M_S-->>C_A: data toko
+
+  deactivate M_S
+
+  activate V_ES
+  C_A->>V_ES: return view with data toko
+  deactivate V_ES
+
+  deactivate C_A
+  deactivate Penjual
+
+%% EditStoreProduct.mmd
+sequenceDiagram
+  actor Penjual
+  participant V_EP as View #10095; EditProductPage
+  participant C_P as Controller #10095; ProductController
+  participant M_P as Model #10095; Product
+  participant V_SP as View #10095; SellerProductPage
+
+
+  Penjual->>V_EP: Klik tombol "Submit" di halaman tambah produk
+  activate Penjual
+
+  activate V_EP
+
+  V_EP->>C_P: store()
+
+  deactivate V_EP
+
+  activate C_P
+
+  opt Invalid Input
+    C_P-->>Penjual: return validation message
+  end
+
+  C_P->>M_P: create()
+
+  activate M_P
+
+  M_P-->>C_P: data produk
+
+  deactivate M_P
+
+  activate V_SP
+  C_P-->>V_SP: return view with data
+  deactivate V_SP
+
+  deactivate C_P
+  deactivate Penjual
+
+%% GetAdminCategory.mmd
+sequenceDiagram
+  actor Admin
+  participant V_DA as View #10095; DashboardAdminPage
+  participant C_C as Controller #10095; CategoryController
+  participant M_C as Model #10095; Category
+  participant V_ACP as View #10095; AdminCategoryPage
+
+  Admin->>V_DA: klik tombl "Kategori"
+
+  activate Admin
+  activate V_DA
+
+  V_DA->>C_C: index()
+
+  deactivate V_DA
+  activate C_C
+
+  C_C->>M_C: get()
+
+  activate M_C
+
+  M_C-->>C_C: data
+
+  deactivate M_C
+
+  activate V_ACP
+
+  C_C-->>V_ACP: return view with data
+
+  deactivate C_C
+  deactivate V_ACP
+  deactivate Admin
+
+%% GetAdminStores.mmd
+sequenceDiagram
+  actor Admin
+  participant V_DA as View #10095; DashboardAdminPage
+  participant C_S as Controller #10095; StoreController
+  participant M_S as Model #10095; Store
+  participant V_ASP as View #10095; AdminStorePage
+
+  Admin->>V_DA: klik tombl "Daftar Toko"
+
+  activate Admin
+  activate V_DA
+
+  V_DA->>C_S: paginated()
+
+  deactivate V_DA
+  activate C_S
+
+  C_S->>M_S: get()
+
+  activate M_S
+
+  M_S-->>C_S: data
+
+  deactivate M_S
+
+  activate V_ASP
+
+  C_S-->>V_ASP: return view with data
+
+  deactivate C_S
+  deactivate V_ASP
+  deactivate Admin
+
+%% GetAdminVariantType.mmd
+sequenceDiagram
+  actor Admin
+  participant V_DA as View #10095; DashboardAdminPage
+  participant C_VT as Controller #10095; VariantTypeController
+  participant M_VT as Model #10095; VariantType
+  participant V_AVTP as View #10095; AdminVariantTypePage
+
+  Admin->>V_DA: klik tombl "Tipe Varian"
+
+  activate Admin
+  activate V_DA
+
+  V_DA->>C_VT: index()
+
+  deactivate V_DA
+  activate C_VT
+
+  C_VT->>M_VT: get()
+
+  activate M_VT
+
+  M_VT-->>C_VT: data
+
+  deactivate M_VT
+
+  activate V_AVTP
+
+  C_VT-->>V_AVTP: return view with data
+
+  deactivate C_VT
+  deactivate V_AVTP
+  deactivate Admin
+
+%% GetDetailItem.mmd
+sequenceDiagram
+  actor Pembeli
+  participant V_H as View #10095; HomePage
+  participant C_P as Controller #10095; ProductController
+  participant M_P as Model #10095; Product
+  participant V_P as View #10095; ProductPage
+
+  Pembeli->>V_H: klik salah satu item
+
+  activate Pembeli
+  activate V_H
+
+  V_H->>C_P: show()
+
+  deactivate V_H
+
+  activate C_P
+
+  C_P->>M_P: get()
+
+  activate M_P
+
+  M_P-->>C_P: data produk
+
+  deactivate M_P
+
+  activate V_P
+  C_P-->>V_P: return view with data produk
+
+  deactivate C_P
+  deactivate V_P
+  deactivate Pembeli
+
+%% GetRecomendItem.mmd
+sequenceDiagram
+  actor Pembeli
+  participant V_H as View #10095; HomePage
+  participant C_P as Controller #10095; ProductController
+  participant M_P as Model #10095; Product
+
+  Pembeli->>V_H: akses situs Salesprint
+
+  activate Pembeli
+  activate V_H
+
+  V_H->>C_P: paginated_recomendation()
+
+  activate C_P
+
+  C_P->>M_P: getRecomendation()
+
+  activate M_P
+
+  M_P-->>C_P: data rekomendasi produk
+
+  deactivate M_P
+
+  C_P-->>V_H: return view with rekomendasi produk
+
+  deactivate C_P
+  deactivate V_H
+  deactivate Pembeli
+
+%% GetStoreDetail.mmd
+sequenceDiagram
+  actor Pembeli
+  participant V_P as View #10095; ProductPage
+  participant C_S as Controller #10095; StoreController
+  participant M_S as Model #10095; Store
+  participant V_S as View #10095; StorePage
+
+  Pembeli->>V_P: klik salah satu item
+
+  activate Pembeli
+  activate V_P
+
+  V_P->>C_S: show()
+
+  deactivate V_P
+  activate C_S
+
+  C_S->>M_S: get()
+
+  activate M_S
+
+  M_S-->>C_S: data toko
+
+  deactivate M_S
+
+  activate V_S
+
+  C_S-->>V_S: return view with data toko
+
+  deactivate C_S
+  deactivate V_S
+  deactivate Pembeli
+
+%% GetStoreEtalase.mmd
+sequenceDiagram
+  actor Penjual
+  participant V_DS as View #10095; DashboardSellerPage
+  participant C_SC as Controller #10095; StoreCategoryController
+  participant M_SC as Model #10095; StoreCategory
+  participant V_SCP as View #10095; SellerStoreCategoryPage
+
+  Penjual->>V_DS: klik tombl "Etalase"
+
+  activate Penjual
+  activate V_DS
+
+  V_DS->>C_SC: index()
+
+  deactivate V_DS
+  activate C_SC
+
+  C_SC->>M_SC: get()
+
+  activate M_SC
+
+  M_SC-->>C_SC: data
+
+  deactivate M_SC
+
+  activate V_SCP
+
+  C_SC-->>V_SCP: return view with data
+
+  deactivate C_SC
+  deactivate V_SCP
+  deactivate Penjual
+
+%% GetStoreInfo.mmd
+sequenceDiagram
+  actor Penjual
+  participant V_DS as View #10095; DashboardSellerPage
+  participant C_S as Controller #10095; StoreController
+  participant M_S as Model #10095; Store
+  participant V_S as View #10095; StoreInfoPage
+
+  Penjual->>V_DS: klik tombol "Info Toko"
+
+  activate Penjual
+  activate V_DS
+
+  V_DS->>C_S: get_user_stre()
+
+  deactivate V_DS
+  activate C_S
+
+  C_S->>M_S: get()
+
+  activate M_S
+
+  M_S-->>C_S: data toko
+
+  deactivate M_S
+
+  activate V_S
+
+  C_S-->>V_S: return view with data toko
+
+  deactivate C_S
+  deactivate V_S
+  deactivate Penjual
+
+%% GetStoreOrders.mmd
+sequenceDiagram
+  actor Penjual
+  participant V_DS as View #10095; DashboardSellerPage
+  participant C_O as Controller #10095; OrderController
+  participant M_O as Model #10095; Order
+  participant V_OP as View #10095; SellerOrderPage
+
+  Penjual->>V_DS: klik tombl "Pesanan"
+
+  activate Penjual
+  activate V_DS
+
+  V_DS->>C_O: index()
+
+  deactivate V_DS
+  activate C_O
+
+  C_O->>M_O: get()
+
+  activate M_O
+
+  M_O-->>C_O: data
+
+  deactivate M_O
+
+  activate V_OP
+
+  C_O-->>V_OP: return view with data
+
+  deactivate C_O
+  deactivate V_OP
+
+  deactivate Penjual
+
+%% GetStoreProducts.mmd
+sequenceDiagram
+  actor Penjual
+  participant V_DS as View #10095; DashboardSellerPage
+  participant C_P as Controller #10095; ProductController
+  participant M_P as Model #10095; Product
+  participant V_SP as View #10095; SellerProductPage
+  participant P_DP as Pop-up #10095; DeleteProduct
+
+  Penjual->>V_DS: klik tombl "Produk"
+
+  activate Penjual
+  activate V_DS
+
+  V_DS->>C_P: paginated_store_products()
+
+  deactivate V_DS
+  activate C_P
+
+  C_P->>M_P: get()
+
+  activate M_P
+
+  M_P-->>C_P: data produk
+
+  deactivate M_P
+
+  activate V_SP
+
+  C_P-->>V_SP: return view with data produk
+
+  deactivate C_P
+  deactivate V_SP
+
+  opt Hapus Produk
+    Penjual->>V_SP: klik tombl "Hapus" di salah satu data
+
+    activate V_SP
+
+    V_SP->>P_DP: setIsModalDeleteOpen(true)
+
+    activate P_DP
+
+    Penjual->>P_DP: klik tombl "Hapus"
+    P_DP->>C_P: destroy()
+
+    activate C_P
+
+    C_P->>M_P: delete()
+    
+    activate M_P
+    
+    M_P-->>C_P: return
+
+    deactivate M_P
+
+    C_P-->>V_SP: return view
+
+    deactivate C_P
+    
+    V_SP->>P_DP: setIsModalDeleteOpen(false)
+
+    deactivate P_DP
+    deactivate V_SP
+  end
+
+
+  deactivate Penjual
+
+%% GetUserOrders.mmd
+sequenceDiagram
+  actor Pembeli
+  participant V_H as View #10095; HomePage
+  participant C_O as Controller #10095; OrderController
+  participant M_O as Model #10095; Order
+  participant V_O as View #10095; OrderPage
+
+  Pembeli->>V_H: klik menu "Pesanan"
+
+  activate Pembeli
+  activate V_H
+
+  V_H->>C_O: paginated_user_orders()
+
+  deactivate V_H
+
+  activate C_O
+
+  C_O->>M_O: get()
+
+  activate M_O
+
+  M_O-->>C_O: data pesanan
+
+  deactivate M_O
+
+  activate V_O
+  C_O-->>V_O: return view with data pesanan
+
+  deactivate C_O
+  deactivate V_O
+  deactivate Pembeli
+
+%% GetUserReviews.mmd
+sequenceDiagram
+  actor Pembeli
+  participant V_H as View #10095; HomePage
+  participant C_R as Controller #10095; ReviewController
+  participant M_R as Model #10095; Review
+  participant V_R as View #10095; ReviewPage
+
+  Pembeli->>V_H: klik menu "Ulasan"
+
+  activate Pembeli
+  activate V_H
+
+  V_H->>C_R: paginated_user_reviews()
+
+  deactivate V_H
+
+  activate C_R
+
+  C_R->>M_R: get()
+
+  activate M_R
+
+  M_R-->>C_R: data ulasan
+
+  deactivate M_R
+
+  activate V_R
+  C_R-->>V_R: return view with data ulasan
+
+  deactivate C_R
+  deactivate V_R
+  deactivate Pembeli
+
+%% Login.mmd
+sequenceDiagram
+  actor Pembeli/Penjual/Admin
+  participant V_L as View #10095; LoginPage
+  participant C_A as Controller #10095; AuthController
+  participant M_U as Model #10095; User
+  participant V_H as View #10095; HomePage
+  participant V_DS as View #10095; DashboardSellerPage
+  participant V_DA as View #10095; DashboardAdminPage
+
+
+  Pembeli/Penjual/Admin->>V_L: Klik tombol "Login"
+  activate Pembeli/Penjual/Admin
+
+  activate V_L
+
+  V_L->>C_A: login(request)
+
+  deactivate V_L
+
+  activate C_A
+
+  opt Invalid Credential
+    C_A-->>Pembeli/Penjual/Admin: return validation message
+  end
+
+  C_A->>M_U: get()
+
+  activate M_U
+
+  M_U-->>C_A: data user
+  
+  deactivate M_U
+
+  opt Role User
+    C_A->>V_H: return view with token and user data
+    activate V_H
+    deactivate V_H
+  end
+
+  opt Role Seller
+    C_A->>V_DS: return view with token and user data
+    activate V_DS
+    deactivate V_DS
+  end
+
+  opt Role Admin
+    C_A->>V_DA: return view with token and user data
+    activate V_DA
+    deactivate V_DA
+  end
+
+  deactivate C_A
+  deactivate Pembeli/Penjual/Admin
+
+%% ManageCart.mmd
+sequenceDiagram
+  actor Pembeli
+  participant V_H as View #10095; HomePage
+  participant V_C as View #10095; CartPage
+  participant CTX_C as Context #10095; CartContext
+  participant LS_C as Local Storage #10095; Cart
+
+  Pembeli->>V_H: klik icon cart
+
+  activate Pembeli
+  activate V_H
+
+  V_H->>CTX_C: items
+
+  deactivate V_H
+
+  activate CTX_C
+
+  CTX_C->>LS_C: getItem()
+
+  activate LS_C
+
+  LS_C-->>CTX_C: data cart items
+
+  deactivate LS_C
+
+  activate V_C
+
+  CTX_C-->>V_C: return view cart items
+
+  deactivate CTX_C
+  deactivate V_C
+
+  opt Update Item Quantity
+    Pembeli->>V_C: klik icon plus atau minus di salah satu item
+
+    activate V_C
+
+    V_C->>CTX_C: updateItemQuantity()
+
+    activate CTX_C
+
+    CTX_C->>LS_C: setItem()
+
+    activate LS_C
+
+    LS_C-->>CTX_C: cart item updated
+    
+    deactivate LS_C
+
+    CTX_C-->>V_C: return view with updated item cart
+
+    deactivate V_C
+    deactivate CTX_C
+  end
+  
+  opt Remove Item
+    Pembeli->>V_C: klik icon sampah di salah satu item
+
+    activate V_C
+
+    V_C->>CTX_C: removeItem()
+
+    activate CTX_C
+
+    CTX_C->>LS_C: setItem()
+
+    activate LS_C
+
+    LS_C-->>CTX_C: cart item updated
+    
+    deactivate LS_C
+
+    CTX_C-->>V_C: return view with updated item cart
+
+    deactivate V_C
+    deactivate CTX_C
+  end
+  
+  opt Remove All Item Cart
+    Pembeli->>V_C: klik icon sampah di salah satu item
+
+    activate V_C
+
+    V_C->>CTX_C: emptyCart()
+
+    activate CTX_C
+
+    CTX_C->>LS_C: removeItem()
+
+    activate LS_C
+
+    LS_C-->>CTX_C: cart deleted
+    
+    deactivate LS_C
+
+    CTX_C-->>V_C: return view with updated cart
+
+    deactivate V_C
+    deactivate CTX_C
+  end
+
+  deactivate Pembeli
+
+%% ReceiveOrder.mmd
+sequenceDiagram
+  actor Pembeli
+  participant V_O as View #10095; OrderPage
+  participant C_O as Controller #10095; OrderController
+  participant M_O as Model #10095; Order
+
+  Pembeli->>V_O: klik "Pesanan Selesai" di salah satu pesanan
+
+  activate Pembeli
+  activate V_O
+
+  V_O->>C_O: user_complete_order()
+
+  deactivate V_O
+
+  activate C_O
+
+  C_O->>M_O: update()
+
+  activate M_O
+
+  M_O-->>C_O: data pesanan
+
+  deactivate M_O
+
+  activate V_O
+  C_O-->>V_O: return view with data pesanan
+
+  deactivate C_O
+  deactivate V_O
+  deactivate Pembeli
+
+%% Register.mmd
+sequenceDiagram
+  actor Pembeli
+  participant V_R as View #10095; RegisterPage
+  participant C_A as Controller #10095; AuthController
+  participant M_U as Model #10095; User
+  participant V_H as View #10095; HomePage
+
+
+  Pembeli->>V_R: Klik tombol "Login"
+  activate Pembeli
+
+  activate V_R
+
+  V_R->>C_A: register(request)
+
+  deactivate V_R
+
+  activate C_A
+
+  opt Invalid Credential
+    C_A-->>Pembeli: return validation message
+  end
+
+  C_A->>M_U: create()
+
+  activate M_U
+
+  M_U-->>C_A: data user
+
+  deactivate M_U
+
+  C_A->>V_H: return view with token and user data
+  activate V_H
+  deactivate V_H
+
+  deactivate C_A
+  deactivate Pembeli
+
+%% ShipStoreOrders.mmd
+sequenceDiagram
+  actor Penjual
+  participant V_OP as View #10095; SellerOrderPage
+  participant P_SO as Pop-up #10095; ShipOrder
+  participant C_O as Controller #10095; OrderController
+  participant M_O as Model #10095; Order
+
+  Penjual->>V_OP: klik tombol "Kirim Pesanan" di salah satu data
+  
+  activate Penjual
+
+  activate V_OP
+
+  V_OP->>P_SO: setIsModalShipOpen(true)
+
+  activate P_SO
+
+  Penjual->>P_SO: klik tombl "Submit"
+  P_SO->>C_O: ship_order()
+
+  activate C_O
+
+  opt Invalid Input
+    C_O-->>Penjual: return validation message
+  end
+
+  C_O->>M_O: update()
+  
+  activate M_O
+  
+  M_O-->>C_O: return
+
+  deactivate M_O
+
+  C_O-->>V_OP: return view
+
+  deactivate C_O
+  
+  V_OP->>P_SO: setIsModalShipOpen(false)
+
+  deactivate P_SO
+  deactivate V_OP
+  
+  deactivate Penjual

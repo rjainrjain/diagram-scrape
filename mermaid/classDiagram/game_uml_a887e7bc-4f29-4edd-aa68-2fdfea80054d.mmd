@@ -1,0 +1,119 @@
+classDiagram
+    class GameState {
+        -game: Game
+        -currentPhase: string
+        +__construct(Game)
+        +execute(): void
+        +getCurrentPhase(): string
+        +getGame(): Game
+        +getHands(): array
+        +setPhase(string)
+    }
+    
+    class Game {
+        -players: Player[]
+        -deck: DeckOfCards
+        +__construct()
+        +setDeck(DeckOfCards): void
+        +getDeck(): DeckOfCards
+        +drawCards(int): array
+        +deal(Player, int): void
+        +addPlayer(string, string, string): void
+        +getPlayers(): Player[]
+        +resetPlayers(): void
+        +__toArray(): array
+        #initializeGame()
+    }    
+
+    class TwentyOneGame {
+        -resetHands(): void
+        +initializeGame(): void
+        +initializeRound(): void
+        +playerDraws(): void
+        +dealerDraws(): void
+        +isPlayerBust(): bool
+        +isDealerBust(): bool
+        +calculateScore(Player): int
+        +resetHands(): void
+        +getHandValues(): array
+        +getResultMessage(): string
+    }
+
+    class TwentyOneGameState {
+        +execute(): void
+        +getRenderData(): array
+    }
+
+    class DeckOfCards {
+        -cards: Card[]
+        #createDeck(): void
+        +getCards(): Card[]
+        +getCopySortedCards(): Card[]
+        +addCard(Card)
+        +drawCard(): Card
+        +shuffleDeck(): void
+        +countCards(): int
+        +isEmpty(): bool
+        +resetDeck(): void
+        +__toArray(): array
+        +getAsArray(): array[]
+    }
+
+    class Player {
+        -id: string
+        -name: string
+        -type: string
+        -hand: CardHand
+        +__construct(string, string, string)
+        +addCardToHand(Card)
+        +playCard(Card): Card
+        +playAllCards(): Card[]
+        +getName(): string
+        +getId(): string
+        +getHand(): Card[]
+        +getPlayerType(): string
+        +__toArray(): array
+        +clearHand(): void
+    }
+
+    class CardHand {
+        -cards: Card[]
+        +addCard(Card): void
+        +takeCard(Card): Card
+        +getCards(): Card[]
+        +__toArray(): array
+    }
+    class Card {
+        -value: int
+        -suit: string
+        -$validValues: int[]
+        -$validSuits: string[]
+        +__construct(int, string)
+        +getValue(): int
+        +getSuit(): string
+        +getCard(): array
+        +getAsString(): string
+        +__toString(): string
+    }
+    class CardGraphic {
+        -unicodeCards: array
+        +getGraphicForCollection(iterable): array
+        +getGraphic(Card): string
+    }
+    class FrenchDeckNoJoker {
+        +__construct()
+        #createDeck(): void
+    }
+
+    GameState *-- Game
+    Game *-- Player
+    Game *-- DeckOfCards
+    DeckOfCards <|-- FrenchDeckNoJoker
+    DeckOfCards *-- Card
+    Player *-- CardHand
+    CardHand *-- Card
+    Card ..> CardGraphic: represented by
+    Game <|-- TwentyOneGame
+    Game <|-- GameState
+    GameState <|-- TwentyOneGameState
+    TwentyOneGameState ..> CardGraphic: uses

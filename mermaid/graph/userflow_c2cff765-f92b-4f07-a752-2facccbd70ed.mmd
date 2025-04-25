@@ -1,0 +1,26 @@
+graph TD
+p[\proposal:<br/>create a dataset on<br/>decent vs cent AI<br/>understanding/]
+v{vote on the<br/>proposal}
+ai[ai dao<br/>delegate]
+pr[[peer-review<br/>manager]]
+a([authors])
+r([reviewers])
+data[(data set)]
+dp{delegator's<br/>personalization<br/>of data}
+d([human<br/>delegator])
+pc[alignment<br/>context<br/>in prompt]
+ai(((<b>AI DAO Delegate</b><br/>as an on-chain<br/>GPU LLM)))
+
+p-->v
+ai-->|aligned<br/>response|v
+v-->|erc20 funding<br/>& list of authors<br/>and reviewers|pr
+pr-->|erc20<br/>payment|a
+a-->|submit<br/>instruction<br/>& response<br/>data object|pr
+pr-->|erc20<br/>payment|r
+r-->|accept<br/> or reject|pr
+pr-->data
+data-->dp
+d-->dp
+dp-->pc
+pc-->ai
+d-.->|delegate<br/>voting|ai

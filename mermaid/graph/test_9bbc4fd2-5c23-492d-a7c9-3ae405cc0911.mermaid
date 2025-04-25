@@ -1,0 +1,26 @@
+graph TD;
+    subgraph Input
+        A1["One-hot Encoding<br/>x1: [1, 0, 0, 0, 0]"] --> A["Input Layer<br/>x1: 'movie'"]
+        A2["One-hot Encoding<br/>x2: [0, 1, 0, 0, 0]"] --> A
+        A3["One-hot Encoding<br/>x3: [0, 0, 1, 0, 0]"] --> A
+    end
+
+    A -->|W_xh| B["Hidden Layer<br/>h_prev"]
+    
+    B -->|W_hh| B1["Hidden Layer<br/>h_t"]
+    B1 -->|W_hy| C["Output Layer<br/>y"]
+
+    B1 --> D["Hidden Biases<br/>b_h"]
+    C --> E["Output Bias<br/>b_y"]
+
+    style A fill:#f9f,stroke:#333,stroke-width:2px;
+    style B fill:#bbf,stroke:#333,stroke-width:2px;
+    style B1 fill:#bbf,stroke:#333,stroke-width:2px;
+    style C fill:#ffb,stroke:#333,stroke-width:2px;
+    style D fill:#cfc,stroke:#333,stroke-width:1px;
+    style E fill:#cfc,stroke:#333,stroke-width:1px;
+
+    classDef input fill:#f9f,stroke:#333,stroke-width:2px;
+    classDef hidden fill:#bbf,stroke:#333,stroke-width:2px;
+    classDef output fill:#ffb,stroke:#333,stroke-width:2px;
+    classDef weights fill:#cfc,stroke:#333,stroke-width:1px;

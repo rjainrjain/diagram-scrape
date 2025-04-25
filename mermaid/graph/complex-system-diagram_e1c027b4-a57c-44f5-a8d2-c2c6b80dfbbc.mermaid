@@ -1,0 +1,47 @@
+graph TB
+    A[User Interface] --> B[API Gateway]
+    B --> C[Authentication Service]
+    B --> D[User Service]
+    B --> E[Content Service]
+    B --> F[Analytics Service]
+    
+    C --> G[(User DB)]
+    D --> G
+    D --> H[(Profile DB)]
+    
+    E --> I[(Content DB)]
+    E --> J[Content Delivery Network]
+    
+    F --> K[(Analytics DB)]
+    F --> L[Real-time Processing]
+    L --> M[Stream Processing]
+    M --> N[Data Lake]
+    
+    O[Admin Dashboard] --> B
+    
+    P[Mobile App] --> B
+    Q[Web App] --> B
+    
+    R[External APIs] --> B
+    
+    S[Caching Layer] --> B
+    S --> C
+    S --> D
+    S --> E
+    
+    T[Message Queue] --> D
+    T --> E
+    T --> F
+    
+    U[Monitoring & Logging] --> A
+    U --> B
+    U --> C
+    U --> D
+    U --> E
+    U --> F
+    
+    V[Backup & Recovery] --> G
+    V --> H
+    V --> I
+    V --> K
+    V --> N

@@ -1,0 +1,31 @@
+classDiagram
+  Yahoo Price API --> Yahoo
+  PriceProvider --|> Yahoo
+  RegistryInterface --> Yahoo : DI
+  PriceAdapter_Vendor --> Yahoo : DI
+  TradingCalendar --> Yahoo : DI
+  Catalog --> Yahoo : DI
+  <<interface>> PriceProvider
+  <<PriceProvider>> Yahoo
+  class PriceProvider{
+    +downloadHistory($instrument, $fromDate, $toDate, $options);
+    +addHistory($instrument, $history);
+    +exportHistory($history, $path, $options);
+    +retrieveHistory($instrument, $fromDate, $toDate, $options);
+    +downloadQuote($instrument);
+    +saveQuote($instrument, $quote);
+    +removeQuote($instrument);
+    +addQuoteToHistory($quote, $history);
+    +retrieveQuote($instrument);
+    +downloadClosingPrice($instrument);
+    +retrieveClosingPrice($instrument);
+    +addClosingPriceToHistory($closingPrice, $history);
+  }
+  class PriceAdapter{
+    +getHistoricalData($instrument, $fromDate, $toDate, $options);
+    +getQuote($instrument);
+    +getQuotes($list);
+  }
+  <<interface>> PriceAdapter
+  PriceAdapter --|> PriceAdapter_Vendor
+  <<PriceAdapter>> PriceAdapter_Vendor

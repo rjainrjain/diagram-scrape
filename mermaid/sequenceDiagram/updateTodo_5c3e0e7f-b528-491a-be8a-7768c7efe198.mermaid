@@ -1,0 +1,18 @@
+sequenceDiagram
+    title: Sequence Diagram for Updating a Todo
+    note over Client: API Route: PUT /api/todos/{id}
+    note over Client: Path Parameter: id (string)
+    note over Client: Request Body: { title, description, completed }
+    note over Client: Response: 200 OK, { id, title, description, completed, created_at }
+    
+    participant Client
+    participant Server
+    participant Service
+    participant Storage
+
+    Client->>Server: PUT /api/todos/{id}
+    Server->>Service: updateTodo(id, data)
+    Service->>Storage: updateTodo(id, data)
+    Storage-->>Service: updatedTodo
+    Service-->>Server: updatedTodo
+    Server-->>Client: 200 OK, updatedTodo

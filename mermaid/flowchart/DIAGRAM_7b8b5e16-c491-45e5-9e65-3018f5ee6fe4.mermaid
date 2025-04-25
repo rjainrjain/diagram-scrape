@@ -1,0 +1,54 @@
+flowchart TD
+    subgraph "Terraform Backend"
+        TB[Terraform Backend Storage]
+    end
+
+    subgraph "Azure Infrastructure"
+        RG[Resource Group]
+        VNET[Virtual Network]
+        ASP[App Service Plan]
+        AS[App Service]
+        ACR[Azure Container Registry]
+        KV[Key Vault]
+        PSQL[PostgreSQL Server]
+        REDIS[Redis Cache]
+        AI[Application Insights]
+        LAW[Log Analytics Workspace]
+        NSG[Network Security Group]
+    end
+
+    subgraph "Terraform Configuration"
+        MF[main.tf]
+        NF[network-security.tf]
+        MLF[monitoring-log-analysis.tf]
+    end
+
+    subgraph "CI/CD Pipeline"
+        TBS[Terraform Backend Stage]
+        IDS[Infrastructure Deployment Stage]
+        BPI[Build and Push Image Stage]
+        DAS[Deploy to App Service Stage]
+    end
+
+    TB --> IDS
+    MF --> |creates| RG & ASP & AS & ACR & KV & PSQL & REDIS
+    NF --> |configures| VNET & NSG
+    MLF --> |sets up| AI & LAW
+    IDS --> |deploys| MF & NF & MLF
+    BPI --> |pushes to| ACR
+    DAS --> |deploys to| AS
+    AS --> |uses| ASP
+    AS --> |connects to| PSQL & REDIS
+    AS --> |monitored by| AI
+    AS --> |logs to| LAW
+    VNET --> |contains| AS & PSQL & REDIS
+    NSG --> |protects| VNET
+    KV --> |stores secrets for| AS
+
+    classDef terraform fill:#f9f,stroke:#333,stroke-width:2px;
+    classDef azure fill:#0072C6,stroke:#fff,stroke-width:2px,color:#fff;
+    classDef pipeline fill:#FFA500,stroke:#fff,stroke-width:2px,color:#fff;
+
+    class TB,MF,NF,MLF terraform;
+    class RG,VNET,ASP,AS,ACR,KV,PSQL,REDIS,AI,LAW,NSG azure;
+    class TBS,IDS,BPI,DAS pipeline;

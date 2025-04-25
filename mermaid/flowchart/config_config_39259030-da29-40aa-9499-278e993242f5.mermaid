@@ -1,0 +1,33 @@
+flowchart TD
+    A[Start] --> B[Load Configuration]
+    B --> C{Read Config File}
+    C -->|Success| D{Read Secrets File}
+    C -->|Error| E[Return Error]
+    D -->|Success| F[Merge Flags]
+    D -->|Error| G[Return Error]
+    F --> H[Return Config]
+
+    subgraph Load Function
+        B --> I[readYAMLFile: Config]
+        I --> J[readYAMLFile: Secrets]
+        J --> K[Merge Flags]
+    end
+
+    subgraph readYAMLFile Function
+        L[Read File] --> M[Unmarshal YAML]
+        M --> N{Is map string interface}
+        N -->|Yes| O[Convert Map]
+        N -->|No| P[Return]
+        O --> P
+    end
+
+    subgraph Convert Map Functions
+        Q[convertMap] --> R[convertMapInterfaceToString]
+        Q --> S[convertSlice]
+        R --> Q
+        S --> Q
+    end
+
+    style Load Function fill:#f9f,stroke:#333,stroke-width:2px
+    style readYAMLFile Function fill:#ccf,stroke:#333,stroke-width:2px
+    style Convert Map Functions fill:#cfc,stroke:#333,stroke-width:2px

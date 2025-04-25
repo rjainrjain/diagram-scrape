@@ -1,0 +1,39 @@
+---
+title: Strength Gadget
+---
+erDiagram
+    ACCESS_ATTEMPT ||--o{ ACCESS_ATTEMPT_TYPE : "type"
+    ACCESS_ATTEMPT ||--o{ USER : "user_id"
+    USER ||--o{ VERIFICATION_CODE : "user_id"
+
+    ACCESS_ATTEMPT {
+        uuid id
+        bigint time
+        boolean access_granted
+        uuid type
+        uuid user_id
+    }
+
+    ACCESS_ATTEMPT_TYPE {
+        uuid id
+        text name
+    }
+
+    INIT {
+        bigint id
+        text migration_file_name
+    }
+
+    USER {
+        uuid id
+        text email
+        text password_hash
+        boolean email_verified
+    }
+
+    VERIFICATION_CODE {
+        uuid id
+        text code
+        uuid user_id
+        bigint expires
+    }

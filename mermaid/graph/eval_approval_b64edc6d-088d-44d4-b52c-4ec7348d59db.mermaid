@@ -1,0 +1,19 @@
+graph TD
+    A[Credit Analyst creates a new ESG Evaluation] --> B[Status: Draft]
+    B --> C[Credit Analyst completes all sections]
+    C --> D[Credit Analyst submits ESG Evaluation]
+    D --> E{Meets Auto-Approval criteria?}
+    
+    E -- Yes --> F[Status: Auto-Approved]
+    F --> G[Email sent to Credit Analyst]
+    
+    E -- No --> H[Status: Provisional]
+    H --> I[Email sent to ESG Team for review]
+    
+    I --> J[ESG Analyst reviews ESG Evaluation]
+    J --> K{Approve or Decline?}
+    
+    K -- Approve --> L[Status: Final]
+    L --> M[Email sent to Credit Analyst]
+    
+    K -- Decline --> N[Email sent to Credit Analyst with reason]

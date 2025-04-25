@@ -1,0 +1,180 @@
+graph BT
+    velocity["Product Investment (m/s^2)"]
+    documentation["Documentation"]
+    security["Security"]
+    cohesion["Conative Cohesion"]
+    outcomes["Outcomes"]
+    liability["Liability"]
+    surface_area["Surface Area"]
+    morale["Morale"]
+    efficiency["Efficiency"]
+    scale["Scale"]
+    revenue["Revenue"]
+    funding["Funding"]
+
+    subgraph milage["Milage (mpg)"]
+        subgraph code
+            code_writes["Code Writes"]
+            code_reads["Code Reads"]
+            code_deploys["Code Deploys"]
+        end
+        service["Service"]
+    end
+
+    subgraph risk
+        liability
+        security
+        reliability
+    end
+
+
+    morale -->|+| capacity["Product Investment (m/s^2)"]
+    linkStyle 0 stroke:green,stroke-width:1px
+
+    credibility -->|++| tech_investments[Tech Investments]
+    linkStyle 1 stroke:green,stroke-width:3px
+
+    friction[Friction] -->|---| velocity
+    linkStyle 2 stroke:#f22,stroke-width:3px
+
+    velocity -->|+++| outcomes
+    linkStyle 3 stroke:green,stroke-width:5px
+
+    tech_investments -.->|----| friction
+    linkStyle 4 stroke:#f22,stroke-width:7px
+
+    tech_investments -.->|++| friction
+    linkStyle 5 stroke:green,stroke-width:3px
+
+    capacity["Capacity (gas)"] -->|++| velocity
+    linkStyle 6 stroke:green,stroke-width:3px
+
+    friction -->|---| morale
+    linkStyle 7 stroke:#f22,stroke-width:3px
+
+    credibility -->|++| funding
+    linkStyle 8 stroke:green,stroke-width:2px
+
+    funding -->|++| capacity
+    linkStyle 9 stroke:green,stroke-width:3px
+
+    capacity -->|--| funding
+    linkStyle 10 stroke:red,stroke-width:3px
+
+    friction -->|+| reliability[Reliability]
+    linkStyle 11 stroke:green,stroke-width:2px
+
+    reliability -->|+| velocity
+    linkStyle 12 stroke:green,stroke-width:1px
+
+
+    outcomes -->|+++| credibility
+    linkStyle 13 stroke:green,stroke-width:5px
+
+    reliability -->|++| outcomes
+    linkStyle 14 stroke:green,stroke-width:3px
+
+    tech_investments -->|++| reliability
+    linkStyle 15 stroke:green,stroke-width:4px
+
+    security -->|---| liability
+    linkStyle 16 stroke:red,stroke-width:4px
+
+    liability -->|---| funding
+    linkStyle 17 stroke:red,stroke-width:4px
+
+    security -->|--| capacity
+    linkStyle 18 stroke:red,stroke-width:3px
+
+    outcomes -->|+++| morale
+    linkStyle 19 stroke:green,stroke-width:3px
+
+    tech_investments -->|++| security
+    linkStyle 20 stroke:green,stroke-width:2px
+
+    tech_investments -->|--| capacity
+    linkStyle 21 stroke:red,stroke-width:2px
+
+    reliability -->|++| credibility
+    linkStyle 22 stroke:green,stroke-width:2px
+
+    velocity -->|---| capacity
+    linkStyle 23 stroke:red,stroke-width:3px
+
+    capacity --> tech_investments
+    linkStyle 24 stroke:green,stroke-width:3px
+
+    reliability -->|---| liability
+    linkStyle 25 stroke:red,stroke-width:4px
+
+    outcomes -->|+++| scale
+    linkStyle 26 stroke:green,stroke-width:4px
+
+    reliability -->|++| scale 
+    linkStyle 27 stroke:green,stroke-width:3px
+
+    scale -->|++++| efficiency 
+    linkStyle 28 stroke:green,stroke-width:7px
+
+    efficiency -->|+++| funding
+    linkStyle 29 stroke:green,stroke-width:5px
+
+    tech_investments -->|+++| cohesion
+    linkStyle 30 stroke:green,stroke-width:4px
+
+    scale -->|++++| surface_area
+    linkStyle 31 stroke:green,stroke-width:5px
+
+    surface_area -->|++| liability
+    linkStyle 32 stroke:green,stroke-width:3px
+
+    velocity -->|+++| surface_area
+    linkStyle 33 stroke:green,stroke-width:4px
+
+    tech_investments -->|-| surface_area
+    linkStyle 34 stroke:red,stroke-width:1px
+
+    cohesion -->|--| friction
+    linkStyle 35 stroke:red,stroke-width:3px
+
+    cohesion -->|+| morale
+    linkStyle 36 stroke:green,stroke-width:1px
+
+    friction -->|+| security
+    linkStyle 37 stroke:green,stroke-width:1px
+
+    cohesion -->|++++| code_reads
+    linkStyle 38 stroke:green,stroke-width:5px
+
+    cohesion -->|++| code_writes
+    linkStyle 39 stroke:green,stroke-width:2px
+
+    efficiency -->|++++| service
+    linkStyle 40 stroke:green,stroke-width:5px
+
+    friction -->|----| milage
+    linkStyle 41 stroke:red,stroke-width:5px
+
+    tech_investments -->|++| code_deploys
+    linkStyle 42 stroke:green,stroke-width:2px
+
+    milage -->|++++| funding
+    linkStyle 43 stroke:green,stroke-width:5px
+
+    revenue -->|++++| funding
+    linkStyle 44 stroke:green,stroke-width:5px
+
+    scale -->|++++| revenue
+    linkStyle 45 stroke:green,stroke-width:5px
+
+    documentation -->|++++| code_reads
+    linkStyle 46 stroke:green,stroke-width:5px
+
+    documentation -->|---| code_writes
+    linkStyle 47 stroke:red,stroke-width:3px
+
+    tech_investments -->|++| documentation
+    linkStyle 48 stroke:green,stroke-width:2px
+
+    documentation --> |+| cohesion
+    linkStyle 49 stroke:green,stroke-width:1px

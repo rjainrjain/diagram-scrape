@@ -1,0 +1,15 @@
+classDiagram
+  class DatabaseService {
+    union_tables(databases: dict[str, Database], current_db: str, table1_name, table2_name)
+  }
+
+  class Database {
+    get_table(table_name: str)
+  }
+
+  class Table {
+    union(other: 'Table')
+  }
+
+DatabaseService --> Database
+Database --> Table

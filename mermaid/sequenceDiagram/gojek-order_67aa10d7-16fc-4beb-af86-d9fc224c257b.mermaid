@@ -1,0 +1,24 @@
+sequenceDiagram
+    title Order system;
+    actor c as Customer;
+    actor d as Driver;
+%%    autonumber
+    participant ord as Order System;
+    participant msg as Message Bus;
+
+
+    alt order gojek
+        c ->> ord: create order gojek
+    else order gocar
+        c ->> ord: create order gocar
+    end
+
+    ord ->> msg: finding driver near by
+
+    participant m as Mitra;
+    msg -->> m: push notif to driver
+    m -->> d: get list driver near by
+    d ->> msg: driver accept your order
+    msg -->> ord: driver on going to cust location
+    create participant inv as Invoice System;
+    ord -->> inv: order complete!!

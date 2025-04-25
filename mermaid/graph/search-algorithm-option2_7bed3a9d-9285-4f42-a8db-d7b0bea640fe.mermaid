@@ -1,0 +1,23 @@
+graph TD
+    A[Start] --> B[Search input]
+    B --> C{Input length > 2}
+    C --> |yes| D[Add input to filter tags]
+    C --> |no| B
+    D --> E[Create a new array for filtered recipes]
+    E --> F[Loop through recipes]
+    F --> G[Create a new boolean to check if all tags match]
+    G --> H[Loop through tags]
+    H --> I{NOT hasMatchingName}
+    I --> |true| J{NOT hasMatchingDescription}
+    J --> |true| K{NOT hasMatchingIngredients}
+    K --> |true| L[Set the match boolean to false]
+    L --> M{Is the last tag iteration}
+    I --> |false| M
+    J --> |false| M
+    K --> |false| M
+    M --> |false| H
+    M --> |true| N{Is the match boolean true}
+    O ---> |yes| P[Add the recipe to the filtered recipes array]
+    O --> |no| P{Is the last recipe iteration}
+    P --> |yes| Q[Return the filtered recipes array]
+    P --> |no| F

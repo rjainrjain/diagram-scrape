@@ -1,0 +1,34 @@
+---
+title: Ntfy
+---
+
+flowchart LR
+    classDef cluster fill:#ffffff00,stroke:#aabbccff,stroke-width:3px,rx:8px,ry:8px;
+    classDef node fill:#ffffff00,stroke:#aabbccff,stroke-width:2px,rx:5px,ry:5px;
+    classDef dashed_border stroke-dasharray:10 6;
+
+    home_network["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.1em'><img src='../../../../icons/network.png' style='min-width:80px;max-width:80px' /></div>Home<br />Network"]
+    class home_network dashed_border
+    other_apps["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apps.png' style='min-width:80px;max-width:80px' /></div>Other<br />Apps"]
+    class other_apps dashed_border
+
+    subgraph app_wrapper[" "]
+        socket_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/ingress.png' style='min-width:80px;max-width:80px' /></div>Socat")
+        http_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/apache.png' style='min-width:80px;max-width:80px' /></div>Apache<br />proxy")
+        certificate_manager("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/cronjob.png' style='min-width:32px;max-width:32px;position:absolute;top:0;right:0' /><img src='../../../../icons/lets-encrypt.png' style='min-width:80px;max-width:80px' /></div>Certificate<br />Manager")
+        ntfy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/ntfy.png' style='min-width:80px;max-width:80px' /></div>Ntfy")
+        ntfy_setup("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/ntfy.png' style='min-width:80px;max-width:80px' /><img src='../../../../icons/bash.png' style='min-width:40px;max-width:40px;position:absolute;bottom:-10px;right:0' /></div>Setup<br />script")
+
+        socket_proxy <--->|:80,443| http_proxy <--->|:80| ntfy
+        socket_proxy <--->|:25| ntfy
+        ntfy ~~~ ntfy_setup -..->|docker-cli| ntfy
+        http_proxy -..-|fs| certificate_manager
+    end
+
+    personal_devices["<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.1em'><img src='../../../../icons/personal-devices.png' style='min-width:80px;max-width:80px' /></div>Devices/Apps"]
+    class personal_devices dashed_border
+
+    other_apps -..->|notification| app_wrapper
+    home_network <--->|:25,80,443| socket_proxy
+    ntfy_setup ~~~ personal_devices
+    ntfy -..->|push notification| personal_devices

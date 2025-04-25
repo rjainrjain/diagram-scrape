@@ -1,0 +1,14 @@
+erDiagram
+
+    ROLE {
+        string PartitionKey "composite_id = ROLE#<RoleID>"
+        string SortKey "sort_key = PartyType#<party-type>#PartyId#<party-id>"
+        string description
+        string gsi_pk_1 "gsi_pk_1 = PartyType#<party-type>#PartyId#<party-id>"
+        string name
+        json permissions "The list of permissions associated with a role"
+        string created_at "Time of createRole()"
+        string updated_at "Time of updateRole()"
+        string gsi_pk_2 "gsi_pk_2 = PartyType#<party-type>#PartyId#<party-id>"
+        string gsi_sk_2 "<updated_at>"
+    }

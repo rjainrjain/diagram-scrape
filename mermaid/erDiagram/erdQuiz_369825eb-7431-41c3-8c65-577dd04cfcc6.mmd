@@ -1,0 +1,96 @@
+---
+title: Quiz
+---
+
+erDiagram
+    QUIZ ||--|{ QUESTION : contains
+    QUESTION ||--|| "QUESTION-ANSWER": "gets set"
+
+    "QUESTION_TEXT" {
+        uuid id PK
+        uuid quizId FK
+        string title
+        string answer
+        int maxPoints
+        int pointsEarned
+    }
+
+    "QUESTION_RADIO" {
+        uuid id PK
+        uuid quizId FK
+        string title
+        list options
+        int answer
+        int maxPoints
+        int pointsEarned
+    }
+
+    "QUESTION_CHECKBOX" {
+        uuid id PK
+        uuid quizId FK
+        string title
+        list options
+        int[] answer
+        int maxPoints
+        int pointsEarned
+    }
+
+    "QUESTION_PAIRS" {
+        uuid id PK
+        uuid quizId FK
+        string title
+        int maxPoints
+        int pointsEarned
+    }
+
+"QUESTION_PAIRS" ||--|{ "QUESTION_PAIRS_PAIR" : contains
+
+    "QUESTION_PAIRS_PAIR" {
+        uuid id PK
+        uuid questionPairId FK
+        jsonb leftPair
+        jsonb rightPair
+    }
+
+    "QUESTION_ORDER" {
+        uuid id PK
+        uuid quizId FK
+        string title
+        list options
+        int[] answer
+        int maxPoints
+        int pointsEarned
+    }
+
+    "QUESTION_FILE" {
+        uuid id PK
+        uuid quizId FK
+        string title
+        uuid fileId FK
+        int maxPoints
+        int pointsEarned
+    }
+
+    QUIZ {
+        uuid quizId PK
+        datetime dateOfCreation
+        uuid containsQuestionsId
+        int quizLenght
+        int pointMaximum
+        int pointEarned
+        int gradeGiven
+        datetime started
+        datetime finished
+
+    }
+
+    "QUESTION-ANSWER" {
+        uuid questionId PK, FK
+
+    %% text doesn't need answer
+        int questionRadioAnswer
+        list questionCheckboxAnswer
+        text questionPairAnswer
+        text questionOrderAnswer
+    %% file doesn't need answer
+    }

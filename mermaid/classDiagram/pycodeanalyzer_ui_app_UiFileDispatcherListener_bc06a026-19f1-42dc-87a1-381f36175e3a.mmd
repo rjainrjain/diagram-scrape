@@ -1,0 +1,14 @@
+classDiagram
+class UiFileDispatcherListener {
+<<Class>>
++notifyAnalyzing(str file) None
++notifyAnalysisEnd() None
+}
+class UiLink {
+<<Class>>
++ SocketIO socketio
++Constructor() None
++setSocketIO(SocketIO socketio) None
+}
+link UiLink "class££pycodeanalyzer::ui::app::UiLink"
+UiFileDispatcherListener --|> UiLink

@@ -1,0 +1,47 @@
+---
+title: Abstract Property
+---
+classDiagram
+    direction LR
+
+    class AbstractProperty {
+        <<Abstract>>
+        -string name
+        -string value
+        +getName() string
+        +setName(string)
+        +getValue() string|null
+        +setValue(string|null)
+        +getBoolean() bool
+        +setBoolean(bool)
+        +getArray() array|null
+        +setArray(array|null)
+        +getDate() DateTimeInterface|null
+        +setDate(DateTimeInterface|null)
+        +getInteger() int
+        +setInteger(int)
+    }
+
+    class EntityInterface {
+        <<Interface>>
+    }
+
+    class AbstractEntity {
+        <<Abstract>>
+    }
+
+    class UserProperty {
+        -User user
+        +getUser() User
+        +setUser(User)
+    }
+
+    EntityInterface <|.. AbstractEntity
+    AbstractEntity <|-- AbstractProperty
+    AbstractProperty <|-- GlobalProperty
+    AbstractProperty <|-- UserProperty
+    User "0" --* "*" UserProperty
+
+    click EntityInterface call nodeCallback()
+    click AbstractEntity call nodeCallback()
+    click User call nodeCallback()

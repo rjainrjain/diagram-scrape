@@ -1,0 +1,11 @@
+graph TD
+
+    A[Square brackets = a box]-->B{Brackets: <br>Makes<br> a diamond}
+    B-->|label|V{Diamond}
+    V-->|value <br> Unit:percentage|D
+    V-->|value <br> Unit:micromolar|F
+    B-->|multi columns|C[valid readouts]
+    C-->|experiments|D{other diamond}
+    D-->|aggregating or filtering|E[other box]
+    E--> |calculating|G[One average readout value <br> per concentration]
+    G-->F[CC/AC/IC50/IC90 curves]

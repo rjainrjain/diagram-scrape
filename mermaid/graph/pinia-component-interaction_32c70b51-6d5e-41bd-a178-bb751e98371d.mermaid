@@ -1,0 +1,32 @@
+graph TD
+    A[IdeaForge App]
+    B[Pinia Store]
+    C[TheCrucible]
+    D[TheMold]
+    E[TheForge]
+    F[TheAnvil]
+    G[TheWorkshop]
+    H[TheFinishingTouch]
+
+    A --> B
+    B --> C
+    B --> D
+    B --> E
+    B --> F
+    B --> G
+    B --> H
+
+    C -->|setOriginalIdea| B
+    D -->|addPersona| B
+    E -->|setChosenDirection| B
+    F -->|updateCurrentIteration| B
+    G -->|addSocialMediaIdea| B
+    H -->|updateCurrentIteration| B
+
+    B -->|state.currentStep| A
+    B -->|state.originalIdea| C
+    B -->|state.selectedPersonas| D
+    B -->|state.chosenDirection| E
+    B -->|state.currentIteration| F
+    B -->|state.socialMediaIdeas| G
+    B -->|state.currentIteration| H

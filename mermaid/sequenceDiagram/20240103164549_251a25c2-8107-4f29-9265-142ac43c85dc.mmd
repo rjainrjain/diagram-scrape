@@ -1,0 +1,20 @@
+sequenceDiagram
+    participant M as Main
+    participant G as Game
+    participant S as Snake
+    participant F as Food
+    participant SB as Scoreboard
+    M->>G: start_game()
+    loop Game Loop
+        G->>S: move()
+        alt Snake eats food
+            S->>S: grow()
+            G->>F: relocate()
+            G->>SB: update_score(points)
+        end
+        G->>SB: display_score()
+        G->>G: game_loop()
+        alt Game Over
+            G->>G: end_game()
+        end
+    end

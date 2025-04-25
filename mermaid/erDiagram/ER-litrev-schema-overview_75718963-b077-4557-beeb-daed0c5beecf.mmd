@@ -1,0 +1,9 @@
+---
+title: SCHEMA litrev
+---
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#63bce5', 'edgeLabelBackground':'#63bce5', 'tertiaryColor': '#3778c2'}}}%%
+erDiagram
+    categorical_traits }o--o{ reflist : "extracted from"
+    numeric_traits }o--o{ reflist : "extracted from"
+    species_traits }|--|{ categorical_traits : "union"
+    species_traits }|--|{ numeric_traits : "union"

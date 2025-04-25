@@ -1,0 +1,29 @@
+graph TB
+    User[User]
+    USSD[USSD Interface]
+    QuartServer[Quart Server]
+    StellarBlockchain[Stellar Blockchain]
+    SmartContract[Smart Contract]
+    AirtimeService[Airtime Conversion Service]
+    KYCPlatform[KYC Platform]
+    Database[(Database)]
+
+    User -->|Interacts with| USSD
+    USSD -->|Sends requests to| QuartServer
+    QuartServer -->|Processes requests| SmartContract
+    QuartServer -->|Stores/Retrieves data| Database
+    SmartContract -->|Interacts with| StellarBlockchain
+    QuartServer -->|Converts airtime| AirtimeService
+    QuartServer -->|Verifies identity| KYCPlatform
+
+    subgraph Backend
+        QuartServer
+        SmartContract
+        AirtimeService
+        KYCPlatform
+        Database
+    end
+
+    subgraph Blockchain
+        StellarBlockchain
+    end

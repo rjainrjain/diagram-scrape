@@ -1,0 +1,103 @@
+classDiagram
+    class SupabaseClient {
+        +create_client()
+    }
+
+    class User {
+        +user_id: str
+        +name: str
+        +email: str
+        +phone_number: str
+        +last_contacted: datetime
+        +communication_channel: str
+        +social_media: str
+        +created_at: datetime
+    }
+
+    class Filter {
+        +filter_id: str
+        +user_id: str
+        +name: str
+        +property_type: str
+        +commercial_type: str
+        +budget_from: int
+        +budget_to: int
+        +size_from: int
+        +size_to: int
+        +location: str
+        +bedrooms_from: int
+        +bedrooms_to: int
+        +bathrooms_from: int
+        +bathrooms_to: int
+        +floor_from: int
+        +floor_to: int
+        +total_floors: int
+        +balcony_size_from: int
+        +balcony_size_to: int
+        +furnishing: str
+        +parking: bool
+        +year_of_completion_from: int
+        +year_of_completion_to: int
+        +amenities: List[str]
+        +other_wishes: List[str]
+        +created_at: datetime
+    }
+
+    class Thread {
+        +thread_id: str
+        +user_id: str
+        +status: str
+        +conversation: List[Dict]
+        +user_feedback: str
+        +meeting_booked: bool
+        +meeting_date: datetime
+        +costs: float
+        +time_spent_in_conversation: float
+        +created_at: datetime
+    }
+
+    class UserRepository {
+        -supabase_client: SupabaseClient
+        +create_user(user: User)
+        +get_user(user_id: str)
+        +update_user(user_id: str, user: User)
+        +delete_user(user_id: str)
+    }
+
+    class FilterRepository {
+        -supabase_client: SupabaseClient
+        +create_filter(filter: Filter)
+        +get_filter(filter_id: str)
+        +get_filters_by_user(user_id: str)
+        +update_filter(filter_id: str, filter: Filter)
+        +delete_filter(filter_id: str)
+    }
+
+    class ThreadRepository {
+        -supabase_client: SupabaseClient
+        +create_thread(thread: Thread)
+        +get_thread(thread_id: str)
+        +get_threads_by_user(user_id: str)
+        +update_thread(thread_id: str, thread: Thread)
+        +delete_thread(thread_id: str)
+    }
+
+    class UserService {
+        -user_repository: UserRepository
+        -supabase_client: SupabaseClient
+        +sign_up(email: str, password: str)
+        +sign_in(email: str, password: str)
+    }
+
+    UserRepository o-- SupabaseClient
+    FilterRepository o-- SupabaseClient
+    ThreadRepository o-- SupabaseClient
+    UserService o-- UserRepository
+    UserService o-- SupabaseClient
+    User -- UserRepository : uses
+    Filter -- FilterRepository : uses
+    Thread -- ThreadRepository : uses
+    User "1" -- "0..*" Filter : has
+    User "1" -- "0..*" Thread : has
+
+    note for UserService "To extend sign-in functionality:\n1. Strategy Pattern\n2. Factory Method Pattern\n3. Decorator Pattern\n\nMore info: https://six-shingle-ada.notion.site/Exteending-Login-ef01b2029f8143bb87a11e915efe1333?pvs=4"

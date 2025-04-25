@@ -1,0 +1,35 @@
+---
+title: Iterative Release Blueprint
+---
+
+flowchart TD
+
+id1((start))-->A(Backlog Refinement)
+A-->B(Sprint Planning)
+
+id2>Wednesday]
+B
+
+B-->id3{break}
+
+id3{break}-->C(Mob Programming - development)
+id3{break}-->D(Mob Programming - unit)-->F(Mob Programming - integration)
+id3{break}-->E(Mob Programming - automation)
+
+D-->id4{break}
+E-->|automation is run to identify flow blockers|id4{break}
+F-->id4{break}
+
+id4{break}-->G(QA - flow blockers)
+
+E-->id5{break}-->H(QA - automation testing)
+
+H-->X(SERVICE BASED RELEASE)
+G-->X(SERVICE BASED RELEASE)
+
+H-->|passed qa|Y(SERVICE BASED RELEASE)
+
+X-->|story complete|K(Pilot Testing - black box)
+K-->L(Flag on for Client)
+
+Y(SERVICE BASED RELEASE)

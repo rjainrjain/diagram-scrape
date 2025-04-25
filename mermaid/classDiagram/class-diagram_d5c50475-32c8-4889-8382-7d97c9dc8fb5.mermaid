@@ -1,0 +1,86 @@
+classDiagram
+    class User {
+        -String id
+        -String login
+        -String password
+        -String name
+        -String? surname
+        -Role role
+        -DateTime createdAt
+        -DateTime updatedAt
+        +createQuiz()
+        +takeQuiz()
+    }
+
+    class Role {
+        <<enumeration>>
+        CLIENT
+        ADMIN
+        ROOT
+    }
+
+    class Category {
+        -String id
+        -String name
+        +getQuizzes()
+    }
+
+    class Quiz {
+        -String id
+        -String title
+        -String? description
+        -Boolean published
+        -DateTime createdAt
+        -DateTime updatedAt
+        +addQuestion()
+        +publish()
+        +unpublish()
+    }
+
+    class Question {
+        -String id
+        -String title
+        -Type type
+        -String? image
+        +addAnswer()
+        +getCorrectAnswer()
+    }
+
+    class Type {
+        <<enumeration>>
+        OBJECTIVE
+        DISCURSIVE
+    }
+
+    class Answer {
+        -String id
+        -String text
+        -Boolean isCorrect
+        +markAsCorrect()
+        +markAsIncorrect()
+    }
+
+    class QuizResponse {
+        -String id
+        -DateTime answeredAt
+        +submitAnswer()
+    }
+
+    class QuestionResponse {
+        -String id
+        -String? discursiveAnswer
+        +setAnswer()
+        +isCorrect()
+    }
+
+    User "1" -- "*" Quiz : creates
+    User "1" -- "*" QuizResponse : submits
+    Category "1" -- "*" Quiz : categorizes
+    Quiz "1" -- "*" Question : contains
+    Question "1" -- "*" Answer : has
+    Quiz "1" -- "*" QuizResponse : receives
+    QuizResponse "1" -- "*" QuestionResponse : contains
+    Question "1" -- "*" QuestionResponse : answers
+    Answer "1" -- "*" QuestionResponse : selected for
+    Question -- Type : has
+    User -- Role : has

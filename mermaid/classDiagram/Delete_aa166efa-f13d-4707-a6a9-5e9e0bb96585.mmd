@@ -1,0 +1,28 @@
+classDiagram
+
+    class AbstractInterface~ResourceRead, ResourceQuery, ResourceCreate, ResourceUpdate~ {
+        <<Interface>>
+        ... Find(...)
+        ... Create(...)
+        ... Read(...)
+        ... Update(...)
+        ResourceRead Delete(string id)
+    }
+
+    class UsersInterface {
+        <<Interface>>
+    }
+
+    class IssuesInterface {
+        <<Interface>>
+    }
+
+    class CommentsInterface {
+        <<Interface>>
+    }
+
+    AbstractInterface <|-- UsersInterface
+    AbstractInterface <|-- IssuesInterface
+    AbstractInterface <|-- CommentsInterface
+
+    style AbstractInterface fill:yellow

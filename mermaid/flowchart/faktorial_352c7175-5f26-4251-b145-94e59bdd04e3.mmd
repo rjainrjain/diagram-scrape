@@ -1,0 +1,14 @@
+flowchart 
+A([Start]) --> B[input nilai n]
+    subgraph Rekursif
+    direction LR
+    B --> C{n == 0}
+    C -->|Yes| D[return 1]
+    C -->|No|E["faktorial(n-1)"]
+    E --> C
+    end
+D --> F[Return Hasil Faktorial]
+F --> G([Selesai])
+
+
+

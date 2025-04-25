@@ -1,0 +1,46 @@
+sequenceDiagram
+    participant formidler
+    participant hms as hm-soknad
+    participant hmsapi as hm-soknad-api
+    participant pdl as PDL
+    participant allowlist as digihot-allowlist
+    participant dkif as DKIF
+    participant pdf as hm-soknad-pdfgen
+    participant rapid
+
+    formidler->>hms: Åpner digitalsoknadhjelpemidler
+    hms->>hmsapi: hentFormidlerInfo
+    hmsapi->>pdl: hentPerson
+    hms->>hmsapi: harRettighetTilTjenste
+    hmsapi->>allowlist: hentRettigheter
+    hms->>hmsapi: hentKontaktinfoFraSistSendteSoknad
+    hms->>hmsapi: getDelegationRequest (?)
+    hms->>hmsapi: hentHjelpemiddelProdukter
+    Note right of hms: Antar at formidler har tilgang
+    hms->>hmsapi: hentUtkast
+    
+    formidler->>hms: Start ny søknad
+    Note right of formidler: Kan evt fortsette med utkast
+    hms->>hmsapi: slettUtkast
+    
+    formidler->>hms: 1-Bruker: Fyller inn fnr
+    hms->>hmsapi: hentBrukerdetaljer
+    hmsapi->>pdl: hentBrukerdetaljer
+    hms->>hmsapi: hentBrukersKontaktinfo
+    hmsapi->>dkif: hentBrukerKanVarsles
+
+    formidler->>hms: Går videre gjennom steg 2-6
+    hms->>hmsapi: lagreUtkast (etter hvert steg)
+
+    formidler->>hms: Send inn søknad
+    hms->>hmsapi: lagreSoknad
+    hmsapi->>pdl: validerPerson
+    hmsapi->>pdf: genererPdf
+    hmsapi->>rapid: {"eventName":"nySoknad", "soknad": "...", ...}
+    hmsapi->>hmsapi: lagreSoknad
+    hmsapi->>hmsapi: slettUtkast
+    hmsapi->>hms: pdf id
+    
+    formidler->>hms: Vis innsendt søknad
+    hms->>hmsapi: hentKvittering
+    hmsapi->>formidler: PDF

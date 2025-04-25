@@ -1,0 +1,71 @@
+erDiagram
+    Users {
+        string userId PK
+        string name
+        string email
+    }
+
+    Products {
+        string productId PK
+        string name
+        float price
+        float rating
+        int stockQuantity
+    }
+
+    Sales {
+        string saleId PK
+        string productId FK
+        datetime timestamp
+        int quantity
+        float unitPrice
+        float totalAmount
+    }
+
+    Purchases {
+        string purchaseId PK
+        string productId FK
+        datetime timestamp
+        int quantity
+        float unitCost
+        float totalCost
+    }
+
+    Expenses {
+        string expenseId PK
+        string category
+        float amount
+        datetime timestamp
+    }
+
+    SalesSummary {
+        string salesSummaryId PK
+        float totalValue
+        float changePercentage
+        datetime date
+    }
+
+    PurchaseSummary {
+        string purchaseSummaryId PK
+        float totalPurchased
+        float changePercentage
+        datetime date
+    }
+
+    ExpenseSummary {
+        string expenseSummaryId PK
+        float totalExpenses
+        datetime date
+    }
+
+    ExpenseByCategory {
+        string expenseByCategoryId PK
+        string expenseSummaryId FK
+        string category
+        bigint amount
+        datetime date
+    }
+
+    Products ||--o{ Sales : "has"
+    Products ||--o{ Purchases : "has"
+    ExpenseSummary ||--o{ ExpenseByCategory : "has"

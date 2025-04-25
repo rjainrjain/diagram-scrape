@@ -1,0 +1,29 @@
+sequenceDiagram
+    participant User
+    participant App
+    participant PDFProcessor
+    participant BlobStorage
+    participant SQLDatabase
+    participant CosmosDB
+    participant AzureAISearch
+    participant OpenAI
+
+    User->>App: Start application
+    App->>AzureAISearch: Create/Update search index
+    App->>PDFProcessor: Process PDF files
+    PDFProcessor->>BlobStorage: Upload PDFs
+    PDFProcessor->>OpenAI: Generate embeddings for PDF content
+    PDFProcessor->>AzureAISearch: Store PDF content and embeddings
+    App->>SQLDatabase: Fetch sensor relationship data
+    App->>SQLDatabase: Fetch sensor real-time data
+    App->>CosmosDB: Store sensor relationship and real-time data
+    App->>CosmosDB: Fetch sensor relationship data
+    App->>OpenAI: Generate embeddings for sensor relationship data
+    App->>AzureAISearch: Store sensor relationship data and embeddings
+    User->>App: Submit query
+    App->>OpenAI: Generate query embedding
+    App->>AzureAISearch: Perform semantic search
+    AzureAISearch->>App: Return search results
+    App->>CosmosDB: Fetch latest real-time data for relevant sensors
+    App->>OpenAI: Generate response (with context and real-time data)
+    App->>User: Display response

@@ -1,0 +1,57 @@
+classDiagram
+    User <|-- UserProfile
+    User "1" -- "*" Quiz : creates
+    User "1" -- "*" QuizAttempt : takes
+    Quiz "1" -- "*" Question : contains
+    Question "1" -- "*" Answer : has
+    Quiz "1" -- "*" QuizAttempt : attempted by
+    QuizAttempt "1" -- "*" UserAnswer : records
+    Question "1" -- "*" UserAnswer : answers
+    Answer "0..1" -- "*" UserAnswer : selects
+
+    class User{
+        +username
+        +email
+        +password
+    }
+    class UserProfile{
+        +user
+        +bio
+        +quizzes_taken
+        +quizzes_created
+    }
+    class Quiz{
+        +title
+        +description
+        +category
+        +creator
+        +created_at
+        +updated_at
+    }
+    class Question{
+        +quiz
+        +text
+        +question_type
+        +order
+    }
+    class Answer{
+        +question
+        +text
+        +is_correct
+        +order
+    }
+    class QuizAttempt{
+        +quiz
+        +user
+        +score
+        +time_taken
+        +started_at
+        +completed_at
+    }
+    class UserAnswer{
+        +quiz_attempt
+        +question
+        +answer
+        +text_answer
+        +is_correct
+    }

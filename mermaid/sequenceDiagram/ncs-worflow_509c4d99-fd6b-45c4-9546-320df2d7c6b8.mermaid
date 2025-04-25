@@ -1,0 +1,29 @@
+sequenceDiagram
+    participant User
+    participant Web_server as Web server
+    participant App
+    participant SD_RTN as SD-RTN
+    participant ActiveFence
+    
+    rect rgb(255, 255, 255)
+        note right of Web_server: Implemented by you
+        Web_server ->> SD_RTN: Login authentication
+        Web_server ->> App: Join channel
+        Web_server ->> User: Logout
+    
+        App ->> SD_RTN: Join channel with ActiveFence activated
+        App ->> Web_server: Act on webhook. For example, use Channel Management REST API to remove user from channel new line Log user out
+
+        SD_RTN ->> ActiveFence: Monitor content in channel
+    end
+
+    rect rgb(255, 255, 255)
+        note left of SD_RTN: Provided by Agora
+    end
+
+    rect rgb(255, 255, 255)
+        note right of ActiveFence: Provided by ActiveFence
+        ActiveFence ->> App: Content matches workflow risk
+    end
+
+    User ->> Web_server: Login

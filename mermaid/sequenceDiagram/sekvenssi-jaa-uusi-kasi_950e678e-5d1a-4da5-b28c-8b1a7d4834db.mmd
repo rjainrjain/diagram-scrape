@@ -1,0 +1,31 @@
+sequenceDiagram
+  actor Player
+  participant UI
+  participant VideoPokerService
+  participant Deck
+  participant Playingcard
+  Player->>UI: painaa "Jaa uusi käsi" painiketta
+  UI->>UI:handle_deal_cards
+  UI->>VideoPokerService: deal_hand()
+  VideoPokerService->>VideoPokerService: init_deck()
+  VideoPokerService->>Deck: Deck()
+  Deck-->>VideoPokerService: deck
+  VideoPokerService->>Playingcard: PlayingCard(i)
+  Playingcard-->>VideoPokerService: playing card
+  VideoPokerService->>Deck: add_card()
+  Deck-->>VideoPokerService: card added
+  VideoPokerService->>Dealer: deal_hand(count)
+  Dealer->PokerHand:PokerHand()
+  PokerHand-->>Dealer:hand
+  Dealer->>Deck: number_of_cards()
+  Deck-->>Dealer: number of card in deck
+  Dealer->>Deck: get_card(card_number)
+  Deck-->> Dealer: card
+  Dealer->>PokerHand: add_card(card)
+  PokerHand-->> Dealer: card added
+  Dealer-->>VideoPokerService: hand
+  VideoPokerService -->>VideoPokerService: lokita jaettu käsi onnistuneesti
+  VideoPokerService ->> User: reduce_balance(PRICE_OF_GAME_ROUND)
+  User-->>VideoPokerService: pelitilin saldoa vähennetty
+  VideoPokerService->>UI: Käsi jaettu 
+  UI->UI: initialize_hand_view()

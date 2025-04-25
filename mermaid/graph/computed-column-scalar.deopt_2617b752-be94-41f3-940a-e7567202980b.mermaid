@@ -1,0 +1,57 @@
+%%{init: {'themeVariables': { 'fontSize': '12px'}}}%%
+graph TD
+    classDef path fill:#eee,stroke:#000,color:#000
+    classDef plan fill:#fff,stroke-width:1px,color:#000
+    classDef itemplan fill:#fff,stroke-width:2px,color:#000
+    classDef unbatchedplan fill:#dff,stroke-width:1px,color:#000
+    classDef sideeffectplan fill:#fcc,stroke-width:2px,color:#000
+    classDef bucket fill:#f6f6f6,color:#000,stroke-width:2px,text-align:left
+
+
+    %% plan dependencies
+    PgSelect7[["PgSelect[7∈0] ➊<br />ᐸforumsᐳ"]]:::plan
+    Object10{{"Object[10∈0] ➊<br />ᐸ{pgSettings,withPgClient}ᐳ"}}:::plan
+    Constant46{{"Constant[46∈0] ➊<br />ᐸ'f1700000-0000-0000-0000-000000000f17'ᐳ"}}:::plan
+    Constant13{{"Constant[13∈0] ➊<br />ᐸundefinedᐳ"}}:::plan
+    Constant47{{"Constant[47∈0] ➊<br />ᐸtrueᐳ"}}:::plan
+    Constant48{{"Constant[48∈0] ➊<br />ᐸfalseᐳ"}}:::plan
+    Object10 & Constant46 & Constant13 & Constant47 & Constant48 --> PgSelect7
+    Access8{{"Access[8∈0] ➊<br />ᐸ2.pgSettingsᐳ"}}:::plan
+    Access9{{"Access[9∈0] ➊<br />ᐸ2.withPgClientᐳ"}}:::plan
+    Access8 & Access9 --> Object10
+    __Value2["__Value[2∈0] ➊<br />ᐸcontextᐳ"]:::plan
+    __Value2 --> Access8
+    __Value2 --> Access9
+    First11{{"First[11∈0] ➊"}}:::plan
+    PgSelect7 --> First11
+    PgSelectSingle12{{"PgSelectSingle[12∈0] ➊<br />ᐸforumsᐳ"}}:::plan
+    First11 --> PgSelectSingle12
+    __Value4["__Value[4∈0] ➊<br />ᐸrootValueᐳ"]:::plan
+    PgSelectSingle20{{"PgSelectSingle[20∈1] ➊<br />ᐸforums_unique_author_countᐳ"}}:::plan
+    PgSelectSingle12 --> PgSelectSingle20
+    PgClassExpression21{{"PgClassExpression[21∈1] ➊<br />ᐸ__forums_u..._count__.vᐳ"}}:::plan
+    PgSelectSingle20 --> PgClassExpression21
+    PgSelectSingle29{{"PgSelectSingle[29∈1] ➊<br />ᐸforums_unique_author_countᐳ"}}:::plan
+    RemapKeys42{{"RemapKeys[42∈1] ➊<br />ᐸ12:{”0”:1}ᐳ"}}:::plan
+    RemapKeys42 --> PgSelectSingle29
+    PgClassExpression30{{"PgClassExpression[30∈1] ➊<br />ᐸ__forums_u..._count__.vᐳ"}}:::plan
+    PgSelectSingle29 --> PgClassExpression30
+    PgSelectSingle38{{"PgSelectSingle[38∈1] ➊<br />ᐸforums_unique_author_countᐳ"}}:::plan
+    RemapKeys44{{"RemapKeys[44∈1] ➊<br />ᐸ12:{”0”:2}ᐳ"}}:::plan
+    RemapKeys44 --> PgSelectSingle38
+    PgClassExpression39{{"PgClassExpression[39∈1] ➊<br />ᐸ__forums_u..._count__.vᐳ"}}:::plan
+    PgSelectSingle38 --> PgClassExpression39
+    PgSelectSingle12 --> RemapKeys42
+    PgSelectSingle12 --> RemapKeys44
+
+    %% define steps
+
+    subgraph "Buckets for queries/functions/computed-column-scalar"
+    Bucket0("Bucket 0 (root)<br /><br />1: <br />ᐳ: 8, 9, 13, 46, 47, 48, 10<br />2: PgSelect[7]<br />ᐳ: First[11], PgSelectSingle[12]"):::bucket
+    classDef bucket0 stroke:#696969
+    class Bucket0,__Value2,__Value4,PgSelect7,Access8,Access9,Object10,First11,PgSelectSingle12,Constant13,Constant46,Constant47,Constant48 bucket0
+    Bucket1("Bucket 1 (nullableBoundary)<br />Deps: 12<br /><br />ROOT PgSelectSingleᐸforumsᐳ[12]"):::bucket
+    classDef bucket1 stroke:#00bfff
+    class Bucket1,PgSelectSingle20,PgClassExpression21,PgSelectSingle29,PgClassExpression30,PgSelectSingle38,PgClassExpression39,RemapKeys42,RemapKeys44 bucket1
+    Bucket0 --> Bucket1
+    end

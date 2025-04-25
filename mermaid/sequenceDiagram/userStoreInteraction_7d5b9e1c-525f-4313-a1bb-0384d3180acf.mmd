@@ -1,0 +1,24 @@
+sequenceDiagram
+    actor L as Lena(user)
+    participant S as Store
+    participant P as Payment Service
+    L->>L : has earned points to spend in the store
+    L->>S : tries to buy a prize available in the store
+    S->>S: checks if the Lena has enough points to buy the prize
+    alt Lena has enough points to buy the prize
+        S->>S : Store attributes the prize to the user
+        S-->>L : Notifies Lena that the prize has been bought
+        L->>L : Can have access to the asset in their profile page
+    else Lena does not have enough points to buy the prize
+        S-->>L : Store suggests Lena to buy more points to buy the prize
+        alt Lena wants to buy more points
+            L->>P : Buy points
+            P-->>L : Notifies Lena that the points have been bought
+            L->>S : Buy the prize
+            S->>S : Store attributes the prize to the user
+            S-->>L : Notifies Lena that the prize has been bought
+        else Lena does not want to buy more points
+        S-->>L : Notifies Lena that the prize has not been bought
+        L->>L : Cannot have access to the asset in their profile page
+        end
+    end

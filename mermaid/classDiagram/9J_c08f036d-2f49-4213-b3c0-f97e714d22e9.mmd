@@ -1,0 +1,67 @@
+classDiagram
+    JobAnnouncer --> UI: 1. clickEvaluationMenu()
+    UI --> EvaluationController: 2. initiateEvaluationPage()
+    EvaluationController --> JobRecruitmentRepository: 3. getPendingEvaluationStudents()
+    JobRecruitmentRepository --> DBConnector: 4. execute(Q9J.1)
+    DBConnector --> JobRecruitmentRepository: 5. return studentList
+    JobRecruitmentRepository --> EvaluationController: 6. return pendingStudents
+    EvaluationController --> UI: 7. displayEvaluationPage()
+
+    JobAnnouncer --> UI: 8. selectStudent(studentId)
+    UI --> EvaluationController: 9. getStudentDetails(studentId)
+    EvaluationController --> StudentRepository: 10. getStudentInfo(studentId)
+    StudentRepository --> DBConnector: 11. execute(Q9J.2, studentId)
+    DBConnector --> StudentRepository: 12. return studentDetails
+    StudentRepository --> EvaluationController: 13. return studentDetails
+    EvaluationController --> UI: 14. displayStudentEvaluationForm()
+
+    JobAnnouncer --> UI: 15. submitEvaluation(evaluationData)
+    UI --> EvaluationController: 16. processEvaluation(evaluationData)
+    EvaluationController --> EvaluationController: 17. validareEvaluationData()
+    EvaluationController --> UI: 18. displayErrorMessages()
+    EvaluationController --> EvaluationRepository: 19. saveEvaluationData(evaluationData)
+    EvaluationRepository --> DBConnector: 20. execute(Q9J.3, evaluationData)
+    DBConnector --> EvaluationRepository: 21. return success
+    EvaluationRepository --> EvaluationController: 22. return evaluationSaved
+    EvaluationController --> UI: 23. displaySuccessMessage()
+    EvaluationController --> EvaluationController: 24. getNextStudent()
+    EvaluationController --> JobRecruitmentRepository: 25. getNextPendingStudent()
+    JobRecruitmentRepository --> DBConnector: 26. execute(Q9J.1)
+    DBConnector --> JobRecruitmentRepository: 27. return nextStudent
+    JobRecruitmentRepository --> EvaluationController: 28. return nextStudentInfo
+    EvaluationController --> UI: 29. displayNextStudentForm()
+
+    class JobAnnouncer {
+        
+    }
+
+    class UI{
+        +clickEvaluationMenu()
+        +selectStudent()
+        +displayEvaluationPage()
+        +displayStudentEvaluationForm()
+        +displayErrorMessages()
+        +displaySuccessMessage()
+        +displayNextStudentForm()
+    }
+
+    class EvaluationController{
+        +validareEvaluationData()
+    }
+
+    class EvaluationRepository{
+        +saveEvaluationData()
+    }
+
+    class StudentRepository{
+        +getStudentInfo()
+    }
+
+    class JobRecruitmentRepository{
+        +getPendingEvaluationStudents()
+        +getNextPendingStudent()
+    }
+
+    class DBConnector{
+        +executeQuery()
+    }

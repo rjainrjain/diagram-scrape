@@ -1,0 +1,20 @@
+flowchart LR
+  A0[Standard\nmodel]
+
+  A(Conduct study) --> B(Write report)
+  B --> C(Submit to journal)
+  C --> D[Desk reject]
+  C --> E(Peer review)
+  E --> F[Reject]
+  E <-.-> G(Revise/resubmit)
+  E --> H[Accept/publish]
+  
+  B0[Registered\nreport]
+  
+  A1(Write\nintro/method) --> B1(Stage 1\npeer review)
+  B1 --> C1[Reject]
+  B1 --> D1(In principle\nacceptance)
+  B1 <-.-> E1(Revise/resubmit)
+  D1 --> |Collect/analyze\ndata| F1(Write report)
+  F1 --> G1(Stage 2\npeer review)
+  G1 --> H1[Accept/publish]

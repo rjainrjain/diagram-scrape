@@ -1,0 +1,12 @@
+sequenceDiagram
+participant User
+participant API
+participant BusinessLogic
+participant Database
+
+User->>API: submits review
+API->>BusinessLogic: Validate and Create a review
+BusinessLogic->>Database: Save Place review in Data
+Database-->>BusinessLogic: Confirm Save
+BusinessLogic-->>API: Return Succes/Failure
+API-->>User: Return Place submission validation

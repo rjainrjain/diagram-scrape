@@ -1,0 +1,38 @@
+
+sequenceDiagram
+  actor Pembeli
+  participant V_L as View #10095; CreateStorePage
+  participant C_S as Controller #10095; StoreController
+  participant M_S as Model #10095; Store
+  participant V_DS as View #10095; DashboardSellerPage
+
+
+  Pembeli->>V_L: Klik tombol "Selesai" di halaman buka toko
+  activate Pembeli
+
+  activate V_L
+
+  V_L->>C_S: store()
+
+  deactivate V_L
+
+  activate C_S
+
+  opt Invalid Form
+    C_S-->>Pembeli: return validation message
+  end
+
+  C_S->>M_S: create()
+
+  activate M_S
+
+  M_S-->>C_S: data user
+
+  deactivate M_S
+
+  activate V_DS
+  C_S-->>V_DS: return view with data
+  deactivate V_DS
+
+  deactivate C_S
+  deactivate Pembeli

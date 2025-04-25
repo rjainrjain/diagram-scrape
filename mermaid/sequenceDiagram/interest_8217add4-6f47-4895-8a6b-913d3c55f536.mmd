@@ -1,0 +1,17 @@
+sequenceDiagram
+    participant Web Services
+    participant Backend
+    participant Oracle
+    participant Blockchain Gateway
+    Oracle->>Blockchain Gateway: Initiate calculation
+    Note over Blockchain Gateway: Calculate interest
+    Blockchain Gateway-->>Oracle: Send interest balances
+    Oracle-->>Backend: Notification of interest
+    Web Services->>Backend: Initiate withdrawal
+    Backend->>Oracle: Request withdrawal
+    activate Oracle
+    Note over Blockchain Gateway: Process transfer
+    Oracle->>Blockchain Gateway: Request withdrawal
+    Blockchain Gateway-->>Oracle: Confirmation
+    Oracle-->>Backend: Update PLG/CS balances
+    deactivate Oracle

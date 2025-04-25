@@ -1,0 +1,50 @@
+sequenceDiagram
+
+title New user subscribes to alerts
+
+# Offer user a list of zones and delivery mechanisms
+
+note over user: Offer user a list of zones and delivery mechanisms
+
+
+airtext ->> user: subscribe to alerts?<br/>(specifiying delivery mechanisms)
+user ->> airtext: subscribe to various alerts
+
+
+alt if email delivery requested
+
+	airtext ->> auth_notifier: send_email<br/>(with auth code)
+	auth_notifier ->> user: sends email<br/>with auth code
+	user ->> airtext: user enters auth code
+
+	alt if email verified (auth code entered correctly)
+		loop for each email subscription requested
+
+			note over airtext, cerc_api: POST /subscriptions takes optional UUID.<br/>Our first POST has no UUID.<br/>The returned UUID is used for subsequent POSTs.
+
+			airtext ->> cerc_api: POST /subscriptions
+			cerc_api ->> airtext: returns 201 with UUID
+		end
+	end
+
+else if SMS / voice delivery requested
+
+	airtext ->> auth_notifier: send_sms<br/>(with auth code)
+	auth_notifier ->> user: sends SMS<br/>with auth code
+	user ->> airtext: user enters auth code
+
+	alt if SMS verified (auth code entered correctly)
+		loop for each SMS / Voice subscription requested
+			airtext ->> cerc_api: POST /subscriptions
+			cerc_api ->> airtext: returns 201 with UUID
+		end
+	end
+
+end
+
+# Display list of subscriptions and any error
+# messages where phone or email was not verified
+
+airtext ->> cerc_api: GET /subscriptions for UUID
+cerc_api ->> airtext: returns list of subscriptions
+airtext ->> user: show list of subscriptions<br/>(and/or error if email/sms unverified)

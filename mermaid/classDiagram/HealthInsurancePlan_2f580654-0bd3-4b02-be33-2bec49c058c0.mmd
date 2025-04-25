@@ -1,0 +1,20 @@
+classDiagram
+  HealthInsurancePlan -- HealthPlanFormulary
+  HealthInsurancePlan -- ContactPoint
+  HealthInsurancePlan -- HealthPlanNetwork
+
+
+class HealthInsurancePlan {
+
+  HealthPlanFormulary includesHealthPlanFormulary
+  string benefitsSummaryUrl
+  string healthPlanDrugOption
+  string healthPlanDrugTier
+  string healthPlanId
+  ContactPoint contactPoint
+  string usesHealthPlanIdStandard
+  string usesHealthPlanIdStandard
+  HealthPlanNetwork includesHealthPlanNetwork
+  string healthPlanMarketingUrl
+
+ }

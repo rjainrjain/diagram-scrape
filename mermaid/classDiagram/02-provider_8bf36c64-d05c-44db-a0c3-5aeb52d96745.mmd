@@ -1,0 +1,45 @@
+classDiagram
+direction BT
+    class RepositoryProvider~in C : SearchCriteria~ {
+        <<interface>>
+        +byLink(url: URL) Repository
+        +byCriteria(criteria: C) Sequence~Repository~
+    }
+    class AbstractRepositoryProvider~in C: SearchCriteria~ {
+        <<abstract>>
+        +byLink(url: URL) Repository
+        #urlIsValid(urL: URL)* Boolean
+        #getRepoByURL(url: URL)* Repository
+    }
+    AbstractRepositoryProvider ..|> RepositoryProvider
+
+    class GitHubProvider~GitHubSearchCriteria~ {
+        -GitHubProvider()
+    }
+    class BitbucketProvider~BitbucketSearchCriteria~ {
+        -BitbucketProvider()
+    }
+    GitHubProvider --|> AbstractRepositoryProvider
+    BitbucketProvider --|> AbstractRepositoryProvider
+
+    class GitHubProviderFactory {
+        <<companion object>>
+        +connectAnonymously() GitHubProvider
+        +connectWithToken(\nㅤㅤtokenSupplier: TokenSupplierStrategy\n) GitHubProvider
+    }
+    GitHubProviderFactory ..> GitHubProvider: creates
+
+    class BitbucketProviderFactory {
+        <<companion object>>
+        +connectAnonymously() BitbucketProvider
+        +connectWithToken(\nㅤㅤtokenSupplier: TokenSupplierStrategy\n) BitbucketProvider
+    }
+    BitbucketProviderFactory ..> BitbucketProvider: creates
+
+    class TokenSupplierStrategy {
+        <<interface>>
+        +token: String
+    }
+    EnvironmentTokenSupplier ..|> TokenSupplierStrategy
+    TokenSupplierStrategy <--o GitHubProviderFactory
+    TokenSupplierStrategy <--o BitbucketProviderFactory

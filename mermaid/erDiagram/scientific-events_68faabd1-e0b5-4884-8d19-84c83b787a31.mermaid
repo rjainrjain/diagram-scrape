@@ -1,0 +1,59 @@
+```mermaid
+erDiagram
+WikidataItem {
+    string wikidataid  
+    string description  
+}
+WebWdItem {
+    string name  
+    string homepage  
+}
+EventSeries {
+    string acronym  
+    string title  
+}
+Event {
+    string acronym  
+    string title  
+}
+City {
+
+}
+Country {
+
+}
+Region {
+    string name  
+}
+Proceedings {
+    string title  
+}
+Scholar {
+    string firstName  
+    string orcid  
+    string dblpId  
+    string googleScholarUser  
+    string linkedInId  
+    string researchGate  
+    string gndId  
+    string smartCRMId  
+}
+Institution {
+    string title  
+    string smartCRMId  
+}
+Paper {
+    string id  
+    string title  
+    string authors  
+    uri pdfUrl  
+}
+
+Event ||--|o EventSeries : "series"
+Event ||--|o City : "city"
+Event ||--|o Country : "country"
+Event ||--|o Region : "region"
+Institution ||--|o Scholar : "scholar"
+
+```
+

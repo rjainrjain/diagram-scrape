@@ -1,0 +1,26 @@
+
+classDiagram
+    class Main {
+        +main() str
+    }
+    class NanoCode {
+        -Interledger interledger
+        +create_compatible_blockchain() BlockchainInterface
+        +integrate_with_blockchain(blockchain: BlockchainInterface)
+    }
+    class BlockchainInterface {
+        -transactions list
+        +add_transaction(transaction: dict)
+        +get_transactions() list
+    }
+    class ReadMeViewer {
+        +display_readme() str
+    }
+    class APIServer {
+        +start_server()
+        +stop_server()
+    }
+    Main --> NanoCode
+    NanoCode --> BlockchainInterface
+    Main --> ReadMeViewer
+    Main --> APIServer

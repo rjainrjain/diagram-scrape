@@ -1,0 +1,25 @@
+
+sequenceDiagram
+    participant M as Main
+    participant AM as AgentManager
+    participant PA as PodiumAPI
+    participant UI as UserInterface
+    participant CH as ChatHandler
+    participant A as Agent
+    M->>PA: fetch_script(podcast_id)
+    PA-->>M: return script
+    M->>AM: create_agent(name, script)
+    AM-->>M: return Agent
+    M->>UI: display_agents(agents)
+    UI->>M: get_user_input()
+    M->>CH: handle_user_interaction(user_input)
+    CH->>A: mimic_personality()
+    A-->>CH: return response
+    CH-->>M: return response
+    M->>UI: display_response(response)
+    M->>AM: interact(agent1, agent2)
+    AM->>CH: handle_agent_interaction(agent1, agent2)
+    CH->>A: mimic_personality()
+    A-->>CH: return response
+    CH-->>AM: return response
+    AM-->>M: return response

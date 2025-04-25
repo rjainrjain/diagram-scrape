@@ -1,0 +1,10 @@
+stateDiagram
+    [*] --> EsperandoSolicitud
+    EsperandoSolicitud --> ProcesandoPregunta : Solicitud recibida
+    ProcesandoPregunta --> ConsultandoDocumentacion : Enviar consulta al motor de AI
+    ConsultandoDocumentacion --> InterpretandoRespuesta : AI consulta documentación OpenAPI
+    InterpretandoRespuesta --> GenerandoRespuesta : Generar respuesta basada en la documentación
+    GenerandoRespuesta --> EnviandoRespuesta : Respuesta lista
+    EnviandoRespuesta --> EsperandoSolicitud : Respuesta enviada al usuario
+    EnviandoRespuesta --> Error : Error en el proceso
+    Error --> [*]

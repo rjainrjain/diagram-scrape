@@ -1,0 +1,87 @@
+---
+title: so.b@k@ framework class diagram
+---
+classDiagram
+    %% common
+    class RequestDto {
+        -String entryMethodName
+        -List&ltObject&gt args
+
+        +constructor RequestDto(String, List&ltObject&gt)$
+        +deserialize(byte[]) RequestDto$
+        +serialize() byte[]
+        +getEntryMethodName() String
+        +getArgs() List&ltObject&gt
+    }
+
+    class ResponseDto {
+        -Object result
+        +constructor ResponseDto(Object)$
+        +deserialize(byte[]) ResponseDto$
+        +serialize() byte[]
+        +getResult() Object
+    }
+
+    HttpClient ..> HttpServer : send request
+    HttpClient <.. HttpServer : receive response
+
+    %% server
+    class SecureClassLoader {
+        +defineClass()
+    }
+    class BytesClassLoader {
+        +loadClassFromBytes(byte[] class) Class
+    }
+    BytesClassLoader --|> SecureClassLoader
+
+    class HttpServer {
+    }
+
+    class HttpRequestHandler {
+        +handle(byte[] clazzBytes, byte[] clazzProperties) byte[] response
+    }
+
+    class Executor {
+        +execute(Class, RequestDto) ResponseDto
+    }
+
+
+    class Class {
+        +invoke(String methodName, Object[] args) Object
+    }
+
+    BytesClassLoader -- Class
+
+    HttpRequestHandler --> RequestDto : deserialize
+    HttpRequestHandler --> BytesClassLoader
+
+    RequestDto -- Executor
+    ResponseDto -- Executor
+    
+    HttpRequestHandler --> Executor
+    Executor --> Class
+    HttpRequestHandler --> ResponseDto : serialize
+    HttpServer --> HttpRequestHandler
+
+
+    %% client
+    class UserClassWithAMethodToCompute {
+        -unknown fields
+        -unknown methods()
+        +userComputingMethod(args)$
+    }
+    %% note for UserClassWithAMethodToCalculate "calculate() is some method that will be annotated"
+
+    class UserClassWithRemoteComputing {
+        +compute(args)$
+    }
+    note for UserClassWithRemoteComputing "code generation"
+
+    class HttpClient {
+        send(byte[] clazzBytes, byte[] clazzProperties) byte[] response
+    }
+
+    UserClassWithRemoteComputing --|> UserClassWithAMethodToCompute : userComputingMethod(args)
+    UserClassWithRemoteComputing --> HttpClient
+    UserClassWithRemoteComputing --> RequestDto: serialize
+    UserClassWithRemoteComputing --> ResponseDto: deserialize

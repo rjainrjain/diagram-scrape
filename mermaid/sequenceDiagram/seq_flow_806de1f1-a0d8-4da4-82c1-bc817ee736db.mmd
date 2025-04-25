@@ -1,0 +1,52 @@
+sequenceDiagram
+    participant User as User
+    participant React as Frontend
+    participant Node.js as Backend
+    participant MongoDB as Database
+    participant Nodemailer as Email
+    participant Pandas as Reporting
+    participant CSS_Framework as Customization
+    User->>Frontend: Create survey
+    Frontend->>Backend: POST /survey
+    Backend->>Database: save_survey()
+    Backend->>Frontend: 200 OK
+    User->>Frontend: Edit survey
+    Frontend->>Backend: PUT /survey/:id
+    Backend->>Database: save_survey()
+    Backend->>Frontend: 200 OK
+    User->>Frontend: Delete survey
+    Frontend->>Backend: DELETE /survey/:id
+    Backend->>Database: delete_survey()
+    Backend->>Frontend: 200 OK
+    User->>Frontend: Add participant
+    Frontend->>Backend: POST /survey/:id/participant
+    Backend->>Database: save_participant()
+    Backend->>Frontend: 200 OK
+    User->>Frontend: Remove participant
+    Frontend->>Backend: DELETE /survey/:id/participant/:id
+    Backend->>Database: delete_participant()
+    Backend->>Frontend: 200 OK
+    User->>Frontend: Send survey
+    Frontend->>Backend: POST /survey/:id/send
+    Backend->>Email: send_email()
+    Email->>Frontend: 200 OK
+    User->>Frontend: Collect responses
+    Frontend->>Backend: GET /survey/:id/responses
+    Backend->>Database: get_responses()
+    Backend->>Frontend: 200 OK
+    User->>Frontend: Generate report
+    Frontend->>Backend: GET /survey/:id/report
+    Backend->>Database: get_survey()
+    Backend->>Reporting: generate_report()
+    Reporting->>Frontend: Report data
+    User->>Frontend: Export data
+    Frontend->>Backend: GET /survey/:id/export
+    Backend->>Database: get_survey()
+    Backend->>Reporting: export_data()
+    Reporting->>Frontend: Exported data
+    User->>Frontend: Customize design
+    Frontend->>Backend: PUT /survey/:id/design
+    Backend->>Frontend: 200 OK
+    User->>Frontend: Logout
+    Frontend->>Backend: POST /logout
+    Backend->>Frontend: 200 OK

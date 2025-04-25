@@ -1,0 +1,12 @@
+sequenceDiagram
+    participant User
+    participant API
+    participant BusinessLogic
+    participant Persistence
+
+    User->>API: Request List of Places
+    API->>BusinessLogic: Fetch List of Places
+    BusinessLogic->>Persistence: Query DB for Places
+    Persistence-->>BusinessLogic: Return List of Places
+    BusinessLogic-->>API: Send List of Places
+    API-->>User: Return List of Places

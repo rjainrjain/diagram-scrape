@@ -1,0 +1,10 @@
+graph TB
+    A[Initial System Diagram] --> B[Convert Diagram to Code]
+    B --> C{Architect: <br> Update Diagram <br> to Match Code}
+    C -- No Changes --> D{Coder: <br>Update Code <br> to Match Diagram}
+    C -- Changes --> D
+    D -- No Changes --> E[Validation Tests] 
+    D -- Changes --> C
+    E --> F{Validation <br> Passed?}
+    F -- No --> D
+    F -- Yes --> G[Stop - Fixed Point Reached]

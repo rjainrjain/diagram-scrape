@@ -1,0 +1,40 @@
+sequenceDiagram
+    participant browser
+    participant server
+
+    Note left of browser:Text input entered into the form and clicked on save button on browser
+
+    browser->>server: Post https://studies.cs.helsinki.fi/exampleapp/new_note
+    activate server
+    Note right of server:The submitted data is parsed and pushed to data.json file
+    server->>browser:URL redirect with Response status code 304(Found)
+    deactivate server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/notes
+    activate server
+    server->>browser: HTML document
+    deactivate server
+
+    Note left of browser: HTML files consist of CSS and JavaScript files that will be executed in next calls
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.css
+    activate server
+    server->>browser: CSS file
+    deactivate server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.js
+    activate server
+    server->>browser: JavaScript file
+    deactivate server
+
+    Note left of browser: Javascript code is now executes which requests data from data.json
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+    activate server
+    Note right of server: Server sends all the data stored in Data.json including the latest input 
+    server->>browser:[{ content: "Hello", date: "2023-07-16" }, ...]
+    deactivate server
+
+    Note left of browser: browser executes the event handler and presents data on broswer following css style
+    
+    

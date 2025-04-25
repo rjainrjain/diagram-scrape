@@ -1,0 +1,102 @@
+erDiagram
+   
+    EstadoAsiento }|--|| Asiento : tiene
+    Vuelo }|--|| CompaniaAerea : tiene
+    Vuelo }|--|| Aeropuerto : tiene
+    Vuelo }|--|| EstadoVuelo : tiene
+    Reserva ||--|| Asiento : tiene
+    Reserva }|--|| Pasajero : tiene 
+    Reserva }|--|| Vuelo : tiene
+    Aeropuerto }|--|| Ciudad : tiene
+    Vuelo }|--|| ServicioComida : tiene
+    Vuelo }|--|| Aeronave : tiene
+    Pasajero }|--|| Pasaporte : tiene
+
+    Aeropuerto {
+        INT idAeropuerto PK
+        Varchar nombre
+        INT idCiudad FK
+        Varchar descripcion
+    }
+
+    Ciudad {
+        INT idCiudad PK
+        Varchar nombre 
+        Varchar descripcion
+    }
+
+    CompaniaAerea {
+        INT idCompaniaAerea PK
+        Varchar nombre
+        Varchar descripcion
+    }
+
+    ServicioComida {
+        INT idServicioComida PK
+        Varchar nombre
+        Varchar descripcion
+    }
+
+    Aeronave {
+        INT idAeronave PK
+        Varchar nombre
+        Varchar descripcion
+    }
+
+    Pasajero {
+        INT numDocumento PK
+        INT idPasaporte FK
+        Varchar nombre
+        Varchar apellido
+        INT numTelefonoContacto
+        Varchar correoElectronico
+    }
+
+    Pasaporte {
+        INT idPasaporte
+        Varchar nombre
+        Varchar descripcion
+    }
+
+    EstadoAsiento {
+        INT idEstadoAsiento PK
+        Varchar nombre 
+        Varchar descripcion 
+    }
+
+    Asiento {
+        INT idAsiento PK
+        INT fila
+        INT numero
+        INT idEstadoAsiento FK 
+    }
+
+    Vuelo {
+        INT idVuelo PK 
+        date fecha 
+        INT duracion 
+        INT distancia 
+        INT idEstadoVuelo FK
+        INT idCompaniaAerea FK
+        INT idServicioComida FK
+        INT idAeronave FK
+        INT idAeropuertoSalida FK
+        datetime horaSalida
+        INT idAeropuertoLlegada FK
+        datetime horaLlegada
+    }
+
+    EstadoVuelo {
+        INT idEstadoVuelo PK
+        Varchar nombre
+        Varchar descripcion
+    }
+
+    Reserva {
+        INT numReserva PK
+        INT idVuelo FK
+        INT numDocumento FK
+        INT idPasaporte FK
+        INT idAsiento FK 
+        INT costo
+    }

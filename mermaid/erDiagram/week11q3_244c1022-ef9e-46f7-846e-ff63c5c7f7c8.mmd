@@ -1,0 +1,46 @@
+---
+title: Week 11 Case Study Star Schema
+---
+
+erDiagram
+
+Author ||--o{ Sale : ""
+Category ||--o{ Sale : ""
+Agent ||--o{ Sale : ""
+Time ||--o{ Sale : ""
+
+Author {
+  INTEGER authorID PK
+  TEXT authorName
+  TEXT authorAddress
+}
+
+Category {
+  INTEGER catID PK
+  TEXT catName
+  TEXT catDesc
+}
+
+Agent {
+  INTEGER agentCode PK
+  TEXT agentName
+  TEXT territoryName
+  TEXT countryName
+}
+
+Time {
+  INTEGER timeID PK
+  INTEGER year
+  INTEGER quarter
+  INTEGER month
+}
+
+Sale {
+  INTEGER authorID PK, FK
+  INTEGER catID PK, FK
+  INTEGER agentCode PK, FK
+  INTEGER timeID PK, FK
+  INTEGER salesQuantity
+  REAL salesValue
+  REAL commissionPaid
+}

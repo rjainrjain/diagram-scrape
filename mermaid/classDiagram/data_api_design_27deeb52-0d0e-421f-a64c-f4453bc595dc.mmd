@@ -1,0 +1,58 @@
+classDiagram
+    class UI{
+        +def __init__(self)
+        +def input_elements(self) -> Dict[str, Any]
+        +def display_prototypes(self, prototypes: List[Image])
+        +def display_key_frames(self, key_frames: List[Image])
+        +def display_video_frames(self, video_frames: List[Image])
+        +def select_format(self) -> str
+        +def select_resolution(self) -> str
+    }
+    class PrototypeGenerator{
+        +def __init__(self)
+        +def generate_prototypes(self, elements: Dict[str, Any]) -> List[Image]
+    }
+    class ReviewSystem{
+        +def __init__(self)
+        +def review_prototypes(self, prototypes: List[Image]) -> bool
+    }
+    class KeyFrameGenerator{
+        +def __init__(self)
+        +def generate_key_frames(self, plot: str, storyboard: List[str]) -> List[Image]
+    }
+    class FrameGenerator{
+        +def __init__(self)
+        +def generate_video_frames(self, key_frames: List[Image]) -> List[Image]
+    }
+    class QualityControl{
+        +def __init__(self)
+        +def check_frame_quality(self, frame: Image) -> bool
+    }
+    class VideoProduction{
+        +def __init__(self)
+        +def produce_video(self, video_frames: List[Image], format: str, resolution: str) -> Video
+    }
+    class Deployment{
+        +def __init__(self)
+        +def deploy_system(self)
+    }
+    class Image{
+        +def __init__(self, path: str)
+        +def display(self)
+    }
+    class Video{
+        +def __init__(self, path: str)
+        +def play(self)
+    }
+    UI "1" -- "1" PrototypeGenerator: uses
+    UI "1" -- "1" ReviewSystem: uses
+    UI "1" -- "1" KeyFrameGenerator: uses
+    UI "1" -- "1" FrameGenerator: uses
+    UI "1" -- "1" QualityControl: uses
+    UI "1" -- "1" VideoProduction: uses
+    PrototypeGenerator "1" -- "1" Image: returns
+    ReviewSystem "1" -- "1" Image: accepts
+    KeyFrameGenerator "1" -- "1" Image: returns
+    FrameGenerator "1" -- "1" Image: returns
+    QualityControl "1" -- "1" Image: accepts
+    VideoProduction "1" -- "1" Video: returns

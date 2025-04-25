@@ -1,0 +1,169 @@
+--- 
+#title: "Component Relationships"
+---
+%%{init: {"securityLevel":"loose"}}%%
+flowchart TD
+  subgraph Outermost[" "]
+    subgraph L2[" "]
+      subgraph YourProject["<span style=font-size:3em></span>"]
+        subgraph L1[" "]
+          lmargin["lmargin"]
+          dispatcher("<span style="font-size:1.2em;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Dispatch Targets to Tool Containers &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>")
+          project("<span style="font-size:1.6em;font-weight:bold;">Your Project Makefile &nbsp;</span>")
+          rmargin["<span style=font-weight:2em;>rmargin&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>"]
+        end
+        %%L1
+      
+      end
+      %% YourProject
+    end
+    %% L2
+  
+    
+    subgraph Background[" "]
+      subgraph Containers["<span style="font-weight:3em"></span>"]
+        ContainersTOP["<span style="font-weight:bold;font-size:2em">Container Specs<br/></span><span style="font-style:italic;font-size:1em">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>(One or more compose-files)</b></span>"]
+        k8s-tools["`**k8s-tools.yml**`"]
+        argo[/"<span style="font-weight:normal;font-size:1em;">argo</span>"/]
+        kubefwd
+        knative[/"<span style="font-weight:normal;font-size:1em;">knative</span>"/]
+        k3d
+        knative
+        kind
+      end
+      spacer3["<span style="font-size:1.4em">spacer3</span>"]
+      %%Background
+      
+      subgraph Automation["<br><span style="font-weight:bold;font-size:2em">&nbsp;&nbsp; Automation &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>"]
+        k8s.mk("<span style="font-weight:bold">k8s.mk</span>")
+        subgraph ComposemkLayer[" "]
+          compose.mk("`**compose.mk**`")
+          compose.import[/"<span>compose.import <i>(macro)</i></span>"/]
+        end
+      end
+      %%Automation
+      
+    
+  end
+  spacer7-----lmargin
+  step1["<span style="color:red;font-weight:bold;font-size:1.3em"><br><u>Step 1</u></span><br/><span><i><pre>include compose.mk
+  compose.import..</pre></i></span>"]------>lmargin
+  
+  end
+
+  k8s.mk -.-> |"soft <br/> requirement"| compose.mk 
+  k8s.mk -..-> |"soft <br/> requirement"| Containers
+
+  classDef DISPATCHER fill:none,stroke:black,stroke-width:2px; 
+  compose.import -...->|"<span style="font-weight:bold;font-size:1.3em;color:red;"><br><u>Step 2</u></span><br/><span style="font-size:1.2em;">Reads services from </span>"| k8s-tools
+  
+  compose.mk -- defines ---> compose.import
+  project ==>|"<span style="color:black;font-weight:bold;font-size:1.1em">includes lib, calls macro</span>"| compose.mk
+  
+  project -.-> |"<span style="color:black;font-weight:none;font-size:1.1em"><i>optionally<br/>includes</i></span>"| k8s.mk
+  k8s-tools --> argo
+  k8s-tools --> kubefwd[/kubefwd/]
+  k8s-tools --> knative
+  k8s-tools --> k3d[/k3d/]
+  k8s-tools --> kind[/kind/]
+  kubefwd --- dispatcher
+  kind ---- dispatcher
+  knative ---- dispatcher
+  argo ---- dispatcher
+
+  k3d ----- dispatcher
+  compose.import -.-> project
+  
+  classDef INVISIBLE fill:none,stroke:none;
+  classDef BLUE fill:#e3f2fd,stroke:5px;
+  %% classDef BLUE fill:#e3f2fd,stroke:#000001,stroke-width:2px;
+  classDef BLUE_BORDERLESS fill:#e3f2fd,stroke:none,stroke-width:0px;
+  classDef BACKGROUND fill:#fefefe,stroke:black,stroke-width:0px
+  classDef AUTOMATION fill:#efefef,stroke:black,stroke-width:3px
+  classDef MACRO_INST fill:#fdfa9f,stroke:#333,stroke-width:2px
+  classDef C_INST fill:#ffffd0,stroke:black,stroke-width:2px,opacity:1
+  classDef K8STOOLS fill:#fdfa72,stroke:black,stroke-width:2px
+  classDef PROJECT fill:#fafafa,stroke:black,stroke-width:3px
+  classDef OUTERMOST fill:white,stroke:black,stroke-width:3px;
+  style k8s.mk fill:#fdfa72,stroke:black,stroke-width:2px
+  style compose.mk fill:#fdfa72,stroke:black,stroke-width:2px
+  %% style knative fill:none,stroke:none,stroke-width:2px
+style ContainersTOP stroke:none,fill:none,stroke-width:1px
+
+class step1 BLUE;
+class spacer7 BLUE;
+class spacer3 INVISIBLE;
+class containersTOP INVISIBLE;
+class spacer1 INVISIBLE;
+class spacer2 INVISIBLE;
+class k8s-tools K8STOOLS;
+class argo C_INST;
+class knative C_INST;
+class k3d C_INST;
+class kubefwd C_INST;
+class kind C_INST;
+class ComposemkLayer BLUE_BORDERLESS;
+class dispatcher DISPATCHER;
+class dispatcher MACRO_INST;
+class Automation BLUE;    
+class YourProject BACKGROUND;
+class Outermost OUTERMOST;
+class compose.import MACRO_INST
+class lmargin BLUE_BORDERLESS;
+class L1 BLUE;
+class L2 BACKGROUND;
+class Background BACKGROUND;
+class project PROJECT;
+class spacer1 INVISIBLE;
+class Automation BLUE
+class Containers BLUE
+  
+
+  %% linkStyle 0 stroke:black,opacity:1,fill:none
+  %%soft req
+  %% linkStyle 1 stroke:black,opacity:1,stroke-width:3px,opacity:1  
+  
+  %% %% linkStyle 2 stroke:red,stroke-width:2px,opacity:1,fill:none
+  %% %% %% linkStyle 8 stroke:black,stroke-width:1px,opacity:1,fill:none  
+  
+  %% %% step 2 
+  %% linkStyle 2 stroke:none,stroke-width:3px,opacity:1,fill:none
+  
+  %% %% includes 
+  %% linkStyle 4 stroke:black,opacity:1,stroke-width:3px,opacity:1
+  
+  %% %% optionally includes
+  %% linkStyle 5 stroke:black,opacity:1,stroke-width:3px,opacity:1,stroke-dasharray:5,5  
+  
+  %% %% cont
+  %% linkStyle 6 stroke:black,stroke-width:3px,opacity:1
+  %% linkStyle 7 stroke:black,stroke-width:3px,opacity:1
+  %% linkStyle 9 stroke:black,stroke-width:5px,opacity:1
+  %% linkStyle 10 stroke:red,stroke-width:3px,opacity:1
+  %% linkStyle 12 stroke:black,stroke-width:1px,opacity:1
+  
+  %% linkStyle 2 stroke:red,stroke-width:3px,opacity:1,fill:none
+  
+  %%mfile-cont
+  linkStyle 11 stroke:black,stroke-width:4px,opacity:1
+  linkStyle 11 stroke:,stroke-width:4px,opacity:1
+  linkStyle 12 stroke:black,stroke-width:8px,opacity:1
+  linkStyle 13 stroke:black,stroke-width:4px,opacity:1 
+  linkStyle 15 stroke:black,opacity:1,stroke-width:4px,opacity:1  
+  linkStyle 16 stroke:black,stroke-width:4px,opacity:1
+  linkStyle 17 stroke:black,stroke-width:4px,opacity:1
+  linkStyle 10 stroke:black,stroke-width:4px,opacity:1
+  linkStyle 9 stroke:black,stroke-width:4px,opacity:1
+  linkStyle 8 stroke:black,stroke-width:4px,opacity:1
+  linkStyle 7 stroke:black,stroke-width:4px,opacity:1
+  linkStyle 6 stroke:black,stroke-width:4px,opacity:1
+  linkStyle 5 stroke:black,stroke-width:4px,opacity:1
+  linkStyle 4 stroke:black,stroke-width:4px,opacity:1
+  linkStyle 2 stroke:black,stroke-width:4px,opacity:1
+  linkStyle 1 stroke:black,stroke-width:4px,opacity:1
+
+  linkStyle 3 stroke:red,stroke-width:5px,opacity:1,stroke-dasharray:10,10  
+  linkStyle 17 stroke:red,stroke-width:5px,opacity:1,stroke-dasharray:10,10  
+
+  %% step3
+  

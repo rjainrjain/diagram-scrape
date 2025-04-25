@@ -1,0 +1,40 @@
+
+
+sequenceDiagram
+
+    Actor User 
+    participant SmartContract1
+    participant ConnectorChain1
+    participant Observer 
+    participant Zetachain 
+    participant ConnectorChain2
+    participant SmartContract2
+
+    User->>SmartContract1: Calls smart contract
+    SmartContract1->>ConnectorChain1: Call zetaSend of contract
+    ConnectorChain1->>ConnectorChain1: Emit zetaSend event 
+    Observer->>ConnectorChain1: Observes zetaSend event
+    loop Until quorum
+        Observer->>Zetachain: Vote on zetaSend event occurence
+    end
+    Zetachain->>Zetachain: Emit inbound tx voting succeeded
+    Zetachain->>Observer: Observes inbound tx voting succeeded 
+    Observer->>Observer: TSS Signing of cross-chain event
+    Observer->>ConnectorChain2: TSS Send to EVM chain 
+    ConnectorChain2->>SmartContract2: Call application contract
+    ConnectorChain2->>ConnectorChain2: **Revert occurs**
+    Observer->>ConnectorChain2: Observes the reverted transaction
+    loop Until quorum
+        Observer->>Zetachain: Vote on outbound tx failure occurence
+    end
+    Zetachain->>Zetachain: Emit outbound tx failure voting succeeded
+    Zetachain->>Observer: Observes outbound tx failure voting succeeded
+    Observer->>Observer: TSS Signing of onRevert call
+    Observer->>ConnectorChain2: TSS Send to original EVM chain 
+    ConnectorChain2->>SmartContract2: Call application contract 
+    ConnectorChain1->>ConnectorChain1: **Transaction reverts**
+    Observer->>ConnectorChain1: Observes reverted transaction
+    loop Until quorum
+        Observer->>Zetachain: Vote on reverted zetaRevert event occurence
+    end
+    Zetachain->>Zetachain: Emit tx aborted

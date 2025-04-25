@@ -1,0 +1,33 @@
+sequenceDiagram
+    participant User
+    participant Your_app
+    participant Voice_SDK
+    participant Agora
+
+    rect rgb(240, 240, 240)
+    note over User, Agora: Join
+    User->>Your_app: Open App
+    User->>Your_app: Join a channel
+    Your_app->>Voice_SDK: Use Voice SDK to create an Agora Engine instance
+    Voice_SDK->>Your_app: Retrieve authentication token to join a channel
+    Your_app->>Agora: Join the channel
+    Agora-->>Your_app: Acknowledge join
+    end
+
+    rect rgb(240, 240, 240)
+    note over User, Agora: Publish and Subscribe
+    Your_app->>Voice_SDK: Publish microphone stream to the channel
+    Your_app->>Your_app: Subscribe to streams from other users
+    User->>Your_app: Adjust volume
+    Voice_SDK->>Your_app: Manage local and remote streams
+    Voice_SDK-->>Your_app: Stream status update
+    end
+
+    rect rgb(240, 240, 240)
+    note over User, Agora: Common workflows
+    User->>Your_app: Leave the channel
+    Your_app->>Voice_SDK: Call API methods to adjust or mute volume
+    Voice_SDK->>Your_app: Confirm volume adjustment
+    Your_app->>Agora: Leave the channel
+    Agora-->>Your_app: Acknowledge leave
+    end

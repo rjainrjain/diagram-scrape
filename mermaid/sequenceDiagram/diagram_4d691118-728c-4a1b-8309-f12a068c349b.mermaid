@@ -1,0 +1,48 @@
+sequenceDiagram
+    actor User as Contributor
+    User->>MDL Service Catalog: Add API
+    MDL Service Catalog->>Github: New Issue: Add API
+    
+    
+    activate Github
+    
+    rect rgb(255, 246, 220)
+    
+
+        Note over Github,Main: Download and validate API Specs
+
+        participant Main as Branch<br><br>Main
+        create participant Branch as Branch<br><br>add-api
+
+        box Automated Contribution Process
+        participant Github
+        participant Main
+        participant Branch
+        end
+
+
+
+        Main-->>Branch: Branch
+        
+        Note over Github,Branch: Create Pull Request (PR) to merge Branch into Main
+        
+        activate Branch
+        
+            actor Reviewer
+            Reviewer->>Branch: Review, discuss and adjust changes
+            Reviewer->>Branch: Approve PR
+
+        deactivate Branch
+
+        destroy Branch
+        Branch-->>Main: Merged
+        Note over Github,Main: PR approved.<br>Branch is merged into Main.<br>Issue resolved
+
+
+    end
+
+
+    Github->>MDL Service Catalog: Deploy new API
+
+    deactivate Github
+

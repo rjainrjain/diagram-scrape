@@ -1,0 +1,8 @@
+graph TD
+A[fa:fa-columns Input columns A and B] -->|both numerical| B(F-test for variances equality)
+A -->|numerical and categorical| C[Not handled yet: raise exception]
+A -->|both categorical| D(Compute marginal sums)
+B -->|homoscedastic| E[Student's t-test]
+B -->|heteroscedastic| F[Welsch's t-test]
+D --> |All marginal sums > 5| G[Chi2 test of contingency]
+D --> |Else| H[Fisher's exact test]

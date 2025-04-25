@@ -1,0 +1,28 @@
+flowchart TB
+
+    subgraph SETTINGS_LEVEL ["<div style='margin: 5px auto; font-size: 0.8rem'>settings.gradle.kts</div>"]
+        Settings("<b>Settings</b>")
+    end
+
+    subgraph PROJECT_LEVEL ["<div style='margin: 5px auto; font-size: 0.8rem'>build.gradle.kts</div>"]
+        Platform("<b>Platform</b>")
+        Module("<b>Module</b>")
+        Migration
+        Base
+    end
+
+    Module --> Base
+    Platform --> Module & Base
+    Migration --> Platform
+
+    click Platform "#platform"
+    click Module "#module"
+    click Settings "#settings"
+    click Migration "#migration"
+    click Base "#base"
+
+    style Platform stroke-width: 3px
+    style Module stroke-width: 3px
+    style Settings stroke-width: 3px
+    style SETTINGS_LEVEL fill:transparent,stroke:#666,stroke-dasharray: 10 10
+    style PROJECT_LEVEL fill:transparent,stroke:#666,stroke-dasharray: 10 10

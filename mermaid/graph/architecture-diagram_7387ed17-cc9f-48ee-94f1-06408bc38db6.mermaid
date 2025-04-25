@@ -1,0 +1,17 @@
+graph TD
+    Client[Client]
+    API[API Layer]
+    Services[Service Layer]
+    DB[(Database)]
+    ImageProc[Image Processing]
+    WebhookHandler[Webhook Handler]
+    
+    Client -->|Upload CSV| API
+    Client -->|Check Status| API
+    API -->|Process Upload| Services
+    API -->|Get Status| Services
+    Services -->|Create/Update Records| DB
+    Services -->|Process Images| ImageProc
+    Services -->|Trigger Webhook| WebhookHandler
+    WebhookHandler -->|Notify| Client
+    ImageProc -->|Update Product| DB

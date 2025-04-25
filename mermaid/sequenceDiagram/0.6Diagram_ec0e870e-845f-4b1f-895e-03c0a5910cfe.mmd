@@ -1,0 +1,11 @@
+sequenceDiagram
+    Browser->>+Server: GET https://studies.cs.helsinki.fi/exampleapp/spa
+    Server-->>-Browser: HTML DOC
+    Browser->>+Server: Get https://studies.cs.helsinki.fi/exampleapp/main.css
+    Server-->>-Browser: CSS File
+    Browser->>+Server: https://studies.cs.helsinki.fi/exampleapp/main.js
+    Server-->>-Browser: JS File
+    Browser->>+Server: https://studies.cs.helsinki.fi/exampleapp/dsts.json
+    Server-->>-Browser: Content / Date
+    Browser->>+Server: POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+    Server-->>-Browser: status code 201 created

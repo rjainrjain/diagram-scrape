@@ -1,0 +1,24 @@
+%%{
+  init: {
+    'theme': 'base',
+    'themeVariables': {
+      'primaryColor': '#FFFFFF',
+      'primaryTextColor': '#000',
+      'primaryBorderColor': '#000',
+      'lineColor': '#000',
+      'secondaryColor': '#000',
+      'tertiaryColor': '#000',
+      'fontFamily':'Times New Roman'
+    }
+  }
+}%%
+classDiagram
+    AbstractTopic <|-- TaxiTopic
+    class AbstractTopic{        
+    }
+    class TaxiTopic{
+        +String pickup_geohash
+        +String dropoff_geohash
+        +DateTime pickup_after
+        +DateTime dropoff_before
+    }

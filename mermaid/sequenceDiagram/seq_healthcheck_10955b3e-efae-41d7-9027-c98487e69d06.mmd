@@ -1,0 +1,21 @@
+%%{init: {'theme': 'neutral'}}%%
+
+sequenceDiagram
+    participant Health Checker
+    participant Cátalogo de APIs
+    participant Requisitor
+    participant Provedor
+    participant Banco de Dados de Séries Temporais as Banco de Dados de<br> Séries Temporais
+    
+
+    autonumber
+    activate Health Checker
+    Health Checker->>+Cátalogo de APIs: Obter rota de health check<br> do provedor
+    Cátalogo de APIs-->>-Health Checker: Rota de health check<br> e implementação
+    Health Checker->>+Requisitor: Enviar requisição
+    Requisitor->>+Provedor: Requisição
+    Provedor-->>-Requisitor: Resposta
+    Requisitor-->>-Health Checker: Resposta
+    Health Checker-)Banco de Dados de Séries Temporais: Registrar métricas da resposta
+    Health Checker-->>Health Checker: Agendar próxima execução do health check
+    deactivate Health Checker

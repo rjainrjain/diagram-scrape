@@ -1,0 +1,19 @@
+flowchart LR
+    Disconnected["Disconnected<br/>The user is in any of the following stages: before calling join to join the channel; after calling leave to leave the channel; being removed from the channel or under abnormal circumstances such as connection failure."] -->|Client.join| Connecting
+    subgraph Connecting["Connecting"]
+        EstablishingConnection["Establishing connection with Agora Server"]
+        SDKConnection["SDK attempts to connect to the server"]
+    end
+    Connecting -->|Successfully established connection with Agora server| Connected
+    subgraph Connected["Connected"]
+      Connected_Info["Enter this state after successfully joining the channel<br/>Users can publish or subscribe to media streams within a channel."]
+    end
+    Connected -->|Client.leave| Disconnecting
+    Disconnecting["Disconnecting<br/>The transient state entered after calling leave."] --> Disconnected
+    Connected --> Reconnecting
+    subgraph Reconnecting["Reconnecting"]
+        AutoFail["Automatic reconnection failed"]
+        AutoSuccess["Automatic reconnection successful"]
+        AutoFail --> Disconnected
+        AutoSuccess --> Connected
+    end

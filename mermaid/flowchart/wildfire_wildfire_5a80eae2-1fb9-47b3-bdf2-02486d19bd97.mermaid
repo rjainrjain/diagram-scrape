@@ -1,0 +1,34 @@
+flowchart TD
+    A[Start] --> B[Initialize Logger]
+    B --> C[Create Driver]
+    C -->|Success| D[Open Connection]
+    C -->|Error| E[Return Error: Failed to create driver]
+    D -->|Success| F[Defer Connection Close]
+    D -->|Error| G[Return Error: Failed to open connection]
+    F --> H[Send WildFire Registration Command]
+    H -->|Success| I{Check Command Output}
+    H -->|Error| J[Return Error: Failed to send command]
+    I -->|Contains expected string| K[Log Success]
+    I -->|Unexpected output| L[Return Error: Unexpected command output]
+    K --> M[End: Return nil]
+
+    subgraph Driver-Creation
+        N[Set IP Address]
+        O[Set Authentication Options]
+        P[Set Timeout Options]
+        Q[Set Transport Type]
+        R[Set SSH Config and Port]
+    end
+
+    subgraph Command-Execution
+        S[Prepare Command String]
+        T[Send Command]
+        U[Check for Command Failure]
+        V[Log Command Output]
+    end
+
+    C --> Driver-Creation
+    H --> Command-Execution
+
+    style Driver Creation fill:#f9f,stroke:#333,stroke-width:2px
+    style Command Execution fill:#ccf,stroke:#333,stroke-width:2px

@@ -1,0 +1,326 @@
+%%{
+  init: {
+    "theme": "forest",
+    "themeVariables": {
+      "primaryColor": "#228b22",
+      "primaryTextColor": "#000000",
+      "primaryBorderColor": "#006400",
+      "lineColor": "#ffffff",
+      "secondaryColor": "#8fbc8f",
+      "tertiaryColor": "#e0ffe0"
+    },
+    "flowchart": {
+      "curve": "linear"
+    }
+  }
+}%%
+classDiagram
+    direction LR
+
+%% Config
+    namespace config {
+        class ConfigLoader {
+            +getInstance() ConfigLoader
+            +getProperty(String) String
+            +getIntProperty(String) int
+        }
+    }
+
+    namespace core {
+        class DatabaseModelObject
+        class DataRetrievalLog
+        class GenericXmlHandler
+        class XmlHandler
+        class ParsedData
+        class DomParser
+        class ParserFactory
+        class SaxParser
+        class XmlParser
+        class DefaultXMLProcessor
+        class XMLProcessor
+        class XMLProcessorFactory
+    }
+
+    namespace database {
+        class DatabaseConfiguration
+        class DatabaseConnection
+        class DatabaseConnectionFactory
+        class DatabaseConnectionManager
+        class DatabaseStrategy
+        class DatabaseStrategyFactory
+        class SqlServerStrategy
+    }
+
+    namespace factory {
+        class ServiceFactory
+    }
+
+    namespace functions {
+        class BaseFunction
+        class HttpTriggerFunction
+        class QueueTriggerFunction
+    }
+
+    namespace queue {
+        class AzureQueueService
+        class QueueService
+        class QueueServiceFactory
+        class SQSService
+    }
+
+    namespace services {
+        class XmlProcessingService
+    }
+
+    namespace sftp {
+        class SftpClient
+        class SftpConfig
+        class SftpOperations
+        class SftpOperationsImpl
+        class SftpService
+        class SftpServiceImpl
+        class SftpUtil
+    }
+
+    namespace storage {
+        class AzureBlobStorageService
+        class S3StorageService
+        class StorageService
+        class StorageServiceFactory
+    }
+
+    namespace utils {
+        class AwsClientHelper
+        class AzureBlobHelper
+        class AzureQueueHelper
+        class GlobalExceptionHandler
+        class SchemaValidator
+        class XMLValidator
+    }
+
+    XmlHandler <|-- GenericXmlHandler
+    XmlParser <|-- DomParser
+    XmlParser <|-- SaxParser
+    XMLProcessor <|-- DefaultXMLProcessor
+    DatabaseStrategy <|-- SqlServerStrategy
+    QueueService <|-- AzureQueueService
+    QueueService <|-- SQSService
+    StorageService <|-- AzureBlobStorageService
+    StorageService <|-- S3StorageService
+    SftpOperations <|-- SftpOperationsImpl
+    SftpService <|-- SftpServiceImpl
+
+    HttpTriggerFunction --> XmlProcessingService : uses
+    XmlProcessingService --> XMLProcessorFactory : uses
+    XmlProcessingService --> DatabaseConnectionFactory : uses
+    XMLProcessorFactory --> XMLProcessor : creates
+    ParserFactory --> XmlParser : creates
+    DatabaseStrategyFactory --> DatabaseStrategy : creates
+    QueueServiceFactory --> QueueService : creates
+    StorageServiceFactory --> StorageService : creates
+    DatabaseConnectionFactory --> DatabaseConnection : creates
+
+%% Design pattern notes
+    note for ConfigLoader "Singleton"
+    note for DatabaseConnectionFactory "Singleton"
+    note for XMLProcessorFactory "Factory"
+    note for ParserFactory "Factory"
+    note for DatabaseStrategyFactory "Factory"
+    note for QueueServiceFactory "Factory"
+    note for StorageServiceFactory "Factory"
+
+%% Core Components
+    class HttpTriggerFunction {
+        +run(HttpRequestMessage): HttpResponseMessage
+        -processRequest(HttpRequestMessage<Optional<String>>, ExecutionContext): HttpResponseMessage
+        -processXmlFile(String, List~String~, ExecutionContext): void
+        -sendToDeadLetterQueue(String, String): void
+        -getTableName(String): String
+    }
+    class XmlProcessingService {
+        -schemaMap: Map~String, String~
+        +processXml(String): void
+    }
+    HttpTriggerFunction "1" --> "1" XmlProcessingService: uses
+%% Interfaces
+    class XMLProcessor {
+        <<interface>>
+        +process(Document): Object
+    }
+    class StorageService {
+        <<interface>>
+        +listFiles(String): List~String~
+        +readFileContent(String): String
+        +writeFile(String, String): void
+        +deleteFile(String): void
+    }
+    class QueueService {
+        <<interface>>
+        +processMessage(String): void
+        +sendMessage(String): void
+        +sendToDeadLetterQueue(String): void
+        +receiveMessages(int): List~String~
+        +deleteMessage(String, String): void
+        +getQueueLength(): int
+        +createQueueIfNotExists(): void
+        +deleteQueue(): void
+    }
+    class SftpOperations {
+        <<interface>>
+        +listFiles(String): void
+        +uploadFile(String, String): void
+        +downloadFile(String, String): void
+        +deleteFile(String): void
+        +renameFile(String, String): void
+        +createDirectory(String): void
+        +deleteDirectory(String): void
+        +chmod(int, String): void
+        +exists(String): boolean
+        +getFileSize(String): long
+        +getModifiedTime(String): long
+        +getPermissions(String): String
+        +setFileModificationTime(String, int): void
+        +copyFileOrDirectory(String, String): void
+        +getFileTypes(String): String
+        +getFileOwnerAndGroupd(String): String
+        +getFilesAfterTime(String, long): List~String~
+        +moveFile(String, String): void
+    }
+    class SftpService {
+        <<interface>>
+        +connect(): void
+        +disconnect(): void
+    }
+    class DatabaseStrategy {
+        <<interface>>
+        +getJdbcTemplate(): JdbcTemplate
+        +save(DatabaseModelObject): void
+    }
+
+    class XMLProcessor {
+        <<interface>>
+        +process(Document): Object
+    }
+    class XmlParser {
+        <<interface>>
+        +parse(String, String): ParsedData
+    }
+    class XmlHandler {
+        <<interface>>
+        +handle(String, String): void
+    }
+    class DatabaseModelObject {
+        <<interface>>
+    }
+
+%% Implementations
+    class DefaultXMLProcessor {
+        +process(Document): Object
+    }
+    class GeneratedClassXMLProcessor {
+        +process(Document): Object
+    }
+    class AzureBlobStorageService {
+        +listFiles(String): List~String~
+        +readFileContent(String): String
+        +writeFile(String, String): void
+        +deleteFile(String): void
+    }
+    class S3StorageService {
+        +listFiles(String): List~String~
+        +readFileContent(String): String
+        +writeFile(String, String): void
+        +deleteFile(String): void
+    }
+    class AzureQueueService {
+        +sendMessage(String): void
+        +sendToDeadLetterQueue(String): void
+        +receiveMessages(int): List~String~
+        +deleteMessage(String, String): void
+        +getQueueLength(): int
+        +createQueueIfNotExists(): void
+        +deleteQueue(): void
+    }
+    class SQSService {
+        +sendMessage(String): void
+        +sendToDeadLetterQueue(String): void
+        +receiveMessages(int): List~String~
+        +deleteMessage(String, String): void
+        +getQueueLength(): int
+        +createQueueIfNotExists(): void
+        +deleteQueue(): void
+    }
+
+    DatabaseStrategy: -JdbcTemplate jdbcTemplate
+    DatabaseModelObject <|.. DatabaseStrategy: save
+    XMLProcessor <|.. DefaultXMLProcessor
+    XMLProcessor <|.. GeneratedClassXMLProcessor
+    StorageService <|.. AzureBlobStorageService
+    StorageService <|.. S3StorageService
+    QueueService <|.. AzureQueueService
+    QueueService <|.. SQSService
+%% Database
+    class DatabaseConnectionFactory {
+        +getInstance(): DatabaseConnectionFactory
+        +getConnection(String, String): Connection
+        +withConnection(String, String, DatabaseOperation): void
+    }
+    class DatabaseConnection {
+        +saveData(Object, String): void
+        -saveParsedData(ParsedData, String): void
+        -saveGeneratedClassData(Object, String): void
+    }
+    DatabaseConnectionFactory "1" --> "0..*" DatabaseConnection: creates
+%% Factories
+    class XMLProcessorFactory {
+        +getProcessor(String, String): XMLProcessor
+        -generateJavaClassesFromXsd(): Map~String, Class~
+    }
+    class StorageServiceFactory {
+        +getStorageService(String): StorageService
+    }
+    class QueueServiceFactory {
+        +getQueueService(String): QueueService
+    }
+    XMLProcessorFactory "1" --> "1..*" XMLProcessor: creates
+    StorageServiceFactory ..> StorageService: creates
+    QueueServiceFactory ..> QueueService: creates
+%% Utilities
+    class ConfigLoader {
+        +getInstance(): ConfigLoader
+        +getProperty(String): String
+        +getIntProperty(String): int
+    }
+    class RetryUtil {
+        +retry~T~(int, Callable~T~): T
+        +retryVoid(int, VoidCallable): void
+    }
+    class XMLValidator {
+        +validateXMLSchema(String, String): boolean
+        +parseXmlDocument(String): Document
+        +documentToString(Document): String
+    }
+    class XsdToJavaGenerator {
+        +generateJavaClasses(String, String, String): void
+    }
+
+%% Relationships between components
+    HttpTriggerFunction "1" --> "1" XMLProcessorFactory: uses
+    HttpTriggerFunction "1" --> "1" StorageService: uses
+    HttpTriggerFunction "1" --> "1" QueueService: uses
+    XmlProcessingService "1" --> "1" XMLProcessorFactory: uses
+    XmlProcessingService "1" --> "1" DatabaseConnectionFactory: uses
+    XMLProcessorFactory "1" --> "1" XsdToJavaGenerator: uses
+    HttpTriggerFunction "1" --> "1" ConfigLoader: uses
+    HttpTriggerFunction "1" --> "1" RetryUtil: uses
+    HttpTriggerFunction "1" --> "1" XMLValidator: uses
+    XmlProcessingService "1" --> "1" XMLValidator: uses
+%% Design Patterns
+    note for ConfigLoader "Singleton"
+    note for DatabaseConnectionFactory "Singleton"
+    note for ParserFactory "Factory"
+    note for DatabaseStrategyFactory "Factory"
+    note for XMLProcessorFactory "Factory"
+    note for StorageServiceFactory "Factory"
+    note for QueueServiceFactory "Factory"
+    note for RetryUtil "Template Method"

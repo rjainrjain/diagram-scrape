@@ -1,0 +1,19 @@
+sequenceDiagram
+    participant ImageProcessingOrchestrator
+    participant InconsistencyAnalysis
+    participant ContentExtraction
+    participant TransactionLookup
+    participant SignatureAnalysis
+
+    ImageProcessingOrchestrator->>InconsistencyAnalysis: CallActivityAsync(nameof(InconsistencyAnalysis), inputFileName)
+    InconsistencyAnalysis-->>ImageProcessingOrchestrator: inconsistencyAnalysisResult
+    Note over ImageProcessingOrchestrator: Check inconsistencyAnalysisResult.Passed
+    ImageProcessingOrchestrator->>ContentExtraction: CallActivityAsync(nameof(ContentExtraction), inputFileName)
+    ContentExtraction-->>ImageProcessingOrchestrator: contentExtractionResult
+    ImageProcessingOrchestrator->>TransactionLookup: CallActivityAsync(nameof(TransactionLookup), contentExtractionResult.Transaction)
+    TransactionLookup-->>ImageProcessingOrchestrator: transactionLookupResult
+    Note over ImageProcessingOrchestrator: Check transactionLookupResult.IsFound
+    ImageProcessingOrchestrator->>SignatureAnalysis: CallActivityAsync(nameof(SignatureAnalysis), inputFileName, contentExtractionResult.Transaction)
+    SignatureAnalysis-->>ImageProcessingOrchestrator: signatureAnalysisResult
+    Note over ImageProcessingOrchestrator: Check signatureAnalysisResult.IsValid
+    Note over ImageProcessingOrchestrator: SetCustomStatus(SuccessReason.Success)

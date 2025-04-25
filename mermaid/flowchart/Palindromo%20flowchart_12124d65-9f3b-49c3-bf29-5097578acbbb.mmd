@@ -1,0 +1,14 @@
+flowchart TD
+    A[Inicio] -->|Ingresa palabra| B(Verificar longitud)
+    B --> C{Longitud > 1?}
+    C -->|Sí| D[Eliminar espacios y convertir a minúsculas]
+    C -->|No| E[No es palíndromo]
+    D --> F[Inicializar punteros]
+    F --> G{Verificar caracteres}
+    G -->|Iguales| H[Mover punteros]
+    H --> G
+    G -->|Diferentes| J[No es palíndromo]
+    G -->|Fin de palabra| K[Es palíndromo]
+    E --> L[Fin]
+    J --> L
+    K --> L

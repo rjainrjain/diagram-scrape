@@ -1,0 +1,12 @@
+graph TD
+    A[Cliente Web] -->|HTTP/HTTPS| B[Servidor Web - Node.js]
+    B -->|API RESTful| C[Lógica de Negocio - JavaScript]
+    C -->|Queries| D[(Base de Datos - PostgreSQL)]
+    B -->|Autenticación| E[Servicio de Autenticación]
+    C -->|Envío de correos| F[Servicio de Correo]
+    G[Docker] -->|Contiene| B
+    G -->|Contiene| C
+    G -->|Contiene| D
+    G -->|Contiene| E
+    G -->|Contiene| F
+    H[React Frontend] -->|Renderiza| A

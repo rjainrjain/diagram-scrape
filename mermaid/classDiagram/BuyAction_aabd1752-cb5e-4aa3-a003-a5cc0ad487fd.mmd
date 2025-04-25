@@ -1,0 +1,15 @@
+classDiagram
+  BuyAction -- WarrantyPromise
+  BuyAction -- Organization
+  BuyAction -- Person
+
+
+class BuyAction {
+
+  WarrantyPromise warrantyPromise
+  Organization seller
+  Person seller
+  Person vendor
+  Organization vendor
+
+ }

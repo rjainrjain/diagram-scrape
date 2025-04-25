@@ -1,0 +1,10 @@
+sequenceDiagram
+    opt poll
+        Note over Agent: Node collection
+        Agent->>Node: event
+        %opt track
+            Note over Node: track(event)
+            Node-->>Agent: node
+        %end
+        Note over Agent,Node: inputNode = trackedNode != null ? trackedNode : defaultNode
+    end

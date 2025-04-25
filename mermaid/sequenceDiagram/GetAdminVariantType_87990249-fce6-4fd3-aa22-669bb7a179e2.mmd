@@ -1,0 +1,33 @@
+
+sequenceDiagram
+  actor Admin
+  participant V_DA as View #10095; DashboardAdminPage
+  participant C_VT as Controller #10095; VariantTypeController
+  participant M_VT as Model #10095; VariantType
+  participant V_AVTP as View #10095; AdminVariantTypePage
+
+  Admin->>V_DA: klik tombl "Tipe Varian"
+
+  activate Admin
+  activate V_DA
+
+  V_DA->>C_VT: index()
+
+  deactivate V_DA
+  activate C_VT
+
+  C_VT->>M_VT: get()
+
+  activate M_VT
+
+  M_VT-->>C_VT: data
+
+  deactivate M_VT
+
+  activate V_AVTP
+
+  C_VT-->>V_AVTP: return view with data
+
+  deactivate C_VT
+  deactivate V_AVTP
+  deactivate Admin

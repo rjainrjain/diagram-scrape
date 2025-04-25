@@ -1,0 +1,110 @@
+erDiagram
+    Answers {
+        Id formula "Unique identifier consisting of the alpha-3 country code and ID record of the question"
+        Question multipleRecordLinks "ID record of the question"
+        Questions multipleLookupValues "List of questions used in the Questionnaire, structured around 12 themes related to choice of law"
+        Jurisdiction multipleRecordLinks "Alpha-3 code of the jurisdiction"
+        Answer multipleSelects "Predetermined answer options to the Questions (see column Answering Options in the \Questions\ tab)."
+        More_information multilineText "Further elaboration on the predetermined Answers"
+        Interesting_answer rating "Internal field to highlight jurisdictionally unique Answers"
+        To_review_ checkbox "Internal field to indicate that the Answer might not be accurate"
+        Legal_provisions multipleRecordLinks "Legal provisions connected to the answer"
+        Secondary_legal_provisions multipleRecordLinks "Legal provisions of secondary importance to the Answer (mentioned in case law records)"
+        Legislation multipleRecordLinks "The main instrument that encompasses the legal provisions or the legal source of the Answer"
+        Cases multipleRecordLinks "Case law providing information to the corresponding Questions"
+        Themes__from_question_ multipleLookupValues "Automated field connected to the Questions Tab"
+        Theme_code__from_question_ multipleLookupValues "Automated field connected to the Questions Tab"
+        Name__from_jurisdiction_ multipleLookupValues "Automated field connected to the Jurisdictions Tab"
+        Alpha_3_code__from_jurisdiction_ multipleLookupValues "Automated field connected to the Jurisdictions Tab"
+        Type__from_jurisdiction_ multipleLookupValues "Automated field connected to the Jurisdictions Tab"
+        Keyword formula "Automated field connected to the Interfaces"
+        Test formula "Automated field connected to Interfaces"
+        Record_id formula "Airtable-specific unique identifier"
+        Answer_rank formula "Field connected to the display of answers in the Interface"
+        Created_time createdTime "Metadata"
+    }
+    Questions {
+        Id formula "Unique identifier consisting of a unique number and the abbreviation of the Theme"
+        Question singleLineText "Framework for data collection defined by the research specialists"
+        Question_in_accessible_language singleLineText "Alternative wording to be displayed in the website (AB)"
+    }
+    Jurisdictions {
+        Type singleSelect "A jurisdictional record can be classified as \State\, \Financial\ (district), \Supraregional\, \Regional\ or \Federal\ according to the legal nature of its rules."
+        Region singleSelect "More comprehensive regional classification according to the purposes of this research project"
+        Answer_filled_out_or_not rollup "0 = no answer; 1 = answer has been filled out"
+        Irrelevant_ checkbox "Jurisdictions that will never be filled out"
+    }
+    Legislation {
+        Id formula "Unique identifier consisting of the first three characters from the title and a unique number"
+        Title__in_english_ singleLineText "Legal instruments in English starting with the adjective (Demonym) related to the jurisdiction"
+        Official_title singleLineText "Title of the legal instrument in the respective language of the jurisdiction"
+        Compatible_with_the_hcch_principles_ checkbox "Checkbox to indicate whether the HCCH Principles are incorporated in the legal instrument"
+        Publication_date date "The date that the legal instrument was published"
+        Entry_into_force date "The date that the legal instrument became effective in that jurisdiction"
+        Observations multilineText "Internal field for comments"
+        Official_source__url_ singleLineText "Website where the legal instrument is available"
+        Official_source__pdf_ multipleAttachments "PDF file of legal instrument"
+    }
+    Legal_provisions {
+        Name formula "Unique identifier consisting of the corresponding legislation and article"
+        Article singleLineText "Number or part of the specific legal provision"
+        Full_text_of_the_provision__original_language_ multilineText "Relevant excerpt of the law"
+        Full_text_of_the_provision__english_translation_ multilineText "Translated excerpt"
+        Jurisdiction__from_forms_ singleLineText "HELPER COLUMN"
+        Answers_2 multipleRecordLinks "Automated link to answers for secondary legal provisions"
+    }
+    Court_decisions {
+        Id formula "Unique identifier consisting of the Alpha-3 country code and unique number for the case law decision"
+        Case singleLineText "This field contains information on the Issuing Court, the Claimant and Respondent's names, the Number ID of the case, and the date when the decision was issued. The title of the case varies according to the jurisdiction. "
+        Jurisdictions multipleRecordLinks "Alpha-3 code of the jurisdiction"
+        Answers multipleRecordLinks "Questions answered by this case for the corresponding jurisdiction"
+        Official_source__url_ url "Website where the case law decision is available"
+        Official_source__pdf_ multipleAttachments "PDF file of the decision"
+        Abstract multilineText "Official abstract of the decision, otherwise AI-generated"
+        Relevant_rules_of_law_involved multilineText "The relevant legal provisions that are related to the choice of law from the choice of law issue(s)/agreement/clause/interpretation(s). This field might also include important precedents or other decisions that were used as a reference in the judgment. "
+        Choice_of_law_issue multilineText "Questions arising from the choice of law issue(s)/agreement/clause/interpretation(s)"
+        Court_s_position multilineText "The opinion of the court in regard to the statements made in the \Choice of law issue\ column."
+        Translated_excerpt multilineText "English translation of the \Quote\ column (relevant excerpt of the decision)"
+        Text_of_the_relevant_legal_provisions multilineText "Full text of the relevant rules involved. Also found in the \Answers\ tab with further elaboration of the legal provision."
+        Content multilineText "Text transcription if possible (SW)"
+        Additional_information multilineText "Cases related to topics that are currently outside the scope of the Dataverse"
+        Themes rollup "Automated field pertaining to the Questions tab"
+        Selected_case checkbox "Cases chosen for LLM training"
+        Observations singleLineText "Internal field for remarks"
+        Questions multipleRecordLinks "Questions corresponding to the Answers connected to this case (manually selected)"
+        Jurisdiction__from_forms_ singleLineText "Helper column"
+        Quote multilineText "Excerpt of the decision where the court justifies its position (judgment). The quote is always in the original language of the case/in the words of the court."
+        Relevant_facts multilineText "A short summary of the facts of the case (who are the parties, what happened, what is the dispute about, the different stages of court proceedings, etc.). This field prioritizes information on choice of law."
+        Arbitral_awards multipleRecordLinks "Arbitral award preceding this court decision (contested before this Court)"
+    }
+    Arbitral_institutions {
+        Institution multilineText "Official name of the arbitral institution"
+        Abbreviation multilineText "Common abbreviation for the arbitral institution"
+        Country multipleRecordLinks "Jurisdiction in which the arbitral institution has its headquarters"
+        Arbitral_rules multipleRecordLinks "Set of rules that governs the proceedings for institutional arbitrations"
+        Arbitral_awards multipleRecordLinks "Relevant arbitral decisions conducted by the institutional"
+    }
+    Arbitral_rules {
+        Set_of_rules singleLineText "Title of the instrument from a given arbitral institution"
+        In_force_from date "Date the instrument was enacted"
+        Official_source__url_ url "Website where the rules are available"
+    }
+    Arbitral_awards {
+        Case_number singleLineText "Official case reference designated by the arbitral institution"
+        Institution multipleRecordLinks "Responsible arbitral institution for the case"
+        Source multilineText "Case citation"
+        Year number "Year that the arbitral award was rendered"
+        Nature_of_the_award multipleSelects "This field refers to the procedural stage of the arbitration when the decision was rendered"
+        Context multilineText "A short summary of the facts of the case (who are the parties, what happened, what is the dispute about, etc.). This field prioritizes information on choice of law."
+        Seat__town_ multilineText "If the award is contested, it will be referred to the courts of this jurisdiction"
+    }
+    Concepts {
+        Concept singleLineText "Keywords or expressions"
+        Definition multilineText "Short explanation about the Concept"
+        Assignee singleCollaborator "Responsible person to enter the final text"
+        Status singleSelect "Internal field for task management"
+        Source singleLineText "How the first draft of the Definition came about"
+    }
+    Country_report_jurisdictions {
+        Answer_filled_out_or_not rollup "0 = no answer; 1 = answer has been filled out"
+    }

@@ -1,0 +1,41 @@
+erDiagram
+    EVENT {
+        id INTEGER PK
+        name STRING
+        description TEXT
+        min_age INTEGER
+        start_date DATE
+        expire_date DATE
+        image STRING
+        banner STRING
+        location STRING
+        price DECIMAL
+        quantity INTEGER
+        featured BOOLEAN
+    }
+
+    TICKET {
+        id INTEGER PK
+        buy_price DECIMAL
+        event_id INTEGER FK
+        user_id INTEGER FK
+    }
+
+    USER {
+        id INTEGER PK
+        fullname STRING
+        birthdate DATE
+        email STRING
+        password STRING
+    }
+
+    SESSION {
+        sid STRING PK
+        expires DATE
+        data TEXT
+    }
+
+    EVENT ||--o{ TICKET : "hasMany"
+    USER ||--o{ TICKET : "hasMany"
+
+%% https://mermaid.live/edit#pako:eNqNU0tOwzAQvYpliR3lAN2V1qCoNEVNQCwiRdN42hoSO_gDVKWn4ghcDIfQJrTh402ceeN5z2_GG5opjrRPUY8ELDUUiSR-sVsWxmRT_1RLcBKEMbtkM3I9bsISCiRRPAvCyybI0WRalFYoSWJ2FzdIIWQKS9yVagBjQduUg0UyGsSsAfClFBq7EFFUlQ655yAl6qNwrjL41HMIlFpkvjIbBpPBVRN-dCCtsOtjpQsE6zRycj6dXrFBWCPbRNabOBiO2X-cm7t1-gM5PqG0aevcReucM6i7sL2Cm8hH_-ZfuDzv7N5caLvq6kQBIj_2D4x5Vpp_A_ZaIhZFwTRsyzFil_tNTt1nc8DpZUBrhPZ16_F8fe311GZneZ8kdAVmAnKd0JYVv2Yl8uSEMOMv67mdJJkqvPeghfIjgARK0OhbxHEO98p_cpK9v3GxVGSC2hvCz-gpLeqtf0Wf90yoXWGBCa24OOiHimjr88BZFa1lRvtWOzylrqxs_np3tL-A3OD2A07_BlQ

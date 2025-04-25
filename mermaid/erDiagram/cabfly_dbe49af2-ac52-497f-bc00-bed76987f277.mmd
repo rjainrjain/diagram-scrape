@@ -1,0 +1,79 @@
+erDiagram
+
+    Aerolinea{
+        INT ID PK
+        STRING Nombre
+        STRING Descripcion
+    }
+
+    Reserva{
+        INT ID PK
+        STRING Codigo
+        DATETIME FechaHoraEmision
+        INT IDVuelo FK
+        INT IDPasajero FK
+        INT IDDetalleEstadoReserva FK
+    }
+    
+    Vuelo{
+        INT ID PK
+        STRING NumVuelo
+        STRING NumAvion
+        STRING Origen
+        STRING Destino
+        DATETIME FechaHora
+        INT IDAerolinea FK
+    } 
+
+    Pasajero{
+        INT ID PK
+        STRING Nombre
+        STRING Apellido
+        STRING Email
+        STRING Telefono
+        INT IDTipoDoc FK
+    }
+
+    Asiento{
+        INT ID PK
+        STRING Numero
+        INT IDDetalleEstadoAsiento FK
+        INT IDReserva FK
+    }
+
+    TarjetaEmbarque{
+        INT ID PK
+        STRING Puerta
+        DATETIME FechaHora
+        DATETIME FechaEmision
+        STRING NumTarjetaEmbarque
+        INT IDReserva FK
+    }
+
+    DetalleEstadoAsiento{
+        INT ID PK
+        STRING Estado
+        STRING Descripcion
+    }
+
+    DetalleEstadoReserva{
+        INT ID PK
+        STRING Estado
+        STRING Descripcion
+    }
+
+    TipoDocumento{
+        INT ID PK
+        STRING TipoDocumento
+        STRING NumeroDocumento
+    }
+
+    Asiento }|--|| DetalleEstadoAsiento : Tiene    
+    Reserva ||--|{ TarjetaEmbarque : Tiene
+    Reserva }|--|| Pasajero : De
+    Reserva ||--|{ Asiento : Posee
+    Reserva }|--|| DetalleEstadoReserva : Tiene
+    Vuelo ||--|{ Reserva : Tiene
+    Pasajero }|--|| TipoDocumento : Tiene
+    Aerolinea ||--|{ Vuelo : Asignado
+

@@ -1,0 +1,49 @@
+sequenceDiagram
+    participant M as Main
+    participant CLI as CLI
+    participant DB as Database
+    participant SMS as SMS
+    participant Call as Call
+    participant Appointment as Appointment
+    M->>CLI: create CLI instance
+    CLI->>DB: create Database instance
+    CLI->>SMS: create SMS instance
+    CLI->>Call: create Call instance
+    M->>CLI: run CLI interface
+    CLI->>CLI: display main menu
+    CLI->>CLI: get user input
+    CLI->>CLI: handle user input
+    CLI->>CLI: execute corresponding action
+    CLI->>DB: get appointments
+    DB->>DB: execute SQL query
+    DB-->>CLI: return appointments
+    CLI->>CLI: display appointments
+    CLI->>CLI: get user input
+    CLI->>CLI: handle user input
+    CLI->>CLI: execute corresponding action
+    CLI->>DB: add appointment
+    DB->>DB: execute SQL query
+    DB-->>CLI: return appointment
+    CLI->>SMS: send SMS
+    SMS->>SMS: send SMS using Twilio
+    CLI->>Call: make call
+    Call->>Call: make call using Twilio
+    CLI->>CLI: display success message
+    CLI->>CLI: get user input
+    CLI->>CLI: handle user input
+    CLI->>CLI: execute corresponding action
+    CLI->>DB: update appointment
+    DB->>DB: execute SQL query
+    DB-->>CLI: return appointment
+    CLI->>CLI: display success message
+    CLI->>CLI: get user input
+    CLI->>CLI: handle user input
+    CLI->>CLI: execute corresponding action
+    CLI->>DB: delete appointment
+    DB->>DB: execute SQL query
+    DB-->>CLI: return appointment
+    CLI->>CLI: display success message
+    CLI->>CLI: get user input
+    CLI->>CLI: handle user input
+    CLI->>CLI: execute corresponding action
+    CLI->>CLI: exit CLI interface

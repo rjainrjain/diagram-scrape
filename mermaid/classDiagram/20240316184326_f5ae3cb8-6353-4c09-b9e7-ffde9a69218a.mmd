@@ -1,0 +1,19 @@
+
+classDiagram
+    class FastAPIServer {
+        +uvicorn_server() void
+        +api_endpoints() void
+    }
+    class GitHubIntegration {
+        -token str
+        +push_code(repository: str, code: str) bool
+    }
+    class MetaGPTIntegration {
+        +generate_code(requirements: str) str
+    }
+    class Config {
+        +load_env() dict
+    }
+    FastAPIServer --> GitHubIntegration : uses
+    FastAPIServer --> MetaGPTIntegration : uses
+    FastAPIServer --> Config : uses

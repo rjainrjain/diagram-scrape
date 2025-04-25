@@ -1,0 +1,15 @@
+sequenceDiagram
+    participant C as Controller
+    participant H as BaseHandler
+    participant AM as APIManager
+    participant GA as GenericAPIAdapter
+    participant ES as External Service
+
+    C->>H: execute_operation(operation_id, params, data)
+    H->>AM: get_api(service_name)
+    AM->>GA: execute_operation(operation_id, params, data)
+    GA->>ES: HTTP Request
+    ES-->>GA: HTTP Response
+    GA-->>AM: Parsed Response
+    AM-->>H: Response
+    H-->>C: Processed Result

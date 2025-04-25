@@ -1,0 +1,102 @@
+flowchart TD
+    p0((Channel.fromPath))
+    p1((Channel.fromFilePairs))
+    p2(( ))
+    p3[KRAKEN2_CLASSIFY]
+    p4(( ))
+    p5(( ))
+    p6(( ))
+    p7[INITIALISATION]
+    p8[KALLISTO_INDEX]
+    p9([combine])
+    p10[KALLISTO_QUANT]
+    p11[BEST_ALIGNMENT]
+    p12[FASTQ_ID_HEADER]
+    p13[IVA_CONTIGS]
+    p14[ALIGN_CONTIGS]
+    p15([combine])
+    p16([combine])
+    p17([combine])
+    p18[MAP]
+    p19[MAF]
+    p20([collect])
+    p21([combine])
+    p22[JOIN_MAFS]
+    p23[BAM_REF_ID_CSV]
+    p24([collectFile])
+    p25([map])
+    p26([flatten])
+    p27([collect])
+    p28[MAKE_TREES]
+    p29(( ))
+    p30(( ))
+    p31(( ))
+    p32([flatten])
+    p33([filter])
+    p34[IQTREE]
+    p35(( ))
+    p36(( ))
+    p37([collect])
+    p38[TREE_ANALYSIS]
+    p39(( ))
+    p40(( ))
+    p41(( ))
+    p42(( ))
+    p43[PHYLO_TSI]
+    p44[PRETTIFY_AND_PLOT]
+    p45(( ))
+    p46(( ))
+    p0 -->|ch_ref_hxb2| p21
+    p1 -->|ch_fastq_pairs| p3
+    p2 -->|db| p3
+    p3 --> p6
+    p3 --> p5
+    p3 --> p4
+    p7 --> p14
+    p7 -->|ch_initdir.ExistingRefsUngapped| p8
+    p7 -->|ch_initdir.IndividualRefs| p11
+    p8 --> p9
+    p1 -->|ch_fastq_pairs| p9
+    p9 -->|ch_kallisto_index_reads| p10
+    p10 --> p11
+    p11 --> p15
+    p1 -->|ch_fastq_pairs| p12
+    p12 --> p15
+    p1 -->|ch_fastq_pairs| p13
+    p13 --> p14
+    p14 --> p17
+    p15 --> p16
+    p13 --> p16
+    p16 --> p17
+    p17 -->|ch_map_args| p18
+    p7 -->|initdir| p18
+    p18 --> p19
+    p19 --> p20
+    p20 --> p21
+    p21 -->|ch_hxb2_maf| p22
+    p22 -->|ch_joined_maf| p43
+    p18 --> p23
+    p23 --> p24
+    p24 -->|ch_bam_ref_id_all| p28
+    p18 --> p25
+    p25 -->|ch_mapped_out_no_id| p26
+    p26 --> p27
+    p27 --> p28
+    p28 --> p32
+    p28 --> p31
+    p28 --> p30
+    p28 --> p29
+    p32 --> p33
+    p33 -->|ch_aligned_reads_positions_excised| p34
+    p34 -->|ch_iqtree| p37
+    p34 --> p36
+    p34 --> p35
+    p37 --> p38
+    p38 --> |ch_analysed_trees.patstat_csv| p43
+    p38 --> p42
+    p38 --> p41
+    p38 --> p40
+    p38 --> p39
+    p43 --> p44
+    p44 --> |tsi_csv_scount|p46
+    p44 --> |plot_scount| p45

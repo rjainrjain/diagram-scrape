@@ -1,0 +1,16 @@
+sequenceDiagram
+
+    participant WatcherVerticle;
+    participant PairtreeVerticle;
+    participant File System;
+
+    activate WatcherVerticle
+
+    WatcherVerticle->>PairtreeVerticle: Sends video file for insertion into Pairtree
+    activate PairtreeVerticle
+
+    PairtreeVerticle->>File System: Reads MP4 video file
+    PairtreeVerticle-->>WatcherVerticle: Notifies of successful Pairtree insertion
+    deactivate PairtreeVerticle
+
+    deactivate WatcherVerticle

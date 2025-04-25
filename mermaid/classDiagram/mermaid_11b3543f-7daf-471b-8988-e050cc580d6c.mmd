@@ -1,0 +1,44 @@
+classDiagram
+    windPlant1 <|-- basePlant1
+    farmConsumer1 <|-- baseConsumer1
+    class Floor1{
+    }
+    class powerLine1{
+    }
+    domesticConsumer1 <|-- baseConsumer1
+    cityPlant1 <|-- basePlant1
+    industrialConsumer1 <|-- baseConsumer1
+    nuclearPlant1 <|-- basePlant1
+    deliverySubStation1 <|-- baseReceiver1
+    generatorSubStation1 <|-- baseReceiver1
+    hydroPlant1 <|-- basePlant1
+    IndustrialPlant1 <|-- basePlant1
+    class basePlant1{
+    }
+    gasPlant1 <|-- basePlant1
+    class baseReceiver1{
+    }
+    coalPlant1 <|-- basePlant1
+    transformer1 <|-- baseReceiver1
+    class baseConsumer1{
+    }
+    solarPlant1 <|-- basePlant1
+    class Room1{
+    }
+    Floor1 : +contains()
+    powerLine1 : +double Capacity
+    powerLine1 : +feeds()
+    powerLine1 : +Object GridType
+    industrialConsumer1 : +hasGenerator()
+    deliverySubStation1 : +double Capacity
+    deliverySubStation1 : +feeds()
+    generatorSubStation1 : +double Capacity
+    generatorSubStation1 : +feeds()
+    basePlant1 : +double Output
+    basePlant1 : +feeds()
+    basePlant1 : +Object EmissionType
+    basePlant1 : +Object ManufacturerInfo
+    transformer1 : +feeds()
+    baseConsumer1 : +double PowerRequirement
+    Room1 : +double Temperature
+    Room1 : +double Humidity

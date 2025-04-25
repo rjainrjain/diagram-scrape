@@ -1,0 +1,25 @@
+flowchart TD
+    Spouse{spouse} -->|wife| Person
+    Spouse         -->|husband| Person
+
+    Mother{mother} ---|child| Person
+    Mother{mother} -->|mother| Person
+
+    Father{father} ---|child| Person
+    Father{father} -->|father| Person
+
+    Son{son} ---|parent <=2| Person
+    Son{son} ---|son| Person
+
+    Daughter{daughter} ---|parent <= 2| Person
+    Daughter{daughter} ---|daughter| Person
+
+    Sister{sister} ---|sibling| Person
+    Sister{sister} ---|sister| Person
+
+    Brother{brother} ---|sibling| Person
+    Brother{brother} ---|brother| Person
+
+    Person --- Id([id])
+    Person --- Name([name])
+    Person --- Gender([gender])

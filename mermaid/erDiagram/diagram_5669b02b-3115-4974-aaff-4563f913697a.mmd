@@ -1,0 +1,156 @@
+erDiagram
+    User ||--o{ Sale : makes
+    User ||--o{ Purchase : makes
+    User ||--o{ Expense : incurs
+    User ||--|| Employment : has
+
+    Product ||--o{ Sale : "sold in"
+    Product ||--o{ Purchase : "bought in"
+    Product ||--o{ Waste : "wasted as"
+
+    Category ||--o{ Expense : categorizes
+    Category ||--o{ ExpenseCategoryBreakdown : "broken down in"
+
+    Employment ||--o{ Leave : has
+
+    ExpenseSummary ||--o{ ExpenseCategoryBreakdown : includes
+
+    User {
+        string id PK
+        string name
+        string email UK
+        datetime createdAt
+        datetime updatedAt
+        datetime deletedAt
+    }
+
+    Product {
+        string id PK
+        string name
+        float price
+        float rating
+        int stockQuantity
+        datetime createdAt
+        datetime updatedAt
+        datetime deletedAt
+    }
+
+    Category {
+        string id PK
+        string name UK
+        datetime createdAt
+        datetime updatedAt
+        datetime deletedAt
+    }
+
+    Sale {
+        string id PK
+        string productId FK
+        string userId FK
+        datetime timestamp
+        int quantity
+        float unitPrice
+        float totalAmount
+        datetime createdAt
+        datetime updatedAt
+        datetime deletedAt
+    }
+
+    Purchase {
+        string id PK
+        string productId FK
+        string userId FK
+        datetime timestamp
+        int quantity
+        float unitCost
+        float totalCost
+        enum paymentType
+        datetime dueDate
+        boolean isPaid
+        datetime createdAt
+        datetime updatedAt
+        datetime deletedAt
+    }
+
+    Expense {
+        string id PK
+        string userId FK
+        string categoryId FK
+        float amount
+        datetime timestamp
+        datetime createdAt
+        datetime updatedAt
+        datetime deletedAt
+    }
+
+    Waste {
+        string id PK
+        string productId FK
+        int quantity
+        string reason
+        datetime timestamp
+        datetime createdAt
+        datetime updatedAt
+        datetime deletedAt
+    }
+
+    Employment {
+        string id PK
+        string userId FK
+        datetime startDate
+        string contractType
+        string[] documents
+        datetime createdAt
+        datetime updatedAt
+        datetime deletedAt
+    }
+
+    Leave {
+        string id PK
+        string employmentId FK
+        enum type
+        datetime startDate
+        datetime endDate
+        enum status
+        datetime createdAt
+        datetime updatedAt
+        datetime deletedAt
+    }
+
+    SalesSummary {
+        string id PK
+        datetime period
+        float totalSales
+        int totalQuantity
+        float averageOrderSize
+        string sourceDataHash
+        datetime createdAt
+        datetime updatedAt
+    }
+
+    PurchaseSummary {
+        string id PK
+        datetime period
+        float totalPurchases
+        int totalQuantity
+        float averageOrderValue
+        string sourceDataHash
+        datetime createdAt
+        datetime updatedAt
+    }
+
+    ExpenseSummary {
+        string id PK
+        datetime period
+        float totalExpenses
+        string sourceDataHash
+        datetime createdAt
+        datetime updatedAt
+    }
+
+    ExpenseCategoryBreakdown {
+        string id PK
+        string expenseSummaryId FK
+        string categoryId FK
+        float amount
+    }

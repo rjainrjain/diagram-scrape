@@ -1,0 +1,10 @@
+
+stateDiagram
+    
+    state "DEFAULT (only 'add item' button)" as DEFAULT
+    state "EDITION (input and 'cancel' and 'save item' buttons)" as EDITION
+
+    DEFAULT --> EDITION: click 'add item'
+    EDITION -->DEFAULT: click 'cancel'
+    EDITION-->EDITION: click 'save item'
+    EDITION-->EDITION: fill the input and press 'enter'

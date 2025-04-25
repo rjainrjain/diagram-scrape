@@ -1,0 +1,24 @@
+---
+title: Subscription lifecycle
+---
+stateDiagram-v2
+  direction LR
+  [*] --> incomplete: drafted
+  [*] --> trialing: has_trial
+  [*] --> recurring: created
+  trialing --> recurring: trial_over
+  incomplete --> recurring: start
+  state recurring {
+    active --> active: recure
+    active --> paused: pause
+    paused --> active: resume
+  }
+  note right of recurring
+    The business logic for whether or not a
+    subscription should successfuly recure
+    is usually better kept outside
+    of the subscription as it could vary widely
+    depending on context
+  end note
+  incomplete --> cancelled: cancel
+  recurring --> cancelled: cancel

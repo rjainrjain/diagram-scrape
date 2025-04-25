@@ -1,0 +1,53 @@
+sequenceDiagram
+    participant User
+    participant App as Your app
+    participant Agora
+
+    rect rgb(255, 255, 255)
+        note over User, Agora: Initialize
+        User ->>+ App: Open app
+        App ->>+ App: Create a signalingEngine instance
+        App ->>+ App: Add user event callbacks
+        App ->>+ App: Set the authentication token
+        App ->>+ Agora: Log in to Signaling
+    end
+
+    rect rgb(255, 255, 255)
+        note over User, Agora: Channel
+        App ->> App: Create stream channel
+        App ->>+ Agora: Create channel or add user to channel
+        App ->> App: Subscribe to a channel
+        Agora ->> Agora: Channel events
+    end
+
+    rect rgb(255, 255, 255)
+        note over User, Agora: Topic
+        App ->> App: Join topic
+        App ->>+ Agora: Create topic or add user to topic
+        App ->> App: Subscribe to topic
+        Agora ->> Agora: Topic events
+    end
+
+    rect rgb(255, 255, 255)
+        note over User, Agora: Messages
+        App ->>+ Agora: Send message
+        Agora ->> Agora: Publish message to topic
+        Agora -->> App: Listen for message events
+        Agora -->> App: Receive message
+        App ->> App: Leave topic
+    end
+
+    rect rgb(255, 255, 255)
+        note over User, Agora: Presence
+        App ->> App: Change status
+        Agora ->> Agora: listen for user events
+        Agora -->> App: ConnectionStateChanged
+        App ->> App: Inform users
+    end
+
+    rect rgb(255, 255, 255)
+        note over User, Agora: Close
+        App ->>+ Agora: Log out
+        Agora -->> App: Log out of Signaling
+        App -->> User: Close app
+    end

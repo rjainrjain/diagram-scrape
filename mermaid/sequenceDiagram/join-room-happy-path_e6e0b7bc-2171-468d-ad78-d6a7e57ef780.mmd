@@ -1,0 +1,13 @@
+sequenceDiagram
+    actor Alice
+    participant OTT as OTT website
+    participant L as :LoadBalancer
+    participant N as :Monolith
+    Alice->>+OTT: Join Room "foo".
+    OTT->>+L: Connect
+    Note over L: Determines which Monolith has "foo"
+    L->>+N: Alice joins "foo"
+    N->>-L: Joined
+    L->>-OTT: Joined
+    OTT->>-Alice: Joined
+    Note over Alice,N: Alice's Websocket connection is proxied to Monolith

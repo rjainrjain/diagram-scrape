@@ -1,0 +1,153 @@
+classDiagram
+  direction LR
+    class Receta{
+        nombre
+        descripcion
+        categoriaDietaria: categoriaDietaria
+        tiempoPreparacion
+        tiempoTotalCoccion
+        Dificultad: dificultad
+        PasosReceta: listaPasos 
+    }
+    
+  class categoriaDietaria{
+        nombre
+        descripcion
+    }
+    Receta --> "*" categoriaDietaria
+  class Dificultad{
+        nombre
+        descripcion
+    }
+    Receta --> "1" Dificultad
+  class PasosReceta{
+        orden
+        descripcion
+        tiempo
+    }
+    Receta --> "*" PasosReceta
+    class Ingrediente{
+        nombre
+        descripcion
+        
+    }
+    class UnidadMedida{
+        nombre
+        descripcion
+    }
+    class ListaIngredientes{
+        Ingrediente: ingrediente
+        porcion
+    }
+    class tipoIngrediente{
+        nombre
+        descripcion
+        UnidadMedida: unidadMedida
+    }
+    Receta *-- ListaIngredientes
+    Ingrediente --> "1" tipoIngrediente
+    tipoIngrediente --> "1" UnidadMedida
+    ListaIngredientes --> "1" Ingrediente
+
+    class Cliente{
+        nombre
+        apellido
+        email
+        telefono
+        direccionEnvio
+        nroDocumento
+        tipoDocumento: tipoDocumento
+        planesAlimentarios: planAlimentario
+    }
+    Cliente --> "*" PlanAlimentario
+    class tipoDocumento{
+        nombre
+        descripcion
+    }
+    Cliente --> "1" tipoDocumento
+
+    class kitSemanal{
+        fecha
+        listaRecetas: Receta
+        IngredientesPorcionados
+        cambioEstadoKit
+        
+
+    }
+    class cambioEstadoKit{
+        fechaInicio
+        fechaFin
+        estadoKit: estadoKit
+    }
+    class estadoKit{
+        nombre
+        descripcion
+    }
+    kitSemanal --> "*" cambioEstadoKit
+    cambioEstadoKit --> "1" estadoKit
+
+    class IngredientesPorcionados{
+        Receta: receta
+        ListaIngredientes: listaIngredientes
+        cantidad}
+
+    kitSemanal --> "*" Receta
+    kitSemanal --> "1" Cliente
+    kitSemanal --> "*" IngredientesPorcionados
+    IngredientesPorcionados --> "1" Receta
+    IngredientesPorcionados --> "1" ListaIngredientes
+
+    class PlanAlimentario{
+    nombre
+    codigoIdentificatorio
+    categoriaDietaria: CategoriasDietaria
+    fechaCreacion
+    fechaCierre
+    cantidadPersonas
+    listaRecetas: Receta
+    kitSemanal: kitSemanal
+    cambioEstadoPlan
+    }
+    class cambioEstadoPlan{
+        fechaInicio
+        fechaFin
+        estadoPlan: estadoPlan
+    }
+    class estadoPlan{
+        nombre
+        descripcion
+    }
+    PlanAlimentario --> "*" cambioEstadoPlan
+    cambioEstadoPlan --> "1" estadoPlan
+    PlanAlimentario --> "*" categoriaDietaria
+    PlanAlimentario --> "*" Receta
+    PlanAlimentario --> "*" kitSemanal
+    class subscripcion{
+        fechaInicio
+        fechaFin
+        tarifaServicio
+        cliente: cliente
+        planAlimentario: planAlimentario
+        listaPagos
+    }
+    class tarifaServicio{
+        fechaInicio
+        fechaFin
+        nombre
+        descripcion
+        precio
+    }
+    class Pagosubscripcion{
+        fecha
+        monto
+        subscripcion: subscripcion
+        metodoPago
+    }
+    Pagosubscripcion --> "1" metodoPago
+    class metodoPago{
+        nombre
+        descripcion
+    }
+    subscripcion --> "*" Pagosubscripcion
+    subscripcion --> "*" tarifaServicio
+    subscripcion --> "1" Cliente

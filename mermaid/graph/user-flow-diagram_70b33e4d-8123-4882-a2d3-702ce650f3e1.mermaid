@@ -1,0 +1,22 @@
+graph TD
+    A[Landing Page] --> B{User Logged In?}
+    B -->|No| C[Login Page]
+    B -->|Yes| D[Dashboard]
+    C --> E{Has Account?}
+    E -->|No| F[Registration Page]
+    E -->|Yes| C
+    F --> C
+    D --> G[Transactions Page]
+    D --> H[Budget Management Page]
+    D --> I[Bill Payment Page]
+    D --> J[Analytics Page]
+    D --> K[Settings Page]
+    D --> L[Profile Page]
+    D --> M[Help/Support Page]
+    G --> D
+    H --> D
+    I --> D
+    J --> D
+    K --> D
+    L --> D
+    M --> D

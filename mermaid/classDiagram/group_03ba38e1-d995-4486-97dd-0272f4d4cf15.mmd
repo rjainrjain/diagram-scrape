@@ -1,0 +1,61 @@
+---
+title: Group
+---
+
+classDiagram
+    direction LR
+
+    class Group {
+        -string code
+        -string description
+        -Collection~GroupMargin~ margins
+        -Collection~Category~ categories
+        +getCode() string
+        +setCode(string)
+        +getDescription() string
+        +setDescription(string)
+        +addMargin(GroupMargin)
+        +removeMargin(GroupMargin)
+        +getMargins() Collection~GroupMargin~
+        +addCategory(Category)
+        +removeCategory(Category)
+        +getCategories() Collection~Category~
+    }
+
+    class GroupMargin {
+        -Group group
+        +getGroup() Group
+        +set(Group)
+    }
+
+    class AbstractMargin {
+        <<Abstract>>
+    }
+
+    class AbstractEntity {
+        <<Abstract>>
+    }
+    class EntityInterface {
+        <<Interface>>
+    }
+
+    class TimestampableInterface {
+        <<Interface>>
+    }
+
+    EntityInterface <|.. AbstractEntity
+    AbstractEntity <|-- Group
+    Group "0" --* "*" GroupMargin
+    Group "0" --> "*" Category
+    AbstractMargin --|> GroupMargin
+    Category "0" --> "*" Product
+    Category "0" --> "*" Task
+    TimestampableInterface <|-- Group
+
+    click EntityInterface call nodeCallback()
+    click AbstractEntity call nodeCallback()
+    click AbstractMargin call nodeCallback()
+    click Category call nodeCallback()
+    click Product call nodeCallback()
+    click Task call nodeCallback()
+    click TimestampableInterface call nodeCallback()

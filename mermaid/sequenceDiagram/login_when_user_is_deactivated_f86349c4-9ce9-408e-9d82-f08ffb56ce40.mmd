@@ -1,0 +1,30 @@
+%%! spec: 01/02/2021
+
+sequenceDiagram
+    autonumber
+
+    participant C as Client
+
+    participant API as API # controller
+    participant F as Filter
+    participant VL as Validation
+    participant App as Domain # service
+    participant Db as Database # repository
+
+    C->>+API: POST /auth/login
+    Note right of C: UserSignInDto
+
+    API->>+VL: validate & transform
+    VL-->>-API: UserSignInDto
+
+    API->>+App: find user by email
+    Note right of API: UserSignInDto
+
+    App->>+Db: get user
+    Db-->>-App: UserEntity
+    App->>App: check if user is activated
+    App-->>-F: ❌ throws UserDeactivatedError
+
+    F-->>API: AppErrorRoDto
+
+    API-->>-C: ❎ AppErrorRoDto

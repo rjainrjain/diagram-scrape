@@ -1,0 +1,62 @@
+classDiagram
+    JobAnnouncer --> UI: 1. Enter company name in search form
+    UI --> CompanyController: 2. searchCompany(companyText)
+    CompanyController --> CompanyRepository: 3. findCompanyByName(searchText)
+    CompanyRepository --> DBConnector: 4. executeQuery(Q2.1AJ1)
+    DBConnector --> CompanyRepository: 5. return matchCompanies
+    CompanyRepository --> CompanyController: 6. return companyList
+    CompanyController --> UI: 7. displaySearchResult()
+
+    JobAnnouncer --> UI: 8. Select company and click "Next"
+    UI --> CompanyController: 9. redirectToVerification()
+    CompanyController --> UI: 10. displayVerificationPage()
+
+    JobAnnouncer --> UI: 11. Review infomation
+    JobAnnouncer --> UI: 12. Click "Edit" on personal info
+    UI --> CompanyController: 13. redirectToPersonalInfoEdit()
+    CompanyController --> UI: 14. displayPersonalInfoForm()
+
+    JobAnnouncer --> UI: 15. Submit personal infomation
+    UI --> CompanyController: 16. updatePersonalInfo(userInfo)
+    CompanyController --> CompanyRepository: 17. updateUser(userInfo)
+    CompanyRepository --> DBConnector: 18. executeQuery(Q2.1AJ2)
+    DBConnector --> CompanyRepository: 19. confrim update
+    CompanyRepository --> CompanyController: 20. return success
+    CompanyController --> UI: 21. redirectToVerification()
+
+    JobAnnouncer --> UI: 22. Click "Edit" on company info
+    UI --> CompanyController: 23. redirectToCompanyEdit()
+    CompanyController --> UI: 24. displayCompanyForm()
+
+    JobAnnouncer --> UI: 25. Update company infomation
+    UI --> CompanyController: 26. updateCompanyInfo(companyInfo)
+    CompanyController --> CompanyRepository: 27. updateJobAnnouncer(companyInfo)
+    CompanyRepository --> DBConnector: 28. executeQuery(Q2.1AJ3)
+    DBConnector --> CompanyRepository: 29. confrim update
+    CompanyRepository --> CompanyController: 30. return success
+    CompanyController --> UI: 31. redirectToVerification()
+
+    class JobAnnouncer{
+        
+    }
+
+    class UI {
+        +displaySearchResult()
+        +displayVerificationPage()
+        +displayPersonalInfoForm()
+        +redirectToVerification()
+        +displayCompanyForm()
+        +redirectToPersonalInfoEdit()
+    }
+
+    class CompanyController {
+        +searchCompany()
+        +redirectToVerification()
+        +updatePersonalInfo()
+        +redirectToCompanyEdit()
+        +updateCompanyInfo()
+    }
+
+    class DBConnector {
+        +executeQuery()
+    }

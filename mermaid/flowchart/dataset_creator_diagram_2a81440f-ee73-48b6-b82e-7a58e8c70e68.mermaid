@@ -1,0 +1,16 @@
+flowchart LR
+    classDef blue fill:#a0ceee
+    classDef yellow fill:#fdf669
+    classDef orange fill:#fbaf52
+
+    A[Vstupní 
+    obrázek]:::yellow -->  B
+    B[Oříznutí na 
+    poměr     stran 1:1]:::orange -->  C
+    C[Zmenšení rozlišení
+     na 224x224]:::blue -->  D
+    D[Konverze do 
+    formátu PNG]:::blue -->  E
+    E[Augmentace]:::blue --> F
+    F[8 augmentovaných 
+    obrázků]:::yellow

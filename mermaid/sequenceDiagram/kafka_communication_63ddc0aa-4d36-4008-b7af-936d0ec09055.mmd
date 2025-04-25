@@ -1,0 +1,55 @@
+sequenceDiagram
+   
+    box React & Spring
+    participant C
+    participant S
+    end
+
+
+    participant C as React 
+    participant S as Spring
+    participant D as Django
+
+    participant K as Kafka
+
+
+    C->>S: CONNECT
+    S->>C: CONNECTED
+    Note over C,S: Connection Established
+
+    C->>S: SEND (destination:/topic/start)
+    Note over C,S: Message containing ProjectId sent to topic
+
+    C->>S: SUBSCRIBE (destination:/topic/responses/{ProjectId})
+    Note over C,S: Client subscribes to topic
+
+    Note right of D: Project contains ML/TSA data
+    opt  ML_TSA_data_present
+    S->>D: RestClient call to obtain required ML/TSA data
+    activate D
+    D->>S: Return required data
+    deactivate D
+    end
+    
+    loop every value
+        S->>K: Kafka Messages
+    end
+    loop every data set change
+        Note over C,S: Server sends message to subscribed client containing real time information
+        S->>C: MESSAGE (ProjectStatus, destination:/topic/responses/{ProjectId})
+    end
+   
+
+    C->>S: SEND (destination:/topic/end)
+    Note over C,S: Message containing ProjectId sent to topic
+
+    S->>K: Kafka Messages
+    Note over S,K: stop sending mess ages
+
+
+    C->>S: UNSUBSCRIBE (id:sub-1)
+    Note over C,S: Client unsubscribes from topic
+
+    C->>S: DISCONNECT
+    S-->>C: Receipt (for DISCONNECT)
+    Note over C,S: Connection Terminated

@@ -1,0 +1,15 @@
+sequenceDiagram
+    participant M as Main
+    participant ST as SuperAGIToolkit
+    participant DF as DataFrame
+    participant AG as SuperAGIAgents
+    participant UI as SuperAGIUI
+    M->>ST: analyze_stock_data(data)
+    ST->>DF: read_csv(file_path)
+    DF-->>ST: return DataFrame
+    ST->>ST: generate_insights(data)
+    ST-->>M: return insights
+    M->>AG: get_agent(agent_id)
+    AG-->>M: return agent
+    M->>UI: render_dashboard(data)
+    UI-->>M: Dashboard displayed

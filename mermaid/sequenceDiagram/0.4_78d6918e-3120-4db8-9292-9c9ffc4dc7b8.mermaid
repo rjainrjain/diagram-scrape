@@ -1,0 +1,19 @@
+sequenceDiagram
+    participant browser
+    participant server
+    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/notes
+    activate server
+    server-->>browser: HTTP status 302
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/notes
+    activate server
+    server-->>browser: HTTP status 302
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.css
+    activate server
+    server-->>browser: css stylesheet file
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.js
+    activate server
+    server-->>browser: JavaScript file
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+    activate server
+    server-->>browser: Notes JSON objects array [{..},{..},...]
+    deactivate server

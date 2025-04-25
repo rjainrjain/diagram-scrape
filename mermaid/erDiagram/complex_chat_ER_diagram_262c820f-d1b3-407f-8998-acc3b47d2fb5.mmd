@@ -1,0 +1,65 @@
+erDiagram
+    USERS {
+        user_id int PK
+        unique_id int
+        fname varchar
+        lname varchar
+        email varchar
+        password varchar
+        status varchar
+    }
+    CONVERSATIONS {
+        conv_id int PK
+        title varchar
+    }
+    MESSAGES {
+        msg_id int PK
+        incoming_msg_id int
+        outgoing_msg_id int
+        msg varchar
+        timestamp datetime
+        status enum
+        conv_id int
+    }
+    CONTACTS {
+        contact_id int PK
+        user_id int
+        contact_user_id int
+        status enum
+    }
+    CONVERSATION_PARTICIPANTS {
+        conv_participant_id int PK
+        conv_id int
+        user_id int
+    }
+    USER_PROFILES {
+        profile_id int PK
+        user_id int
+        birthdate date
+        bio text
+        location varchar
+        img varchar
+    }
+    USER_SETTINGS {
+        settings_id int PK
+        user_id int
+        theme varchar
+        notifications tinyint
+        privacy varchar
+    }
+    ATTACHMENTS {
+        attachment_id int PK
+        msg_id int
+        file_path varchar
+    }
+    
+    USERS ||--o{ USER_PROFILES : user_id
+    USERS ||--o{ USER_SETTINGS : user_id
+    USERS ||--o{ CONTACTS : user_id
+    CONTACTS ||--o{ USERS : contact_user_id
+    USERS ||--o{ MESSAGES : incoming_msg_id
+    USERS ||--o{ MESSAGES : outgoing_msg_id
+    MESSAGES ||--o| CONVERSATIONS : conv_id
+    MESSAGES ||--o{ ATTACHMENTS : msg_id
+    CONVERSATIONS ||--o{ CONVERSATION_PARTICIPANTS : conv_id
+    USERS ||--o{ CONVERSATION_PARTICIPANTS : user_id

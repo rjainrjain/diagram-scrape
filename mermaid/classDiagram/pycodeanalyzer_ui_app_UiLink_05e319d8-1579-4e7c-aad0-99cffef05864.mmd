@@ -1,0 +1,10 @@
+classDiagram
+class UiLink {
+<<Class>>
++ SocketIO socketio
++Constructor() None
++setSocketIO(SocketIO socketio) None
+}
+class SocketIO
+<<External>> SocketIO
+UiLink ..> SocketIO

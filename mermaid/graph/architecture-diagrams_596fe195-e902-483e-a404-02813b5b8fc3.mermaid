@@ -1,0 +1,17 @@
+graph TB
+    subgraph "Event-Driven Architecture - Sistema de Notificações"
+        A[Cliente] -->|1. Cria Post| B[API Gateway]
+        B -->|2. Publica Evento| C[Event Bus / Kafka]
+        
+        C -->|3a. Novo Post| D[Serviço de Feed]
+        C -->|3b. Novo Post| E[Serviço de Notificação]
+        C -->|3c. Novo Post| F[Serviço de Analytics]
+        
+        D -->|4a. Atualiza| G[(Feed DB)]
+        E -->|4b. Envia| H[Email Service]
+        E -->|4c. Envia| I[Push Notification]
+        F -->|4d. Salva| J[(Analytics DB)]
+        
+        K[Cache / Redis] -.->|Cache| D
+        L[Load Balancer] -->|Distribui| B
+    end

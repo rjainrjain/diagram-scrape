@@ -1,0 +1,47 @@
+flowchart LR
+    User>👤 User]
+
+    %% Database Operations
+    DB((Database Operations))
+    UC1((Create Database))
+    UC2((Add Table))
+    UC6((Load Database))
+    UC7((Save Database))
+
+    %% Table Operations
+    TB((Table Operations))
+    UC3((Create Table))
+    UC4((Drop Table))
+    UC13((Union Tables))
+    UC15((Get Table Schema))
+
+    %% Row Operations
+    RO((Row Operations))
+    UC8((Insert Row))
+    UC9((Delete Row))
+    UC10((Select Row))
+    UC11((Update Row))
+
+    %% Connections
+    User --> DB
+    User --> TB
+    User --> RO
+
+    DB --> UC1
+    DB --> UC2
+    DB --> UC6
+    DB --> UC7
+    DB --> UC16((Delete Database))
+
+    TB --> UC3
+    TB --> UC4
+    TB --> UC13
+    TB --> UC15
+
+    RO --> UC8
+    RO --> UC9
+    RO --> UC10
+    RO --> UC11
+
+    %% Layout
+    DB ~~~ TB ~~~ RO

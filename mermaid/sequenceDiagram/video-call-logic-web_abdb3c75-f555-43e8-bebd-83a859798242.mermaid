@@ -1,0 +1,30 @@
+```mermaid
+sequenceDiagram
+participant User
+participant Your_app as Your app
+participant Video_SDK as Video SDK
+participant Agora
+
+User ->> Your_app: Open App
+Your_app ->> Video_SDK: Setup local hardware
+Your_app ->> Video_SDK: Init SDK environment
+
+
+Your_app ->> Video_SDK: Create AgoraEngine const agoraEngine = useRTCClient(AgoraRTC.createClient)
+Your_app ->> Agora: Retrieve authentication token
+Agora -->> Your_app: Token received
+Your_app ->> Video_SDK: useJoin
+Video_SDK ->> Agora: Join channel
+Agora -->> Video_SDK: Join accepted
+Your_app ->> Video_SDK: Create local media tracks const { isLoading: isLoadingCam, localCameraTrack } = useLocalCameraTrack();
+Your_app ->> Video_SDK: const { isLoading: isLoadingMic, localMicrophoneTrack } = useLocalMicrophoneTrack();
+Your_app ->> Video_SDK: usePublish([localMicrophoneTrack, localCameraTrack]);
+Video_SDK -->> Agora: Push media tracks
+Agora -->> Video_SDK: Streaming start
+Video_SDK -->> Your_app: RemoteUser user={remoteUser} playVideo={true} playAudio={true} />
+Agora <-> Video_SDK: Send/receive data streams
+
+Your_app ->> Video_SDK: useLeave
+Video_SDK ->> Agora: Leave channel
+Agora -->> Video_SDK: Channel left
+```

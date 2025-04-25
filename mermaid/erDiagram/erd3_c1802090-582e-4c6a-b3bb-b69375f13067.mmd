@@ -1,0 +1,91 @@
+erDiagram
+
+EMERGENCY ||--o{ RESPONSE_TEAM : "has"
+
+EMERGENCY_SUPPORT o{--|| EMERGENCY : "has"
+EMERGENCY_SUPPORT o{--|| ORGANISATIONS : "has"
+
+EMERGENCY ||--|{ DONATION : "receives"
+
+EMERGENCY ||--o{ EMERGENCY_AREA : "at"
+
+EMERGENCY_AREA ||--o{ INCIDENT_REPORT : "reports"
+
+INCIDENT_REPORT |{--|| REPORTER : "has"
+
+
+ORGANISATIONS{
+    Integer organisation_id PK
+    String name
+    String address
+    Integer scale
+    String type
+}
+
+EMERGENCY {
+    Integer emergency_id PK
+    String title 
+    String description
+    DateTime start_date
+    DateTime end_date
+    String location
+    String severity
+
+}
+
+EMERGENCY_SUPPORT {
+    Integer emergencysupport_id PK
+    Integer emergency_id FK
+    Integer organisation_id FK
+
+}
+
+
+RESPONSE_TEAM {
+    Integer response_id PK
+    Integer emergency_id FK
+    String department
+    String lead_name
+    Integer mobile
+    String email
+    Integer member_count
+    String location
+}
+
+DONATION {
+    Integer donation_id PK
+    Integer emergency_id FK
+    String donor_name
+    DateTime date
+    Integer amount
+    String currency
+    String donor_type
+}
+
+EMERGENCY_AREA {
+    Integer area_id PK
+    Integer emergency_id FK
+    String location
+    String city
+    String state
+    String country
+}
+
+INCIDENT_REPORT {
+    Integer report_id PK
+    Integer area_id FK
+    Integer reporter_id FK
+    String title
+    String date
+    String location
+    String body
+}
+
+REPORTER {
+    Integer reporter_id PK
+    String name
+    String email
+    Integer mobile
+    String company
+}
+

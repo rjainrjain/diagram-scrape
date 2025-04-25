@@ -1,0 +1,32 @@
+graph TD
+    A[HTTP Request] -->|1. Gửi yêu cầu| B[DelegatingFilterProxy]
+    B -->|2. Chuyển yêu cầu| C[FilterChainProxy]
+    C -->|3. Xử lý qua các filter| D[SecurityFilterChain]
+    D -->|3.1| E[WebAsyncManagerIntegrationFilter]
+    E -->|3.2| F[SecurityContextPersistenceFilter]
+    F -->|3.3| G[HeaderWriterFilter]
+    G -->|3.4| H[CsrfFilter]
+    H -->|3.5| I[LogoutFilter]
+    I -->|3.6| J[UsernamePasswordAuthenticationFilter]
+    J -->|3.7| K[DefaultLoginPageGeneratingFilter]
+    K -->|3.8| L[DefaultLogoutPageGeneratingFilter]
+    L -->|3.9| M[BasicAuthenticationFilter]
+    M -->|3.10| N[RequestCacheAwareFilter]
+    N -->|3.11| O[SecurityContextHolderAwareRequestFilter]
+    O -->|3.12| P[AnonymousAuthenticationFilter]
+    P -->|3.13| Q[SessionManagementFilter]
+    Q -->|3.14| R[ExceptionTranslationFilter]
+    R -->|3.15| S[FilterSecurityInterceptor]
+    S -->|4. Kiểm tra xác thực| T{Đã xác thực?}
+    T -->|Có| U[AccessDecisionManager]
+    T -->|Không| V[AuthenticationManager]
+    V -->|5. Xác thực| W{Xác thực thành công?}
+    W -->|Có| U
+    W -->|Không| X[AuthenticationException]
+    U -->|6. Kiểm tra quyền| Y{Có quyền truy cập?}
+    Y -->|Có| Z[Protected Resource]
+    Y -->|Không| AA[AccessDeniedException]
+    Z -->|7. Xử lý yêu cầu| AB[Business Logic]
+    AB -->|8. Trả về kết quả| AC[HTTP Response]
+    X -->|Trả về lỗi| AC
+    AA -->|Trả về lỗi| AC

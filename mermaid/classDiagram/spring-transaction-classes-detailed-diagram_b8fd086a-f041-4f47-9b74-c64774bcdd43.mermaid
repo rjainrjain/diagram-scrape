@@ -1,0 +1,71 @@
+%%{init: {'theme': 'base', 'themeVariables': { 'background': '#000000' }}}%%
+classDiagram
+    direction TB
+    class PlatformTransactionManager {
+        <<interface>>
+        +getTransaction(TransactionDefinition) TransactionStatus
+        +commit(TransactionStatus)
+        +rollback(TransactionStatus)
+    }
+    class AbstractPlatformTransactionManager {
+        <<abstract>>
+        +getTransaction(TransactionDefinition) TransactionStatus
+        +commit(TransactionStatus)
+        +rollback(TransactionStatus)
+        #doBegin(Object, TransactionDefinition)
+        #doCommit(DefaultTransactionStatus)
+        #doRollback(DefaultTransactionStatus)
+    }
+    class DataSourceTransactionManager {
+        -dataSource: DataSource
+        #doBegin(Object, TransactionDefinition)
+        #doCommit(DefaultTransactionStatus)
+        #doRollback(DefaultTransactionStatus)
+    }
+    class JpaTransactionManager {
+        -entityManagerFactory: EntityManagerFactory
+        #doBegin(Object, TransactionDefinition)
+        #doCommit(DefaultTransactionStatus)
+        #doRollback(DefaultTransactionStatus)
+    }
+    class TransactionSynchronizationManager {
+        <<abstract>>
+        +getResource(Object) Object
+        +bindResource(Object, Object)
+        +unbindResource(Object) Object
+        +registerSynchronization(TransactionSynchronization)
+    }
+    class TransactionAspectSupport {
+        #createTransactionIfNecessary(PlatformTransactionManager, TransactionAttribute, String) TransactionInfo
+        #commitTransactionAfterReturning(TransactionInfo)
+        #completeTransactionAfterThrowing(TransactionInfo, Throwable)
+    }
+    class TransactionInterceptor {
+        -transactionManager: PlatformTransactionManager
+        +invoke(MethodInvocation) Object
+    }
+    class TransactionDefinition {
+        <<interface>>
+        +getIsolationLevel() int
+        +getPropagationBehavior() int
+        +getTimeout() int
+        +isReadOnly() boolean
+    }
+    class TransactionStatus {
+        <<interface>>
+        +isNewTransaction() boolean
+        +setRollbackOnly()
+        +isRollbackOnly() boolean
+    }
+
+    PlatformTransactionManager <|.. AbstractPlatformTransactionManager : Implements
+    AbstractPlatformTransactionManager <|-- DataSourceTransactionManager : Extends
+    AbstractPlatformTransactionManager <|-- JpaTransactionManager : Extends
+    AbstractPlatformTransactionManager ..> TransactionSynchronizationManager : Uses
+    TransactionAspectSupport ..> PlatformTransactionManager : Uses
+    TransactionAspectSupport ..> TransactionDefinition : Uses
+    TransactionAspectSupport ..> TransactionStatus : Uses
+    TransactionInterceptor --|> TransactionAspectSupport : Extends
+    TransactionInterceptor ..> PlatformTransactionManager : Has-A
+    PlatformTransactionManager ..> TransactionStatus : Creates
+    PlatformTransactionManager ..> TransactionDefinition : Uses

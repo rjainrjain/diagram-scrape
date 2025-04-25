@@ -1,0 +1,128 @@
+classDiagram
+    direction TB
+
+    class DmaHandler {
+        -list TcdBuffer[devices][n]
+
+        +addTCD()
+        +removeTCD()
+    }
+    class PeripheralHandler {
+        -list Commands[devices][n]
+
+        +getCommand(device, n)
+        +addCommand(device, n)
+        +removeCommand(device, n)
+    }
+    class ComInterface {
+        -ProcessDataStream[type][n]
+        -list PeripheralHandlers[n]
+        -list Devices[Peripheral][n]
+        -commState tx,rx,conf
+        -int currentDeviceIndex
+        -dict deviceAddresses
+
+        -checkAvailablity()
+        -scanNewDevices()
+        -switchActiveDevice(Peripheral, device)
+        -addDevice()
+        
+        +buildFromConfiguration()
+        +listDevices()
+        +removeDevice()
+        +getProcessDataStream(index)
+
+        +IRQ()
+    }
+    class RuntimeHandler {
+        +startRT()
+        +stopRT()
+    }
+    class UserInterface {
+        - Buttons
+        - LEDs
+        - requestStates()
+        - selectConfiguration()
+        - getPossibleConfigurations()
+    }
+    class Device {
+        -name
+        -type
+        -list pdsInChannel[dir][n]
+        +readRegister()
+        +writeRegister()
+        +bool registerUpdated()
+
+        +registerPDSBuffers()
+        +processInData()
+        +processOutData()
+    }
+    
+    class ProcessDataStream {
+        -data[channels][n]
+        -type
+        -size
+        -direction
+        +name
+        list channelNames
+
+        +getSubStream(startChn, endChn)
+        +toBytearray()
+        +fromBytearray()
+    }   
+    note for ProcessDataStream "Memory layout of the datastream \nChannels are serialized aftereach other"
+    class PDSChannel {
+        -name
+        -type
+        -size
+        -direction
+    }
+    note for PDSChannel "Description only"
+    class RegisterImage {
+        -data
+
+        +toBytearray()
+        +fromBytearray()
+    }
+    class AnalysisAlgorithm
+    class ConfigurationManager {
+        -list Configurations
+
+        +addConfiguration()
+        +removeConfiguration()
+        +activateConfiguration()
+        +getPossibleConfigurations(availableDevices)
+        +activeConfigurationValid(availableDevices)
+    }
+    class Configuration {
+        -list neededDevices
+        AnalysisAlgorithm algorithm
+        +name
+        +PDSMapping
+    }
+
+    class PDSConfiguration {
+        +streamName
+        +list[channelNames] channelMapping
+    }
+
+    class Status {
+        <<enumeration>>
+        Ok
+        Error
+    }
+
+    PeripheralHandler *-- DmaHandler
+    ComInterface *-- "0..*" PeripheralHandler
+    RuntimeHandler *-- ComInterface
+    ComInterface *-- "0..*" Device
+    ComInterface *-- ProcessDataStream
+    Device *-- RegisterImage
+    RuntimeHandler *-- AnalysisAlgorithm
+    AnalysisAlgorithm o-- ComInterface
+    ProcessDataStream o-- PDSChannel
+    Device *-- PDSChannel
+    ConfigurationManager *-- "0..*" Configuration
+    RuntimeHandler *-- ConfigurationManager
+    RuntimeHandler *-- UserInterface
+    Configuration *-- PDSConfiguration

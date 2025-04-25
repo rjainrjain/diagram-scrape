@@ -1,0 +1,16 @@
+classDiagram
+RecordBuilder o-- RecordSchema
+RecordBuilder *-- RecordContainer
+RecordBuilder : startNewRecord()
+RecordBuilder : addLong()
+RecordBuilder : addDouble()
+RecordBuilder : endRecord()
+RecordComparator o-- RecordSchema
+RecordComparator : partitionMatch()
+RecordComparator : buildPartKeyFromIngest()
+RecordContainer : consumeRecords()
+RecordSchema : Seq[ColumnType] columnTypes
+RecordSchema : getInt()
+RecordSchema : getLong()
+RecordSchema : getDouble()
+RecordSchema : partitionHashCode()

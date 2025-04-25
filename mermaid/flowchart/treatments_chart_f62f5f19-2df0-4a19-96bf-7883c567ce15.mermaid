@@ -1,0 +1,19 @@
+%%{init: { "theme": "neutral" } }%%
+flowchart TD
+    A[Condition Classification] --> B & C & D
+    B[Alopecia] --- T1
+    C[Psoriasis] --- T4
+    D[Seborrheic Dermatitis] --- T3
+    T1( ):::hidden --> E & M & F
+    T2( ):::hidden --> G & H & I & J
+    T3( ):::hidden --> K & L
+    T4( ):::hidden --- T2
+    E[Topical Medication]
+    M[Oral Medication]
+    F[Hair Transplant]
+    G[Light Therapy]
+    H[Topical Therapy]
+    I[Oral Medication]
+    J[Injected Medication]
+    K[Antifungal Medication]
+    L[Inflammation Medication]

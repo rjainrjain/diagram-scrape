@@ -1,0 +1,17 @@
+sequenceDiagram
+    participant Client
+    participant Server
+    participant Database
+    participant PaymentGateway
+
+    Client->>Server: 1. 예약 폼 제출
+    Server->>Database: 2. Booking 임시 생성
+    Server->>Database: 3. Payment 임시 생성
+    Server-->>Client: 4. Booking 및 Payment 정보 반환
+    Client->>PaymentGateway: 5. 결제 화면 오픈
+    PaymentGateway-->>Client: 6. 결제 완료
+    Client->>Server: 7. 결제 완료 알림
+    Server->>Database: 8. Booking 상태 업데이트
+    Server->>Database: 9. Payment 상태 업데이트
+    Server->>Database: 10. RoomAvailability 업데이트
+    Server-->>Client: 11. 예약 완료 확인

@@ -1,0 +1,45 @@
+
+sequenceDiagram
+  actor Admin
+  participant V_AVTP as View #10095; AdminVariantTypePage
+  participant P_CVT as Pop-up #10095; CreateVariantType
+  participant C_VT as Controller #10095; VariantTypeController
+  participant M_VT as Model #10095; VariantType
+
+  Admin->>V_AVTP: klik tombol "Tambah Tipe Varian"
+  
+  activate Admin
+
+  activate V_AVTP
+
+  V_AVTP->>P_CVT: setIsModalCreateOpen(true)
+
+  activate P_CVT
+
+  Admin->>P_CVT: klik tombl "Submit"
+  P_CVT->>C_VT: store()
+
+  activate C_VT
+
+  opt Invalid Input
+    C_VT-->>Admin: return validation message
+  end
+
+  C_VT->>M_VT: create()
+  
+  activate M_VT
+  
+  M_VT-->>C_VT: return
+
+  deactivate M_VT
+
+  C_VT-->>V_AVTP: return view
+
+  deactivate C_VT
+  
+  V_AVTP->>P_CVT: setIsModalCreateOpen(false)
+
+  deactivate P_CVT
+  deactivate V_AVTP
+  
+  deactivate Admin

@@ -1,0 +1,23 @@
+---
+title: version 1 - StudioLine static website generator
+---
+
+%%{ init: {'theme': 'neutral'} }%%
+graph LR
+
+subgraph offline
+   studioline([Studioline])
+   source{{original images}}
+end
+
+subgraph online
+   html{{generated html}}
+   images{{generated images}}
+end
+
+source <--> studioline
+studioline ---> |ftp| html
+studioline ---> |ftp| images
+
+html -.-> browser(((WWW)))
+images -.-> browser(((Browser)))

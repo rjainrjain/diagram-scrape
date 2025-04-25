@@ -1,0 +1,9 @@
+stateDiagram-v2
+WaitingBrandReview --> BrandReviewRejected : BrandReviewReject
+BrandReviewRejected --> WaitingBrandReview : ResubmitBrandReview
+WaitingBrandReview --> WaitingFinancialReview : BrandReviewApprove
+WaitingFinancialReview --> WaitingTaking : FinanceReviewApprove
+WaitingTaking --> PartialReleasingAndPurchasing : PartialRelease
+WaitingTaking --> Taken : FullRelease
+PartialReleasingAndPurchasing --> Taken : FullRelease
+Taken --> MailedToCustomer : MailToCustomer

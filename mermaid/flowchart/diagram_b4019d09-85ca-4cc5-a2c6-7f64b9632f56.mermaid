@@ -1,0 +1,30 @@
+flowchart TD
+
+    Client -->|DNS Requst| v2ray
+
+    subgraph v2ray
+        dokodemo-door --> |tag: dns_in| router -->|protocol: dns| DNS[DNS CacheDisabled]
+        tun --> |tag: tun_in| router -->|protocol: socks5| socks5-out
+    end
+
+    subgraph Meta
+        connection --> proxies
+    end
+
+    v2ray -->|socks5-out| Meta -->|remote endpoints| Gateway
+
+    subgraph DNS
+        domain -->|geosite:cn| LOCALDNS
+        domain -->|default| FAKEDNS
+    end
+
+    Client -->|TCP/UDP| Gateway
+
+    subgraph Gateway[OPNsense]
+        LAN[Incoming Connections] --> |src: !TUN dst: FakeIP Range| TUN[TUN: Rule base proxy] -->|dst: Proxies| WAN_PPOE
+        LAN --> |others|WAN_PPOE
+    end
+
+    Gateway -->|redirect| v2ray
+
+    

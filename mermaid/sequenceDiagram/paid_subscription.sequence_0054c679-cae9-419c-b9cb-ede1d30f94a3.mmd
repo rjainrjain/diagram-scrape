@@ -1,0 +1,21 @@
+---
+title: Paid Subscription Sequence
+---
+sequenceDiagram
+  Actor Merchant
+  participant Subscription
+  participant Purchase Order
+  participant Invoice
+  participant Sale
+  Actor Consumer
+
+  Merchant ->> Subscription: Create a Subscription
+  loop Billing Cycle
+    Subscription ->> Purchase Order: Start billing cycle
+    Purchase Order ->> Invoice: Generate an Invoice
+    Consumer ->> Invoice: Pay Invoice
+    Invoice ->> Purchase Order: Complete Purchase Order
+    Purchase Order ->> Sale: Create a completed Sale
+    Sale ->> Complete : Finish billing cycle
+  end
+

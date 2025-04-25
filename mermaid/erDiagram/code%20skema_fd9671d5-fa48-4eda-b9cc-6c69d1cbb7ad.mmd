@@ -1,0 +1,29 @@
+erDiagram
+    BUKU ||--|{ PENULIS : penulis
+    BUKU ||--o{ PENERBIT : penerbit
+    BUKU ||--|{ KATEGORI : kategori
+    PENULIS ||--o{ PENERBIT : ada
+    BUKU {
+        string id_buku PK string varying(10)
+        string judul_buku string varying(200)
+        string isbn string  varying(20)
+        int tahun_terbit int varying(4)
+        string id_penulis FK string varying(10)
+        string id_penerbit FK string varying(10)
+        string id_kategori FK string varying(10)
+    }
+    PENULIS {
+        string id_penulis PK string varying(10)
+        string nama_penulis string varying(100)
+        string id_penerbit FK string varying(10)
+        string deskripsi string varying(500)
+    }
+    PENERBIT {
+        string id_penerbit PK string varying(10)
+        string nama_penerbit string varying(100)
+        string lokasi string varying(100)
+    }
+    KATEGORI {
+        string id_kategori PK string varying(10)
+        string nama_kategori string varying(100)
+    }

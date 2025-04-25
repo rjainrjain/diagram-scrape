@@ -1,0 +1,136 @@
+erDiagram
+    USERS ||--o{ PROPERTIES : owns
+    USERS ||--o{ RESERVATIONS : makes
+    PROPERTIES ||--o{ RESERVATIONS : has
+    PROPERTIES ||--|| PROPERTY_DETAILS : describes
+    PROPERTIES ||--|| PROPERTY_LOCATION : located_at
+    PROPERTIES ||--o{ PROPERTY_IMAGES : contains
+    PROPERTY_IMAGES ||--|| IMAGE_TYPES : categorized_as
+    PROPERTIES ||--o{ PROPERTY_EQUIPMENT : includes
+    PROPERTIES ||--o{ ROOMS : contains
+    ROOMS ||--o{ ROOM_FURNITURE : includes
+    PROPERTIES ||--|| RENTAL_CONDITIONS : has
+    PROPERTIES ||--o{ AVAILABILITY_PERIODS : has
+    PROPERTIES ||--o{ REQUIRED_DOCUMENTS : requires
+    PROPERTIES ||--o{ BOOST_SERVICES : uses
+    
+    USERS {
+        uuid id PK
+        string email
+        string name
+        string phone
+        enum role
+    }
+    PROPERTIES {
+        uuid id PK
+        uuid owner_id FK
+        string title
+        text description
+        enum status
+        boolean is_published
+        timestamp published_at
+        timestamp created_at
+        timestamp updated_at
+    }
+    PROPERTY_DETAILS {
+        uuid id PK
+        uuid property_id FK
+        enum property_type
+        enum property_kind
+        float area
+        int rooms
+        int capacity
+        int bathrooms
+        boolean is_furnished
+        int floor
+        int total_floors
+    }
+    PROPERTY_LOCATION {
+        uuid id PK
+        uuid property_id FK
+        string full_address
+        float latitude
+        float longitude
+        string city
+        string state
+        string country
+        string postal_code
+    }
+    PROPERTY_IMAGES {
+        uuid id PK
+        uuid property_id FK
+        uuid image_type_id FK
+        string url
+        int order
+        string caption
+        timestamp uploaded_at
+    }
+    IMAGE_TYPES {
+        uuid id PK
+        string name
+    }
+    PROPERTY_EQUIPMENT {
+        uuid id PK
+        uuid property_id FK
+        string name
+        string description
+        boolean is_available
+    }
+    ROOMS {
+        uuid id PK
+        uuid property_id FK
+        string name
+        int capacity
+        float area
+    }
+    ROOM_FURNITURE {
+        uuid id PK
+        uuid room_id FK
+        enum furniture_type
+        string description
+        int quantity
+    }
+    RENTAL_CONDITIONS {
+        uuid id PK
+        uuid property_id FK
+        float rent_without_charges
+        float charges_amount
+        json included_charges
+        float security_deposit
+        boolean security_deposit_not_communicated
+        boolean eligible_for_aids
+        boolean allow_booking_without_visit
+        json acceptable_tenant_situations
+        boolean has_financial_requirements
+        text financial_requirements_details
+    }
+    AVAILABILITY_PERIODS {
+        uuid id PK
+        uuid property_id FK
+        date start_date
+        date end_date
+        int minimum_stay_months
+    }
+    REQUIRED_DOCUMENTS {
+        uuid id PK
+        uuid property_id FK
+        string document_type
+        boolean is_required
+    }
+    RESERVATIONS {
+        uuid id PK
+        uuid property_id FK
+        uuid user_id FK
+        datetime start_time
+        datetime end_time
+        enum status
+    }
+    BOOST_SERVICES {
+        uuid id PK
+        uuid property_id FK
+        enum service_type
+        datetime start_date
+        datetime end_date
+        float price
+        boolean is_active
+    }

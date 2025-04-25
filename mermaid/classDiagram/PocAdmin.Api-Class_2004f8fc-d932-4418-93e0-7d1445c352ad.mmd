@@ -1,0 +1,25 @@
+classDiagram 
+	
+	class GetAllInvalidDataHandler  {
+		-IQueryRepository~InvalidData~ _queryRepository 
+		+Handle(GetAllInvalidDataQuery request, CancellationToken cancellationToken) Task~IEnumerable~InvalidData~~
+	}
+	class GetFileEventsByReferenceIdHandler  {
+		-IQueryRepository~FileEvent~ _queryFileEventRepository 
+		-IQueryRepository~InvalidData~ _queryInvalidDataRepository 
+		+Handle(GetFileEventsByReferenceIdQuery request, CancellationToken cancellationToken) Task~IEnumerable~FileEvent~~
+	}
+	class InvalidDataController  {
+		-IMediator _mediator 
+		+GetAllInvalidData() Task~ActionResult~IEnumerable~InvalidData~~~
+	}
+	class FileEventController  {
+		-IMediator _mediator 
+		+GetFileEventsByReferenceId(string referenceId) Task~ActionResult~IEnumerable~FileEvent~~~
+	}
+	
+	GetAllInvalidDataHandler --|> IRequestHandler
+	GetFileEventsByReferenceIdHandler --|> IRequestHandler
+	InvalidDataController --|> ControllerBase
+	FileEventController --|> ControllerBase
+	

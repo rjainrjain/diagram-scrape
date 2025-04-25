@@ -1,0 +1,22 @@
+sequenceDiagram
+    autonumber
+    participant QueryEvaluator
+    participant ClauseStrategy
+    participant PKBQueryExecutor
+    participant PKB
+    participant ClauseCommandExecutor
+
+    loop Each Group
+    QueryEvaluator->>+ClauseStrategy: ProcessClause(Clause *)
+    ClauseStrategy->>-QueryEvaluator: PKBQueryCommand, ClauseCommand
+    QueryEvaluator->>+PKBQueryExecutor: ExecutePKBQueryCommand()
+
+    PKBQueryExecutor->>+PKB:
+    PKB->>-PKBQueryExecutor:
+
+    PKBQueryExecutor->>-QueryEvaluator: IntermediateTable
+    QueryEvaluator->>+ClauseCommandExecutor: ExecuteClauseCommand(IntermediateTable, Clause *)
+
+    end
+
+

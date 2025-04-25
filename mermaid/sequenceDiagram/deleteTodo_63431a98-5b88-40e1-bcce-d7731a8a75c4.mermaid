@@ -1,0 +1,17 @@
+sequenceDiagram
+    title: Sequence Diagram for Deleting a Todo
+    note over Client: API Route: DELETE /api/todos/{id}
+    note over Client: Path Parameter: id (string)
+    note over Client: Response: 200 OK, { message: 'Todo deleted' }
+    
+    participant Client
+    participant Server
+    participant Service
+    participant Storage
+
+    Client->>Server: DELETE /api/todos/{id}
+    Server->>Service: deleteTodo(id)
+    Service->>Storage: deleteTodo(id)
+    Storage-->>Service: deletedTodo
+    Service-->>Server: deletedTodo
+    Server-->>Client: 200 OK, { message: 'Todo deleted' }

@@ -1,0 +1,20 @@
+---
+title: /getProducts
+---
+
+sequenceDiagram
+    participant Frontend
+    participant ProductsController
+    participant ProductService
+    participant ProductRepository
+    participant DB_Product
+
+    Frontend->>+ProductsController: request to list all products (/getProducts)
+    ProductsController->>+ProductService: get list of all products
+    ProductService->>+ProductRepository: get list of all products
+    ProductRepository->>+DB_Product: get list of all products in db
+    DB_Product->>-ProductRepository: return list of all products in db
+    ProductRepository->>-ProductService: return list of all products in db
+    ProductService->>-ProductsController: get list of all products
+    ProductsController-->>-Frontend: return response of list of all products (/getProducts)
+

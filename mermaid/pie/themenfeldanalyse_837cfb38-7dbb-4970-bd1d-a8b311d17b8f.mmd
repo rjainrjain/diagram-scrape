@@ -1,0 +1,125 @@
+graph LR
+
+FF(<strong>Forschungsfrage</strong><br>Praktische Evaluation des Frameworks Laravel Nova<br>am Beispiel einer Anwendung zur Verwaltung und Auswertung<br>von Radiosondenaufstiegen)
+
+FF---APP(Webbasierte Anwendung<br><i>Kundenvorgabe</i>)
+FF---FW(Framework)
+
+APP---FW
+APP---PS(Programmiersprachen)
+
+PS---PHP
+PS---JS
+
+FW---LARAVEL(Laravel)
+FW---SYMFONY(Symfony)
+FW---NOVA(Laravel Nova)
+FW---VUE(Vue.js)
+
+BE(Backend)
+FE(Frontend)
+
+BE---PHP
+BE---LARAVEL
+BE---SYMFONY
+BE---NOVA
+
+FE---JS
+FE---VUE
+
+FF---RS(Radiosonden)
+
+RS---MET(Meteorologie)
+RS---BAL(Wetterballon)
+RS---MAN(Hersteller)
+RS---BS(Bodenstation)
+RS---FLIGHT(Flug - Aufstieg und Sinkflug)
+
+BAL---Helium
+BAL---Wasserstoff
+
+MAN---Vaisala
+MAN---Graw
+MAN---meteolabor
+MAN---Modem
+
+FLIGHT---MES(Messdaten)
+
+MES---T(Temperatur)
+MES---H(Feuchtigkeit)
+MES---D(Taupunkt)
+MES---P(Druck)
+MES---WS(Windgeschwindigkeit)
+MES---WD(Windrichtung)
+MES---POS(Position)
+MES---VS(Vertikalgeschwindigkeit)
+MES---OZ(Ozon)
+
+APP---FEAT(Features)
+
+FEAT---PRED(Predictive Maintenance)
+FEAT---MON(Monitoring)
+FEAT---VERW(Verwaltung)
+FEAT---AUSW(Auswertung)
+
+MON---PRED
+
+FF---VERW
+FF---AUSW
+
+VERW---CRUD
+
+AUSW---CHARTS(Charts)
+AUSW---MAP(Flugverlaufskarte)
+
+CHARTS---CJS(Chart.js)---FW
+CHARTS---DYG(dygraphs)---FW
+CHARTS---CT(Chartist)---FW
+CHARTS---D3(D3.js)---FW
+CHARTS---GCH(Google charts)---FW
+CHARTS---APEX(ApexCharts)---FW
+CHARTS---VIS(vis.js)---FW
+
+RS---HUNT(Hunting Community)
+HUNT---SHUB(SondeHub Tracker)
+SHUB---MAP
+
+MAP---OSM(OpenStreetMap)
+MAP---GM(Google Maps)
+
+OSM---LEAF(Leaflet)---FW
+
+BS---ON(Online)
+BS---OFF(Offline)
+
+BE---HOST(Hosting)
+HOST---Cloud
+HOST---LOCAL(On-Premises)
+
+RS---AG(Anwendungsgebiete)
+
+AG---ZIV(Zivile Wettervorhersage)---MAN
+AG---MIL(Ballistische, taktische und Marine-Wetterdaten)---MAN
+AG---EDU(Bildung, Forschung & Entwicklung)---MAN
+
+ZIV---WMO(Weltorganisation für Meteorologie)
+ZIV---DWD(Deutscher Wetterdienst)
+ZIV---NWS(Amerikanischer Wetterdienst)
+
+MIL---Bundeswehr
+
+EDU---TH(TH Köln)
+
+CRUD---NOVA
+CRUD---BS
+CRUD---FLIGHT
+CRUD---MES
+
+API---BE
+API---BS
+API---FE
+
+MET---WMO
+
+PRED---MES
+MON---MES

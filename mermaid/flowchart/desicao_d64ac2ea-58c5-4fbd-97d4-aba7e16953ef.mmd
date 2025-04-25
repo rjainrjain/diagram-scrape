@@ -1,0 +1,32 @@
+flowchart TD
+    gerenciamentoVeiculo[Gerencimento de veículos]
+
+    gerenciamentoVeiculo --> manutencao[Manutenção no veículo]
+    gerenciamentoVeiculo --> motorista[Motorista]
+    gerenciamentoVeiculo --> cadastroVeiculo[Cadastrar veículo]
+    gerenciamentoVeiculo --> cadastroMotorista[Cadastrar motorista]
+    gerenciamentoVeiculo --> localizacao[Localização]
+
+    manutencao --> inform{Manutenção necessária?}
+    inform --> sim[Sim]
+    inform --> nao[Não]
+    sim --> empresaTerceira[Contratar empresa terceirizada para o serviço]
+
+    motorista --> ajuda{Necessita de ajuda?}
+    ajuda --> sim1[Sim]
+    ajuda --> nao1[Não]
+    sim1 --> suporte[Acionar suporte]
+    
+    cadastroVeiculo --> informacaoVeiculo[Preencher informações veículo]
+    informacaoVeiculo --> informacaoValida{Informações válidas?}
+    informacaoValida --> sim3[Sim]
+    informacaoValida --> nao3[Não]
+    nao3 --> informacaoVeiculo
+    sim3 --> cadastradoVeiculo[Cadastrado veículo!]
+
+    cadastroMotorista --> informacaoMotorista[Preencher informações motorista]
+    informacaoMotorista --> informacaoValida2{Informações válidas?}
+    informacaoValida2 --> sim4[Sim]
+    informacaoValida2 --> nao4[Não]
+    nao4 --> informacaoMotorista
+    sim4 --> cadastradoMotorista[Cadastrado motorista!]

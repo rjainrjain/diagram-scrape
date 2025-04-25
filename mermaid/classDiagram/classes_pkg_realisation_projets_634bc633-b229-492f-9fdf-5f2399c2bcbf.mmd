@@ -1,0 +1,50 @@
+classDiagram
+
+direction LR
+
+
+
+namespace pkg_realisation_projets {
+  class RealisationProjet
+  class LivrableRealisation 
+  class EtatRealisationProjet 
+}
+Projet "1" -- "*" RealisationProjet
+RealisationProjet "*" --> "1" EtatRealisationProjet
+RealisationProjet "1" --> "*" LivrableRealisation
+RealisationProjet "*" -- "1" Apprenant
+LivrableRealisation "*" --> "1" Livrable
+
+
+
+namespace pkg_rh {
+  class Apprenant
+}
+
+namespace pkg_validations {
+class Validation 
+}
+RealisationProjet "1" --> "*" Validation
+Validation "*" --> "1" TransfertCompetence
+
+namespace pkg_creation_projets {
+  class Projet 
+  class Livrable 
+  %% par défaut il faut ajouter deux livrable : Code, Présentation
+  class TransfertCompetence
+}
+Projet "1" --> "*" Livrable
+Projet "1" --> "*" TransfertCompetence
+
+
+class RealisationProjet {
+id : int
+date_debut_realisation : date
+date_fin_realisation : date
+}
+class LivrableRealisation {
+  int id: String 
+  nom: String 
+  description: String 
+  lien: String 
+}

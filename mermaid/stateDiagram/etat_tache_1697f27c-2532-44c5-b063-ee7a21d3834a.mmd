@@ -1,0 +1,22 @@
+---
+title: Diagramme d'état de projet
+---
+stateDiagram-v2
+
+    state "En cours" as en_cours
+    state "En pause" as en_pause
+    state "En validation" as en_validation
+    state "Terminé" as termine
+    state "En question" as en_question
+
+    [*] --> en_cours
+    en_cours --> termine
+    en_cours --> en_pause
+    en_cours --> en_question
+    en_question --> en_cours
+    en_cours --> en_validation
+    en_validation --> en_cours
+    en_validation --> termine
+    en_validation --> en_pause
+    en_pause --> en_cours
+    termine --> [*]

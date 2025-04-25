@@ -1,0 +1,54 @@
+---
+title: Feature Flags vs. Regression Tests
+---
+
+flowchart LR
+
+%% Each phase is less than three lines of code to promote small batches.
+%% Larger code blocks mean smaller batches are called for, excluding classes.
+
+    X[Start]-->A[/master branch\]
+
+    subgraph build-phase
+    A[/master branch\]-->AB[/master branch\]
+
+    %% Begin top line build phase
+    AB[/master branch\]--regression tests-->B[/master branch\]
+
+    %% Feature branch is forked from master
+    A[/master branch\]-.create feature flag.->C[/feature branch\]
+
+    %% Feature developement begins behind flag
+    subgraph feature-flag
+    C[/feature branch\]-.write regression tests .->D[/feature branch\]
+    D[/feature branch\]
+    end feature-flag
+    end build-phase
+
+    subgraph release-phase
+    B[/master branch\]--regression tests-->E[/new master branch\]
+
+    %% Work is integrated
+    D[/feature branch\]-.combine tests .->E[/new master branch\]
+    end release-phase
+
+    E-->Y[Continue]
+
+    %% Post-experiment cleanup phase
+    subgraph cleanup-phase
+    D[/feature branch\]-.->F[/feature branch\]
+    F[/feature branch\]
+    end cleanup-phase
+
+    F[/feature branch\]-.delete feature flag.->Z[End]
+    F[/feature branch\]-.delete stale tests.->Z[End]
+
+    style Y fill:#ff0
+    style Z fill:#ff0
+    style E fill:#6C6,stroke:#000
+    style F fill:#000,stroke:#f00,stroke-width:4px,color:#f00,stroke-dasharray: 5 5
+    
+    class A,AB,B masterClass;
+    class C,D featureClass
+    classDef masterClass fill:#5BF,stroke:#000
+    classDef featureClass fill:#FBB,stroke:#000

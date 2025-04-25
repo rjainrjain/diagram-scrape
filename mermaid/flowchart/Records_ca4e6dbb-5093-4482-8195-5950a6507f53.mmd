@@ -1,0 +1,31 @@
+flowchart TD
+    subgraph User Devices
+        Light["Smart Light"]
+        Thermostat["Smart Thermostat"]
+        Camera["Security Camera"]
+        Lock["Smart Lock"]
+    end
+
+    subgraph Home_Automation_System
+        Website["Website"]
+        Database["Home Automation DB"]
+    end
+
+    Homeowner["Homeowner"] --> Website
+    Admin["Admin"] --> Website
+
+    Website --> Database
+    Website --> Light
+    Website --> Thermostat
+    Website --> Camera
+    Website --> Lock
+
+    Homeowner -.-> Light
+    Homeowner -.-> Thermostat
+    Homeowner -.-> Camera
+    Homeowner -.-> Lock
+
+    Admin -.-> Light
+    Admin -.-> Thermostat
+    Admin -.-> Camera
+    Admin -.-> Lock

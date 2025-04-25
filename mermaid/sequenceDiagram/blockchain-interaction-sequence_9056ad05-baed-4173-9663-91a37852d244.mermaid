@@ -1,0 +1,19 @@
+sequenceDiagram
+    participant R as Researcher
+    participant Q as Qualtrics
+    participant P as Qualdano Plugin
+    participant W as Web App
+    participant S as Smart Contract
+    participant B as Blockchain
+
+    R->>Q: Create Survey
+    Q->>P: Trigger Plugin
+    P->>P: Hash Data
+    P->>W: Send Hashed Data
+    W->>S: Call Smart Contract
+    S->>B: Store Hash
+    B-->>S: Confirm Storage
+    S-->>W: Return Transaction ID
+    W-->>P: Confirm Blockchain Storage
+    P-->>Q: Update Survey Metadata
+    Q-->>R: Confirm Process Complete

@@ -1,0 +1,122 @@
+classDiagram
+  class CFootBotForaging {
+    CFootBotForaging()
+    virtual ~CFootBotForaging()
+    virtual void Init(TConfigurationNode& t_node)
+    virtual void ControlStep()
+    virtual void Reset()
+    virtual void Destroy()
+    inline bool IsExploring()
+    inline bool IsResting()
+    inline bool IsReturningToNest()
+    inline SFoodData& GetFoodData()
+    void UpdateState()
+    CVector2 CalculateVectorToLight()
+    CVector2 DiffusionVector(bool& b_collision)
+    void SetWheelSpeedsFromVector(const CVector2& c_heading)
+    void Rest()
+    void Explore()
+    void ReturnToNest()
+
+    CCI_DifferentialSteeringActuator* m_pcWheels
+    CCI_LEDsActuator* m_pcLEDs
+    CCI_RangeAndBearingActuator*  m_pcRABA
+    CCI_RangeAndBearingSensor* m_pcRABS
+    CCI_FootBotProximitySensor* m_pcProximity
+    CCI_FootBotLightSensor* m_pcLight
+    CCI_FootBotMotorGroundSensor* m_pcGround
+
+    CRandom::CRNG* m_pcRNG
+
+    ELastExplorationResult m_eLastExplorationResult
+
+    SStateData m_sStateData
+    SWheelTurningParams m_sWheelTurningParams
+    SDiffusionParams m_sDiffusionParams
+    SFoodData m_sFoodData
+  }
+
+  CFootBotForaging --> CCI_Controller
+  class SFoodData {
+    bool HasFoodItem
+    size_t FoodItemIdx
+    size_t TotalFoodItems
+
+    SFoodData()
+    void Reset()
+  }
+  CFootBotForaging --> SFoodData : defines
+
+  class SDiffusionParams {
+        Real Delta
+        CRange<CRadians> GoStraightAngleRange
+        SDiffusionParams()
+        void Init(TConfigurationNode& t_tree)
+  }
+  CFootBotForaging --> SDiffusionParams : defines
+
+  class SWheelTurningParams {
+      ETurningMechanism TurningMechanism
+      CRadians HardTurnOnAngleThreshold
+      CRadians SoftTurnOnAngleThreshold
+      CRadians NoTurnAngleThreshold
+      Real MaxSpeed
+
+      void Init(TConfigurationNode& t_tree)
+  }
+  CFootBotForaging --> SWheelTurningParams
+
+  class SStateData {
+    EState State
+    bool InNest
+
+    Real InitialRestToExploreProb
+    Real RestToExploreProb
+    Real InitialExploreToRestProb
+    Real ExploreToRestProb
+    CRange<Real> ProbRange
+    Real FoodRuleExploreToRestDeltaProb
+    Real FoodRuleRestToExploreDeltaProb
+    Real CollisionRuleExploreToRestDeltaProb
+    Real SocialRuleRestToExploreDeltaProb
+    Real SocialRuleExploreToRestDeltaProb
+    size_t MinimumRestingTime
+    size_t TimeRested
+    size_t MinimumUnsuccessfulExploreTime
+    size_t TimeExploringUnsuccessfully
+    size_t MinimumSearchForPlaceInNestTime
+    size_t TimeSearchingForPlaceInNest
+
+    SStateData()
+    void Init(TConfigurationNode& t_node)
+    void Reset()
+  }
+
+  CFootBotForaging --> SStateData : defines
+
+  
+class CForagingLoopFunctions {
+   CForagingLoopFunctions()
+   virtual ~CForagingLoopFunctions()
+
+   virtual void Init(TConfigurationNode& t_tree)
+   virtual void Reset()
+   virtual void Destroy()
+   virtual CColor GetFloorColor(const CVector2& c_position_on_plane)
+   virtual void PreStep()
+
+   Real m_fFoodSquareRadius
+   CRange<Real> m_cForagingArenaSideX, m_cForagingArenaSideY
+   std::vector<CVector2> m_cFoodPos
+   CFloorEntity* m_pcFloor
+   CRandom::CRNG* m_pcRNG
+
+   std::string m_strOutput
+   std::ofstream m_cOutput
+
+   UInt32 m_unCollectedFood
+   SInt64 m_nEnergy
+   UInt32 m_unEnergyPerFoodItem
+   UInt32 m_unEnergyPerWalkingRobot
+}
+CForagingLoopFunctions --> CLoopFunctions

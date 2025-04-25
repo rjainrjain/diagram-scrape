@@ -1,0 +1,36 @@
+erDiagram
+    Title {
+        id PPN "primary key"
+    }
+    Hierarchy {
+        child PPN
+        parent PPN
+    }
+    Hierarchy }o--|| Title : "child"
+    Hierarchy }o--|| Title : "parent"
+    Redirect {
+        old PPN "primary key"
+        new PPN
+    }
+    Redirect |o--|| Title : "old"
+    Redirect }o--|| Title : "new"
+    Vocabulary {
+        id URI "primary key"
+        uri PPN "unique"
+    }
+    Concept {
+        uri URI "primary key"
+        id  string "unique combined with voc"
+        voc URI "foreign key and unique combined with id"
+    }
+    Concept }o--|| Vocabulary : "inScheme"
+    Concept }o--o{ Concept : "relation"
+    Title }o--o{ Concept : "subject"
+    Mapping {
+        type TYPE
+    }
+    Mapping }o--|| Concept : "from"
+    Mapping }o--|{ Concept : "to"
+    Concordance {
+    }
+    Mapping }o--o{ Concordance : "partOf"

@@ -1,0 +1,37 @@
+
+classDiagram
+    class Bird {
+        -x: int
+        -y: int
+        -width: int
+        -height: int
+        -velocity: int
+        -acceleration: int
+        -gravity: int
+        +__init__(x: int, y: int, width: int, height: int, velocity: int, acceleration: int, gravity: int)
+        +update()
+        +draw(screen)
+    }
+    class Pipe {
+        -x: int
+        -y: int
+        -width: int
+        -height: int
+        -gap: int
+        +__init__(x: int, y: int, width: int, height: int, gap: int)
+        +update()
+        +draw(screen)
+    }
+    class Game {
+        -screen: pygame.Surface
+        -clock: pygame.time.Clock
+        -bird: Bird
+        -pipes: list[Pipe]
+        -score: int
+        -running: bool
+        +__init__(screen: pygame.Surface, clock: pygame.time.Clock)
+        +update()
+        +draw()
+        +handle_input()
+        +run()
+    }

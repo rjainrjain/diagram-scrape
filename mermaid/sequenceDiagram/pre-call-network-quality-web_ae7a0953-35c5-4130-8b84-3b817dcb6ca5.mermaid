@@ -1,0 +1,23 @@
+sequenceDiagram
+    participant App
+    participant SDK
+    participant Agora SD-RTN
+
+    App->>SDK: Create two clients: <br/> uplinkClient and downlinkClient <br/> Get network data
+    SDK->>SDK: AgoraRTC.createClient
+    SDK->>SDK: uplinkClient.join
+    SDK->>SDK: downlinkClient.join
+    SDK->>SDK: AgoraRTC.createMicrophoneAndCameraTracks
+    SDK->>SDK: uplinkClient.publish
+    SDK->>SDK: downlinkClient.on('user-published')
+    SDK->>SDK: downlinkClient.subscribe
+    SDK->>SDK: track.play
+    SDK-->>App: downlinkClient.on('network-quality')
+    SDK-->>App: uplinkState.on('network-quality')
+    SDK-->>App: downlinkClient.getRemoteAudioStats
+    SDK-->>App: downlinkClient.getRemoteVideoStats
+
+    SDK->>Agora SD-RTN: Join channel request
+    SDK->>Agora SD-RTN: Join channel request
+    Agora SD-RTN->>SDK: Send audio and video data
+    Agora SD-RTN-->>SDK: Receive audio and video data

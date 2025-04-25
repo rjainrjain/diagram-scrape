@@ -1,0 +1,219 @@
+classDiagram
+
+Org --> Usuario : tiene
+Org ..> Donacion : guarda
+Org ..> Operacion : realiza
+Org ..> Tarea : crea
+Org ..> Sede : tiene
+Org o-- Candidato : tiene
+Org ..> Video : sube
+TipoUsuario ..> Usuario : tiene
+Usuario --> Persona : tiene
+Sede o-- Inventario : tiene
+Inventario --> ProductoXInventario : tiene
+Producto --> ProductoXInventario : tiene
+Producto --> Categoria : tiene
+Producto --> EstadoProducto : tiene
+Producto --> ProductoXOperacion : tiene
+DonacionXProducto --> Producto : tiene
+DonacionXProducto --> Donacion : tiene
+TareaxPersona --> Persona : tiene
+Persona --> PersonaXEvento : tiene
+Etiqueta --> EtiquetaXCandidato : tiene
+Etiqueta --> TipoEtiqueta : tiene
+Etiqueta --> PersonaXEtiqueta : tiene
+Operacion --> TipoOperacion : tiene
+ProductoXOperacion --> Operacion : tiene
+Evento --* Reporte : genera
+PersonaXEvento --> Evento : tiene
+Evento --* Invitado : tiene
+Tarea --> TareaXPersona : tiene
+Candidato --> EtiquetaXCandidato : tiene
+Persona --> PersonaXEtiqueta : tiene
+Candidato --> Persona : es
+Persona --> PersonaXOrg : tiene
+PersonaXOrg --> Org : tiene
+
+    class TipoUsuario {
+        - STRING tipousuario
+        - INT nivelPermiso
+    }
+
+    class Usuario {
+        - STRING correo
+        - STRING contrasena
+
+        + cambiarContrasena()
+        + crearTarea()
+        + crearEvento()
+        + crearDonacion()
+        + crearOperacion()
+        + crearInventario()
+        + crearSede() 
+	+ registrarse()  
+    }
+
+    class Org {
+        - STRING nombre
+        - STRING descripcion
+        - STRING direccion
+        - STRING telefono
+        - STRING logo
+        - STRING correo
+        - STRING web
+
+        + subirLogo()
+    }
+
+    class Candidato {
+        - STRING nombre
+        - STRING apellido
+        - STRING telefono
+        - TIME disponibilidad
+        - DATE fechaNacimiento
+
+        + enviarFormulario()
+        + generarEtiquetas()
+    }
+
+    class Sede {
+        - STRING nombre
+        - STRING direccion
+    }
+
+    class Inventario{
+
+	+ asignarSede()
+        + listarInventariosPorSede()
+        + cambiarCantidad()
+    }
+
+    class Producto {
+        - STRING nombre
+        - STRING descripcion
+    }
+    
+    class ProductoXInventario{
+    	- INT Cantidad
+    	
+    }
+
+    class Categoria {
+        - STRING nombre
+    }
+
+    class EstadoProducto {
+        - STRING descripcion
+    }
+
+    class Donacion {
+        - DATE fecha
+        - STRING descripcion
+
+        + listarDonaciones()
+        + agregarDonacion()
+        + editarDonacion()
+    }
+
+    class DonacionXProducto{
+        - STRING nombre
+    }
+
+
+    class Operacion {
+        - DATE fecha
+        - STRING descripcion
+        - STRING Factura
+
+        + listarOperaciones()
+        + agregarOperacion()
+        + editarOperacion()
+    }
+
+    class TipoOperacion {
+        - STRING descripcion
+    }
+
+    class PersonaXOrg {
+    }
+
+    class ProductoXOperacion{
+        - STRING nombre
+    }
+
+    class Video {
+        - STRING titulo
+        - STRING url
+        - STRING descripcion
+
+        + subirVideo()
+        + listarVideos()
+        + editarDescripcionTitulo()
+    }
+
+    class Evento {
+        - STRING titulo
+        - STRING descripcion
+        - DATE fecha
+        - TIME hora
+
+        + listarEventos()
+        + editarEvento()
+        + crearEvento()
+    }
+
+    class Reporte {
+        - STRING Reporte
+
+	    + generarReporte()
+    }
+
+
+    class Tarea {
+        - STRING Nombre
+        - STRING Descripcion
+        - DATE FechaTarea
+        - TIME HoraTarea
+        - STRING PublicoDirigido
+
+        + listarTareas()
+        + editarTarea()
+        + crearTarea()
+        + dirigirTarea()
+    }
+
+    class Persona {
+        - STRING nombre
+        - STRING apellido
+        - STRING telefono
+    }
+
+    class Etiqueta {
+        - STRING nombre
+    }
+
+    class TipoEtiqueta {
+        - STRING Nombre
+    }
+
+    class Invitado {
+        - STRING nombre
+        - STRING apellido
+        - STRING telefono
+    }
+
+    class TareaXPersona{
+        - STRING nombre
+    }
+
+    class PersonaXEvento{
+        - STRING nombre
+    }
+    
+    class PersonaXEtiqueta{
+        - STRING nombre
+    }
+
+    class EtiquetaXCandidato{
+        - STRING nombre
+    }

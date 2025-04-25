@@ -1,0 +1,59 @@
+erDiagram
+    USER {
+        id int PK
+        first_name varchar
+        last_name varchar
+        email varchar
+        password varchar
+        gender varchar
+        dob datetime
+        weight float
+        height float
+        created_at datetime
+        updated_at datetime
+    }
+    HABIT_CATEGORY {
+        id int PK
+        name varchar
+        created_at datetime
+        updated_at datetime
+    }
+    HABIT {
+        id int PK
+        user_id int FK
+        category_id int FK
+        name varchar
+        description varchar
+        created_at datetime
+        updated_at datetime
+    }
+    DAILY_RECORD {
+        id int PK
+        habit_id int FK
+        date date
+        created_at datetime
+        updated_at datetime
+    }
+    GOAL {
+        id int PK
+        habit_id int FK
+        frequency varchar
+        target_value int
+        created_at datetime
+        updated_at datetime
+    }
+    REMINDER {
+        id int PK
+        habit_id int FK
+        cron_schedule varchar
+        message varchar
+        created_at datetime
+        updated_at datetime
+    }
+
+    USER ||--o{ HABIT: has
+    HABIT_CATEGORY ||--o{ HABIT: categorizes
+    HABIT ||--o{ DAILY_RECORD: has
+    HABIT ||--o{ GOAL: has
+    HABIT ||--o{ REMINDER: has
+

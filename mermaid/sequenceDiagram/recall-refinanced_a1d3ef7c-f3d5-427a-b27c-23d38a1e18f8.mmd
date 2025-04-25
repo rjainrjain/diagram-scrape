@@ -1,0 +1,28 @@
+sequenceDiagram
+	title Recalled Loan Refinanced
+	Box rgb(33,66,0) Loan Origination
+		participant Borrower
+	end
+
+	Box rgb(99,100,0) Loan Settlement
+		participant Starport
+		participant Refinancer
+		participant V1Status
+		participant Pricing
+		participant Settlement
+		participant LenderCaveatEnforcer
+	end
+	Borrower->>Starport: originate
+	Refinancer->>V1Status: recall
+	V1Status->>Pricing: calculateInterest
+	Refinancer->>Starport: refinance
+	Starport->>Pricing: getRefinanceConsideration
+	Starport->>Starport: _settle
+	Starport->>Settlement: postRepayment
+	opt attempt to withdraw to the refinancer
+		Settlement->>V1Status: withdraw
+	end
+	opt validate caveat if F is not Lender
+		Starport->>LenderCaveatEnforcer: validate
+	end
+ 	Starport->>Starport: _issueLoan

@@ -1,0 +1,15 @@
+graph TB
+  NRF(NRF)
+  UDR(UDR)
+  PCF(PCF)
+  webconsole(webconsole)
+  MongoDBLibrary[[MongoDBLibrary]]
+  mongo-driver[[mongo-driver]]
+  MongoDB[(MongoDB)]
+
+  NRF --> MongoDBLibrary
+  UDR --> MongoDBLibrary
+  PCF --> MongoDBLibrary
+  webconsole --> MongoDBLibrary
+  MongoDBLibrary --> mongo-driver
+  mongo-driver -. TCP/Unix Domain Socket .-> MongoDB

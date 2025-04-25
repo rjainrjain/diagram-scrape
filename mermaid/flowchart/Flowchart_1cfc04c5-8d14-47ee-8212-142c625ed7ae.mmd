@@ -1,0 +1,8 @@
+flowchart TD
+    A(Navigate web browser to system URL) --> |Login page displayed| B(Enter username and password)
+    B --> |Username and password correct| D(Enter one-time-pin)
+    B --> |Username or password correct| C(Invalid username or password message)
+    C --> |OK| B
+    D --> |One-time-pin correct| E(Welcome page)
+    D --> |One-time-pin incorrect| F(Invalid one-time-pin message)
+    F --> |OK| B

@@ -1,0 +1,20 @@
+sequenceDiagram
+    alt poll
+        Note over Agent: Grabber collection
+        Agent->>Grabber: event
+        %opt track
+            Note over Grabber: track(event)
+            Grabber-->>Agent: grabber
+        %end
+        Note over Agent,Grabber: inputGrabber = trackedGrabber != null ? trackedGrabber : defaultGrabber
+    else handle
+        opt enqueue
+           Agent-->>InputHandler: < event, inputGrabber >
+        end
+        loop dequeue
+          InputHandler->>Grabber: event
+        end
+        Note over Grabber: interact(event)
+    end
+
+    %%Note over InputHandler: Agent collection

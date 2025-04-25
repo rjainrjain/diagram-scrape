@@ -1,0 +1,12 @@
+sequenceDiagram
+    participant browser
+    participant server
+
+    Note right of browser: When the button on the form is clicked, the browser sends the user input to the server
+
+    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+    activate server
+    server-->>browser: HTTP Status Code 201
+    deactivate server
+
+    Note right of browser: the server does not ask for a redirect, the browser stays on the same page and rerenders the Note List

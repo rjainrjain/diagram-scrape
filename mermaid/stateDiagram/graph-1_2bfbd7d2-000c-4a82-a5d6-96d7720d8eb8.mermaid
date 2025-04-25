@@ -1,0 +1,14 @@
+stateDiagram-v2
+classDef common fill: white, stroke: black
+class s1_1, s1_2, s1_4, s1_3 common
+state "Program:enter\nIfStatement:enter\nLogicalExpression:enter\nIdentifier (a)" as s1_1
+state "Identifier (b)\nLogicalExpression:exit" as s1_2
+state "IfStatement:exit\nExpressionStatement:enter\nCallExpression:enter\nIdentifier (bar)\nCallExpression:exit\nExpressionStatement:exit\nProgram:exit" as s1_4
+state "BlockStatement:enter\nExpressionStatement:enter\nCallExpression:enter\nIdentifier (foo)\nCallExpression:exit\nExpressionStatement:exit\nBlockStatement:exit" as s1_3
+[*] --> s1_1
+s1_1 --> s1_2
+s1_1 --> s1_4
+s1_2 --> s1_3
+s1_2 --> s1_4
+s1_3 --> s1_4
+s1_4 --> [*]

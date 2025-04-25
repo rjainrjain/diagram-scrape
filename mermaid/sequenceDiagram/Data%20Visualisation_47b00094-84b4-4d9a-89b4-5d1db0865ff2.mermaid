@@ -1,0 +1,32 @@
+sequenceDiagram
+    participant UI as Frontend 
+    participant Backend as Backend (Server)
+    participant Database as Database
+    participant OpenAI as OpenAI
+    participant GoogleChart as Google Chart API
+    participant Editor as Frontend (Editor)
+    
+    UI ->> Backend: Request to fetch query
+    Backend ->> Database: Fetch schema
+    Database -->> Backend: Returns create tables schema
+    Backend ->> OpenAI: Request to generate query
+    OpenAI -->> Backend: Query generated
+    Backend -->> UI: Fetched query
+    UI ->> Editor: Display and edit query
+    Editor ->> Backend: Request to execute query
+    Backend ->> Database: Execute query
+    Database -->> Backend: Query result
+    Backend -->> UI: Query response
+    UI ->> GoogleChart: Display data in default chart
+    UI ->> GoogleChart: Request to change chart type
+    GoogleChart -->> UI: Updated chart
+    UI ->> Backend: Request to save query
+    Backend ->> Database: Save query
+    Database -->> Backend: Query saved
+    Backend -->> UI: Query saved confirmation
+    UI ->> Backend: Request to get saved queries
+    Backend ->> Database: Retrieve saved queries
+    Database -->> Backend: Saved queries
+    Backend -->> UI: List of saved queries
+    UI ->> Editor: User selects a saved query
+    Editor ->> UI: Load selected query

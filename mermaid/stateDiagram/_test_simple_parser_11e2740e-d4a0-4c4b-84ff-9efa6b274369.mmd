@@ -1,0 +1,31 @@
+stateDiagram-v2
+  direction LR
+
+  %% s_start state
+  [*] --> s_start
+  s_start --> s_done: t_done
+  s_start --> s_start: t_line_break
+  s_start --> s_start: t_space
+  s_start --> s_expecting_delimiter: t_key
+  s_start --> s_start: t_comment
+  s_start --> s_done: default
+
+  %% s_expecting_delimiter state
+  s_expecting_delimiter --> s_expecting_value: t_key_value_delimiter
+  s_expecting_delimiter --> s_expecting_delimiter: t_space
+  s_expecting_delimiter --> s_done: default
+
+  %% s_expecting_value state
+  s_expecting_value --> s_after_value: t_value
+  s_expecting_value --> s_expecting_value: t_space
+  s_expecting_value --> s_done: default
+
+  %% s_after_value state
+  s_after_value --> s_done: t_done
+  s_after_value --> s_after_value: t_space
+  s_after_value --> s_after_value: t_comment
+  s_after_value --> s_start: t_line_break
+  s_after_value --> s_done: default
+
+  %% s_done state
+  s_done --> [*]

@@ -1,0 +1,57 @@
+graph LR
+  linkStyle default fill:#ffffff
+
+  subgraph diagram [e-Commerce company - Containers]
+    style diagram fill:#ffffff,stroke:#ffffff
+
+    subgraph 2 [e-Commerce company]
+      style 2 fill:#ffffff,stroke:#b2b2b2,color:#b2b2b2
+
+      subgraph group1 [Recommendation Service]
+        style group1 fill:#ffffff,stroke:#cccccc,color:#cccccc,stroke-dasharray:5
+
+        11("<div style='font-weight: bold'>Recommendation Service API</div><div style='font-size: 70%; margin-top: 0px'>[Container: REST, FastAPI]</div><div style='font-size: 80%; margin-top:10px'>CRUD API for fetching item<br />recommendations</div>")
+        style 11 fill:#ffffff,stroke:#b2b2b2,color:#000000
+        13[("<div style='font-weight: bold'>Graph DB</div><div style='font-size: 70%; margin-top: 0px'>[Container: Neo4j]</div><div style='font-size: 80%; margin-top:10px'>Holds item relationship data</div>")]
+        style 13 fill:#ffffff,stroke:#b2b2b2,color:#000000
+      end
+
+      subgraph group2 [Stock Service]
+        style group2 fill:#ffffff,stroke:#cccccc,color:#cccccc,stroke-dasharray:5
+
+        18("<div style='font-weight: bold'>Stock API</div><div style='font-size: 70%; margin-top: 0px'>[Container: REST, FastAPI]</div><div style='font-size: 80%; margin-top:10px'>CRUD API to interact with<br />Item stock levels</div>")
+        style 18 fill:#ffffff,stroke:#b2b2b2,color:#000000
+        19[("<div style='font-weight: bold'>Stock Database</div><div style='font-size: 70%; margin-top: 0px'>[Container: Postgres, SQL]</div><div style='font-size: 80%; margin-top:10px'>Stock DB</div>")]
+        style 19 fill:#ffffff,stroke:#b2b2b2,color:#000000
+      end
+
+      subgraph group3 [User Service]
+        style group3 fill:#ffffff,stroke:#cccccc,color:#cccccc,stroke-dasharray:5
+
+        4("<div style='font-weight: bold'>User Service API</div><div style='font-size: 70%; margin-top: 0px'>[Container: REST, FastAPI]</div><div style='font-size: 80%; margin-top:10px'>CRUD API for interacting with<br />user data</div>")
+        style 4 fill:#ffffff,stroke:#b2b2b2,color:#000000
+        9[("<div style='font-weight: bold'>User Database</div><div style='font-size: 70%; margin-top: 0px'>[Container: Postgres, SQL]</div><div style='font-size: 80%; margin-top:10px'>Stores information regards<br />the user</div>")]
+        style 9 fill:#ffffff,stroke:#b2b2b2,color:#000000
+      end
+
+      15("<div style='font-weight: bold'>Scheduled Birthday Fetcher lambda</div><div style='font-size: 70%; margin-top: 0px'>[Container: Lambda, python]</div><div style='font-size: 80%; margin-top:10px'>Scheduled Lambda for<br />calculating users who should<br />receive email</div>")
+      style 15 fill:#ffffff,stroke:#d86613,color:#d86613
+      16("<div style='font-weight: bold'>Email Sender lambda</div><div style='font-size: 70%; margin-top: 0px'>[Container: Lambda, python]</div><div style='font-size: 80%; margin-top:10px'>Lambda for generating and<br />sending email for single user</div>")
+      style 16 fill:#ffffff,stroke:#d86613,color:#d86613
+      17("<div style='font-weight: bold'>SES</div><div style='font-size: 70%; margin-top: 0px'>[Container: SES, Email]</div><div style='font-size: 80%; margin-top:10px'>Simple Email Service</div>")
+      style 17 fill:#ffffff,stroke:#3b48cc,color:#3b48cc
+      3("<div style='font-weight: bold'>Web Application</div><div style='font-size: 70%; margin-top: 0px'>[Container: React, Javascript]</div><div style='font-size: 80%; margin-top:10px'>Allows users to buy from<br />e-commerce site</div>")
+      style 3 fill:#ffffff,stroke:#b2b2b2,color:#000000
+    end
+
+    4-. "<div>Reads from and writes to</div><div style='font-size: 70%'></div>" .->9
+    11-. "<div>Reads from and writes to</div><div style='font-size: 70%'></div>" .->13
+    18-. "<div>Reads from and writes to</div><div style='font-size: 70%'></div>" .->19
+    3-. "<div>Login a given user and<br />provider User Profile data</div><div style='font-size: 70%'></div>" .->4
+    15-. "<div>Fetches the users in birthday<br />scope</div><div style='font-size: 70%'></div>" .->4
+    15-. "<div>Triggers the birthday email<br />lambda</div><div style='font-size: 70%'></div>" .->16
+    16-. "<div>Fetches the user profile &<br />wishlist of the user.</div><div style='font-size: 70%'></div>" .->4
+    16-. "<div>Fetches the stock levels</div><div style='font-size: 70%'></div>" .->18
+    16-. "<div>Fetches the recommended items<br />for a user</div><div style='font-size: 70%'></div>" .->11
+    16-. "<div>Sends email</div><div style='font-size: 70%'></div>" .->17
+  end

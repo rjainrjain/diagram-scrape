@@ -1,0 +1,26 @@
+sequenceDiagram
+  participant User
+  participant App
+  participant Developer's Authentication System
+  participant SD-RTN
+
+  rect rgb(255, 255, 255)
+    note right of User: Implemented by you
+    User->>App: Start the app
+    App->>Developer's Authentication System: Login to your identity management system
+    Developer's Authentication System->>App: ---
+
+    App->>App: Select a channel
+    App->>Developer's Authentication System: Request an Agora authentication token using channel name, role, token type, and user Id
+    Developer's Authentication System->>App: Return the token to the client
+    App->>SD-RTN: Join a channel with user Id, channel name, and token
+    Developer's Authentication System->>SD-RTN: Validate user request against internal security
+  end
+
+  rect rgb(255, 255, 255)
+    note right of SD-RTN: Provided by Agora
+    SD-RTN->>SD-RTN: Use integrated Agora library to generate a token
+    SD-RTN->>Developer's Authentication System: Validate the token
+    Developer's Authentication System->>App: ---
+    App->>User: Trigger the callback after adding user to the channel
+  end

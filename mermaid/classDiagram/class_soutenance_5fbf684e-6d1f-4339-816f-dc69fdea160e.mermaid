@@ -1,0 +1,110 @@
+classDiagram
+    class Game {
+        -instance : Game$
+        -getInstance(players : Players) Game
+        -getInstance() Game
+        -getInstance(json : String) Game
+        -startingPlayerIndex : int
+        -round : int
+        +init() void
+        -placeTwoShip() Cell
+        -phase1() bool
+        -microPhase2() bool
+        -phase2() bool
+        -phase3() bool
+        -endGame() void
+        +playRound() bool
+        +saveGame() void
+        +getPlayer(id : int) Player
+        +initNeighbors() void
+        +initShipsCell() void
+        +initSectorsCells() void
+        +playGame() void
+        +getAlivePlayer() Player[]
+        -cyclePlayers(n : int) Player
+        -cycleStartingPlayer() void
+    }
+    class Player {
+        -input : IOHandler
+        -id : int
+        -name : String
+        -score : int
+        -commandsOrder : List~Command~
+        -ships : Ship[]
+        -dead : bool
+        +Expand() void
+        +Explore() void
+        +Exterminate() void
+        +score() void
+        +getAvailableShips(n : int) Ship[]
+    }
+    class Command{
+        <<enumeration>>
+        EXPAND
+        EXPLORE
+        EXTERMINATE
+    }
+    Player ..> Command
+    class Area {
+        -grid
+        +setNeighbors() void
+        +getCell(id : int) Cell
+    }
+    class Sector {
+        <<abstract>>
+        -id : int
+        -used : bool
+        -cells : Cell[]
+        -cellIds : int[]
+        +generateSystems() void*
+    }
+    class BorderSector {
+        +generateSystems() void
+    }
+    class MiddleSector {
+        +generateSystems() void
+    }
+    class TriPrimeSector {
+        +generateSystems() void
+    }
+    class System {
+        -used : bool
+        -id : int
+        -level : int
+    }
+    class Ship {
+        -used : bool
+        -id : int
+        -cellIds : Integer
+        -cell : Cell
+        +getPlayer() Player
+        +initCell() void
+        +isAvailable() bool
+        +getPlayer() Player
+    }
+    class Cell {
+        -id : int
+        -neighbors : Cell[]
+        -neighborsId: int[]
+        -system : System
+        +getSystem() System[]
+        +getShips() Ship[]
+        +getControlPlayer() Player
+        +initNeighbor() Cell[]
+        +isEmpty() bool
+        +isNeighbor(cell : Cell) bool
+    }
+
+    Game *--> "2..*" Player
+    Game *--> "1" Area
+    Area "1" o--> "46" Cell
+    Sector "1" o--> "1,4,5" Cell
+    Sector <|-- BorderSector
+    Sector <|-- MiddleSector
+    Sector <|-- TriPrimeSector
+    Cell "1" *--> "*" System
+    Player *--> "15" Ship
+    Area *--> "9" Sector
+    Ship "1" o--> "0,1" Cell
+    Cell "1" o--> "2..*" Cell
+

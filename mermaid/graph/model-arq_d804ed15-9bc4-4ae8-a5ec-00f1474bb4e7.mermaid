@@ -1,0 +1,46 @@
+graph TD
+    subgraph "On-Premise"
+        A[Cliente] -->|HTTPS| B[Load Balancer]
+        B --> C[API Gateway]
+        C --> D[Fastify Server]
+        D --> E[Controladores]
+        E --> F[Casos de Uso]
+        F --> G[Repositorios]
+        G --> H[Base de Datos PostgreSQL]
+        I[Cache Local Redis]
+    end
+
+    subgraph "Cloud"
+        J[CDN] -->|Archivos estáticos| A
+        K[Servicio de Autenticación]
+        L[Servicio de Procesamiento de Archivos]
+        M[Base de Datos PostgreSQL Réplica]
+        N[Cache Distribuido Redis]
+        O[Cola de Mensajes]
+        P[Servicio de Logging]
+        Q[Monitoreo y Alertas]
+    end
+
+    C <-->|JWT| K
+    D <--> I
+    D <--> N
+    D --> L
+    D --> O
+    G <--> M
+    D --> P
+    D --> Q
+
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#333,stroke-width:2px
+    style C fill:#bfb,stroke:#333,stroke-width:2px
+    style D fill:#fbf,stroke:#333,stroke-width:2px
+    style H fill:#ff9,stroke:#333,stroke-width:2px
+    style I fill:#f99,stroke:#333,stroke-width:2px
+    style J fill:#9ff,stroke:#333,stroke-width:2px
+    style K fill:#f9f,stroke:#333,stroke-width:2px
+    style L fill:#bff,stroke:#333,stroke-width:2px
+    style M fill:#ff9,stroke:#333,stroke-width:2px
+    style N fill:#f99,stroke:#333,stroke-width:2px
+    style O fill:#fbb,stroke:#333,stroke-width:2px
+    style P fill:#bfb,stroke:#333,stroke-width:2px
+    style Q fill:#fbf,stroke:#333,stroke-width:2px

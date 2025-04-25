@@ -1,0 +1,59 @@
+---
+title: Entity relationship
+---
+erDiagram
+    ORDER_TYPE {
+        uuid id
+        date created_at
+        date updated_at
+        varchar(50) name
+        varchar(50) dep_type
+    }
+    ORDER_TYPE_PARAM {
+        uuid id
+        date created_at
+        date updated_at
+        varchar(50) name
+        varchar(50) value_type
+        bool required
+    }
+    ORDER_TYPE ||--o{ ORDER_TYPE_PARAM : contains
+
+    ORDER {
+        uuid id
+        date created_at
+        date updated_at
+        varchar(50) status
+        uuid user_customer_id
+        uuid user_implementer_id
+    }
+    ORDER ||--o| ORDER : parent
+    ORDER_TYPE ||--o{ ORDER : type_of
+
+    ORDER_PARAM_VALUE {
+        uuid id
+        date created_at
+        date updated_at
+        varchar(100) value
+    }
+    ORDER ||--o{ ORDER_PARAM_VALUE : contains
+    ORDER_TYPE_PARAM ||--o{ ORDER_PARAM_VALUE : type_of
+
+    ORDER_CONFIRMATION {
+        uuid id
+        date created_at
+        date updated_at
+        uuid user_id
+        bool signed
+    }
+    ORDER ||--o{ ORDER_CONFIRMATION : contains
+
+    ORDER_STATUS_UPDATE {
+        uuid id
+        date created_at
+        date updated_at
+        uuid user_id
+        varchar(50) old_status
+        varchar(50) new_status
+    }
+    ORDER ||--o{ ORDER_STATUS_UPDATE : contains

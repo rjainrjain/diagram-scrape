@@ -1,0 +1,59 @@
+---
+title: Diagrama Entidad-Relación de Link Project
+---
+erDiagram
+
+  Usuario {
+    String nombres
+    String apellido_paterno
+    String apellido_materno
+    String correo
+    String contacto
+    String clave
+    String foto
+    INT proyecto_ID
+  }
+
+  Estudiante {
+    Int codigo_de_estudiante
+    String carrera
+    String foto
+  }
+
+  Asesor {
+    Int codigo_de_profesor
+    String departamento
+  }
+
+  Proyecto {
+    INT ID
+    String nombre
+    String descripcion
+    Estudiante[3] integrantes
+    Asesor[] asesores
+    String[] conocimientos
+    String nivel_de_innovacion
+    String logo
+  }
+
+  %% Usuario
+  Usuario }|--o| Proyecto : "Se une"
+
+  %% Lider
+  Lider ||--|| Proyecto : "Crea y administra"
+  Lider ||--|{ Estudiante : "Agrega o elimina a"
+  Lider ||--|{ Integrante : "Asigna tareas a"
+  Lider ||--|| Integrante : "Es"
+
+  %% Integrante
+  Integrante ||--|| Estudiante : "Es"
+  Integrante }|--|| Proyecto : "Petenece"
+  Integrante ||--|{ Proyecto : "Administra sus tareas del"
+
+  %% Estudiantes
+  Estudiante ||--|| Usuario : "Es"
+
+  %% Asesor
+  Asesor }|--|{ Integrante : "Agenda reuniones con"
+  Asesor ||--|| Usuario : "Es"
+  Asesor }|--|{ Proyecto : "Pertenece"

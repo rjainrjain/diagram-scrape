@@ -1,0 +1,60 @@
+erDiagram
+    USUARIO {
+        string id PK "UUID"
+        string login
+        string senha
+        string nome
+        string sobrenome "NULL"
+        enum papel "CLIENTE|ADMIN|ROOT"
+        datetime dataCriacao
+        datetime dataAtualizacao
+    }
+    CATEGORIA {
+        string id PK "UUID"
+        string nome
+    }
+    QUESTIONARIO {
+        string id PK "UUID"
+        string titulo
+        string descricao "NULL"
+        boolean publicado
+        datetime dataCriacao
+        datetime dataAtualizacao
+        string usuarioId FK "NULL"
+        string categoriaId FK "NULL"
+    }
+    QUESTAO {
+        string id PK "UUID"
+        string titulo "VARCHAR(2000)"
+        enum tipo "OBJETIVA|DISCURSIVA"
+        string imagem "NULL"
+        string questionarioId FK "NULL"
+    }
+    RESPOSTA {
+        string id PK "UUID"
+        string texto
+        boolean estaCorreta
+        string questaoId FK "NULL"
+    }
+    RESPOSTA_QUESTIONARIO {
+        string id PK "UUID"
+        string usuarioId FK
+        string questionarioId FK
+        datetime dataResposta
+    }
+    RESPOSTA_QUESTAO {
+        string id PK "UUID"
+        string respostaQuestionarioId FK
+        string questaoId FK
+        string respostaSelecionadaId FK "NULL"
+        string respostaDiscursiva "NULL"
+    }
+    USUARIO ||--o{ QUESTIONARIO : "cria"
+    CATEGORIA ||--o{ QUESTIONARIO : "contem"
+    QUESTIONARIO ||--o{ QUESTAO : "possui"
+    QUESTAO ||--o{ RESPOSTA : "contem"
+    USUARIO ||--o{ RESPOSTA_QUESTIONARIO : "submete"
+    QUESTIONARIO ||--o{ RESPOSTA_QUESTIONARIO : "recebe"
+    RESPOSTA_QUESTIONARIO ||--o{ RESPOSTA_QUESTAO : "contem"
+    QUESTAO ||--o{ RESPOSTA_QUESTAO : "responde"
+    RESPOSTA ||--o{ RESPOSTA_QUESTAO : "selecionada para"

@@ -1,0 +1,59 @@
+graph TD
+    subgraph Tenants["Tenants"]
+        T1[Tenant 1]
+        T2[Tenant 2]
+        TN[Tenant N]
+        subgraph TenantComponents["Tenant Components"]
+            IDE[IDE]
+            VDB[VectorDB]
+        end
+        T1 --- IDE & VDB
+        T2 --- IDE & VDB
+        TN --- IDE & VDB
+    end
+
+    subgraph AWSCloud["AWS Cloud"]
+        subgraph Region["Region"]
+            APIG[Amazon API Gateway]
+            VPC[VPC Endpoints]
+            Lambda1[AWS Lambda]
+            Lambda2[AWS Lambda]
+            CW[Amazon CloudWatch]
+            S3[Amazon S3]
+            DDB[Amazon DynamoDB]
+            PL[AWS PrivateLink]
+            CT[AWS CloudTrail]
+            EB[Amazon EventBridge]
+
+            subgraph DailyCostTracking["Daily cost tracking"]
+                CW --> Lambda2
+                EB --> Lambda2
+                Lambda2 --> S3
+            end
+
+            subgraph OnDemandCostTracking["On-demand cost tracking"]
+                PL --> Bedrock[Amazon Bedrock]
+                PL --> SageMaker[Amazon SageMaker]
+            end
+
+            Tenants -->|1| APIG
+            APIG -->|2| VPC
+            VPC -->|2| Lambda1
+            Lambda1 -->|3| PL
+            Lambda1 -->|5| DDB
+            PL -->|4| CT
+        end
+    end
+
+    User[User querying cost data] --> S3
+    User --> CT
+
+    %% Styling
+    classDef awsService fill:#FF9900,stroke:#232F3E,stroke-width:2px,color:#232F3E;
+    class APIG,VPC,Lambda1,Lambda2,CW,S3,DDB,PL,CT,EB,Bedrock,SageMaker awsService;
+
+    style Tenants fill:#E6F3FF,stroke:#66B2FF,stroke-width:2px;
+    style AWSCloud fill:#F7F7F7,stroke:#232F3E,stroke-width:2px;
+    style Region fill:#E6F3FF,stroke:#66B2FF,stroke-width:2px;
+    style DailyCostTracking fill:#FFE6B3,stroke:#FF9900,stroke-width:2px;
+    style OnDemandCostTracking fill:#B3FFB3,stroke:#00CC00,stroke-width:2px;

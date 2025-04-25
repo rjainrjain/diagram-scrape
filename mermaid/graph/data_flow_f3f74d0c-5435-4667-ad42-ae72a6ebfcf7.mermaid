@@ -1,0 +1,5 @@
+graph TD
+    UserQuery[User Query] -->|Input| QueryReformulation[Query Reformulation]
+    QueryReformulation -->|Processed Query| DataRetrieval[Data Retrieval via Annoy]
+    DataRetrieval -->|Retrieved Data| ResponseGeneration[Response Generation]
+    ResponseGeneration -->|Output| UserResponse[User Response]

@@ -1,0 +1,23 @@
+erDiagram
+  CLIENT {
+    VARCHAR(8) Ref_client PK
+    VARCHAR(255) Nom
+    VARCHAR(255) Prenom
+    VARCHAR(255) Adresse
+  }
+  COMMANDE {
+    VARCHAR(8) Num_commande PK
+    DATE Date
+    DECIMAL(10-2) Montant
+  }
+  INCLURE {
+    INTEGER Quantite PK
+  }
+  PRODUIT {
+    VARCHAR(8) Ref_produit PK
+    VARCHAR(50) Libelle
+    DECIMAL(10-2) Prix_unitaire
+  }
+  CLIENT ||--o{ COMMANDE: PASSER
+  INCLURE }|..|| COMMANDE: DF
+  INCLURE }o..|| PRODUIT: DF

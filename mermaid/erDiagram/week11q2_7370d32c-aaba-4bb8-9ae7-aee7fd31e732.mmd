@@ -1,0 +1,46 @@
+---
+title: Week 11 Quiz 02 Star Schema
+---
+
+erDiagram
+    Product ||--o{ Sale : ""
+    Store ||--o{ Sale : ""
+    Time ||--o{ Sale : ""
+    
+    Product {
+        INTEGER ProductID PK
+        TEXT ProductCode
+        TEXT ProductName
+        TEXT SubCategory
+        TEXT Category
+        TEXT Brand
+        TEXT Height
+        TEXT Width
+    }
+    
+    Store {
+        INTEGER StoreID PK
+        TEXT StoreName
+        TEXT ParentChain
+        TEXT Region
+        TEXT Territory
+        TEXT Zone
+        TEXT Address
+        TEXT City
+        TEXT State
+        TEXT Zip
+    }
+    
+    Time {
+        INTEGER SaleTimestamp PK
+        INTEGER Year
+        INTEGER Month
+        INTEGER Day
+    }
+    
+    Sale {
+        INTEGER StoreID PK, FK
+        INTEGER ProductID PK, FK
+        INTEGER SaleTimestamp PK, FK
+        REAL SaleDollar
+    }

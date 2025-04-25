@@ -1,0 +1,16 @@
+graph TD
+    A[MainActivity] --> B{Escolha do Usuário}
+    B -->|Cadastrar Aluno| C[CadastrarAlunoActivity]
+    B -->|Listar Alunos| D[ListarAlunosActivity]
+    C -->|Salva Aluno| E[AlunoDao.inserir]
+    E -->|Sucesso| F[Toast: Aluno Cadastrado]
+    E -->|Falha| G[Toast: Erro no Cadastro]
+    D -->|Seleciona Aluno| H[EditarAlunoActivity]
+    H -->|Edita Aluno| I[AlunoDao.atualizar]
+    H -->|Exclui Aluno| J[AlunoDao.excluir]
+    I --> K[Toast: Aluno Atualizado]
+    J --> L[Toast: Aluno Excluído]
+    K --> D
+    L --> D
+    F --> A
+    G --> C

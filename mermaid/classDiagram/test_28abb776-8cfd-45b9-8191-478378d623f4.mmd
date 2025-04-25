@@ -1,0 +1,185 @@
+classDiagram
+
+
+
+namespace sample_capnp {
+    
+        class `Daty` ~T~
+}
+<<struct>> `Daty`
+
+    `Daty` : EnumTest year
+    `Daty` :  month
+    `Daty` : Uint8 day
+    `Daty` : List~Bool~ target
+    `Daty` : address address
+    
+
+
+
+namespace sample_capnp {class `GenericsIF` ~T~
+}
+
+<<interface>> `GenericsIF`
+
+GenericsIF : testMessage() ( result)
+
+
+
+namespace sample_capnp {
+class EnumTest 
+}
+<<enum>> EnumTest
+
+EnumTest : foo
+EnumTest : bar
+EnumTest : baz
+EnumTest : qux
+
+
+namespace sample_capnp {class `Example` 
+}
+
+<<interface>> `Example`
+
+Example : finalize(Bool debug) (GenericsIF~`Daty`~ result)
+
+
+
+namespace phone_capnp {
+    
+        class `Dymmy` 
+    
+}
+<<struct>> `Dymmy`
+
+    `Dymmy` : Uint16 year
+    
+
+
+
+
+
+namespace phone_capnp {
+    
+        class `DymmyA` ~YEARTYPE~
+}
+<<struct>> `DymmyA`
+
+    `DymmyA` : `Date~`Dymmy`~` year
+    `DymmyA` :  test
+    
+
+
+
+namespace phone_capnp {
+    
+        class `PhoneNumber` 
+    
+}
+<<struct>> `PhoneNumber`
+
+    `PhoneNumber` : Text number
+    `PhoneNumber` : Type type
+    namespace phone_capnp {class `PHoneIF` 
+}
+
+<<interface>> `PHoneIF`
+
+PHoneIF : testMessage(`Person` a) (Int8 result)
+
+namespace sample_capnp {class `Sample` 
+}
+
+<<interface>> `Sample`
+
+Sample : initialize(`Date~`Daty`~` debug) (GenericsIF~`Daty`~ result)
+Sample : subscribe(Subscriber subscriber) (Bool result)
+
+
+
+
+
+namespace phone_capnp {
+class Type 
+}
+<<enum>> Type
+
+Type : mobile
+Type : home
+Type : work
+
+
+namespace sample_capnp {
+    
+        class `address` ~T~
+}
+<<struct>> `address`
+
+    `address` : Uint32 houseNumber
+    `address` : Text street
+    `address` : Text city
+    `address` : Text country
+    
+
+namespace phone_capnp {
+    
+        class `DymmyB` 
+    
+}
+<<struct>> `DymmyB`
+
+    `DymmyB` : Int8 aa
+    
+
+namespace phone_capnp {
+    
+        class `Person` 
+    
+}
+<<struct>> `Person`
+
+    `Person` : Text name
+    `Person` : Text email
+    `Person` : List~`PhoneNumber`~ phones
+    `Person` : `Date~`DymmyB`~` birthdate
+    
+
+namespace phone_capnp {
+    
+        class `Date` ~YEARTYPE~
+}
+<<struct>> `Date`
+
+    `Date` :  year
+    `Date` : Uint8 month
+    `Date` : Uint8 day
+    `Date` : `DymmyA` test
+    namespace sample_capnp {class `Subscriber` 
+}
+
+<<interface>> `Subscriber`
+
+Subscriber : pushMessage() (Bool result)
+
+
+
+
+
+
+`Daty` --> address : Reference
+`Daty` --> EnumTest : Reference
+`Example` --> GenericsIF : Reference
+`Example` --> Daty : Reference
+`DymmyA` --> Dymmy : Reference
+`DymmyA` --> Date : Reference
+`PhoneNumber` --> Type : Reference
+`PHoneIF` --> Person : Reference
+`Sample` --> Date : Reference
+`Sample` --> GenericsIF : Reference
+`Sample` --> Daty : Reference
+`Sample` --> Subscriber : Reference
+`Person` --> Date : Reference
+`Person` --> DymmyB : Reference
+`Person` --> PhoneNumber : Reference
+`Date` --> DymmyA : Reference

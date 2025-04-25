@@ -1,0 +1,37 @@
+erDiagram
+    USERS {
+        UUID id PK
+        TEXT username
+        TEXT email
+        TEXT password_hash
+        TIMESTAMP created_at
+    }
+
+    POSTS {
+        UUID id PK
+        UUID user_id FK
+        TEXT title
+        TEXT content
+        UUID category_id FK
+        TIMESTAMP created_at
+        BOOLEAN is_published
+    }
+
+    COMMENTS {
+        UUID id PK
+        UUID post_id FK
+        UUID user_id FK
+        TEXT content
+        TIMESTAMP created_at
+    }
+
+    CATEGORIES {
+        UUID id PK
+        TEXT name
+        TEXT description
+    }
+
+    USERS ||--o{ POSTS : "has many"
+    USERS ||--o{ COMMENTS : "has many"
+    POSTS ||--o{ COMMENTS : "has many"
+    POSTS ||--o| CATEGORIES : "belongs to"

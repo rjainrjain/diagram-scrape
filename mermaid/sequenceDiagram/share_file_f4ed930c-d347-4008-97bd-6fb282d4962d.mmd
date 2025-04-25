@@ -1,0 +1,12 @@
+sequenceDiagram
+    actor C as Client
+    participant S as Server
+
+    note over C,S: Assume the user has already logged in <br> and is in possession of the parent folder key and the file key
+
+    C->>S: Ask for Guest's public key
+    S-->>C: Send Guest's public key
+
+    C->>C: Encrypt file's key with Guest's public key
+
+    C->>S: Send encrypted Guest's file key for file

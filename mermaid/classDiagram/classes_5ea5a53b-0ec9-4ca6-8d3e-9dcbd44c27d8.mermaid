@@ -1,0 +1,111 @@
+classDiagram
+    class User
+    User : +String firstName
+    User : +String lastName
+    User : +String avatarURL
+    User : +String email
+    User : setFirstName()
+    User : setLastName()
+    User : setAvatarURL()
+    User : setEmail()
+    User : getTeams()
+    User : getEmailsSent()
+    User : getOrganisingTournaments()
+    class Adjudicator
+    Adjudicator : +String tournamentId
+    Adjudicator : +Float priority
+    Adjudicator : setPriority()
+    Adjudicator : getTournament()
+    Adjudicator : getDebates()
+    Adjudicator : getPriority()
+    User <|-- Adjudicator
+    class Debater
+    Debater : getScores()
+    User <|-- Debater
+    Team o-- Debater
+    Tournament --> Team
+    class Team
+    Team : +String id
+    Team : +String name
+    Team : +String tournamentId
+    Team : +Boolean checkedIn
+    Team : setName()
+    Team : setCheckedIn()
+    Team : getBreakStatus()
+    Team : getDebates()
+    Team : getMembers()
+    Team : addMember()
+    Team : removeMember()
+    class Tournament
+    Tournament : +String id
+    Tournament : +String name
+    Tournament : +String description
+    Tournament : +String longDesc
+    Tournament : +DateTime startingDate
+    Tournament : +DateTime endingDate
+    Tournament : +Boolean online
+    Tournament : +String venueAddress
+    Tournament : +String joinURL
+    Tournament : +String stripeId
+    Tournament : setName()
+    Tournament : setDescription()
+    Tournament : setLongDesc()
+    Tournament : setStartingDate()
+    Tournament : setEndingDate()
+    Tournament : setOnline()
+    Tournament : setVenueAddress()
+    Tournament : setJoinURL()
+    Tournament : setStripeId()
+    Tournament : getOrganisers()
+    Tournament : getParticipatingTeams()
+    Tournament : getAdjudicators()
+    Tournament : getBreaks()
+    Tournament : getRooms()
+    Tournament : addOrganiser()
+    Tournament : removeOrganiser()
+    class DebateRound
+    DebateRound : +String id
+    DebateRound : +String tournamentId
+    DebateRound : +String breakRound
+    DebateRound : getDebates()
+    DebateRound : getAvailableRooms()
+    DebateRound : getAvailableTeams()
+    Tournament *-- DebateRound
+    class Debate
+    Debate : +String id
+    Debate : +String debateRoundId
+    Debate : +String propositionId
+    Debate : +String oppositionId
+    Debate : +Boolean carried
+    Debate : setCarried()
+    Debate : getScores()
+    Debate : getAdjudicators()
+    Debate : addAdjudicators()
+    Debate : removeAdjudicators()
+    DebateRound *-- Debate
+    Break *-- BreakDebate
+    class BreakDebate
+
+    Debate <|-- BreakDebate
+    class Score
+    Score : +String debateId
+    Score : +String userId
+    Score : +Float score
+    Score : setScore()
+    Debate *-- Score
+    class Room
+    Room : +String id 
+    Room : +String tournamentId
+    Room : +String label
+    Room : +Float priority
+    Room : setLabel()
+    Room : setAvailableFor() 
+    Room : setPriority()
+    Tournament *-- Room
+    Room <-- Debate
+    class Break
+    Break : +String id
+    Break : +String tournamentId
+    Break : getBreakingTeams()
+    Break : getDebates()
+    Tournament o-- Break

@@ -1,0 +1,28 @@
+sequenceDiagram
+    participant AppHost as App: Host
+    participant VoiceSDK as Voice SDK
+    participant AppAudience as App: Audience
+
+    %% Initiate the Engine
+    AppHost->>VoiceSDK: Create and initialize the engine
+    AppAudice->>VoiceSDK: Create and initialize the engine
+
+    %% Join Channel
+    AppHost->>VoiceSDK: Join the channel and set the user role as host
+    VoiceSDK-->>AppHost: Notify the host that the channel has been joined
+    AppAudience->>VoiceSDK: Join the channel and set the user role as audience
+    VoiceSDK-->>AppAudience: Notify the audience that the channel has been joined
+
+    %% Start Audio Interaction
+    AppHost->>VoiceSDK: Send audio
+    VoiceSDK->>AppAudience: Receive audio
+
+    %% End Audio Interaction
+    AppHost->>VoiceSDK: Leave the channel
+    VoiceSDK-->>AppHost: Notify the host that it has left the channel
+    AppAudience->>Voice SDk: Leave the channel
+    VoiceSDK-->>AppAudience: Notify the audience that it has left the channel
+
+    %% Destroy the engine
+    AppHost->>VoiceSDK: Destroy the engine
+    AppAudience->>VoiceSDK: Destroy the engine

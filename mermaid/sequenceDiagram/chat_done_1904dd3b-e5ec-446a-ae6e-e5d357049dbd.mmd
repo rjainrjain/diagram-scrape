@@ -1,0 +1,23 @@
+sequenceDiagram
+    participant User
+    participant CoreAPI
+    participant AzureDB
+    participant AzureOpenAI
+    participant AzureAISearch
+
+    User->>CoreAPI: POST /chat_done
+    CoreAPI->>AzureDB: Get conversation history
+    AzureDB->>CoreAPI: Conversation History
+    loop Every message chunk (RecursiveTextSplitter)
+        CoreAPI->>AzureOpenAI: GET Summarize + Previous summary
+        AzureOpenAI->>CoreAPI: Summary
+    end
+    CoreAPI->>AzureOpenAI: GET embeddings of summary
+    AzureOpenAI->>CoreAPI: Embeddings of summary
+    CoreAPI->>AzureOpenAI: POST create index if not exist
+    AzureOpenAI->>CoreAPI: OK
+    CoreAPI->>AzureAISearch: POST vectors
+    AzureAISearch->>CoreAPI: OK
+    CoreAPI->>AzureDB: Set conversation done
+    AzureDB->>CoreAPI: OK
+    CoreAPI->>User: OK

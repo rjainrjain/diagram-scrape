@@ -1,0 +1,29 @@
+
+sequenceDiagram
+  actor Pembeli
+  participant V_S as View #10095; ProductPage
+  participant CTX_C as Context #10095; CartContext
+  participant LS_C as Local Storage #10095; Cart
+
+  Pembeli->>V_S: klik "Masukan Keranjang"
+
+  activate Pembeli
+  activate V_S
+
+  V_S->>CTX_C: addItem()
+
+  activate CTX_C
+
+  CTX_C->>LS_C: setItem()
+
+  activate LS_C
+
+  LS_C-->>CTX_C: data cart updated
+
+  deactivate LS_C
+
+  CTX_C-->>V_S: return view with updated cart
+
+  deactivate CTX_C
+  deactivate V_S
+  deactivate Pembeli

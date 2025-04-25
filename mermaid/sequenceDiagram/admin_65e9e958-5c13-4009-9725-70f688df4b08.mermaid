@@ -1,0 +1,45 @@
+sequenceDiagram
+    participant Admin
+    participant Website
+    participant Backend
+
+    Admin ->> Website: Access admin panel
+    Website ->> Backend: Authenticate admin
+    Backend -->> Website: Admin authenticated
+    Website -->> Admin: Display admin panel with options
+
+    loop Manage Flagged Internships
+        Admin ->> Website: View flagged internships
+        Website ->> Backend: Request flagged internships
+        Backend -->> Website: Respond with flagged internships
+        Website -->> Admin: Display flagged internships
+
+        Admin ->> Website: Review flagged internship
+        Website ->> Backend: Request internship details
+        Backend -->> Website: Respond with internship details
+        Website -->> Admin: Display internship details
+
+        Admin ->> Website: Take action on flagged internship
+        Website ->> Backend: Update internship status
+        Backend -->> Website: Internship status updated
+        Website -->> Admin: Confirmation message
+    end
+
+    loop Manage Users
+        Admin ->> Website: View user accounts
+        Website ->> Backend: Request user accounts
+        Backend -->> Website: Respond with user accounts
+        Website -->> Admin: Display user accounts
+
+        Admin ->> Website: Manage user accounts (e.g., suspend, delete)
+        Website ->> Backend: Update user account status
+        Backend -->> Website: User account status updated
+        Website -->> Admin: Confirmation message
+    end
+
+    loop View Statistics
+        Admin ->> Website: View platform statistics
+        Website ->> Backend: Request platform statistics
+        Backend -->> Website: Respond with platform statistics
+        Website -->> Admin: Display platform statistics
+    end

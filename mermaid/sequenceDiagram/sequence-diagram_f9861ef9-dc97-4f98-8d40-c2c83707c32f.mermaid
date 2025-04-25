@@ -1,0 +1,27 @@
+sequenceDiagram
+    participant Client
+    participant UploadRoute
+    participant RequestService
+    participant ProcessingRequest
+    participant Product
+    participant ImageProcessingService
+    participant WebhookHandler
+
+    Client->>UploadRoute: Upload CSV
+    UploadRoute->>RequestService: handleUpload(csvData, webhookUrl)
+    RequestService->>ProcessingRequest: create(requestId, webhookUrl)
+    RequestService->>RequestService: validateAndResolveUrls(urls)
+    loop For each row in CSV
+        RequestService->>Product: create(productData)
+        RequestService->>ImageProcessingService: processImages(product)
+        ImageProcessingService->>Product: update(outputUrls)
+    end
+    ImageProcessingService->>ProcessingRequest: update(status='Completed')
+    ImageProcessingService->>WebhookHandler: triggerWebhook(requestId)
+    WebhookHandler->>Client: Notify completion
+    Client->>UploadRoute: Get Status(requestId)
+    UploadRoute->>RequestService: checkStatus(requestId)
+    RequestService->>ProcessingRequest: findOne(requestId)
+    ProcessingRequest->>RequestService: return status and products
+    RequestService->>UploadRoute: return status data
+    UploadRoute->>Client: Return status response

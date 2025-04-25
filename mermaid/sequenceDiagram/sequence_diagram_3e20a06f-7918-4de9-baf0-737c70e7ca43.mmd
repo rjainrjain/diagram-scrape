@@ -1,0 +1,15 @@
+sequenceDiagram 
+    User ->> ScooterApp: register 
+    activate ScooterApp
+
+    alt already registered 
+     ScooterApp -->> User: Already registered
+    else not over 17 
+        ScooterApp -->> User: Too young to register
+    else pass both checks 
+        activate ScooterApp
+        ScooterApp ->> ScooterApp: Create account
+        ScooterApp -->> User: registered
+        deactivate ScooterApp
+    end
+     

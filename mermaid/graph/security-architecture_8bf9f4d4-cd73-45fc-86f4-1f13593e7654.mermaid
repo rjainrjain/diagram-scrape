@@ -1,0 +1,25 @@
+graph TD
+    subgraph "User-facing Layer"
+        A[HTTPS] --> B[WAF]
+        B --> C[Load Balancer]
+    end
+    subgraph "Application Layer"
+        C --> D[Authentication]
+        C --> E[Authorization]
+        D --> F[Session Management]
+        E --> F
+        F --> G[Input Validation]
+    end
+    subgraph "Data Layer"
+        G --> H[Data Encryption]
+        H --> I[Secure Data Storage]
+    end
+    subgraph "Blockchain Layer"
+        I --> J[Smart Contract Security]
+        J --> K[Blockchain Network Security]
+    end
+    L[Security Monitoring] --> A
+    L --> C
+    L --> F
+    L --> I
+    L --> K

@@ -1,0 +1,28 @@
+graph TD
+    A[Client] -->|HTTP Request| B[API Server]
+    B -->|Process Prompt| C[Processor]
+    C -->|Get Agents| D[AgentManager]
+    D -->|Return Agents| C
+    C -->|Categorise| E1[CategoriserAgent]
+    C -->|Find Vendors| E2[VendorAgent]
+    C -->|Booking Agent| E3[BookingAgent]
+    E1 -->|Use| F[AI Adapter]
+    E2 -->|Use| F
+    E3 -->|Use| F
+    E1 -->|Use| G[Data Source]
+    E2 -->|Use| G
+    E3 -->|Use| G
+
+    subgraph "Main Application"
+        B
+        C
+        D
+        E1
+        E2
+        E3
+    end
+
+    subgraph "External Services"
+        F
+        G
+    end

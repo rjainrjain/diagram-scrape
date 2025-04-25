@@ -1,0 +1,99 @@
+---
+title: Sklepy, towary sprzedawane w tych sklepach oraz producenci tych towarów.
+---
+erDiagram
+
+PRODUCTS }o--|| CATEGORIES : Of_category
+CATEGORIES }o--o| CATEGORIES : Subcategory_of
+PRODUCTS ||--|{ PRICE_HISTORIES : Price_history
+PRODUCTS }o--|| BRANDS : Of_brand
+PRODUCTS }o--|{ MANUFACTURERS : Manufactured_by
+SALES_DETAILS }o--|| PRODUCTS : Refers_to_product
+SHOPS ||--o{ STORAGES : Contains
+STORAGES }o--|| PRODUCTS : Of_product
+CLIENTS |o--o{ SALES : Bought_by
+EMPLOYEES ||--o{ SALES : Sold_by
+EMPLOYEES }o--|| SHOPS : Works_at
+SALES ||--|{ SALES_DETAILS : Described_by
+
+PRODUCTS {
+    int      Product_ID  PK
+    string   Name
+}
+
+BRANDS {
+    int     Brand_ID     PK
+    string  Name
+    string  Country
+}
+
+SHOPS {
+    int     Shop_ID     PK
+    string  Name
+    string  Country
+    string  City
+    string  Address
+    string  Post_code
+    Date    Open_date
+    Date    Close_date 
+}
+
+STORAGES {
+    int     Shop_ID     PK, FK   "Composite Key"
+    int     Product_ID  PK , FK  "Composite Key"
+    float   Amount
+}
+
+CATEGORIES {
+    int     Category_ID PK
+    string  Name
+}
+
+MANUFACTURERS {
+    int     Manufacturer_ID     PK
+    string  Name
+    string  Country
+    string  Speciality
+}
+
+PRICE_HISTORIES {
+    int     Price_history_ID    PK
+    float   Price
+    Date    Start_date
+}
+
+SALES {
+    int     Sale_ID     PK
+    Date    Sale_date
+    float   Total_cost
+    int     Points_collected
+}
+
+SALES_DETAILS {
+    int     Sale_ID     PK, FK  "Composite Key"
+    int     Product_ID  PK, FK  "Composite Key"
+    float   Amount
+}
+
+EMPLOYEES {
+    int     Employee_ID PK
+    string  Name
+    string  Surname
+    int     Sex
+    Date    Employment_date
+    Date    Leave_date
+    string  Phone_number
+    string  Email
+    string  Role
+}
+
+CLIENTS {
+    int     Client_ID PK
+    string  Name
+    string  Surname
+    int     Sex
+    Date    Join_date
+    string  Phone_number
+    string  Email
+    int     Points_collected
+}

@@ -1,0 +1,49 @@
+classDiagram
+  SpecialAnnouncement -- GovernmentService
+  SpecialAnnouncement -- PhysicalActivityCategory
+  SpecialAnnouncement -- Thing
+  SpecialAnnouncement -- CategoryCode
+  SpecialAnnouncement -- Dataset
+  SpecialAnnouncement -- Observation
+  SpecialAnnouncement -- WebContent
+  SpecialAnnouncement -- CivicStructure
+  SpecialAnnouncement -- LocalBusiness
+  SpecialAnnouncement -- date
+  SpecialAnnouncement -- dateTime
+  SpecialAnnouncement -- DataFeed
+
+
+class SpecialAnnouncement {
+
+  GovernmentService governmentBenefitsInfo
+  string category
+  string category
+  PhysicalActivityCategory category
+  Thing category
+  CategoryCode category
+  Dataset diseaseSpreadStatistics
+  Observation diseaseSpreadStatistics
+  WebContent diseaseSpreadStatistics
+  string diseaseSpreadStatistics
+  WebContent gettingTestedInfo
+  string gettingTestedInfo
+  CivicStructure announcementLocation
+  LocalBusiness announcementLocation
+  string travelBans
+  WebContent travelBans
+  string diseasePreventionInfo
+  WebContent diseasePreventionInfo
+  string publicTransportClosuresInfo
+  WebContent publicTransportClosuresInfo
+  WebContent schoolClosuresInfo
+  string schoolClosuresInfo
+  date datePosted
+  dateTime datePosted
+  string newsUpdatesAndGuidelines
+  WebContent newsUpdatesAndGuidelines
+  string quarantineGuidelines
+  WebContent quarantineGuidelines
+  DataFeed webFeed
+  string webFeed
+
+ }

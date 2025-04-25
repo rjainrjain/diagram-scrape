@@ -1,0 +1,33 @@
+
+classDiagram
+    class Main {
+        -SmartContractInteraction smart_contract_interaction
+        -WebScraper web_scraper
+        -CurrencyRecovery currency_recovery
+        -Scheduler scheduler
+        +run() void
+    }
+    class SmartContractInteraction {
+        +connect_to_contract(address: str)
+        +execute_contract_function(function_name: str, params: list)
+    }
+    class WebScraper {
+        +scrape_for_currencies(url: str) dict
+    }
+    class CurrencyRecovery {
+        -recovered_currencies: dict
+        +recover_lost_currencies(currencies_info: dict)
+        +display_recovered_currencies() dict
+    }
+    class Scheduler {
+        +schedule_task(task: function, trigger: str, interval: int)
+    }
+    class ReadmeGenerator {
+        +generate_readme(content: dict) str
+    }
+    Main --> SmartContractInteraction
+    Main --> WebScraper
+    Main --> CurrencyRecovery
+    Main --> Scheduler
+    CurrencyRecovery --> SmartContractInteraction
+    CurrencyRecovery --> WebScraper

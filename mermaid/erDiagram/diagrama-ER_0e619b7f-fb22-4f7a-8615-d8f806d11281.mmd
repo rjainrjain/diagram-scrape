@@ -1,0 +1,25 @@
+
+erDiagram
+    USER {
+        Long id
+        String username
+        String password
+    }
+    ROLE {
+        Long id
+        String name
+    }
+    PRODUCT {
+        Long id
+        String name
+        String description
+        Double price
+        Integer stockQuantity
+    }
+    USER ||--o{ ROLE: has
+    USER_ROLES {
+        Long user_id
+        Long role_id
+    }
+    USER ||--o{ USER_ROLES: has
+    ROLE ||--o{ USER_ROLES: has

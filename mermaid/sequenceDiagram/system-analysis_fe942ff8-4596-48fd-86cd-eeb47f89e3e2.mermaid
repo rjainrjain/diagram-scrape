@@ -1,0 +1,20 @@
+sequenceDiagram
+    participant User
+    participant Sequencer
+    participant SequencerWorker
+    participant OtherWorkers
+    participant Executor
+
+    User->>Sequencer: Initial Message
+    Sequencer->>SequencerWorker: Create & Start
+    Note over SequencerWorker: Role: "sequencer"
+    
+    SequencerWorker->>SequencerWorker: Process Task via Executor
+    Note over SequencerWorker: Uses tools:<br/>- inspect<br/>- assignment<br/>- worker
+    
+    loop Role Assignment
+        SequencerWorker->>OtherWorkers: Create New Worker
+        Note over OtherWorkers: Roles:<br/>- planner<br/>- prompt_engineer<br/>- reasoner<br/>- researcher<br/>- actor
+        OtherWorkers->>Executor: Process Task
+        Executor-->>OtherWorkers: Update State
+    end

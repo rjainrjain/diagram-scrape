@@ -1,0 +1,57 @@
+classDiagram
+    class User {
+    - UUID4 id
+    - string first name
+    - string last name
+    - string email
+    - string password
+    - DATETIME create_at
+    - DATETIME update_at
+    + bool verificationConnexion()
+    + void create_login()
+    + void login()
+}
+    class Review {
+    - UUID4 id
+    - string comment
+    - string place
+    - string user
+    + float rating
+    + get_review()
+    + creat_message()
+    + update_message()
+    + list_by_places()
+}
+
+User "1" --> "*" Review : composition
+
+class Place {
+    - UUID4 id
+    - string title
+    - string description
+    + float price
+    + float latitude
+    + float longitude
+    + list review
+    + get_review()
+    + get_picture()
+    + upadate()
+    + delete()
+
+}
+
+Place "1" --> "*" Review : receives
+
+class Amenity {
+    - UUID4 id
+    + string name
+    + string description
+    + list Amenity
+    - DATETIME create_at
+    - DATETIME update_at
+    + create()
+    + update()
+    + delete()
+}
+
+Place "1" o-- "*" Amenity : Composotion

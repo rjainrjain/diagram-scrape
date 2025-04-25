@@ -1,0 +1,19 @@
+stateDiagram-v2
+  [*] --> InitialState
+  InitialState --> UpdatedState: Update Phone Number
+
+  state InitialState {
+    UserRecord: UserRecord
+    UserRecord: name_Gautier
+    UserRecord: phoneNumber_123456789
+    Projection: Projection
+    Projection: phoneNumber_123456789
+
+    UserRecord --> Projection: Projects to
+  }
+
+  state UpdatedState {
+    UpdatedUserRecord
+    UpdatedProjection
+    UpdatedUserRecord --> UpdatedProjection: Projects to
+  }

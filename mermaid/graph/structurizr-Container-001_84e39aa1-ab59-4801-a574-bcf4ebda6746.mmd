@@ -1,0 +1,37 @@
+graph TB
+  linkStyle default fill:#ffffff
+
+  subgraph diagram [LPA UID Service - Containers]
+    style diagram fill:#ffffff,stroke:#ffffff
+
+    6("<div style='font-weight: bold'>Make and Register a Lasting Power of Attorney Online</div><div style='font-size: 70%; margin-top: 0px'>[Software System]</div><div style='font-size: 80%; margin-top:10px'>Allows users to draft a<br />Lasting Power of Attorney<br />online.</div>")
+    style 6 fill:#1168bd,stroke:#0b4884,color:#ffffff
+    28("<div style='font-weight: bold'>LPA Case Management</div><div style='font-size: 70%; margin-top: 0px'>[Software System]</div><div style='font-size: 80%; margin-top:10px'>PKA Sirius.</div>")
+    style 28 fill:#999999,stroke:#6b6b6b,color:#ffffff
+    31("<div style='font-weight: bold'>LPA Public API</div><div style='font-size: 70%; margin-top: 0px'>[Software System]</div><div style='font-size: 80%; margin-top:10px'>API Integration for external<br />integration.</div>")
+    style 31 fill:#999999,stroke:#6b6b6b,color:#ffffff
+
+    subgraph 18 [LPA UID Service]
+      style 18 fill:#ffffff,stroke:#0b4884,color:#0b4884
+
+      19[("<div style='font-weight: bold'>Database</div><div style='font-size: 70%; margin-top: 0px'>[Container: DynamoDB]</div><div style='font-size: 80%; margin-top:10px'>Stores LPA UIDs.</div>")]
+      style 19 fill:#438dd5,stroke:#2e6295,color:#ffffff
+      20("<div style='font-weight: bold'>Lambda</div><div style='font-size: 70%; margin-top: 0px'>[Container: AWS Lambda, Go]</div><div style='font-size: 80%; margin-top:10px'>Executes code for generating<br />and returning new LPA UID</div>")
+      style 20 fill:#85bbf0,stroke:#5d82a8,color:#000000
+      22("<div style='font-weight: bold'>IAM</div><div style='font-size: 70%; margin-top: 0px'>[Container: AWS IAM]</div><div style='font-size: 80%; margin-top:10px'>Manages permissions to API<br />Gateway</div>")
+      style 22 fill:#85bbf0,stroke:#5d82a8,color:#000000
+      23("<div style='font-weight: bold'>Certificate Manager</div><div style='font-size: 70%; margin-top: 0px'>[Container: AWS Certificate Manager]</div><div style='font-size: 80%; margin-top:10px'>Generate a valid cert for SSL<br />connectivity to the API</div>")
+      style 23 fill:#85bbf0,stroke:#5d82a8,color:#000000
+      24("<div style='font-weight: bold'>DNS</div><div style='font-size: 70%; margin-top: 0px'>[Container: AWS Route 53]</div><div style='font-size: 80%; margin-top:10px'>Generate a friendly DNS Name<br />for the API</div>")
+      style 24 fill:#85bbf0,stroke:#5d82a8,color:#000000
+      25("<div style='font-weight: bold'>API Gateway</div><div style='font-size: 70%; margin-top: 0px'>[Container: AWS API Gateway v2, OpenAPI]</div><div style='font-size: 80%; margin-top:10px'>Provides a REST API for<br />communication to the service.</div>")
+      style 25 fill:#85bbf0,stroke:#5d82a8,color:#000000
+    end
+
+    20-. "<div>Queries and writes to</div><div style='font-size: 70%'></div>" .->19
+    25-. "<div>Forwards requests to and<br />Returns responses from</div><div style='font-size: 70%'></div>" .->20
+    25-. "<div>Validates requests</div><div style='font-size: 70%'></div>" .->22
+    28-. "<div>Makes requests to</div><div style='font-size: 70%'></div>" .->25
+    31-. "<div>Makes requests to</div><div style='font-size: 70%'></div>" .->25
+    6-. "<div>Makes requests to</div><div style='font-size: 70%'></div>" .->25
+  end

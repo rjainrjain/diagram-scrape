@@ -1,0 +1,243 @@
+---
+title : Yu-Gi-Oh!
+---
+classDiagram
+    GameController *.. IPlayer
+    GameController *.. IBoard
+    GameController *.. PlayerData
+    GameController *.. PlayerTurn
+    GameController *.. Phase
+    GameController *.. INpc
+    GameController *.. Timer
+    IPlayer <|.. Player
+    Card <|-- Monster
+    Card <|-- Spell
+    Card <|-- Trap
+    Card *.. CardStatus
+    Card *.. StateCard
+    ICard <|.. Card
+    ICard --o PlayerData
+    ISpelltrapCard <|.. Spell
+    ISpelltrapCard <|.. Trap
+    Square o-- ICard
+    IBoard <|-- Board
+    ISquare <|-- Square
+    INpc <|-- Npc
+    Board <|-- ISquare
+    Zone ..* Square
+    Position ..* Board
+
+    class GameController{
+    +int PlayerNumber : readonly
+    +int LifePoints~get; private set;~
+    -int _numOfPlayer
+    -int _playerTurn = 0
+    -Phase _phase
+    -Timer _time
+    -IBoard _boardData
+    -List~IPlayer~ _turnPlayer
+    -List~INpc~ _turnNpc
+    -Dictionary ~IPlayer, PlayerData~ _playerCard
+    -Dictionary ~INpc, PlayerData~ _npcCard
+    -Action~IPlayer, INpc, LifePoints~ ChainCard
+    -Func~IPlayer, INpc, ICard, int~ LifePoint
+    -Event LifePointsChanged
+    +GameController(int PlayerNumber = 2 & 4, int LifePoints, Phase phase, Timer time, PlayerTurn playerturn)
+    +GetPlayer(int Id) IPlayer
+    +GetNPC(int Id) INpc
+    +GetPlayerTurn() PlayerTurn
+    +GetPhase() Phase
+    +GetTimer() Timer
+    +GetLifePoints(IPlayer player, INpc npc, int LifePoints) : int
+    +GetCardPosition(IPlayer player, INpc npc, ICard card) ISquare
+    +GetCardOnSquare(ISquare square) List~ISquare~
+    +GetBattlePhaseCard(IPlayer player, INpc npc, ICard card) : int
+    +SetPlayerTurn(PlayerTurn playerturn)
+    +SetPhase(Phase phase)
+    +SetTimer(Timer timer)
+    +ShuffleCard(int PlayerCard, INpc)
+    +PlayerCard(IPlayer player, INpc) List~ICard~
+    +SummonCard(IPlayer player, INpc npc, ICard card) ISquare
+    +RemoveCard(IPlayer player, INpc npc, ICard card) ISquare
+    +CreateTurnOrder() List~IPlayer~, List~INpc~
+    +StartTurn(IPlayer player, INpc npc) bool
+    +ChangeCurrentTurn(IPlayer player, INpc npc) bool
+    +CheckCurrentTurn() IPlayer, INpc
+    +StartGame() bool
+    +EndTurn() bool
+    +PlayerWinning() IPlayer, INpc
+    +PauseGame() bool
+    +EndGame() bool
+    }
+
+    class Player{
+    +int Id ~get; private set;~
+    +string Name ~get; private set;~
+    +string Gender ~get; private set;~
+    +Player(int Id, string Name, string Gender)
+    +GetName() string
+    }
+
+    class IPlayer{
+    <<Interface>>
+    +int Id ~get; private set~ 
+    +string Name ~get; private set~
+    +GetName() string
+    }
+
+    class INpc{
+    <<Interface>>
+    +int Id ~get; private set~ 
+    +string Name ~get; private set~
+    +GetName() string
+    }
+
+    class Npc{
+    +int Id~get; private set~
+    +string Name ~get; private set~
+    +string Gender ~get; private set~
+    +int Difficulty ~get; private set~
+    +Npc(int id, string name, string gender, int difficulty)
+    +GetName() string
+    }
+
+    class PlayerTurn{
+    <<enum>>
+    Play
+    Wait
+    Finish
+    }
+
+    class Card{
+    StateCard state
+    CardStatus status
+    Position position
+    +int Id ~get; private set~
+    +string CardElement ~get; private set;~
+    +string CardColour ~get; private set;~
+    +string Effect ~get; private set;~
+    +bool CanSummon ~get; private set~
+    +SetStatus(CardStatus status)
+    +StateStatus(StateCard state)
+    }
+
+    class Monster{
+        +int monsterStar~get; private set;~
+        +int monsterAttack~get; private set;~
+        +int monsterDefense~get; private set;~
+        +Attack()
+        +Defense()
+    }
+    class Spell{
+        +QuickPlay()
+        +Equip()
+        +Ritual()
+        +Field()
+    }
+
+    class Trap{
+        +Counter()
+    }
+
+    class ISpelltrapCard{
+        +string type~get; private set;~
+        Normal()
+        Continous()
+    }
+
+    class CardStatus{
+        <<enum>>
+        Summon,
+        Hand,
+        Deck,
+        Discard,
+        Ban
+    }
+
+    class ICard{
+    <<Interface>>
+    +string CardName ~get; private set~ 
+    +int Id ~get; private set~ 
+    +Flip()
+    }
+    
+    class PlayerData{
+    +List~ICard~ card
+    }
+
+    class Phase{
+    <<enum>>
+    DrawPhase,
+    StandbyPhase,
+    MainPhase1,
+    BattlePhase,
+    MainPhase2,
+    EndPhase
+    }
+
+    class Zone{
+    <<enum>>
+    Deck,
+    Graveyard,
+    Ban,
+    Monster,
+    Spell_&_Trap,
+    Fusion,
+    Field,
+    Extra_Monster
+    }
+
+    class IBoard{
+    +int NumOfSquares~get; private set;~
+    +List~ISquare~ squares
+    +MakeSquare(int NumOfSquares) bool
+    }
+
+    class Board{
+    Position position
+    +int NumOfSquares : readonly
+    +List~ISquare~ squares
+    +MakeSquare(int NumOfSquares) bool
+    }
+
+    class ISquare{
+    +int Id~get; private set;~
+    +GetSquareId() int
+    }
+
+    class Square{
+    Zone zone
+    +int Id ~get; private set;~
+    +List~ICard~ cards
+    -bool _occupied
+    +Square(int Id, bool occupied = false)
+    +GetSquareId() : int
+    +AddCard(int cardId) bool
+    +GetCard() List~ICard~
+    +IsOccupied()
+    +Occupy() 
+    }
+
+    class StateCard{
+    <<enum>>
+    Face_UP_Attack_Position,
+    Face_UP_Defense_Position,
+    Face_Down_Attack_Position,
+    Face_Down_Defense_Position
+    }
+
+    class Position{
+    <<struct>>
+    +int x ~get; private set;~
+    +int y ~get; private set;~
+    +Position(int x, int y)
+    }
+
+    class Timer{
+    <<enum>>
+    None,
+    30,
+    60,
+    90
+    180
+    }

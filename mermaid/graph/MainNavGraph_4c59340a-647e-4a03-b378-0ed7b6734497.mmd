@@ -1,0 +1,18 @@
+---
+title: Main Navigation Graph
+---
+%%{init: {'theme':'base', 'themeVariables': { 'primaryTextColor': '#fff' }}%%
+graph TD
+main(["MainGraph"]) -- "start" --- home_screen("HomeScreen")
+main(["MainGraph"]) --- details_screen_destination("DetailsScreen 🧩")
+main(["MainGraph"]) --- person_screen_destination("PersonScreen 🧩")
+main(["MainGraph"]) --- watchlist_screen_destination("WatchlistScreen 🧩")
+main(["MainGraph"]) --- credits_screen_destination("CreditsScreen 🧩")
+main(["MainGraph"]) --- settings_nav_g(["SettingsGraph 🧩"])
+
+click settings_nav_g "SettingsNavGraph.mmd" "See SettingsGraph details" _blank
+
+classDef destination fill:#5383EC,stroke:#ffffff;
+class home_screen,details_screen_destination,person_screen_destination,watchlist_screen_destination,credits_screen_destination destination;
+classDef navgraph fill:#63BC76,stroke:#ffffff;
+class main,settings_nav_g navgraph;

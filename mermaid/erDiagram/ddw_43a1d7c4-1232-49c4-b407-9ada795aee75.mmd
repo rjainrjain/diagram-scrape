@@ -1,0 +1,42 @@
+erDiagram
+  Ventas{
+    int numeroFactura pk
+    date fechaVenta
+    string nombreCliente
+    string apellidoCliente
+    int disco fk
+    int cantidad
+  }
+  Discos{
+    int codigo pk
+    date fechaCreacion
+    string nombre
+    int genero fk
+    int interprete fk
+    int precio
+
+  }
+  Generos{
+    int codigo pk
+    date fechaCreacion
+    string nombre
+    string descripcion
+  }
+  Interprete{
+    int codigo pk
+    date fechaNacimiento
+    string nombre
+    string apellido
+  }
+  Sello{
+    int codigo pk
+    date fechaCreacion
+    string email
+    string domicilio
+  }
+
+Ventas }o--|| Discos:tiene
+Discos }|--|| Generos:tiene
+Discos }|--|| Interprete:tiene
+Discos }|--|| Sello:tiene
+

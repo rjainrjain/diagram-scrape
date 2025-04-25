@@ -1,0 +1,17 @@
+sequenceDiagram
+    participant M as Main
+    participant O as ObjectRecognition
+    participant A as ARVisualization
+    participant I as Interface
+    participant C as Calibration
+    participant L as LanguageSupport
+    M->>I: display_interface()
+    M->>C: calibrate()
+    M->>L: set_language(language)
+    loop every frame
+        M->>O: detect_boccia_balls(image)
+        O->>M: return balls
+        M->>O: measure_distances(small_ball, large_balls)
+        O->>M: return distances
+        M->>A: display_ar(image, balls, distances)
+    end

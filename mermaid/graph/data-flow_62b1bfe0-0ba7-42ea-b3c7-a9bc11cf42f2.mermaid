@@ -1,0 +1,12 @@
+graph TD
+
+dependency_names --> mainfests[Language Manifest]
+
+external_api --> github[Github API]
+external_api --> language_api[Language API]
+
+dependencies --> external_api[External APIs]
+dependencies[Dependencies] --> dependency_names[Dependency Names]
+
+final_dependencies --> dependencies
+final_dependencies[Final Dependencies] --> user_overrides[User Overrides]

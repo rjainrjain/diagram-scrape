@@ -1,0 +1,12 @@
+classDiagram
+namespace ts_ofc {
+  class OFCCalculation
+}
+
+CloseLoopTask o-- SkySim
+CloseLoopTask o-- OFCCalculation
+CloseLoopTask o-- ImsimCmpt
+CloseLoopTask o-- OpdMetrology
+CloseLoopTask *-- ObsMetadata
+ImsimCmpt *-- ObsMetadata
+ImsimCmpt o-- OpdMetrology

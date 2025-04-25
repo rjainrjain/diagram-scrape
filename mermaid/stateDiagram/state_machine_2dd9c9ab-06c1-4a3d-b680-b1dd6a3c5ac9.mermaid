@@ -1,0 +1,12 @@
+stateDiagram-v2
+    [*] --> Following
+    Following --> EnterBranch: val < 15 and color_diff > 40
+    EnterBranch --> SearchTarget: diff > 20
+    SearchTarget --> PickupPackage: color > 40 and holding_package
+    SearchTarget --> DropPackage: color > 40 and not holding_package
+    PickupPackage --> ReturnToLine: done
+    ReturnToLine --> ReturnToIntersection: done 
+    ReturnToIntersection --> ExitIntersection: val < 15 
+    ExitIntersection --> Following: diff > 20
+
+    DropPackage --> Finish: done

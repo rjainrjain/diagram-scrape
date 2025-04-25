@@ -1,0 +1,45 @@
+erDiagram
+    Order }|--|| Customer: ""
+    Customer }|--|| Address: ""
+    Customer ||--|| Profile: ""
+    Customer }|--|| Company: ""
+    Order }|--|{ Product: ""
+    Product ||--|| Detail: ""
+    Order {
+        uuid id
+        date createdAt
+    }
+    Customer {
+        uuid id
+        date createdAt
+        varchar name
+        varchar userName
+        varchar firstName
+        varchar lastName
+    }
+    Address {
+        uuid id
+        varchar postalCode
+        varchar city
+    }
+    Profile {
+        uuid id
+        varchar firstName
+        varchar lastName
+    }
+    Company {
+        uuid id
+        varchar companyName
+    }
+    Product {
+        uuid id
+        date createdAt
+        varchar name
+        int stock
+    }
+    Detail {
+        uuid id
+        varchar price
+        text description
+        varchar color
+    }

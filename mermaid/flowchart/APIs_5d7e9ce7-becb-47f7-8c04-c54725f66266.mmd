@@ -1,0 +1,15 @@
+flowchart TD
+    F["Copernicus Marine API"] --> A["Extract wave data"] & B["Extract biogeochemistry data"]
+    A --> C["Store data in netCDF file"]
+    B --> C
+    D["OpenWeather 3.0 API"] --> E["Receive JSON response"]
+    E --> G[("Local DB")]
+    C --> G
+    style F stroke:#000000,fill:#FFFFFF,stroke-width:1px,stroke-dasharray: 0
+    style A color:#000000,fill:#FFFFFF,stroke:#000000
+    style B color:none,fill:#FFFFFF,stroke:#000000
+    style C fill:#FFFFFF,stroke:#000000
+    style D fill:#FFFFFF,stroke:#000000
+    style E fill:#FFFFFF,stroke:#000000
+    style G fill:#FFFFFF,stroke:#000000
+

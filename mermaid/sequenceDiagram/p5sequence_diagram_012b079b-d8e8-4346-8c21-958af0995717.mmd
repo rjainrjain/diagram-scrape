@@ -1,0 +1,58 @@
+sequenceDiagram
+
+participant p5
+participant Wizard
+participant Map
+participant Overlay
+participant Coin
+participant Enemy 
+
+p5 ->>Wizard : Instantiate(makePlayer)
+p5 ->>Map : Instantiate(map)
+p5 ->>Overlay: Instantiate(overlay)
+p5 ->>Coin: Instantiate(coin)
+p5 ->>Enemy: Instantiate(enemy)
+
+p5->>p5 : preload()
+p5->>Wizard: preload()
+p5->>Map: preload()
+p5->>Enemy: preload()
+
+p5->>p5: setup()
+p5->>Overlay: setup()
+p5->>Coin: setup()
+p5->>Enemy: setup()
+
+loop draw() loop
+    p5->>p5: draw()
+    p5->>p5: camera.on()
+    p5->>p5: frameRate(35)
+    p5->>Wizard : draw()
+    p5->>Map: draw(Wizard)
+    Enemy-->Wizard: behavior(Wizard)
+    Wizard-->Coin: overlaps(coins, collectCoin)
+
+    alt Coin Generation Condition
+        Coin -->>p5: coins.length < 15 and Map.notMenu == true
+        p5-->>Coin: createCoin(randomInterval())
+    end
+
+    alt Spell Management
+        p5-->>Wizard: millis() % 100 == 0 and Map.notMenu == true
+        Wizard-->>p5: pop spell()
+    end
+
+    alt Enemy Spawn Condition
+        Enemy-->>p5: enemies.length < 3 and Map.notMenu == true
+        p5-->>Enemy: spawn()
+    end 
+
+    p5->>p5: camera.off
+    p5->>Overlay: draw()
+end
+
+Environment->>+p5: window resized
+p5->>p5: resizeCanvas(windowWidth, windowHeight)
+p5-->>-Environment: Canvas resized 
+
+

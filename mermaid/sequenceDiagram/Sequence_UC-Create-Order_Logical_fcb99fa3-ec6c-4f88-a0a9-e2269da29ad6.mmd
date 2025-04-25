@@ -1,0 +1,30 @@
+sequenceDiagram
+    participant Пользователь
+    participant External Client
+    participant Keycloak
+    participant Endpoints
+    participant Services
+    participant Postgres
+
+    Пользователь ->>+ Endpoints: Запрос на аутентификацию
+    Endpoints ->>- External Client: Вызов метода для перехода в keycloak
+    External Client ->>+ Keycloak: Вызов метода Keycloak
+    Keycloak ->>- Пользователь: Редирект на страницу входа
+    Пользователь ->>+ Keycloak: Ввод логина и пароля
+
+    Keycloak -->>- Пользователь: Вход выполнен
+    alt
+        Keycloak -->> Пользователь: Неверный логин или пароль
+    end
+
+    Пользователь ->>+ Keycloak: Создание учетной записи для заказчика
+
+    Пользователь ->>+ Endpoints: Запрос на создание заявки
+    alt
+        Endpoints -->> Пользователь: Ошибка заполнения заявки
+    end
+    Endpoints ->>+ Services: Сохранение заявки
+    Services ->>+ Postgres: Сохранение заявки в БД
+    Postgres ->>- Services: Успешное сохранение
+    Services ->>- Endpoints: Заявка сохранена
+    Endpoints -->> Пользователь: Заявка передан на сборку

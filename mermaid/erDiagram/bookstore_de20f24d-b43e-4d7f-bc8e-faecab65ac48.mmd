@@ -1,0 +1,109 @@
+erDiagram
+    
+    Address only one--zero or more Customer: "is located at"
+    
+    Customer only one--zero or more Order: "places"
+    
+    Order only one--one or more OrderDetail: "contains"
+    
+    OrderDetail one or more--only one Book: "for"
+
+    Book only one--zero or more BookReview: "receives"
+
+    Customer only one--zero or more BookReview: "writes"
+
+    Author only one--zero or more Book: "writes"
+    
+    Supplier only one--only one Inventory: "supplies"
+
+    Address only one--only one Supplier: "is located at"
+    
+    Book only one--one or more Inventory: "is stocked in"
+    
+    Employee one or more--only one Manager: "manages"
+
+    Address {
+        int AddressID PK
+        string Street
+        string City
+        string PostalCode
+        string Country
+    }
+
+    Customer {
+        int CustomerID PK
+        string FirstName
+        string LastName
+        string Email
+        string Phone
+        int AddressID FK
+    }
+    
+    Author {
+        int AuthorID PK
+        string FirstName
+        string LastName
+        string Bio
+    }
+    
+    Book {
+        int BookID PK
+        string Title
+        string Genre
+        decimal Price
+        int AuthorID FK
+    }
+    
+    Order {
+        int OrderID PK
+        date OrderDate
+        int CustomerID FK
+    }
+    
+    OrderDetail {
+        int OrderDetailID PK
+        int OrderID FK
+        int BookID FK
+        int Quantity
+    }
+
+    BookReview {
+        int ReviewID PK
+        int BookID FK
+        int CustomerID FK
+        int Rating
+        text ReviewText
+        date ReviewDate
+    }
+    
+    Employee {
+        int EmployeeID PK
+        string FirstName
+        string LastName
+        string Email
+        string Phone
+        string Position
+        int ManagerID FK
+    }
+
+    Manager {
+        int ManagerID
+        string FirstName
+        string LastName
+    }
+    
+    Supplier {
+        int SupplierID PK
+        string SupplierName
+        string ContactName
+        string Phone
+        int AddressID FK
+    }
+    
+    Inventory {
+        int InventoryID PK
+        int BookID FK
+        int QuantityInStock
+        date LastRestockDate
+        int SupplierID FK
+    }

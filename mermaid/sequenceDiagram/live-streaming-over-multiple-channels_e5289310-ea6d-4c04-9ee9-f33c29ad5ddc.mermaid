@@ -1,0 +1,36 @@
+sequenceDiagram
+    participant User
+    participant Your_app
+    participant Agora
+
+    User->>Your_app: Open App
+    User->>Your_app: Join a channel
+    User->>Your_app: Start live streaming
+
+    Your_app->>User: Notify UI update
+    Your_app->>Agora: Initiate the Agora engine
+
+    Your_app->>Your_app: Set the user role as host
+    rect rgb(240, 240, 240)
+        note right of Your_app: Configuration details
+        Your_app->>Your_app: Join a channel as host
+        Your_app->>Your_app: Publish local media to the channel
+        Your_app->>Agora: Channel media relay
+        Your_app->>Your_app: Join multiple channels
+    end
+
+    Agora->>Agora: SD-RTN
+    rect rgb(240, 240, 240)
+        note right of Agora: SD-RTN operations
+        Agora->>Agora: Relay stream to the destination channel
+        Agora->>Agora: Stop media relaying
+        Agora->>Agora: Leave all the channels
+    end
+
+    Agora->>Your_app: Return relay status
+    Your_app->>User: Render streaming status
+    User->>Your_app: Leave the live streaming event
+    Your_app->>Agora: Disconnect SDK
+
+    Your_app-->>User: Close App
+    Agora-->>Your_app: Acknowledge SDK disconnection

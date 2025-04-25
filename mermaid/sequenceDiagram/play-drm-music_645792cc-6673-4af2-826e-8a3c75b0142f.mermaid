@@ -1,0 +1,32 @@
+```mermaid
+sequenceDiagram
+participant YourApp as Your app
+participant VideoSDK as Video SDK
+participant Agora as Agora
+
+rect rgb(255, 255, 255)
+note right of YourApp: Set up the music content center
+YourApp->>+YourApp: Load the DRM extension framework
+YourApp->>+YourApp: Create an instance of the music content center
+YourApp->>-YourApp: Initialize the music content center
+end
+
+rect rgb(255, 255, 255)
+note right of YourApp: Find music from the content center
+YourApp->>+YourApp: Find music
+YourApp->>+YourApp: Call the method to search for music
+YourApp-->>-YourApp: Receive search results through the callback
+YourApp->>+YourApp: Call the method to download music charts
+YourApp-->>-YourApp: Receive music charts data through the callback
+end
+
+rect rgb(255, 255, 255)
+note right of YourApp: Play DRM music
+YourApp->>+YourApp: Press play
+YourApp->>+YourApp: Preload selected music
+YourApp->>+YourApp: Create an instance of music player
+YourApp->>-YourApp: Open and play music files
+end
+
+participant SDRTN as SD-RTN
+```

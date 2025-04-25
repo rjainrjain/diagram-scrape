@@ -1,0 +1,12 @@
+sequenceDiagram
+participant User
+participant API
+participant BusinessLogic
+participant Database
+
+User->>API: Register User
+API->>BusinessLogic: Validate and Create a User
+BusinessLogic->>Database: Save user in Data
+Database-->>BusinessLogic: Confirm Save
+BusinessLogic-->>API: Return Succes/Failure
+API-->>User: Return registration validation

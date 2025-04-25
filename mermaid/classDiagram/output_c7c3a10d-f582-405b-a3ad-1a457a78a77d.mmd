@@ -1,0 +1,21 @@
+classDiagram
+	class User {
+		Int id
+		String name
+		Status status
+		Role[] roles
+		@@map "users"
+	}
+	class Role {
+		Int id
+		String name
+		String? description
+		Int user_id
+		User user
+		@@map "roles"
+	}
+	class Status {
+		ACTIVE
+		INACTIVE
+	}
+

@@ -1,0 +1,29 @@
+classDiagram
+    direction LR
+    Domain_Engine o-- Domain_PreProcessorInterface: call
+    Domain_Engine o-- Domain_ProcessorInterface: call
+    Domain_Engine o-- Domain_PostProcessorInterface: call
+    Domain_ProcessorInterface <|-- Infrastructure_PdfToText_Processor: implements
+    Domain_PostProcessorInterface <|-- Domain_CharacterReplace_PostProcessor: implements
+    Domain_PostProcessorInterface <|-- Infrastructure_UTF8_Processor: implements
+
+    class Domain_Engine {
+        + execute(Document $document): array
+    }
+
+    class Domain_PreProcessorInterface {
+        + execute(Document $document): void
+        + order(): int
+    }
+
+    class Domain_ProcessorInterface {
+        + execute(Document $document): Text
+        + score(Document $document): int
+    }
+
+    class Domain_PostProcessorInterface {
+        + execute(Text $text): Text
+        + order(): int
+    }
+
+

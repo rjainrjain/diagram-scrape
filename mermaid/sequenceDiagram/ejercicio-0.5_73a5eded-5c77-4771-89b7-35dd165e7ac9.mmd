@@ -1,0 +1,27 @@
+sequenceDiagram
+    participant navegador
+    participant servidor
+
+    navegador->>servidor: GET https://studies.cs.helsinki.fi/exampleapp/spa
+    activate servidor
+    servidor-->>navegador: documento HTML
+    deactivate servidor
+
+    navegador->>servidor: GET https://studies.cs.helsinki.fi/exampleapp/main.css
+    activate servidor
+    servidor-->>navegador: archivo css
+    deactivate servidor
+
+    navegador->>servidor: GET https://studies.cs.helsinki.fi/exampleapp/spa.js
+    activate servidor
+    servidor-->>navegador: archivo JavaScript
+    deactivate servidor
+
+    Note right of navegador: EL navegador comienza a ejecturar el código de JavaScript que recupera el archivo JSON del servidor
+
+    navegador->>servidor: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+    activate servidor
+    servidor-->>navegador: [{ "content": "HTML is easy", "date": "2023-1-1" }, ... ]
+    deactivate servidor
+
+    Note right of navegador: El navegador ejecuta la función de devoluvción de llamada que renderiza las notas

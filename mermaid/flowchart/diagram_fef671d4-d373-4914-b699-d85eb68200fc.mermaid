@@ -1,0 +1,14 @@
+flowchart TD
+    list_of_queries[(Lista de itens para pesquisar)]
+    fetch_search[Faz uma requisição na api de busca]
+    check_continuation{Verifica se a busca\nainda tem mais páginas}
+    fetch_item[Faz uma requisição na api de item]
+    parse_item[Pega somente informações necessárias do item]
+    write_to_csv[(Escreve as informações\nem um arquivo csv)]
+
+    list_of_queries -- 1:1 --> fetch_search
+    fetch_search -- 1:1 --> check_continuation
+    check_continuation -- Sim --> fetch_search
+    check_continuation -- Não --> fetch_item
+    fetch_item -- 1:1 --> parse_item
+    parse_item -- 1:1 --> write_to_csv

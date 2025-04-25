@@ -1,0 +1,65 @@
+flowchart TD
+    %% External Entities
+    Customer([Customer])
+    Cashier([Cashier])
+    Manager([Manager])
+    Supplier([Supplier])
+    Admin([System Admin])
+
+    %% Data Stores
+    DB_Products[(Product DB)]
+    DB_Customer[(Customer DB)]
+    DB_Sales[(Sales DB)]
+    DB_Inventory[(Inventory DB)]
+    DB_Employee[(Employee DB)]
+
+    %% Processes
+    P1[1.0<br/>Billing Process]
+    P2[2.0<br/>Inventory<br/>Management]
+    P3[3.0<br/>Customer<br/>Management]
+    P4[4.0<br/>Payment<br/>Processing]
+    P5[5.0<br/>Reporting &<br/>Analytics]
+    P6[6.0<br/>Security &<br/>Access Control]
+
+    %% Customer Flows
+    Customer -->|Customer Data| P3
+    Customer -->|Orders| P1
+    Customer -->|Payment| P4
+    P3 -->|Loyalty Info| Customer
+    P1 -->|Receipt| Customer
+
+    %% Cashier Flows
+    Cashier -->|Process Sale| P1
+    P1 -->|Transaction Info| Cashier
+    P6 -->|Access Rights| Cashier
+
+    %% Manager Flows
+    Manager -->|Stock Updates| P2
+    P5 -->|Reports| Manager
+    P6 -->|Access Rights| Manager
+
+    %% Supplier Flows
+    Supplier -->|Supply Info| P2
+    P2 -->|Orders| Supplier
+
+    %% Admin Flows
+    Admin -->|Security Config| P6
+    P6 -->|System Status| Admin
+
+    %% Database Interactions
+    P1 -->|Update Stock| DB_Inventory
+    P1 -->|Save Sale| DB_Sales
+    P1 -->|Get Prices| DB_Products
+    
+    P2 -->|Update Stock| DB_Inventory
+    P2 -->|Update Products| DB_Products
+    
+    P3 -->|Save Customer| DB_Customer
+    P3 -->|Update Points| DB_Customer
+    
+    P4 -->|Record Payment| DB_Sales
+    
+    P5 -->|Read Sales| DB_Sales
+    P5 -->|Read Inventory| DB_Inventory
+    
+    P6 -->|Verify Access| DB_Employee

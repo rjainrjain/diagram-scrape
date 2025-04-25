@@ -1,0 +1,14 @@
+sequenceDiagram
+    participant Alice
+    participant Public Channel
+    participant Bob
+    Note over Alice,Bob: Agree on public values: p (prime) and g (generator)
+    Alice->>Alice: Choose secret a
+    Bob->>Bob: Choose secret b
+    Alice->>Public Channel: A = g^a mod p
+    Public Channel->>Bob: A
+    Bob->>Public Channel: B = g^b mod p
+    Public Channel->>Alice: B
+    Alice->>Alice: Compute shared key: K = B^a mod p
+    Bob->>Bob: Compute shared key: K = A^b mod p
+    Note over Alice,Bob: Both now have the same shared key K

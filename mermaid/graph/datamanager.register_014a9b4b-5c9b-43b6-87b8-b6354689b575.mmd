@@ -1,0 +1,36 @@
+graph LR
+%% Nodes definition
+start((Start))
+
+input_valid{{Input is valid}}
+err_input_valid[Error]
+
+dm_exists{{Datamanager already exists}}
+err_dm_exists[Error]
+
+set_owner(Set asset owner)
+
+store_dm(Store dataManager)
+
+End1((End))
+
+%% Dependency graph
+start --> input_valid
+
+input_valid --yes--> dm_exists
+input_valid --no--> err_input_valid
+
+dm_exists --no--> set_owner
+dm_exists --yes--> err_dm_exists
+
+set_owner --> store_dm
+
+store_dm --> End1
+
+%% Style
+classDef default fill:#5b6fb3,color:#ffffff;
+classDef startEnd fill:#C961A1,color:#ffffff;
+classDef error fill:#ffab40,color:#ffffff;
+
+class start,End1 startEnd;
+class err_input_valid,err_dm_exists,err_obj_exists,err_obj_owner error;

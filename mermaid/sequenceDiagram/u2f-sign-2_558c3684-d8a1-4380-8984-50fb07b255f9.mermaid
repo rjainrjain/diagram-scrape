@@ -1,0 +1,9 @@
+sequenceDiagram
+Note over Server: generate challenge
+Server ->> Browser: challenge
+Browser ->> U2F device: challenge,origin
+Note over U2F device: sign (challenge,origin) with private key
+U2F device ->> Browser: signature(challenge,origin)
+Browser ->> Server: signature(challenge,origin),origin
+Note over Server: validate signature with public key
+Note over Server: validate origin

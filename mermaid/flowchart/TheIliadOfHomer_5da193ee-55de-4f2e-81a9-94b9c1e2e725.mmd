@@ -1,0 +1,13 @@
+flowchart LR
+    classDef green fill:#28a745,stroke:#000,stroke-width:2px,color:#fff;
+    classDef blue fill:#2374f7,stroke:#000,stroke-width:2px,color:#fff;
+    classDef orange fill:#f28c28,stroke:#000,stroke-width:2px,color:#fff;
+
+    dS("‡ TransformBlock<string, string>\ndownloadString"):::green
+    cWL("‡ TransformBlock<string, string[]>\ncreateWordList"):::green
+    fWL("‡ TransformBlock<string[], string[]>\nfilterWordList"):::green
+    fRW("‡ fRWTransformManyBlock<string[], string>\nfindReversedWords"):::green
+    pRW("◊ ActionBlock<string>\nprintReversedWords"):::green
+
+    dS -.-> cWL -.-> fWL -.-> fRW -.-> pRW
+    

@@ -1,0 +1,21 @@
+sequenceDiagram
+    participant Client
+    participant #58;AuthController
+    participant #58;AuthService
+    participant #58;UserService
+    participant #58;DB
+
+    Client->>+#58;AuthController: Request to register path 
+    #58;AuthController->>+#58;AuthService: Request for registration
+    #58;AuthService->>+#58;UserService: Request for user creation
+    alt Information valid
+        #58;UserService-->>+#58;DB: Create User
+        #58;DB-->>-#58;UserService: User created
+        #58;UserService-->>#58;AuthService: User created
+        #58;AuthService-->>#58;AuthController: User created
+        #58;AuthController-->>Client: Registration successful
+    else Information invalid
+        #58;UserService-->>-#58;AuthService: User creation failed
+        #58;AuthService-->>-#58;AuthController: User creation failed
+        #58;AuthController-->>-Client: Registration failed, please check provided information
+    end

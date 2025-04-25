@@ -1,0 +1,11 @@
+sequenceDiagram
+    participant M as main
+    participant G as Game
+    participant P as Player
+    M->>G: create game
+    G->>P: create players
+    M->>G: start game
+    G->>P: deal cards
+    P->>G: hit or stand
+    G->>P: deal card or check winner
+    G->>M: end game

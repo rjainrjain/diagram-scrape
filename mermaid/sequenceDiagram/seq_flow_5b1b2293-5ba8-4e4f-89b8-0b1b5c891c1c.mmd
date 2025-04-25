@@ -1,0 +1,13 @@
+sequenceDiagram
+    participant M as Main
+    participant SFA as SalesforceAPI
+    participant SEA as SmartEquipAPI
+    participant I as Integration
+    M->>SFA: Initialize SalesforceAPI
+    M->>SEA: Initialize SmartEquipAPI
+    M->>I: Initialize Integration
+    I->>SEA: Get orders from SmartEquip
+    I->>SFA: Get orders from Salesforce
+    I->>SEA: Process orders in SmartEquip
+    I->>SFA: Update orders in Salesforce
+    M->>I: Sync orders

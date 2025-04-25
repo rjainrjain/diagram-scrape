@@ -1,0 +1,13 @@
+graph TD
+A[Start] --> B[Initialize Snake]
+B --> C[Display Snake on Canvas]
+C --> D[Get User Input]
+D --> E[Process User Input]
+E --> F[Update Snake Position]
+F --> G[Check for Collisions]
+G --> H[Game Over or Continue]
+H --> I[Go Back to Getting User Input]
+I --> D
+F --> C
+H --> B{(Restart Game)}
+B --> A

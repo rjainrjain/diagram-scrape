@@ -1,0 +1,8 @@
+graph TD
+    MA[Mobile App] -->|Requests| RH[Request Handling Component]
+    NATS[NATS] -->|Messages| NC[NATS Component]
+    NC -->|Notification data| RH
+    RH -->|Send notifications| FCM[FCM Component]
+    RH -->|Store/retrieve data| MDB[MongoDB Component]
+    FCM -->|Push notifications| FCMService[Firebase Cloud Messaging]
+    MDB -->|Stores data| MongoDB[(MongoDB)]

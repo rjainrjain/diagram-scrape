@@ -1,0 +1,15 @@
+
+sequenceDiagram
+    participant Master
+    participant Staging
+    participant Develop
+    participant Feature
+    Develop->>Feature: Create Feature branch from HEAD of Develop
+    Note over Develop,Feature: Development
+    Develop-->>Feature: Rebase latest from Develop in to feature branch
+    Feature->>Develop: Merge request from feature to develop
+    Note over Feature,Develop: Deploy development server
+    Develop->>Staging: Create clean staging branch to test and build release from
+    Note over Develop,Staging: Deploy staging server
+    Staging->>Master: Create tagged commit to be used as release
+    Note over Master: Deploy production

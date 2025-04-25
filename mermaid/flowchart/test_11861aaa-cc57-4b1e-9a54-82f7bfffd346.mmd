@@ -1,0 +1,31 @@
+---
+title: Diagram Title
+---
+flowchart TD
+    classDef layer-1 fill:#eeeeee
+    classDef layer-2 fill:#dddddd
+    classDef original fill:#ffffff,stroke:#555555,stroke-width:4px
+    classDef exchange fill:#ffe6cc,stroke:#d79b00
+    classDef exchange-original fill:#ffe6cc,stroke:#d79b00,stroke-width:4px
+    classDef analysis fill:#e1d5e7,stroke:#9673a6
+    classDef analysis-original fill:#e1d5e7,stroke:#9673a6,stroke-width:4px
+    classDef retention fill:#d5e8d4,stroke:#82b366
+    classDef retention-original fill:#d5e8d4,stroke:#82b366,stroke-width:4px
+    diner:::layer-1
+    subgraph diner
+        fry{fry}
+        silver:::layer-2
+        gold:::layer-2
+        bun --> fry
+        patty --> fry
+        cheese --> fry
+        fry --> burger
+        subgraph silver
+            cheese[(cheese)]:::retention-original
+            bun[(bun)]:::retention-original
+            patty[(patty)]:::retention
+        end
+        subgraph gold
+            burger[(burger)]:::analysis
+        end
+    end

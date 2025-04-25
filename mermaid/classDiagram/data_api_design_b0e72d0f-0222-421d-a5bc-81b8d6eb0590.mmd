@@ -1,0 +1,67 @@
+classDiagram
+    class User{
+        -int id
+        -str username
+        -str email
+        -str password
+        +int followers_count
+        +int following_count
+        +List[Photo] photos
+        +List[User] followers
+        +List[User] following
+        +List[Comment] comments
+        +List<Like> likes
+        +List<Notification> notifications
+        +void register(username: str, email: str, password: str) 
+        +void login(username: str, password: str)
+        +void logout()
+        +void follow(user: User)
+        +void unfollow(user: User)
+        +void upload_photo(photo: Photo)
+        +void delete_photo(photo: Photo)
+        +void like_photo(photo: Photo)
+        +void unlike_photo(photo: Photo)
+        +void comment_photo(photo: Photo, comment_text: str)
+        +void delete_comment(comment: Comment)
+    }
+    class Photo{
+        -int id
+        -str image_url
+        -User user
+        -List<Comment> comments
+        -List<Like> likes
+        +void add_comment(comment: Comment)
+        +void delete_comment(comment: Comment)
+        +void add_like(like: Like)
+        +void remove_like(like: Like)
+    }
+    class Comment{
+        -int id
+        -str text
+        -User user
+        -Photo photo
+    }
+    class Like{
+        -int id
+        -User user
+        -Photo photo
+    }
+    class Notification{
+        -int id
+        -str text
+        -User user
+        -Photo photo
+    }
+    class Auth{
+        +User current_user
+        +void register(username: str, email: str, password: str)
+        +void login(username: str, password: str)
+        +void logout()
+        +bool is_authenticated()
+    }
+    User "1" -- "n" Photo: has
+    User "1" -- "n" Comment: has
+    User "1" -- "n" Like: has
+    User "1" -- "n" Notification: has
+    Photo "1" -- "n" Comment: has
+    Photo "1" -- "n" Like: has

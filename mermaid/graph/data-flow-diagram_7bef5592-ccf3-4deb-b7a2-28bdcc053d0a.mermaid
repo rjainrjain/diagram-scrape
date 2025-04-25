@@ -1,0 +1,10 @@
+graph LR
+    A[Survey Participant] -->|Input Data| B[Qualtrics Survey]
+    B -->|Raw Data| C[Qualtrics Plugin]
+    C -->|Hash Data| D[Hashed Data]
+    D -->|Send| E[Web Server]
+    E -->|Process| F[Smart Contract Executor]
+    F -->|Store Hash| G[Cardano Blockchain]
+    E -->|Retrieve Hash| G
+    E -->|Verify Data| H[User Interface]
+    H -->|Display Results| I[Researcher]

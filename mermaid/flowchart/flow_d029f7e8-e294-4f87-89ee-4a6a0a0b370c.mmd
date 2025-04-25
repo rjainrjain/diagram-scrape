@@ -1,0 +1,15 @@
+---
+title: flowchart
+---
+flowchart LR
+	a[block]
+	b(round)
+	c{diamond}
+	d
+	e["`some **markdown**`"]
+
+	a -->|regular| b
+	b --> c
+	b -->|loop| b
+	d ==>|bold| e
+	e ==> c

@@ -1,0 +1,71 @@
+---
+title: Diagrama de Clases Link Project
+---
+classDiagram
+  %% Relationtships
+  Usuario <|-- Asesor
+  Usuario <|-- Estudiante
+  Estudiante <|-- Integrante
+  Integrante <|-- Lider
+
+  namespace Usuarios {
+
+    class Usuario {
+      - String nombres
+      - String apellido_paterno
+      - String apellido_materno
+      - String correo
+      - String contacto
+      - String clave
+      - String foto
+      - INT proyecto_ID
+
+      + iniciar_sesion()
+      + cerrar_sesion()
+      + eliminar_cuenta()
+      + unirse_a_proyecto(Int proyecto_ID)
+    }
+
+    class Estudiante {
+      - Int codigo_de_estudiante
+      - String carrera
+      - String foto
+
+      + crear_proyecto()
+      + solicitar_unirse(Int proyecto_ID)
+    }
+
+    class Integrante {
+      - proyecto_ID
+
+      + gestionar_tareas()
+    }
+
+    class Lider {
+      + actualizar_proyecto()
+      + eliminar_proyecto()
+
+      + agregar_miembros()
+      + eliminar_miembros()
+
+      + asignar_tareas()
+    }
+
+    class Asesor {
+      - Int codigo_de_profesor
+      - String departamento
+
+      + agendar_reuniones()
+    }
+  }
+
+  class Proyecto {
+    - INT ID
+    - String nombre
+    - String descripcion
+    - Estudiante[3] integrantes
+    - Asesor[] asesores
+    - String[] conocimientos
+    - String nivel_de_innovacion
+    - String logo
+  }

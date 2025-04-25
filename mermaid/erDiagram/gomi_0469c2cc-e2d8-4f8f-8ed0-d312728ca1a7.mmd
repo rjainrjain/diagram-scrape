@@ -1,0 +1,83 @@
+erDiagram
+
+
+"blocks" {
+  STRING hash
+  INTEGER size
+  INTEGER stripped_size
+  INTEGER weight
+  INTEGER number
+  INTEGER version
+  STRING merkle_root
+  TIMESTAMP timestamp
+  DATE timestamp_month
+  STRING nonce
+  STRING bits
+  STRING coinbase_param
+  INTEGER transaction_count
+}
+"inputs" {
+  STRING transaction_hash
+  STRING block_hash
+  INTEGER block_number
+  TIMESTAMP block_timestamp
+  INTEGER index
+  STRING spent_transaction_hash
+  INTEGER spent_output_index
+  STRING script_asm
+  STRING script_hex
+  INTEGER sequence
+  INTEGER required_signatures
+  STRING type
+  STRING addresses
+  NUMERIC value
+}
+"outputs" {
+  STRING transaction_hash
+  STRING block_hash
+  INTEGER block_number
+  TIMESTAMP block_timestamp
+  INTEGER index
+  STRING script_asm
+  STRING script_hex
+  INTEGER required_signatures
+  STRING type
+  STRING addresses
+  NUMERIC value
+}
+"transactions" {
+  STRING hash
+  INTEGER size
+  INTEGER virtual_size
+  INTEGER version
+  INTEGER lock_time
+  STRING block_hash
+  INTEGER block_number
+  TIMESTAMP block_timestamp
+  DATE block_timestamp_month
+  INTEGER input_count
+  INTEGER output_count
+  NUMERIC input_value
+  NUMERIC output_value
+  BOOLEAN is_coinbase
+  NUMERIC fee
+  RECORD inputs
+  INTEGER inputs.index
+  STRING inputs.spent_transaction_hash
+  INTEGER inputs.spent_output_index
+  STRING inputs.script_asm
+  STRING inputs.script_hex
+  INTEGER inputs.sequence
+  INTEGER inputs.required_signatures
+  STRING inputs.type
+  STRING inputs.addresses
+  NUMERIC inputs.value
+  RECORD outputs
+  INTEGER outputs.index
+  STRING outputs.script_asm
+  STRING outputs.script_hex
+  INTEGER outputs.required_signatures
+  STRING outputs.type
+  STRING outputs.addresses
+  NUMERIC outputs.value
+}

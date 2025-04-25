@@ -1,0 +1,21 @@
+---
+title: ER - P4PA
+---
+erDiagram
+    users {
+        String userId
+        String iamIssuer
+        String mappedExternalUserId
+        String userCode
+        Date lastLogin
+        String tosVersion
+    }
+
+    operators {
+        String operatorId
+        String userId
+        String[] roles
+        String organizationIpaCode
+    }
+
+    users ||--o{ operators : is

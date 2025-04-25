@@ -1,0 +1,105 @@
+erDiagram
+    PRODUCT {
+        int product_id PK
+        string barcode
+        string name
+        decimal price
+        int category_id FK
+        int supplier_id FK
+        int current_stock
+        int reorder_level
+        datetime created_at
+        datetime updated_at
+    }
+
+    CATEGORY {
+        int category_id PK
+        string name
+        string description
+        datetime created_at
+    }
+
+    SUPPLIER {
+        int supplier_id PK
+        string name
+        string contact_person
+        string phone
+        string email
+        string address
+        datetime created_at
+    }
+
+    BILL {
+        int bill_id PK
+        int customer_id FK
+        int cashier_id FK
+        decimal total_amount
+        decimal tax_amount
+        decimal discount_amount
+        decimal final_amount
+        datetime bill_date
+        string payment_method
+        string status
+    }
+
+    BILL_ITEM {
+        int bill_item_id PK
+        int bill_id FK
+        int product_id FK
+        int quantity
+        decimal unit_price
+        decimal total_price
+        decimal discount
+    }
+
+    CUSTOMER {
+        int customer_id PK
+        string name
+        string phone
+        string email
+        datetime registration_date
+        int loyalty_points
+        string status
+    }
+
+    EMPLOYEE {
+        int employee_id PK
+        string name
+        string role
+        string username
+        string password_hash
+        string email
+        string phone
+        datetime join_date
+        string status
+    }
+
+    INVENTORY_LOG {
+        int log_id PK
+        int product_id FK
+        string action_type
+        int quantity
+        datetime log_date
+        int employee_id FK
+        string remarks
+    }
+
+    PAYMENT {
+        int payment_id PK
+        int bill_id FK
+        string payment_method
+        decimal amount
+        string transaction_id
+        datetime payment_date
+        string status
+    }
+
+    PRODUCT ||--|| CATEGORY : "belongs_to"
+    PRODUCT ||--|| SUPPLIER : "supplied_by"
+    BILL ||--|{ BILL_ITEM : "contains"
+    BILL ||--|| CUSTOMER : "belongs_to"
+    BILL ||--|| EMPLOYEE : "processed_by"
+    BILL ||--|{ PAYMENT : "has"
+    BILL_ITEM ||--|| PRODUCT : "references"
+    INVENTORY_LOG ||--|| PRODUCT : "tracks"
+    INVENTORY_LOG ||--|| EMPLOYEE : "logged_by"

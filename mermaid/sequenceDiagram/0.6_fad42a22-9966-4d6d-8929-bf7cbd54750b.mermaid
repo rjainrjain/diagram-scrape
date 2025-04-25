@@ -1,0 +1,24 @@
+sequenceDiagram
+    participant client
+    participant server
+
+    client->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+    activate server
+    server-->>client: 201 Created
+    deactivate server
+
+
+    client->>server: GET https://studies.cs.helsinki.fi/exampleapp/spa
+    activate server
+    server-->>client: 304 Not Modified
+    deactivate server
+
+    Note right of client: 304 no need to refresh CSS and JS 
+
+
+    client->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+    activate server
+    server-->>client: 200 OK
+    deactivate server
+
+    Note right of client: The client executes the callback function that renders the notes, everything is charged at the beginning and data are updated from your server

@@ -1,0 +1,63 @@
+graph TD;
+    classDef auto fill:#f9f,stroke:#333,stroke-width:4px;
+    createraml[Create RAML in Design Center]-->RAML-Design-Review;
+    RAML-Design-Review[RAML Design Review]-->ADO-Pipeline-to-Create-New-Project-Repo;
+    ADO-Pipeline-to-Create-New-Project-Repo[ADO Pipeline - Create New Mule Project]-->Repo-Generated;
+%% ADO does not like ::: class shorthand
+    class Repo-Generated auto;
+    Repo-Generated[Git Repo Generated]-->Manually-Create-Pipeline-for-repo;
+    Manually-Create-Pipeline-for-repo[Create pipeline from azure-pipelines.yml already in repo]-->set-branch-policies;
+    set-branch-policies[Set branch policies]-->Clone-Repo-Locally;
+    Clone-Repo-Locally[Clone repo to local machine]-->Create-Feature-Branch;
+    Create-Feature-Branch[Create Feature Branch for story]-->Import;
+    Import[Import project in Studio]-->tests;
+    subgraph story_cycle[Story cycle]
+      tests[Write tests for piece of funtionality]-->impl[Write implementation]
+      impl-->commit[Commit code]
+      commit-->push[Push code to ADO]
+      push-->build[ADO runs build]
+      %% ADO does not like ::: class shorthand
+      class build auto;
+      build-->tests
+    end
+    tests-->PR[Author creates pull request]
+    PR-->work_item[Author links work item/story to PR for traceability]
+    work_item-->comments
+    subgraph pr_review[PR Code Review]
+      comments[Reviewers make comments]-->approved
+      approved{Approved?}-->|No|commit_fixes[Commit fixes]
+      commit_fixes-->comments
+      approved-->|Yes|completed[PR completed]
+    end
+    completed-->merged[Branch merged to master];
+    %% ADO does not like ::: class shorthand
+    class merged auto;
+    merged-->master_build_runs[ADO pipeline - run master branch];
+    %% ADO does not like ::: class shorthand
+    class master_build_runs auto;
+    master_build_runs-->dev_deploy[DEV Deploy starts];
+    %% ADO does not like ::: class shorthand
+    class dev_deploy auto;
+    dev_deploy-->dc_current{Is Design Center master current?}
+    %% ADO does not like ::: class shorthand
+    class dc_current auto;
+    dc_current-->|No|update_design_center[Update Design Center]
+    %% ADO does not like ::: class shorthand
+    class update_design_center auto;
+    update_design_center-->exchange_push[Push to Exchange]
+    %% ADO does not like ::: class shorthand
+    class exchange_push auto;
+    exchange_push-->api_def
+    dc_current-->|Yes|api_def
+    %% ADO does not like ::: class shorthand
+    class api_def auto;
+    api_def[Ensure API Manager definition is current]-->sync_policy
+    sync_policy[Sync policies]-->deploy
+    %% ADO does not like ::: class shorthand
+    class sync_policy auto;
+    deploy[Deploy to CloudHub]-->wait
+    %% ADO does not like ::: class shorthand
+    class deploy auto;
+    wait[Wait for app to start]-->smoke_test[Smoke test in DEV environment]
+    %% ADO does not like ::: class shorthand
+    class wait auto;

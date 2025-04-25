@@ -1,0 +1,37 @@
+classDiagram
+    GeometricObject <|-- Circle
+    GeometricObject <|-- Rectangle
+
+    class GeometricObject {
+        -color: str = "green"
+        -filled: bool = True
+        +__init__(color: str, filled: bool)
+        +getColor() str
+        +setColor(color: str)
+        +isFilled() bool
+        +setFilled(filled: bool)
+        +__str__() str
+    }
+
+    class Circle {
+        -radius: float
+        +__init__(radius: float)
+        +getRadius() float
+        +setRadius(radius: float)
+        +getArea() float
+        +getDiameter() float
+        +getPerimeter() float
+        +printCircle()
+    }
+
+    class Rectangle {
+        -width: float = 1
+        -height: float = 1
+        +__init__(width: float, height: float)
+        +getWidth() float
+        +setWidth(width: float)
+        +getHeight() float
+        +setHeight(height: float)
+        +getArea() float
+        +getPerimeter() float
+    }

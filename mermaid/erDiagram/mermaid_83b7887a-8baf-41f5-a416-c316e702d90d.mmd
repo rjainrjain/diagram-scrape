@@ -1,0 +1,174 @@
+erDiagram
+
+user ||--o{ bookshelf : has
+
+bookshelf ||--o{ bookshelf_article : contains
+bookshelf_article ||--|| article : is
+bookshelf_article ||--|{ bookshelf_user_article_progression : ""
+bookshelf_user_article_progression }|--|| user_article_progression : has
+bookshelf ||--|{ bookshelf_documentation : contains
+bookshelf_documentation ||--|{ documentation : is
+bookshelf_documentation ||--|{ bookshelf_user_documentation_progression : ""
+bookshelf_user_documentation_progression }|--|| user_documentation_progression : has
+bookshelf ||--|{ bookshelf_book : contains
+bookshelf_book ||--|{ book : is
+bookshelf_book ||--|{ bookshelf_user_book_progression : ""
+bookshelf_user_book_progression }|--|| user_book_progression : has
+
+category ||--|| article : "has"
+category ||--|| documentation : "has"
+category ||--|| book : "has"
+
+tag ||--|{ tag_entry : "is"
+tag_entry }|--|| article : "has"
+tag_entry }|--|| documentation : "has"
+tag_entry }|--|| book : "has"
+
+user {
+  int id
+  varchar email
+  varchar password
+  datetime created_at
+  datetime updated_at
+  datetime deleted_at
+}
+
+bookshelf {
+  int id
+  int user_id
+  varchar title
+  int sort_order
+  datetime created_at
+  datetime updated_at
+}
+
+bookshelf_article {
+  int id
+  int bookshelf_id
+  int article_id
+  varchar last_read_section
+  int sort_order
+  datetime started_at
+  datetime completed_at
+  datetime created_at
+  datetime updated_at
+}
+
+article {
+  int id
+  int category_id
+  int tag_entry_id
+  varchar title
+  varchar url
+  datetime created_at
+  datetime updated_at
+}
+
+bookshelf_user_article_progression {
+  int user_article_progress_id
+  int article_id
+}
+
+user_article_progression {
+  int id
+  varchar start_section
+  varchar end_section
+  timestamp timestamp
+}
+
+bookshelf_documentation {
+  int id
+  int bookshelf_id
+  int documentation_id
+  varchar last_read_page
+  varchar last_read_section
+  varchar next_page_to_read
+  varchar next_page_to_read_url
+  int sort_order
+  datetime started_at
+  datetime last_resumed_at
+  datetime completed_at
+  datetime created_at
+  datetime updated_at
+}
+
+documentation {
+  int id
+  int category_id
+  int tag_entry_id
+  varchar title
+  varchar url
+  datetime created_at
+  datetime updated_at
+}
+
+bookshelf_user_documentation_progression {
+  int user_documentation_progress_id
+  int documentation_id
+}
+
+user_documentation_progression {
+  int id
+  varchar page_title
+  timestamp timestamp
+}
+
+bookshelf_book {
+  int id
+  int bookshelf_id
+  int book_id
+  varchar last_read_page
+  varchar last_read_section
+  int sort_order
+  datetime started_at
+  datetime last_resumed_at
+  datetime completed_at
+  boolean is_not_my_cup_of_tea
+  datetime created_at
+  datetime updated_at
+}
+
+book {
+  int id
+  int category_id
+  int tag_entry_id
+  varchar title
+  varchar author
+  varchar publisher
+  varchar total_pages
+  varchar image_url
+  varchar amazon_product_url
+  text emoji
+  date published_at
+  datetime created_at
+  datetime updated_at
+}
+
+bookshelf_user_book_progression {
+  int user_book_progress_id
+  int book_id
+}
+
+user_book_progression {
+  int id
+  int start_page
+  int end_page
+  timestamp timestamp
+}
+
+tag {
+  int id
+  varchar tag
+  varchar color
+}
+
+tag_entry {
+  int id
+  int tag_id
+}
+
+category {
+  int id
+  varchar category
+  varchar color
+}

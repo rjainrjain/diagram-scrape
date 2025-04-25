@@ -1,0 +1,140 @@
+%%
+%% Mermaid Charts sequence diagram. View with the mermaid plugin for intellij or using the online Mermaid editor https://www.mermaidchart.com
+%%
+
+sequenceDiagram
+  title : KPI 1 (PEF - April 2025 to October 2025)
+
+  actor Prisoner as Prisoner
+  actor CIAG as CIAG
+  participant PLP as PLP
+  participant PLPDB as PLP DB
+  participant DomainEvents as HMPPS Domain Events
+  participant Integration as HMPPS Integration API
+  participant Curious as Curious
+
+  rect rgba(0, 200, 255, 0.4)
+    Prisoner ->> DomainEvents: Prisoner enters prison
+    note over Prisoner, DomainEvents: New or re-offending prisoner
+    activate DomainEvents
+    deactivate DomainEvents
+
+    activate PLP
+      note left of PLP: PLP API processes<br/>prisoner.received event<br/>reason: admission
+      DomainEvents -) PLP: prison-offender-events.prisoner.received event
+      alt Prisoner does not have a PLP
+        activate PLPDB
+          PLP ->> PLPDB: Create new Induction Schedule record
+          note right of PLPDB: Induction deadline date<br/>set to today + 20 days
+        deactivate PLPDB
+        PLP -) DomainEvents: prisoner.induction.updated event
+      else Prisoner already has a PLP<br/>eg. re-offending prisoner
+        note over PLP: TODO - This is essentially the "review" process from KPI2
+      end
+    deactivate PLP
+  end
+
+  rect rgba(0, 200, 255, 0.4)
+    Prisoner ->> DomainEvents: Prisoner transfers into prison
+    note over Prisoner, DomainEvents: Existing prisoner transferring between prisons
+    activate DomainEvents
+    deactivate DomainEvents
+
+    activate PLP
+      note left of PLP: PLP API processes<br/>prisoner.received event<br/>reason: transferred
+      DomainEvents -) PLP: prison-offender-events.prisoner.received event
+      alt Prisoner does not have a PLP
+        activate PLPDB
+          PLP ->> PLPDB: Create new Induction Schedule record
+          note right of PLPDB: Induction deadline date<br/>set to today + 20 days
+        deactivate PLPDB
+        PLP -) DomainEvents: prisoner.induction.updated event
+      else Prisoner already has a PLP<br/>eg. PLP was done in previous prison
+        note over PLP: TODO - This is essentially the "review" process from KPI2
+      end
+    deactivate PLP
+  end
+
+  rect rgba(0, 200, 255, 0.4)
+    note over Prisoner, DomainEvents: Prisoner is released
+    activate DomainEvents
+    deactivate DomainEvents
+
+    activate PLP
+      note left of PLP: PLP API processes<br/>prisoner.released event
+      DomainEvents -) PLP: prison-offender-events.prisoner.released event
+      opt Prisoner has a PLP
+        PLP ->> PLPDB: Record exemption reason
+        PLP -) DomainEvents: prisoner.induction.updated event
+      end
+    deactivate PLP
+  end
+
+  rect rgba(0, 200, 255, 0.4)
+    note over Prisoner, DomainEvents: Prisoner dies
+    activate DomainEvents
+    deactivate DomainEvents
+
+    activate PLP
+      note left of PLP: PLP API processes<br/>prisoner.released event<br/>nomisMovementReasonCode: DEC
+      DomainEvents -) PLP: prison-offender-events.prisoner.released event
+      opt Prisoner has a PLP
+        PLP ->> PLPDB: Record exemption reason
+        PLP -) DomainEvents: prisoner.induction.updated event
+      end
+    deactivate PLP
+  end
+
+  rect rgba(0, 200, 255, 0.4)
+    activate CIAG
+      activate PLP
+        CIAG ->> PLP: Do prisoner's Induction
+        alt Prisoners Induction could not be completed due to exemptions
+          PLP ->> PLPDB: Record exemption reason
+        else
+          PLP ->> PLPDB: Record prisoner's induction
+        end
+        PLP -) DomainEvents: prisoner.induction.updated event
+      deactivate PLP
+    deactivate CIAG
+  end
+
+  rect rgba(0, 200, 255, 0.4)
+    activate CIAG
+      activate PLP
+        CIAG ->> PLP: Clear prisoner's Induction exemption
+        PLP ->> PLPDB: Clear exemption reason
+        PLP ->> PLPDB: Update Induction Schedule record
+        note right of PLPDB: Induction deadline date<br/>set to today + 5 days
+        PLP -) DomainEvents: prisoner.induction.updated event
+      deactivate PLP
+    deactivate CIAG
+  end
+
+  rect rgba(0, 255, 200, 0.4)
+    activate Integration
+      note left of Integration: HMPPS Integration API processes<br/>prisoner.induction.updated event
+      DomainEvents -) Integration: prisoner.induction.updated event
+      Integration -) DomainEvents: prisoner.induction.metadata.available event
+    deactivate Integration
+  end
+
+  rect rgba(255, 100, 100, 0.4)
+    activate Curious
+      note left of Curious: Curious processes<br/>prisoner.induction.metadata.available event
+      DomainEvents -) Curious: prisoner.induction.metadata.available event
+      Curious ->> Integration: get prisoner's induction meta data
+      activate Integration
+        Integration ->> PLP: get prisoner's Induction Schedule
+        activate PLP
+          PLP ->> PLPDB: get prisoner's Induction Schedule
+          PLPDB ->> PLP: prisoner's Induction Schedule
+          PLP ->> Integration: prisoner's Induction Schedule
+        deactivate PLP
+        Integration ->> Integration: Map prisoner's Induction Schedule into induction meta data
+        Integration ->> Curious: prisoner's induction meta data
+      deactivate Integration
+      note left of Curious: Curious processes prisoner's induction meta data<br/>in order to produce reports
+    deactivate Curious
+  end
+

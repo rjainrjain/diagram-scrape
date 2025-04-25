@@ -1,0 +1,49 @@
+%% Documentation: https://github.com/mermaid-js/mermaid
+%% Editor: https://mermaid.live/edit
+
+sequenceDiagram
+title Collect NFT
+participant User
+participant Metamask
+participant Lens
+participant Lens_Contract
+participant Server
+participant DB as Database
+
+note over User: Clicks on Collect NFTs tab
+User->>Server: API call to fetch all the liked posts by the user
+Server->>DB: Retrieve list of lens posts liked by the user
+DB->>Server: Returns list of lens posts
+Server->>User: Return list of lens posts
+
+note over User: User clicks on Collect button of a post.
+
+User->>Lens: GraphQL call to ApprovedModuleAllowanceAmount API
+Lens->>User: Returns allowance response
+
+alt if allowance less than collect amount
+    User->>Lens: GraphQL call to GenerateModuleCurrencyApprovalData API
+    Lens->>User: Returns ModuleCurrencyApprovalData
+    User->>Metamask: User is asked to Confirm the transaction
+
+    break when user rejects the transaction 
+        Metamask->>User: Reject
+        note over User: Show Error
+    end
+    Metamask->>User: Success
+    User->>Lens_Contract: Calls sendTransaction method using the ModuleCurrencyApprovalData
+    Lens_Contract->>User: Returns txn hash
+    note over User: Waits for txn to be confirmed.
+end
+User->>Lens: GraphQL call to CreateCollectTypedData API
+Lens->>User: Returns CollectTypedData
+User->>Metamask: Sign the CollectTypedData
+Metamask->>User: Returns the Signature
+User->>Lens_Contract: Calls CollectWithSig method using the signature
+Lens_Contract->>User: Returns the Transaction Hash.
+note over User: User waits for txn to be confirmed.
+User->>Server: API call to store the collect nft txn hash
+Server->>DB: Store the collect txn hash to votes table
+DB->>Server: Success
+Server->>User: Success
+note over User: Post collected successfully

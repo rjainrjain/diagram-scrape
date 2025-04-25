@@ -1,0 +1,38 @@
+--- 
+title: Automatencafe
+---
+classDiagram
+class Automat{
+	-int nummer
+	-int anzahlVerkauft
+	-int status
+	-bool nachfuellen
+	-String[] artikel
+	-int[] fuellstand
+	+int pruefen()
+	+int[] getStaende()
+	+void nachfuellen()
+}
+class Getraenkeautomat{
+	
+}
+class Kaffemaschine{
+	
+}
+class Sandwichautomat{
+	
+}
+class Bierzapfanlage {
+	
+}
+class Druck{
+	Interface
+	+void pruefeDruck()
+	+void reinigen()
+}
+Automat <|-- Getraenkeautomat
+Automat <|-- Sandwichautomat
+Automat <|-- Kaffemaschine
+Automat <|-- Bierzapfanlga
+Druck ..|> Kaffemaschine
+Druck ..|> Bierzapfanlage

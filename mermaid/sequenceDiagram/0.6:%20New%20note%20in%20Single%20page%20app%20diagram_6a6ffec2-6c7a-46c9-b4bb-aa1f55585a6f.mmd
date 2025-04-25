@@ -1,0 +1,18 @@
+sequenceDiagram
+    participant U as User
+    participant B as Browser
+    participant S as Server
+
+    U->>B: Enters note and clicks Save
+    Note right of B: User input is captured by JavaScript after button clicked
+
+    B->>S: POST /https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+    activate S
+    Note over S: Server processes POST request
+
+    S-->>B: Response {"message":"note created"}
+    deactivate S
+
+    Note right of B: Browser processes response
+    B->>B: Updates SPA dynamically
+    Note right of B: Page update without full reload with Javascript

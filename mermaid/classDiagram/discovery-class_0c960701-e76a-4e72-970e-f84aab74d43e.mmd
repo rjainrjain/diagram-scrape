@@ -1,0 +1,57 @@
+classDiagram
+    class ServiceDiscoverer {
+        <<trait>>
+
+        +discover() Result~Vec~ConnectionConfig~~
+        +mode() DiscoveryMode
+    }
+    note for ServiceDiscoverer "Abstraction over whatever method \nis actually used to discover services"
+
+    class DiscoveryMode {
+        <<enum>>
+        +Polling
+        +Continuous
+    }
+
+    class DiscoveryTask {
+        discovery: dyn ServiceDiscoverer
+
+        monoliths: HashSet~ConnectionConfig~
+        discovery_tx: Sender~ServiceDiscoveryMsg~
+
+        +new()
+        +do_continuous_discovery()
+        -do_discovery()
+    }
+
+    class ServiceDiscoveryMsg {
+        added: Vec~ConnectionConfig~
+        removed: Vec~ConnectionConfig~
+    }
+
+    class MonolithConnectionManager {
+        discovery_rx: Receiver~ServiceDiscoveryMsg~
+        link: BalancerLink
+
+        monoliths: HashSet~ConnectionConfig~
+        %% There's a mermaid-cli bug that prevents us from using the line below
+        %%connection_tasks: HashMap~ConnectionConfig, ActiveConnection~
+        connection_tasks: HashMap
+
+        +new() Self
+        +do_connection_job()
+    }
+
+    class ConnectionConfig {
+        host: HostOrIp
+        port: u16
+    }
+
+    DiscoveryTask --> ServiceDiscoveryMsg : sends
+    DiscoveryTask --> MonolithConnectionManager : connected via one way channel
+    ServiceDiscoveryMsg --* ConnectionConfig : collects
+    ServiceDiscoveryMsg --> MonolithConnectionManager : received by
+    ServiceDiscoverer --o ConnectionConfig : collects
+    DiscoveryTask --> ServiceDiscoverer : calls
+    ServiceDiscoverer --> DiscoveryMode
+    MonolithConnectionManager ..> ConnectionConfig : uses

@@ -1,0 +1,33 @@
+graph LR
+    scen(DataScenarios.csv)
+    pred(trachoma_predictive_locations_updated.csv)
+    shp(AFRO_shapefile.csv)
+    geodata(geodata/africa_ius.shp)
+    findiucodes((FindIUCodes))
+
+    scen --> findiucodes
+    pred --> findiucodes
+    shp --> findiucodes
+    geodata --> findiucodes
+
+    findiucodes --> cleaneddata(FinalData.csv)
+
+    cleaneddata --> groupius((GroupFilesPrev.R)) --> groupeddata(FinalDataPrev.csv)
+
+    groupeddata --> createpython((CreateFilesPrev.R))
+
+    pythonrun(main_trachoma_run_scenX_groupY.py)
+    pythoncall(main_trachoma_run_scenX_groupY.py)
+    createpython --> pythonrun
+    createpython --> pythoncall
+    pythoncode[(trachoma model)] --> pythonrun
+    pythoncode[(trachoma model)] --> pythoncall
+
+    subgraph amis [AMIS, for each scenario X]
+    amisfile((Trachoma_AMIS.R)) --> inputbeta(InputBet_X.csv)
+    end
+
+    pythonrun --> amisfile
+    pythoncall --> amisfile
+    groupeddata --> amisfile
+    

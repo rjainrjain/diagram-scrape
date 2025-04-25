@@ -1,0 +1,31 @@
+classDiagram
+    class State{
+      player: Player
+      frame_time: f32
+      mode: GameMode
+      score: i32
+      obstacles: Vec Obstacle
+      new()
+      play()
+      restart()
+      main_menu()
+      dead()
+      place_obstacles()
+    }
+    class Player{
+      x: i32
+      y: i32
+      velocity: f32
+      new()
+      render()
+      gravity_and_move()
+      flap()
+    }
+    class Obstacle{
+      x: i32
+      gap_y: i32
+      size: i32
+      new()
+      render()
+      hit_obstacle()
+    }

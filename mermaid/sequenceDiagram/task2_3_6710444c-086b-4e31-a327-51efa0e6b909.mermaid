@@ -1,0 +1,12 @@
+sequenceDiagram
+    participant User
+    participant API
+    participant BusinessLogic
+    participant Persistence
+
+    User->>API: Submit Review
+    API->>BusinessLogic: Validate and Create Review
+    BusinessLogic->>Persistence: Save Review to DB
+    Persistence-->>BusinessLogic: Confirm Save
+    BusinessLogic-->>API: Send Confirmation
+    API-->>User: Return Success Response

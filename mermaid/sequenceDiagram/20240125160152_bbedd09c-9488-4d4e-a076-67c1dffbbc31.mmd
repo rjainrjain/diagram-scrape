@@ -1,0 +1,20 @@
+
+sequenceDiagram
+    participant M as Main
+    participant FA as FlaskApp
+    participant S as Scraper
+    participant SM as Summarizer
+    participant C as Cache
+    M->>FA: run()
+    loop Every Request
+        FA->>C: get_cached_summary(url)
+        alt Cache Hit
+            C-->>FA: return summary
+        else Cache Miss
+            FA->>S: get_content(url)
+            S-->>FA: return content
+            FA->>SM: summarize_text(content, summary_length)
+            SM-->>FA: return summary
+            FA->>C: cache_summary(url, summary)
+        end
+    end

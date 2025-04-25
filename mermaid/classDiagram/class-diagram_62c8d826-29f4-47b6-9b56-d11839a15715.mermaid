@@ -1,0 +1,41 @@
+classDiagram
+    class ProcessingRequest {
+        +UUID requestId
+        +String status
+        +String webhookUrl
+        +createRequest()
+        +updateStatus()
+    }
+    class Product {
+        +Integer serialNumber
+        +String productName
+        +String inputUrls
+        +String outputUrls
+        +UUID processingRequestId
+        +createProduct()
+        +updateOutputUrls()
+    }
+    class ImageProcessingService {
+        +processImages(product)
+    }
+    class RequestService {
+        +handleUpload(csvData, webhookUrl, requestId)
+        +checkStatus(requestId)
+        -validateAndResolveUrls(urls)
+    }
+    class ErrorHandler {
+        +handleError(error)
+    }
+    class Logger {
+        +info(message)
+        +error(message)
+    }
+    
+    ProcessingRequest "1" --> "*" Product : has
+    RequestService --> ProcessingRequest : manages
+    RequestService --> Product : manages
+    RequestService --> ImageProcessingService : uses
+    ImageProcessingService --> Product : updates
+    RequestService --> ErrorHandler : uses
+    RequestService --> Logger : uses
+    ImageProcessingService --> Logger : uses

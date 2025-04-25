@@ -1,0 +1,44 @@
+erDiagram
+    Fighter {
+        string Name PK "Primary Key"
+        string Height "Nullable, in format ft'in''"
+        string Weight "Nullable, in lbs"
+        string Reach "Nullable, in inches"
+        string Stance "Nullable, can be Orthodox, Southpaw, etc."
+        date DOB "Nullable, Date of Birth"
+    }
+
+    Fight {
+        string ID PK "Primary Key, Composite of fighters' names and date"
+        date Date "Date when the fight took place"
+        string Location "Location where the fight took place"
+        string Format "Format of the fight, e.g., number of rounds"
+        string Referee "Name of the referee"
+        string Fight_type "Type of the fight, e.g., weight class"
+        string R_fighter FK "Red corner fighter, references Fighter(Name)"
+        string B_fighter FK "Blue corner fighter, references Fighter(Name)"
+        string Winner FK "Name of the winner, references Fighter(Name)"
+        string win_by "Method of victory"
+        int last_round "The last round of the fight"
+        string last_round_time "Time when the last round ended"
+    }
+
+    PerformanceMetrics {
+        string ID PK "Primary Key, Composite of Fight ID and fighter"
+        string Fight_ID FK "Foreign Key, references Fight(ID)"
+        string Fighter_Name FK "Foreign Key, references Fighter(Name)"
+        string Color "The fighter's corner color in this fight, 'R' for Red or 'B' for Blue"
+        int KD "Knockdowns"
+        string SIG_STR "Significant Strikes"
+        string SIG_STR_pct "Significant Strikes Percentage"
+        string TOTAL_STR "Total Strikes"
+        string TD "Takedowns"
+        string TD_pct "Takedown Percentage"
+        int SUB_ATT "Submission Attempts"
+        int REV "Reversals"
+        string CTRL "Control Time"
+    }
+
+    Fighter ||--o{ Fight : "participates_in"
+    Fight ||--o{ PerformanceMetrics : "is_recorded_in"
+    Fighter ||--o{ PerformanceMetrics : "has_performance_metrics"

@@ -1,0 +1,44 @@
+erDiagram
+    UserEntity ||--o{ OrderEntity : "has many"
+    UserEntity }o--|| OrganizationEntity : "belongs to"
+    OrderEntity }o--|| OrganizationEntity : "belongs to"
+    OrderUserEntity }o--|| OrganizationEntity : "belongs to"
+
+    UserEntity {
+        int id PK
+        string firstName
+        string lastName
+        string password
+        string email
+        string role
+        int organizationId FK
+    }
+
+    OrganizationEntity {
+        int id PK
+        string name
+        string address
+    }
+
+    OrderEntity {
+        int id PK
+        string firstName
+        string lastName
+        string route
+        date date
+        decimal price
+        decimal distance
+        decimal secondDriver
+        decimal waitingTime
+        string driverSignature
+        string clientSignature
+        int organizationId FK
+        int userId FK
+    }
+
+    OrderUserEntity {
+        int id PK
+        string firstName
+        string lastName
+        int organizationId FK
+    }

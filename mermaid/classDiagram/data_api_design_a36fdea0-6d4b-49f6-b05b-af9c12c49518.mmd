@@ -1,0 +1,36 @@
+classDiagram
+    class Main{
+        +main()
+    }
+    class Game{
+        +start_game()
+        +end_game()
+    }
+    class Player{
+        +hit()
+        +stand()
+        +int score
+    }
+    class Dealer{
+        +deal()
+    }
+    class Card{
+        +str suit
+        +str rank
+        +int value
+    }
+    class Deck{
+        +shuffle()
+        +draw()
+    }
+    class Scoreboard{
+        +update_score()
+        +display_score()
+    }
+    Main "1" -- "1" Game: starts
+    Game "1" -- "1" Player: has
+    Game "1" -- "1" Dealer: has
+    Game "1" -- "1" Scoreboard: has
+    Player "1" -- "*" Card: has
+    Dealer "1" -- "*" Card: has
+    Dealer "1" -- "1" Deck: uses

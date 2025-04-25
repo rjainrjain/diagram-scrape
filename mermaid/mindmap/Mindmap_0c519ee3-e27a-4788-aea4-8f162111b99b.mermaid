@@ -1,0 +1,429 @@
+mindmap
+  root(AZ-104)
+    (Prerequisites for Azure administrators)
+      {{URL: https://learn.microsoft.com/en-us/training/paths/az-104-administrator-prerequisites/}}
+      {{Configure Azure resources with tools}}
+        Portal
+          Let's you build, manage and monitor everything.
+          You can do things like:
+          Search resources
+          Manage resources
+          Create cusomized dashboards
+          Access the cloud shell
+          Receive notifications
+          Links to Azure documentation
+        Azure Cloud Shell
+          Is an interactive, browser accesible shell for managing Azure Resources
+          Automatically authenticated
+          Runs in temporary host
+          Requires
+            a resource group
+            a storage account
+            an Azure file share
+        Azure PowerShell
+          Is a module that you add to Windows PowerShell or PowerShell Core
+          Az is the formal name of the PowerShell module
+          AzureRM is the old name of the PowerShell module
+        Azure CLI
+          Is a command-line tool for managing Azure resources
+          Runs on Windows, macOS, and Linux
+          Can be used from a browser with Azure Cloud Shell
+          Can be used interactive or scripted
+          Commands in the CLI are structured in groups and subgroups
+            Each group represents a service provided by Azure
+            The subgroups divide commands for these services into logical groupings
+            Example: The storage group contains subgroups including account, blob, share, and queue
+          Find a command using:
+            az find
+            az find blob
+          Get help using:
+            az -h
+            az storage blob -h (--help)
+      {{Use Azure Resource Manager}}
+        Review Azure Resource Manager benefits
+          Enables you to work with the resources in your solution as a group
+          Enables you to deploy, update, or delete all the resources for your solution in a single, coordinated operation
+        Review Azure resource terminology
+          Terms that may be used interchangeably
+            Resource
+              A manageable item that is available through Azure
+            Resource group
+              A container that holds related resources for an Azure solution
+            Resource provider
+              A service that supplies Azure resources
+            Template
+              A JSON file that defines one or more resources to deploy to a resource group
+            Declarative syntax
+              A template that uses declarative JSON syntax to define the deployment
+        Create resource groups
+          Resources can be deployed to any new or existing resource group
+          Every deployment becomes a job
+          Jobs are tracked in the portal
+          Deployments are incremental
+          Considerations
+            Resources can only exist in one resource group
+            Resource cannot be renamed
+            Resource groups can have multiple different types of resources
+            Resource groups can have resources from different regions
+        Create Azure Resource Manager locks
+          Prevent accidental deletion of resources in Azure
+          You can associate a lock with a subscription, resource group, or resource
+          Two types of locks
+            CanNotDelete
+              Authorized users can still read and modify a resource, but they can't delete the resource
+            ReadOnly
+              Authorized users can only read a resource, but they can't delete or update the resource
+          Locks are inherited by child resources
+          Only the owner and User ACcess Administrator roles can create or delete management locks
+        Reorganize Azure resources
+          When moving resources both the source and destination resource groups are locked during operation
+          You cannot add, update or remove resources in those resource groups until the move completes
+          You can move resources using
+            The portal
+            PowerShell
+            CLI
+            REST API
+            Azure Resource Manager templates
+          This does not mean the resources are not available
+          Limitations
+            You can mvoe a virtual network but you also must its dependent resources
+        Remove resources and resource groups
+          Deleteing a resource group deletes all resources in the group
+          Deleting a resource group is permanent
+        Determine resource limits
+          Azure lets you view resource usage against limits
+          Limits are set on a per-subscription basis
+          All resources have a maximum limit
+            If you go over the maximum limit, the limit can't be increased
+      {{Configure resources with Azurre Resource Manager templates}}
+        Intro
+          An ARM template precisly defines all the RM resources in a Deployments
+          ARM templates makes your deployments faster and repeatable
+          ARM templates are JSON files
+          Benefits
+            Consistency
+            Help with complex deployments
+            Reduce manual, error-prone tasks
+            Can be in source control because it's code
+            Promote reuse
+            Are linkable
+            Simplify orchestration
+        Explore the Azure Resource Manager template schema
+          Templates are written in JSON
+          Contains the following elements
+            $schema: The location of the JSON schema file that describes the version of the template language
+            contentVersion: The version of the template
+            parameters: Values that are provided when deployment is executed to customize resource deployment
+            variables: Values that are used as JSON fragments in the template to simplify template language expressions
+            functions: User-defined functions that are available within the template
+            resources: The resources that are deployed or updated in a resource group
+            outputs: Values that are returned after deployment
+        Explore the Azure Resource Manager template parameters
+          You can specify with calues you can input
+          The following properties are:
+            type: The data type of the parameter
+            defaultValue: The default value for the parameter
+            allowedValues: The set of values that are allowed for the parameter
+            metadata: The additional information about the parameter
+            minValue: The minimum value for the parameter only for int
+            maxValue: The maximum value for the parameter only for int
+            minLength: The minimum length for the parameter only for string or array
+            maxLength: The maximum length for the parameter only for string or array
+            description: The description of the parameter
+        Consider Bicep templates
+          Is a Domain Spewcific Language (DSL)
+          You can use Bicep instead of JSON to develop ARM templates
+          Bicep converts your Bicep file into a JSON file
+          Benefits
+            Simpler syntax
+            Modules
+            Automatic dependency management
+            Type validation
+        Review QuickStart templates
+          QuickStart templates are templates that are available in the Azure portal
+          Are provided by the community
+
+      {{Automate Azure tasks with PowerShell}}
+      {{Control Azure services with the CLI}}
+      {{Deploy Azure infrastructure using JSON ARM templates}}
+      {{Manage Azure identities and governance}}
+      {{Implement and manage storage}}
+      {{Deploy and manage Azure compute resources}}
+      {{Configure and manage virtual networking}}
+      {{Monitor and back up Azure resources}}
+    (Manage identities and governance in Azure)
+    (Implement and manage storage in Azure)
+    (Deploy and manage Azure compute resources)
+    (Configure and manage virtual networks for Azure administrators)
+      {{Configure virtual networks}}
+        [Azure virtual networks]
+          is a logically isolated network in Azure
+          used to provision and manage virtual private networks in Azure
+          has its own CIDR block
+          can be linked to other virtual networks and on-premises networks
+          you can control the DNS server settings for a virtual network
+        [Create subnets]
+          Things to know
+            contains a range of IP addresses that fall within the virtual network address space
+            address range for a subnet must be unique within the address space for the virtual network.
+            range for one subnet can't overlap with other subnet IP address
+            IP address space for a subnet must be specified by using CIDR notation.
+        [Create virtual networks]
+          Things to know
+            To create a virtual network, you need to define at least one subnet.
+            Plan to use an IP address space that's not already in use in your organization.
+            When you create a virtual network, you need to define the IP address space for the network.
+        [Plan IP addressing]
+          Things to know
+            IP addresses can be statically assigned or dynamically assigned.
+            You can separate dynamically and statically assigned IP resources into different subnets.
+        [Create public IP addressing]
+          Things to know
+            You can create a public IP address for your resource in the Azure portal.
+          Things to Consider
+            IP version: IPv4 or IPv6 or Both
+            SKU: Basic or Standard
+            Name: Name of the public IP address
+            Assignment: Static or Dynamic
+        [Associate public IP addresses]
+          Things to Consider
+            IP address is static or dynamic with basic sku. with Standard sku it's always static
+            Security is open by default on basic sku. With Standard sku it's closed by default
+            Resources are network interfaces, load balancers, VPN gateways, and application gateways. On Standard sku it's networks interfaces or public load balancers
+            Redundancy is not supported on basic sku. On Standard sku it's zone-redundant by default
+        [Allocate or assign private IP addresses]
+          Private IP address Assignment
+            Dynamic
+              Azure assigns the next available address from the address range
+              Is the default method of allocation
+              Suppose address 10.0.0.4 through 10.0.0.9 are already in use, Azure will assign 10.0.0.10
+            Static
+              You select and assign any unassigned ip address in the address range
+      {{Configure network security groups}}
+        [Intro]
+          Network security groups are a way to limit network traffic to resources in your virtual network
+        [Implement network security groups]
+          Things to know
+            Contains a list of security rules that allow or deny inbound or outbound network traffic
+            Can be associated to a subnet or a network interface
+            Can be associated multiple times
+            You create a network security group and define security rules in the Azure portal
+          Network security groups and subnets
+            You can assign network security groups to a subnet and create a protected screened subnet, also referred to as a demilitarized zone or DMZ
+            A DMZ acts as a buffer between resources within your virtual network and the internet
+            Each subnet can have a maximum of one associated network security group
+          Network security groups and network interfaces
+            Define network security group rules to control all traffic that flows through a NIC
+            Each network interface that exists in a subnet can have zero, or one, associated network security groups
+        [Determine network security group rules]
+          Things to know
+            Azure creates several default security rules within each network security group, including inbound traffic and outbound traffic
+            Azure creates the default security rules in each network security group that you create
+            You can add more security rules to a network security group
+            Each security rule is assigned a Priority value
+            You can't remove the default security rules
+            You can override a default security rule by creating another security rule that has a higher Priority
+          Inbound traffic rules
+            Azure defines three default inbound security rules for your network security group
+              These rules deny all inbound traffic except traffic from your virtual network and Azure load balancers
+            Default Rules
+              AllowVnetInBound
+                Allows inbound traffic from all resources in the virtual network
+                Has a priority of 65000
+              AllowInternetBound
+                Allows outbound traffic to the internet
+                Has a priority of 65001
+              DenyAllInBound
+                Denies all inbound traffic from all sources
+                Has a priority of 65500
+          Outbound traffic rules
+            Azure defines three default outbound security rules for your network security group
+              These rules only allow traffic to the internet and your virtual network
+            Default Rules
+              AllowVnetOutBound
+                Allows outbound traffic from all resources in the virtual network
+                Has a priority of 65000
+              AllowInternetOutBound
+                Allows outbound traffic to the internet
+                Has a priority of 65001
+              DenyAllOutBound
+                Denies all outbound traffic to all destinations
+                Has a priority of 65500
+        [Determine network security group effective rules]
+          Each network security group and its defined security rules are evaluated independently
+          Inbound traffic effective rules
+            Azure processes rules for inbound traffic for all VMs in the configuration
+            Azure identifies if the VMs are members of an NSG, and if they have an associated subnet or NIC
+            When an NSG is created, Azure creates the default security rule DenyAllInbound for the group
+              The default behavior is to deny all inbound traffic from the internet
+            If an NSG has a subnet or NIC, the rules for the subnet or NIC can override the default Azure security rules
+            NSG inbound rules for a subnet in a VM take precedence over NSG inbound rules for a NIC in the same VM
+          Outbound traffic effective rules
+            Azure processes rules for outbound traffic by first examining NSG associations for NICs in all VMs
+            When an NSG is created, Azure creates the default security rule AllowInternetOutbound for the group
+              The default behavior is to allow all outbound traffic to the internet
+            If an NSG has a subnet or NIC, the rules for the subnet or NIC can override the default Azure security rules
+            NSG outbound rules for a NIC in a VM take precedence over NSG outbound rules for a subnet in the same VM
+          Things to consider when creating effective rules
+            Consider allowing all traffic
+            Consider importance of allow rules
+            Consider intra-subnet traffic
+            Consider rule priority
+        [Create network security group rules]
+          Things to know
+            Source: Identifies how the security rule controls inbound traffic.
+            Destination: Identifies how the security rule controls outbound traffic.
+            Service: Specifies the destination protocol and port range for the security rule.
+            Priority: Assigns the priority order value for the security rule.
+        [Implement application security groups]
+          Things to know
+            Application security groups work in the same way as network security groups
+            They provide an application-centric way of looking at your infrastructure
+          Things to consider
+            Consider IP address maintenance
+            Consider no subnets
+            Consider simplified rules
+            Consider workload support
+        [Interactive lab simulation]
+      {{Configure Azure DNS}}
+        [Identify domains and custom domains]
+          Things to know
+            When you create an Azure subscription, Azure assigns a subdomain to the subscription
+            Azure applies en initial domain name to the subscription
+            The initial domain name is in the form of subscriptionname.onmicrosoft.com
+            You can't change the initial domain name
+            You can add custom domain names to your Azure subscription
+        [Verify custom domain names]
+          Intro
+            When an administrator adds a custom domain name to a Microsoft Entra instance, the custom domain name is initially in an unverified state
+          Create Azure DNS zones
+            An Azure DNS zone hosts the DNS records for a domain
+          Things to know about DNS zones
+            Within a resource group, the name of a DNS zone must be unique
+            Multiple DNS zones can have the same name, as long as they are in different resource groups
+            The Root/Parent domain is registered at the registrar and then pointed to Azure DNS.
+            Child domains are registered directly in Azure DNS.
+          Delegate DNS domains
+            The delegation process for your domain involves several steps:
+              Identify your DNS name servers, Update your parent domain, Delegate subdomains
+          How to find your DNS name servers
+            The easiest way to find the DNS name servers assigned to your DNS zone is through the Azure portal.
+          Update your parent domain
+            After your DNS zone is created, and you can identify your DNS name servers, you need to update your parent domain.
+          Things to consider when working with NS records
+            When you copy an NS record, a DNS name server address, be sure to include the trailing period "." at the end of the address
+            To delegate your domain to Azure DNS, you must use the exact names of the DNS name servers as created by Azure DNS
+            We recommend that you always copy all DNS name server NS records for your domain to the parent domain
+          How to delegate subdomains
+            You can delegate a subdomain for your domain in Azure DNS by setting up a separate child DNS zone.
+          Add DNS record sets
+            A DNS record set is a collection of records in a DNS zone
+            It's also known as a resource record set
+            You can define records sets in the Azure Portal
+            Things to know about DNS record sets
+              All records in a DNS record set must have the same name and the same record type
+              It cannot contain two identical records
+              A record set of type CNAME can contain only one record
+              A record set can have 0 to X record
+              An empty record set does not appear in the Azure DNS name servers
+            Plan for Azure Private DNS zones
+              Things to know about Azure Private DNS benefits
+                No custom DNS solution required
+                Azure Private DNS supports all common DNS record types, including A, AAAA, CNAME, MX, PTR, SOA, SRV, and TXT.
+                Automatic hostname record management
+                Hostname resolution between virtual networks
+                Split-horizon DNS support
+      {{Configure Azure Virtual Network peering}}
+        [Introduction]
+          lets you connect virtual networks in the same or different regions
+          provides secure communication between resources in the peered networks
+        [Determine Azure Virtual Network peering uses]
+          After the networks are peered, the two virtual networks operate as a single network, for connectivity purposes
+          Things to know
+            There are two types of Azure Virtual Network peering: regional and global.
+            Regional virtual network peering connects Azure virtual networks that exist in the same region
+            Global virtual network peering connects Azure virtual networks that exist in different regions
+            The individual virtual networks are still managed as separate resources
+          Things to consider
+            Private network connections
+            Strong performance
+            Simplified communication
+            Seamless data transfer
+            No resource disruptions
+        [Determine gateway transit and connectivity]
+          When virtual networks are peered, you can configure Azure VPN Gateway in the peered virtual network as a transit poin
+          Things to know about Azure VPN Gateway
+            A virtual network can have only one VPN gateway
+            Gateway transit is supported for both regional and global virtual network peering
+        [Create virtual network peering]
+          Can be configured for virtual networks by using PowerShell, the Azure CLI, and in the Azure portal
+          Things to know
+            Your Azure account must be assigned to the Network Contributor or Classic Network Contributor role
+            You need two virtual networks
+            The second virtual network in the peering is referred to as the remote network
+          How to check your peering status
+            the two primary status conditions are Initiated and Connected
+        [Extend peering with user-defined routes and service chaining]
+          The communication capabilities in a peering are available to only the virtual networks and resources in the peering
+          Things to know about extending peering
+            There are a few ways to extend the capabilities of your peering
+              Hub and spoke networks
+              User-defined routes
+              Service chaining
+      {{Configure network routing and endpoints}}
+        [Introduction]
+          Administrators use network routes to control the flow of traffic through a network
+        [Review system routes]
+          Azure uses system routes to direct network traffic between virtual machines, on-premises networks, and the interne
+          Information about the system routes is recorded in a route table
+          Things to know about system routes
+            A route table contains a set of rules, called routes
+            Route tables record information about the system routes
+            Each packet leaving a subnet is handled based on the associated route table
+            Packets are matched to routes by using the destination
+            When a matching route can't be found, the packet is dropped
+        [Identify user-defined routes]
+          Azure automatically handles all network traffic routing
+            in some cases, a custom configuration is preferable
+            you can configure user-defined routes, UDRs, and next hop targets
+          Things to know about user-defined routes
+            UDRs control network traffic by defining routes that specify the next hop
+            Similar to system routes, UDRs also access route tables
+            Each route table can be associated to multiple subnets
+            Each subnet can be associated to one route table only
+            There are no charges for creating route tables in Microsoft Azure
+        [Determine service endpoint uses]
+          A virtual network service endpoint provides the identity of your virtual network
+          Things to know about service endpoints
+            Service endpoints can extend your virtual network identity to your Azure services
+            You secure your Azure service resources to your virtual network by using virtual network rules
+            Virtual network rules can remove public internet access to resources, and allow traffic only from your virtual network
+            Service endpoints always take service traffic directly from your virtual network to the service
+            Service endpoints are configured through the subnet
+            No extra overhead is required to maintain the endpoints
+          Things to consider when using service endpoints
+            Consider improved security for resources
+            Consider optimal routing for service traffic
+            Consider direct traffic to the Microsoft network
+            Consider easy configuration and maintenance
+        [Identify private link uses]
+          Azure Private Link provides private connectivity from a virtual network to
+            Azure platform as a service
+            customer-owned
+            Microsoft partner services
+          Things to know about Azure Private Link
+            Azure Private Link keeps all traffic on the Microsoft global network
+            Private Link is global and there are no regional restrictions
+          Things to consider when using Azure Private Link
+            Consider private connectivity to services on Azure
+            Consider integration with on-premises and peered networks
+            Consider protection against data exfiltration for Azure resources
+            Consider services delivered directly to customer virtual networks
+      {{Configure Azure Load Balance}}
+      {{Configure Azure Application Gateway}}
+      {{Design an IP addressing schema for your Azure deployment}}
+      {{Distribute your services across Azure virtual networks and integrate them by using virtual network peering}}
+      {{Host your domain on Azure DNS}}
+      {{Manage and control traffic flow in your Azure deployment with routes}}
+      {{Improve application scalability and resiliency by using Azure Load Balancer}}
+    (Monitor and back up Azure resources)

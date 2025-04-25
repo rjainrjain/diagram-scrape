@@ -1,0 +1,33 @@
+---
+title: Factory Method
+---
+classDiagram
+    ICreator <|-- ConcreteCreatorA
+    ICreator <|-- ConcreteCreatorB
+    ICreator: + CreateProduct() IProduct
+
+
+    class ConcreteCreatorA {
+        + CreateProduct(): IProduct
+    }
+    class ConcreteCreatorB {
+        + CreateProduct(): IProduct
+    }
+
+
+    IProduct <|.. ICreator
+
+    IProduct <|-- ConcreteProductA
+    IProduct <|-- ConcreteProductB
+
+    IProduct: +doStuff()
+    IProduct: +GetPower()
+
+    class ConcreteProductA {
+        -string name
+        -power int
+    }
+    class ConcreteProductB {
+        -string name
+        -power int
+    }

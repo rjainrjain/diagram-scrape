@@ -1,0 +1,30 @@
+graph TD
+
+Init[Início, leu <br> capacidade inicial e itens iniciais]
+
+--> Checks{Há itens propostos?}
+
+Checks
+--> |Não| SumAndFinish[Somatório de lucro <br> dos itens armazenados e fim.]
+
+Checks
+--> |Sim| FilterByLimit[Filtra itens que cabem na capacidade atual]
+--> Pop[Dentre os que cabem, <br> separa o item de maior valor do resto]
+--> RemainingLimit[Calcula capacidade restante <br> após inserir o selecionado]
+
+--> PoppedFits{Foi possível encontrar <br> o de maior valor dentre os que cabem?}
+
+ReassignFiltered[Próximos itens serão já filtrados e excluindo o tal maior]
+
+PoppedFits
+--> |Não| ReassignLimitWithoutPopped[Próxima capacidade não muda]
+--> ReassignFiltered
+
+PoppedFits
+--> |Sim| PackPopped[Armazena o tal maior item selecionado]
+--> ReassignLimitAfterPopped[Próxima capacidade é a atual subtraída do peso do tal maior item selecionado]
+--> ReassignFiltered
+
+ReassignFiltered
+--> Next[Próxima iteração]
+--> Checks

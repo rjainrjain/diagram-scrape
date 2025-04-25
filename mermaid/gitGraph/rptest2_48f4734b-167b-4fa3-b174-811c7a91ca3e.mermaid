@@ -1,0 +1,24 @@
+gitGraph LR:
+    commit id: "chore: release v1.0.0" tag: "v1.0.0"
+    branch develop
+    commit id: "fix: broken"
+    branch "Release Please"
+    commit id: "prepare v1.0.1"
+    checkout develop
+    commit id: "feat: new hotness"
+    checkout "Release Please"
+    commit id: "prepare v1.1.0"
+    checkout develop
+    merge "Release Please" id: "chore: set v1.1.0"
+    commit id: "feat!: breaking change"
+    branch "Release Please 2"
+    commit id: "prepare v2.0.0"
+    checkout develop
+    merge "Release Please 2" id: "chore: set v2.0.0"
+    checkout main
+    merge develop id: "chore: release v2.0.0" tag: "v2.0.0"
+    checkout develop
+    merge main id: "merge tags"
+    branch "Release Please 3"
+    commit id: "prepare v2.0.1"
+

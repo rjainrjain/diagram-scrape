@@ -1,0 +1,45 @@
+
+sequenceDiagram
+  actor Penjual
+  participant V_OP as View #10095; SellerOrderPage
+  participant P_SO as Pop-up #10095; ShipOrder
+  participant C_O as Controller #10095; OrderController
+  participant M_O as Model #10095; Order
+
+  Penjual->>V_OP: klik tombol "Kirim Pesanan" di salah satu data
+  
+  activate Penjual
+
+  activate V_OP
+
+  V_OP->>P_SO: setIsModalShipOpen(true)
+
+  activate P_SO
+
+  Penjual->>P_SO: klik tombl "Submit"
+  P_SO->>C_O: ship_order()
+
+  activate C_O
+
+  opt Invalid Input
+    C_O-->>Penjual: return validation message
+  end
+
+  C_O->>M_O: update()
+  
+  activate M_O
+  
+  M_O-->>C_O: return
+
+  deactivate M_O
+
+  C_O-->>V_OP: return view
+
+  deactivate C_O
+  
+  V_OP->>P_SO: setIsModalShipOpen(false)
+
+  deactivate P_SO
+  deactivate V_OP
+  
+  deactivate Penjual

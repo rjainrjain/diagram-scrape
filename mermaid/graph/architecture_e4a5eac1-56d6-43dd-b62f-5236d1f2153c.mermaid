@@ -1,0 +1,68 @@
+```mermaid
+graph TB
+    subgraph "SCMS Web App"
+        A[Login Screen] -->|Auth| B[Web Controllers]
+        B -->|JWT Token| C[Gateway API]
+        
+        %% Login Controller Snippet
+        classDef authCode fill:#f9f,stroke:#333,stroke-width:2px
+        class A authCode
+        A1[/"[HttpPost]
+        public async Task Login(LoginModel model)
+        {
+          var claims = new[] { new Claim(role, 'User') }
+          await SignInAsync(claims)
+        }"/]
+        style A1 fill:#f9f,stroke:#333,stroke-width:2px
+    end
+
+    subgraph "Azure Function"
+        D[HTTP Trigger] -->|JWT Token| C
+        
+        %% Function Snippet
+        D1[/"[Function('ProcessData')]
+        async Task Run(HttpRequestData req)
+        {
+          var token = GenerateJwtToken()
+          req.Headers.Add('Authorization', token)
+        }"/]
+        style D1 fill:#e1d5e7,stroke:#333,stroke-width:2px
+    end
+
+    subgraph "Gateway (Ocelot)"
+        C -->|Validate Auth| E[MSS API]
+        
+        %% Ocelot Config Snippet
+        C1[/"{
+          'Routes': [{
+            'AuthenticationOptions': {
+              'AuthenticationProviderKey': 'Bearer'
+            },
+            'RouteClaimsRequirement': {
+              'role': 'Application|Admin|User'
+            }
+          }]
+        }"/]
+        style C1 fill:#dae8fc,stroke:#333,stroke-width:2px
+    end
+
+    subgraph "MSS API"
+        E -->|CRUD Operations| F[(Data Storage)]
+        
+        %% API Controller Snippet
+        E1[/"[Authorize(Roles = 'Admin')]
+        [HttpPost]
+        public IActionResult Create(DataItem item)
+        {
+          _items.Add(item)
+          return Ok(item)
+        }"/]
+        style E1 fill:#d5e8d4,stroke:#333,stroke-width:2px
+    end
+
+    %% Connections
+    A1 -.->|Explains| A
+    D1 -.->|Explains| D
+    C1 -.->|Explains| C
+    E1 -.->|Explains| E
+```

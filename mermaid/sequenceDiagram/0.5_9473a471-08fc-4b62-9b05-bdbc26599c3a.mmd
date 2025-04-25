@@ -1,0 +1,36 @@
+sequenceDiagram
+    participant U as User
+    participant B as Browser
+    participant S as Server
+
+    U->>B: Visits https://studies.cs.helsinki.fi/exampleapp/spa
+    B->>S: GET https://studies.cs.helsinki.fi/exampleapp/spa
+    activate S
+    S-->>B: HTML (Single Page Application shell)
+    deactivate S
+
+    B->>S: GET https://studies.cs.helsinki.fi/exampleapp/spa/main.css
+    activate S
+    S-->>B: CSS file
+    deactivate S
+
+    B->>S: GET https://studies.cs.helsinki.fi/exampleapp/spa/main.js
+    activate S
+    S-->>B: JavaScript file (handles routing, rendering)
+    deactivate S
+
+    Note right of B: The browser executes JavaScript
+
+    B->>S: GET https://studies.cs.helsinki.fi/exampleapp/spa/data.json
+    activate S
+    S-->>B: JSON data (initial notes)
+    deactivate S
+
+    Note right of B: JavaScript processes JSON and renders notes
+
+    Note right of B: User interacts with SPA without further full page reloads
+
+    U->>B: User actions (e.g., adding a note)
+    B->>B: JavaScript handles the action locally
+
+

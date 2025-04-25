@@ -1,0 +1,60 @@
+%% Documentation: https://github.com/mermaid-js/mermaid
+%% Editor: https://mermaid.live/edit
+
+sequenceDiagram
+title Generate NFT and Submit to Vote
+participant User
+participant Server
+participant DB as Database
+participant S3
+participant Lens
+participant SD as Stable Diffusion
+participant Ipfs as IPFS
+
+Note over User: User clicks on Generate Image
+
+User->>Server: API to generate images from a prompt and filter
+Server->> SD: Invoke SDK to generate image using prompt
+SD->>Server: Response having image data
+Server->>S3: Upload images to S3
+S3->>Server: Response 200
+Server->>User: Return suggested image urls
+
+%% break
+%%   note over Server: If no query result, then log error
+%%   note over Server: If already published
+%% end
+
+Note over User: User selects an Image & clicks on Submit to vote
+
+User->>Server: API call containing url of image and it's metadata to be uploaded
+Server->>Ipfs: API call to upload image
+Ipfs->>Server: Return Image CID
+
+Server->>Ipfs: API call to upload lens Metadata
+Ipfs->>Server: Return lens metadata CID
+
+Server->>User: Return Lens Metadata CID
+
+
+%% break
+%%   note over Server: If error, log error
+%% end
+
+Note left of User: User create publication on user's lens profile
+
+User->>Lens: GraphQL call to create a publication
+Lens->>User: Response containing polygon transaction hash
+
+
+User->>Server: API call to store user's publication details
+
+Server->>Lens: GraphQL call to fetch publication details using txn hash.
+Lens->>Server: Response containing publication details
+Server->>DB: Create an entry in Lens Posts Table.
+DB->>Server: Success
+Server->>User: Success
+
+Note over User: User is shown success that Image is submitted to vote.
+
+

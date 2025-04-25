@@ -1,0 +1,312 @@
+```mermaid
+classDiagram
+    AppController --> AppService
+    AppModule --> AppController
+    AppModule --> AppService
+
+    AcomodacaoController --> AcomodacaoService
+    AcomodacaoController --> AcomodacaoRepository
+    AcomodacaoModule --> AcomodacaoController
+    AcomodacaoModule --> AcomodacaoService
+    AcomodacaoService --> AcomodacaoRepository
+    AcomodacaoService --> AcomodacaoEntity
+    AcomodacaoService --> FotosAcomodacaoEntity
+    AcomodacaoEntity --> ReservaEntity
+    AcomodacaoEntity --> FotosAcomodacaoEntity
+
+    AutenticacaoModule --> AutenticacaoController
+    AutenticacaoModule --> AutenticacaoService
+    AutenticacaoController --> AutenticacaoService
+    AutenticacaoService --> UsuarioService
+
+    HospedeModule --> HospedeController
+    HospedeModule --> HospedeService
+    HospedeController --> HospedeService
+    HospedeService --> HospedeRepository
+    HospedeService --> HospedeEntity
+    HospedeEntity --> ReservaEntity
+
+    MailModule --> MailController
+    MailModule --> MailService
+    MailController --> MailService
+
+    MapsModule --> MapsController
+    MapsModule --> MapsService
+    MapsController --> MapsService
+
+    ReservaModule --> ReservaController
+    ReservaModule --> ReservaService
+    ReservaController --> ReservaService
+    ReservaService --> ReservaRepository
+    ReservaService --> ReservaEntity
+    ReservaService --> HospedeEntity
+    ReservaService --> UsuarioEntity
+    ReservaService --> AcomodacaoEntity
+    ReservaEntity --> UsuarioEntity
+    ReservaEntity --> AcomodacaoEntity
+    ReservaEntity --> HospedeEntity
+
+    UsuarioModule --> UsuarioController
+    UsuarioModule --> UsuarioService
+    UsuarioController --> UsuarioService
+    UsuarioController --> UsuarioRepository
+    UsuarioService --> UsuarioRepository
+    UsuarioService --> UsuarioEntity
+    UsuarioEntity --> ReservaEntity
+
+    class AppController {
+        -appService AppService
+        +getStatusSever() string
+    }
+    class AppService {
+        +getStatusSever() string
+    }
+    class AppModule {
+    }
+    class AcomodacaoController {
+        -acomodacaoRepository AcomodacaoRepository
+        -acomodacaoService AcomodacaoService
+        +createAcomodacao(dadosAcomodacao, fotos) Promise
+        +readAcomodacao() Promise
+        +updateAcomodacao(id, dadosAcomodacao) Promise
+        +deleteAcomodacao(id) Promise
+    }
+    class AcomodacaoEntity {
+        -id string
+        -nome string
+        -numero number
+        -capacidade number
+        -quantidadeCamas number
+        -tipoCama string
+        -tipoBanheiro string
+        -comChuveiro boolean
+        -comBanheira boolean
+        -comToalhas boolean
+        -comSecador boolean
+        -comAcessibilidade boolean
+        -comCozinha boolean
+        -comRestaurante boolean
+        -comArCondicionado boolean
+        -comAquecedor boolean
+        -comTV boolean
+        -tamanhoTV number
+        -comWifi boolean
+        -comFrigobar boolean
+        -comCofre boolean
+        -comVaranda boolean
+        -descricao string
+        -preco number
+        -createdAt string
+        -updatedAt string
+        -deletedAt string
+        +reservas ReservaEntity[]
+        +fotos FotosAcomodacaoEntity[]
+    }
+    class AcomodacaoModule {
+    }
+    class AcomodacaoRepository {
+        -acomodacoes AcomodacaoEntity[]
+        +existWithNumber(numero) Promise
+        +createAcomodacao(acomodacao) Promise
+        +readAcomodacao() Promise
+        +searchByID(id) AcomodacaoEntity
+        +updateAcomodacao(id, dadosDeAtualizacao) Promise
+        +deleteAcomodacao(id) Promise
+    }
+    class AcomodacaoService {
+        -acomodacaoRepository Repository
+        -fotosAcomodacaoRepository Repository
+        +createAcomodacao(acomodacaoEntity) Promise
+        +readAcomodacao() Promise
+        +updateAcomodacao(id, acomodacaoEntity) Promise
+        +deleteAcomodacao(id) Promise
+        +createFoto(acomodacaoId, imagem, nome, tipo) Promise
+    }
+    class FotosAcomodacaoEntity {
+        -id string
+        -imagem Buffer
+        -nome string
+        -tipo string
+        +acomodacao AcomodacaoEntity
+    }
+    class AutenticacaoController {
+        -autenticacaoService AutenticacaoService
+        +login(email, senha) Promise
+    }
+    class AutenticacaoGuard {
+        -jwtService JwtService
+        +canActivate(context) Promise
+    }
+    class AutenticacaoModule {
+    }
+    class AutenticacaoService {
+        -usuarioService UsuarioService
+        -jwtService JwtService
+        +login(email, senhaInserida) Promise
+    }
+    class HospedeController {
+        -hospedeService HospedeService
+        +createHospede(dadosHospede) Promise
+        +readHospede() Promise
+        +updateHospede(id, dadosHospede) Promise
+        +deleteHospede(id) Promise
+    }
+    class HospedeEntity {
+        -id string
+        -nome string
+        -email string
+        -rg string
+        -cpf string
+        -rua string
+        -numero number
+        -complemento string
+        -bairro string
+        -cidade string
+        -estado string
+        -pais string
+        -createdAt string
+        -updatedAt string
+        -deletedAt string
+        +reserva ReservaEntity
+    }
+    class HospedeModule {
+    }
+    class HospedeRepository {
+        -hospedes HospedeEntity[]
+        +createUsuario(hospede) Promise
+        +readUsuario() Promise
+        +existwithEmail(email) Promise
+        +existwithCPF(cpf) Promise
+        +existwithRG(rg) Promise
+        +searchByID(id) HospedeEntity
+        +updateUsuario(id, dadosDeAtualizacao) Promise
+        +deleteUsuario(id) Promise
+    }
+    class HospedeService {
+        -hospedeRepository Repository
+        +createHospede(hospedeEntity) Promise
+        +readHospede() Promise
+        +updateHospede(id, hospedeEntity) Promise
+        +deleteHospede(id) Promise
+    }
+    class MailController {
+        -mailService MailService
+        +enviarEmail(req) Promise
+    }
+    class MailModule {
+    }
+    class MailService {
+        -mailerService MailerService
+        +sendEmail(nome, email, telefone, mensagem) Promise
+    }
+    class MapsController {
+        -mapsService MapsService
+        +readReserva() Promise
+    }
+    class MapsModule {
+    }
+    class MapsService {
+        +readMaps() Promise
+    }
+    class HotelCodeGeneratorService {
+        -chars string
+        +generateCode(length) string
+    }
+    class ReservaController {
+        -reservaService ReservaService
+        +createReserva(createReservaFormDataDTO) Promise
+        +readReserva() Promise
+        +updateReserva(id, dadosReserva) Promise
+        +deleteReserva(id) Promise
+        +findReservaByName(nome) Promise
+        +findReservaByCpf(cpf) Promise
+    }
+    class ReservaEntity {
+        -id string
+        -codigo string
+        -status StatusReserva
+        -dataEntrada string
+        -dataSaida string
+        -valorTotal number
+        -createdAt string
+        -updatedAt string
+        -deletedAt string
+        +usuario UsuarioEntity
+        +acomodacao AcomodacaoEntity
+        +hospedes HospedeEntity[]
+    }
+    class ReservaModule {
+    }
+    class ReservaRepository {
+        -reservas ReservaEntity[]
+        +searchByCode(codigo) Promise
+        +searchByName(nome) Promise
+        +searchByCpf(cpf) Promise
+    }
+    class ReservaService {
+        -reservaRepository Repository
+        -reservaRepositoryCustom ReservaRepository
+        -acomodacaoRepository Repository
+        -usuarioRepository Repository
+        -hotelCodeGeneratorService HotelCodeGeneratorService
+        -hospedeRepository Repository
+        +createReserva(dadosReserva) Promise
+        +readReserva() Promise
+        +readReservaByCode(codigo) Promise
+        +updateReserva(id, hospedeEntity) Promise
+        +updateReservaByCode(codigo, updateReservaDTO) Promise
+        +deleteReserva(id) Promise
+        +deleteReservaByCode(codigo) Promise
+        +findReservaByName(nome) Promise
+        +findReservaByCpf(cpf) Promise
+    }
+    class UsuarioController {
+        -usuarioRepository UsuarioRepository
+        -usuarioService UsuarioService
+        +createUsuario(senha, dadosUsuario, senhaHasheada) Promise
+        +readUsuario() Promise
+        +updateUsuario(id, dadosUsuario) Promise
+        +deleteUsuario(id) Promise
+    }
+    class UsuarioEntity {
+        -id string
+        -nome string
+        -email string
+        -senha string
+        -rg string
+        -cpf string
+        -rua string
+        -numero number
+        -complemento string
+        -bairro string
+        -cidade string
+        -estado string
+        -pais string
+        -role string
+        -createdAt string
+        -updatedAt string
+        -deletedAt string
+        +reservas ReservaEntity[]
+    }
+    class UsuarioModule {
+    }
+    class UsuarioRepository {
+        -usuarios UsuarioEntity[]
+        +createUsuario(usuario) Promise
+        +readUsuario() Promise
+        +existwithEmail(email) Promise
+        +existwithCPF(cpf) Promise
+        +existwithRG(rg) Promise
+        +searchByID(id) UsuarioEntity
+        +updateUsuario(id, dadosDeAtualizacao) Promise
+        +deleteUsuario(id) Promise
+    }
+    class UsuarioService {
+        -usuarioRepository Repository
+        +createUsuario(usuarioEntity) Promise
+        +readUsuario() Promise
+        +updateUsuario(id, usuarioEntity) Promise
+        +deleteUsuario(id) Promise
+        +buscaPorEmail(email) Promise
+    }
+```

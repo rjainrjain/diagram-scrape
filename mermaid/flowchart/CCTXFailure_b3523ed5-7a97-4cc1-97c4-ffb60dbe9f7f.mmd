@@ -1,0 +1,33 @@
+
+
+flowchart LR
+    classDef bigger font-size:20px
+    classDef biggest font-size:50px,fill:green
+
+    User["User"]
+    Chain1["EVM Chain 1"]
+    Chain2["EVM Chain 2"]
+    Zetachain["Zetachain"]
+    zEVM["zEVM"]
+    Observer((("Observer/Signer")))
+
+    User -- 1. Trigger interaction --> Chain1 
+    Chain1 -- 2. ZetaSend emitted event --> Chain1
+    Chain1 -- 3. Sees Incoming Event ZetaSend event--> Observer 
+    Observer:::bigger -- 4. Vote on inbound event occurence --> Zetachain 
+    Zetachain:::biggest -- 6. Emit inbound event vote succeeded upon quorum --> Zetachain 
+    Zetachain:::biggest -- 7. Observe CCTX voting succeeded --> Observer 
+    Observer:::bigger -- 8. P2P TSS signature generation --> Observer
+    Observer:::bigger -- 9. TSS Send to EVM chain --> Chain2
+    Chain2 -- 10. Sees Incoming Tx failure --> Observer:::bigger
+    Observer:::bigger -- 11. Vote on outbound missing event occurence --> Zetachain 
+    Zetachain:::biggest -- 12. Emit outbound missing occurence event upon quorum --> Zetachain 
+    Zetachain -- 13. Observe Revert CCTX voting succeeded --> Observer 
+    Observer:::bigger -- 14. P2P TSS signature generation for onRevert --> Observer
+    Observer:::bigger -- 15. TSS Send to EVM chain --> Chain1
+    Chain1 -- 16. ZetaRevert emitted event --> Chain1
+    Chain1 -- 17. Sees incoming zetaRevert event --> Observer:::bigger
+    Observer:::bigger -- 18. Vote on inbound event occurence --> Zetachain 
+    Zetachain:::biggest -- 19. Emit vote onRevert succeeded event upon quorum --> Zetachain 
+    
+

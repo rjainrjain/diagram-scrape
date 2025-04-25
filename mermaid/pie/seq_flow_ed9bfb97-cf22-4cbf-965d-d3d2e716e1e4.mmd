@@ -1,0 +1,29 @@
+sequenceDiagram
+    participant M as Main
+    participant G as Game
+    participant B as Board
+    participant P1 as Player1
+    participant P2 as Player2
+    participant U as Utils
+    participant AI as AI
+
+    M->>G: start_game()
+    G->>B: initialize board
+    G->>P1: initialize player 1
+    G->>P2: initialize player 2
+    G->>AI: initialize AI
+    G->>U: get_valid_moves(board, player)
+    U->>B: get_piece(position)
+    G->>AI: get_move(board, player)
+    AI->>U: get_valid_moves(board, player)
+    U->>B: get_piece(position)
+    AI->>G: make_move(player, move)
+    G->>B: set_piece(position, piece)
+    G->>B: is_valid_move(move)
+    B->>P1: get_pieces()
+    B->>P2: get_pieces()
+    G->>B: get_captured_pieces(player)
+    B->>P1: set_pieces(pieces)
+    B->>P2: set_pieces(pieces)
+    G->>B: is_game_over()
+    G->>B: get_winner()

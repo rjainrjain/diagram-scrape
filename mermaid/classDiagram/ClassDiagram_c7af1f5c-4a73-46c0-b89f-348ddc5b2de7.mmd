@@ -1,0 +1,58 @@
+classDiagram
+    class NotificationModule {
+        -MongooseModule
+        -NotificationController
+        -NotificationService
+        -UINotificationRepository
+        -UINotificationService
+        -CompanyMock
+        -UserMock
+        -EmailChannel
+        -UIChannel
+    }
+    class NotificationService {
+        +sendNotification(companyId: string, userId: string, notificationType: NotificationType): Promise<void>
+    }
+    class UINotificationService {
+        +getByUserId(userId: string): Promise<UINotificationDocument[]>
+    }
+    class UINotificationRepository {
+        +findByUserId(userId: string): Promise<UINotificationDocument[]>
+        +create(companyId: string, userId: string, notificationType: NotificationType): Promise<void>
+    }
+    class UINotification {
+        -companyId: string
+        -userId: string
+        -type: NotificationType
+    }
+    class NotificationType {
+        LEAVE_BALANCE_REMINDER
+        MONTHLY_PAYSLIP
+        HAPPY_BIRTHDAY
+    }
+    class NotificationController {
+        +sendNotification(companyId: string, userId: string, notificationType: NotificationType): Promise<void>
+        +getUINotifications(userId: string): Promise<any>
+    }
+    class EmailChannel {
+        +sendNotification(companyId: string, userId: string, notificationType: NotificationType): Promise<void>
+    }
+    class UIChannel {
+        +sendNotification(companyId: string, userId: string, notificationType: NotificationType): Promise<void>
+    }
+    class CompanyMock {
+    }
+    class UserMock {
+    }
+    NotificationModule --> NotificationController
+    NotificationModule --> NotificationService
+    NotificationModule --> UINotificationRepository
+    NotificationModule --> UINotificationService
+    NotificationModule --> CompanyMock
+    NotificationModule --> UserMock
+    NotificationModule --> EmailChannel
+    NotificationModule --> UIChannel
+    UINotificationRepository --> UINotification
+    UINotification --> NotificationType
+    EmailChannel --> UINotificationRepository
+    UIChannel --> UINotificationRepository

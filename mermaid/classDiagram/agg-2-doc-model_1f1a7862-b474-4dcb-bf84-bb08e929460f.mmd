@@ -1,0 +1,93 @@
+classDiagram
+	namespace Domain{
+		class SignPositionEnum{
+			<<enumeration>>
+			0 - TopLeft
+			1 - TopCenter
+			2 - TopRight
+			3 - BottomLeft
+			4 - BottomCenter
+			5 - BottomRight
+		}
+		class IDocKey{
+			<<interface>>
+			+ string DocId
+		}
+		class IDocTypeKey{
+			<<interface>>
+			+ string DocTypeId
+		}
+		class IUserKey{
+			<<interface>>
+			+ stirng UserId
+		}
+
+		class DocModel{
+			<<model>>
+			+ string DocId
+			+ datetime DocDate
+			+ string DocTypeId
+			+ string DocTypeName
+			+ string UserId
+			+ string Email
+			+ DocStateEnum DocState
+			+ datetime ExpiredDate
+			+ ----
+			+ string RequestedDocUrl
+			+ string UploadedDocId
+			+ string UploadedDocUrl
+			+ string PublishedDocUrl
+			+ ----
+			+ List~DocSigneeModel~ ListSignee
+			+ List~DocJurnalModel~ ListJurnal
+		}
+
+		class DocSigneeModel{
+			<<model>>
+			+ string DocId
+			+ string UserId
+			+ string Email
+			+ string SignTag
+			+ SignPositionEnum SignPosition
+			+ int Level
+			+ bool IsSigned
+			+ datetime SignedDate
+		}
+
+		class DocJurnalModel{
+			<<model>>
+			+ string DocId
+			+ string NoUrut
+			+ dateTime JurnalDate
+			+ string JurnalDescription
+			+ DocStateEnum DocState
+		}
+
+
+		class DocStateEnum{
+			<<enumeration>>
+			0 - Created
+			1 - Submited
+			2 - Uploaded
+			3 - SIgned
+			4 - Published
+			5 - Expired
+			6 - Rejected
+		}
+
+	}
+	IDocKey ..o DocModel 
+	IDocTypeKey ..o DocModel 
+	IUserKey ..o DocModel 
+
+	DocStateEnum ..o DocModel
+	DocStateEnum ..o DocJurnalModel
+	SignPositionEnum ..o DocSigneeModel
+
+	DocModel "1"-->"*" DocSigneeModel
+	DocModel "1"-->"*" DocJurnalModel
+
+
+
+
+

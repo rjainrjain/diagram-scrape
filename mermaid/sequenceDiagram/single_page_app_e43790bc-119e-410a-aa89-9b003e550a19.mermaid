@@ -1,0 +1,22 @@
+sequenceDiagram
+    participant selain
+    participant palvelin
+
+    note right of selain: Mennään sivulle ...exampleapp/spa:
+    selain->>palvelin: Sivun avaaminen aiheuttaa 4 HTTP GET-pyyntöä palvelimelle
+    activate palvelin
+    palvelin-->>selain: HTML-tiedosto SPA (sivun sisältö ja rakenne)
+    deactivate palvelin
+
+    selain->>palvelin: HTML-tiedosto saa selaimen hakemaan palvelimelta 2 tiedostoa:
+    activate palvelin
+    palvelin-->>selain: main.css (sivun tyylit määrittelevä tiedosto)
+    palvelin-->>selain: spa.js, joka käsittelee ja piirtää uudet muistiinpanot
+    deactivate palvelin
+
+    selain->>palvelin: Selaimen suorittama spa.js tekee HTTP GET-pyynnön hakemaan JSON-muotoiset muistiinpanot
+    activate palvelin
+    palvelin-->>selain: data.json
+    deactivate palvelin
+
+    note right of selain: Selain renderöi mustiinpanot

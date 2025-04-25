@@ -1,0 +1,110 @@
+classDiagram
+    class Application {
+        static void main()
+    }
+    Application --> EventPlanner
+
+    class EventPlanner {
+        InputView inputView
+        OutputView outputView
+        void run()
+    }
+    EventPlanner --> InputView
+    EventPlanner --> OutputView
+    EventPlanner --> Order
+    EventPlanner --> EventBenefit
+    EventPlanner --> EventResult
+    class InputView {
+        VisitDate inputVisitDate()
+        OrderHistory inputOrderHistory()
+    }
+    class OutputView {
+        void printWelcome()
+        void printEventDetails(final VisitDate visitDate)
+        void printOrderMenu(final OrderHistory orderHistory)
+        void printTotalPrice(final OrderHistory orderHistory)
+        void printGiveAwayMenu(final EventBenefit eventBenefit)
+        void printEventBenefitPrices(final EventBenefit eventBenefit)
+        void printTotalBenefitPrice(final EventBenefit eventBenefit)
+        void printPaymentPrice(final EventResult eventResult)
+        void printEventBadge(final EventResult eventResult)
+    }
+
+    class Order {
+        OrderHistory getOrderHistory()
+        VisitDate getVisitDate()
+    }
+    Order --> OrderHistory
+    Order --> VisitDate
+    class VisitDate {
+        int date
+        int getDate()
+    }
+    class OrderHistory {
+        Map<Menu, OrderAmount> history
+        int getTotalPrice()
+        Map<Menu, OrderAmount> getHistory()
+    }
+    OrderHistory --> Menu
+    OrderHistory --> OrderAmount
+    class OrderAmount {
+        int amount
+        int getAmount()
+    }
+    class Menu {
+        <<enumeration>>
+        MenuType menuType
+        String menuName
+        int menuPrice
+        static Menu nameOf()
+    }
+    Menu --> MenuType
+    class MenuType {
+        <<enumeration>>
+    }
+
+    class EventBenefit {
+        Map<DecemberEvent, Integer> benefits
+    }
+    EventBenefit --> DecemberEvent
+    class DecemberEvent {
+        <<enumeration>>
+        String eventName
+        EventHandler eventHandler
+        Map<DecemberEvent, Integer> applyEvents(final Order order)
+        String getEventName()
+    }
+    DecemberEvent --> EventHandler
+    class EventHandler {
+        <<interface>>
+        boolean supports(final Order order)
+        boolean supportMinimumPrice(final OrderHistory orderHistory)
+        boolean supportVisitDate(final VisitDate visitDate)
+        int apply(final Order order)
+    }
+    EventHandler <|-- DdayEventHandler
+    EventHandler <|-- NormalDayEventHandler
+    EventHandler <|-- WeekEndDayEventHandler
+    EventHandler <|-- StarDayEventHandler
+    EventHandler <|-- GiveAwayEventHandler
+    class DdayEventHandler
+    class NormalDayEventHandler
+    class WeekEndDayEventHandler
+    class StarDayEventHandler
+    class GiveAwayEventHandler
+
+    class EventResult {
+        int totalOriginPrice
+        int totalBenefitPrice
+        int getPaymentPrice()
+        String getEventBadgeName()
+    }
+    EventResult --> EventBadge
+    class EventBadge {
+        <<enumeration>>
+        String badgeName
+        int boundPrice
+        static EventBadge priceOf(final int price)
+        String getBadeName()
+        int getBoundPrice()
+    }

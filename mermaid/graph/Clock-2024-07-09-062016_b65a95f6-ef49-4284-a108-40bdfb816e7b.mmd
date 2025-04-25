@@ -1,0 +1,38 @@
+flowchart TD
+    A[["시작"]] --> B["라이브러리 및 변수 초기화"]
+    B --> C["RTC 및 OLED 디스플레이 설정"]
+    C --> D["현재 날짜 및 시간 가져오기"]
+    D --> E["날짜 문자열 생성"]
+    E --> F["시간 문자열 생성"]
+    F --> G["OLED 디스플레이에 날짜와 시간 표시"]
+    G --> H{"계속 실행?"}
+    H -->|Yes| D
+    H -->|No| I[["종료"]]
+
+    subgraph DayMonthYear ["DayMonthYear 함수"]
+    E1["월을 문자열로 변환"]
+    E2["일을 문자열로 변환"]
+    E3["연도 추가"]
+    E1 --> E2 --> E3
+    end
+
+    subgraph AddLeadingZero ["AddLeadingZero 함수"]
+    F1["숫자가 10 미만인지 확인"]
+    F2["필요시 앞에 '0' 추가"]
+    F1 --> F2
+    end
+
+    E --> DayMonthYear
+    F --> AddLeadingZero
+
+    style A fill:#E1BEE7,stroke:#FFFFFF,stroke-width:2px
+    style B fill:#BBDEFB,stroke:#FFFFFF,stroke-width:2px
+    style C fill:#BBDEFB,stroke:#FFFFFF,stroke-width:2px
+    style D fill:#FFF9C4,stroke:#FFFFFF,stroke-width:2px
+    style E fill:#C8E6C9,stroke:#FFFFFF,stroke-width:2px
+    style F fill:#C8E6C9,stroke:#FFFFFF,stroke-width:2px
+    style G fill:#FFE0B2,stroke:#FFFFFF,stroke-width:2px
+    style H fill:#FFCDD2,stroke:#FFFFFF,stroke-width:2px
+    style I fill:#E1BEE7,stroke:#FFFFFF,stroke-width:2px
+    style DayMonthYear fill:#F8BBD0,stroke:#FFFFFF,stroke-width:2px
+    style AddLeadingZero fill:#B2EBF2,stroke:#FFFFFF,stroke-width:2px

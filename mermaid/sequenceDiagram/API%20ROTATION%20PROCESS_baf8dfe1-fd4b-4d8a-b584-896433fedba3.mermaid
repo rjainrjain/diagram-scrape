@@ -1,0 +1,31 @@
+sequenceDiagram
+
+    box API ROTATION PROCESS
+
+        actor User
+        participant Main
+        participant Get1DomainReport
+        participant DB
+
+    end
+    
+    User->>+Main: START REPORT
+    loop Loop all domain list
+        Main->>+Get1DomainReport: get_report(domain, APIKey)
+        Get1DomainReport-->>-Main: Response
+
+        alt APIKey is Valid?
+            Main->>Main: APIKey++
+            Main->>+Get1DomainReport: get_report(domain, APIKey)
+            Get1DomainReport-->>-Main: Response
+        end
+        Main->>DB: register Report Part
+
+    end
+
+    Main-->>-User: REPORT
+
+
+    
+
+    

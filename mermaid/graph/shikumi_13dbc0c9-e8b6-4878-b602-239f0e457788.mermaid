@@ -1,0 +1,15 @@
+graph TD
+   docx[Microsoft Wordファイル] --> pandoc[Pandoc]
+   md[Markdownファイル] --> pandoc
+   pandoc --> review[Re:VIEW]
+   re[.reファイル] --> review
+   mermaid[Mermaidファイル] --> image[画像ファイル] 
+   image --> review
+   scss[.scssファイル] --> sass[Sass]
+   sass --> css[CSS]
+   css --> review
+   review --> epub[EPUB]
+   review --> uplatex[upLaTeX]
+   epub --> vivliostyle[Vivliostyle]
+   vivliostyle --> pdf[PDF]
+   uplatex --> pdf

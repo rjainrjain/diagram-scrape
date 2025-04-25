@@ -1,0 +1,37 @@
+sequenceDiagram
+    participant selain
+    participant palvelin
+
+    note right of selain: Luodaan uusi muistiinpano:
+    selain->>palvelin: Selain lähettää lomakkeen datan HTTP POST-pyyntönä HTML:ssä olevien attribuuttien "action" ja "method" ansiota.
+    activate palvelin
+    note left of palvelin: Palvelimella JavaScript-koodi:
+    note left of palvelin: - Luo datan rungosta uuden olion sisältäen kentät content ja date
+    note left of palvelin: - Laittaa sen palvelimella olevaan listaan "notes"
+    note left of palvelin: - tekee uudelleenohjauspyynnön sivulle .../notes
+    palvelin-->>selain: Uudelleenohjauspyyntö
+    deactivate palvelin
+
+    note right of selain: Koodin uudelleenohjauspyyntö aiheuttaa sivun uudelleen lataamisen
+    note right of selain: mikä aiheuttaa neljä (4) HTTP GET -pyyntöä
+    selain->>palvelin: Ensimmäinen HTTP GET-pyyntö hakee palvelimelta HTML-tiedoston...
+    activate palvelin
+    palvelin-->>selain: HTML-tiedosto (sivun sisältö ja rakenne)
+    deactivate palvelin
+
+    selain->>palvelin: HTML-tiedosto saa selaimen hakemaan palvelimelta tiedostot main.css...
+    activate palvelin
+    palvelin-->>selain: main.css (sivun tyylit määrittelevä tiedosto)
+    deactivate palvelin
+
+    selain->>palvelin: ...sekä main.js...
+    activate palvelin
+    palvelin-->>selain: main.js
+    deactivate palvelin
+
+    selain->>palvelin: ...ja lopuksi selaimen suorittama JavaScript-koodi tekee HTTP GET-pyynnön hakemaan JSON-muotoiset muistiinpanot.
+    activate palvelin
+    palvelin-->>selain: data.json
+    deactivate palvelin
+
+    note right of selain: Selain suorittaa tapahtumankäsittelijän joka renderöi uuden muistiinpanon sisältävät muistiinpanot

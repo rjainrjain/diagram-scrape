@@ -1,0 +1,20 @@
+sequenceDiagram
+    participant User
+    participant System
+    participant Naver
+    participant CSV
+
+    User->>System: 100개의 가게 목록 제공
+    loop 100개의 가게에 대해
+        System->>Naver: 가게 이름으로 검색
+        Naver-->>System: 검색 결과 반환
+        System->>Naver: 블로그 항목으로 이동
+        Naver-->>System: 블로그 목록 제공
+        loop 10개의 블로그 포스트에 대해
+            System->>Naver: 블로그 제목 및 내용 요청
+            Naver-->>System: 블로그 제목 및 내용 제공
+        end
+    end
+    System->>CSV: 수집된 데이터 저장
+    CSV-->>System: 저장 완료 확인
+    System-->>User: 프로세스 완료 알림

@@ -1,0 +1,133 @@
+erDiagram
+Competition{
+    guid Id PK
+    string Name 
+    date StartDate 
+    date FinishDate 
+    string Description 
+    string Address 
+}
+
+CompetitionBattle{
+    guid Id PK
+    guid CompetitionId FK
+    enum AgeCategory   
+    enum SexCategory  
+}
+
+CompetitionSpeed{
+    guid Id PK
+    guid CompetitionId FK
+    enum AgeCategory   
+    enum SexCategory  
+}
+
+CompetitionClassic{
+    guid Id PK
+    guid CompetitionId FK
+    enum AgeCategory   
+    enum SexCategory  
+}
+
+CompetitionJump{
+    guid Id PK
+    guid CompetitionId FK
+    enum AgeCategory   
+    enum SexCategory  
+}
+
+CompetitionSlide{
+    guid Id PK
+    guid CompetitionId FK
+    enum AgeCategory   
+    enum SexCategory  
+}
+
+SkaterOnCompetition{
+    guid Id PK
+    guid SkaterId FK
+    bool PayedFee 
+    enum SendMusic 
+    string Music 
+    enum AgeCategory 
+    enum SexCategory 
+    int CompetitionRankBattle 
+    int CompetitionRankSpeed 
+    int CompetitionRankClassic 
+    int CompetitionRankJump 
+    int CompetitionRankSlide 
+}
+
+WorldRanks{
+    guid SkaterId PK, FK
+    enum Discipline 
+    enum AgeCategory   
+    enum SexCategory   
+    ushort Rank  
+    date DateAdded
+}
+
+Skater{
+    guid Id PK
+    string Name 
+    string Country 
+    enum AgeCategory 
+    enum SexCategory 
+    string WSID 
+}
+
+Round {
+    guid Id PK
+    Enum Type 
+}
+
+Group{
+    guid Id PK
+    enum Type 
+}
+
+Organizer{    
+    guid Id PK
+    int WSID 
+    string Name 
+}
+
+WorldRanksArchive{
+    guid SkaterId PK, FK
+    enum Discipline 
+    enum AgeCategory   
+    enum SexCategory   
+    ushort Rank  
+    date DateAdded
+    date DateArchived PK
+}
+
+    Competition ||--|{ Organizer : Organizer
+    Competition }o--o{ CompetitionBattle : has
+    Round }o--|{ CompetitionBattle : has
+    Round }|--|{ Group : has
+
+    Competition }o--o{ CompetitionSpeed : has
+    Round }o--|{ CompetitionSpeed : has
+
+    Competition }o--o{ CompetitionClassic : has
+    Round }o--|{ CompetitionClassic : has
+
+    Competition }o--o{ CompetitionJump : has
+    Competition }o--o{ CompetitionSlide : has
+
+    SkaterOnCompetition }o--o| CompetitionBattle : competes
+    SkaterOnCompetition }o--o| Group : competes
+
+    SkaterOnCompetition }o--o| CompetitionSpeed : competes
+    SkaterOnCompetition }o--o| Round : competes
+
+    SkaterOnCompetition }o--o| CompetitionClassic : competes
+    SkaterOnCompetition }o--o| CompetitionJump : competes
+    SkaterOnCompetition }o--o| CompetitionSlide : competes
+
+    SkaterOnCompetition }o--|| Competition : registered
+    SkaterOnCompetition }o--|| Skater : competes
+   
+    Skater ||--|{ WorldRanks : HasRanks
+    Skater ||--|{ WorldRanksArchive : HadRanks

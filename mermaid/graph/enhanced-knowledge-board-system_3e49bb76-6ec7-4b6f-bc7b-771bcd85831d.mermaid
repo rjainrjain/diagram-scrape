@@ -1,0 +1,32 @@
+
+/**
+ * This diagram represents an enhanced knowledge board system, which consists of the following key components:
+ *
+ * - Central Knowledge Graph (CKG): Stores and manages the overall knowledge base.
+ * - Personal Knowledge Graphs (PKG): Individual knowledge graphs that are influenced by the CKG and can in turn influence the Agentic Crew.
+ * - Data Sources (DS): External data sources that stream data into the Data Processing (DP) component.
+ * - Data Processing (DP): Processes the incoming data from DS and updates the CKG.
+ * - Agentic Crew (AC): Scouts the data sources and interacts with the PKGs.
+ * - Founders (F), Startups (S), and Consortium (C): Collaborate and interact with the PKGs.
+ * - AI Arbiter (AA): Directs the AC and weighs the inputs from the Consortium.
+ * - Human Owners (HO): Instruct the AC and guide the AA.
+ * - Knowledge Board (KB): Generates insights based on the PKGs and informs the Founders.
+ */
+```mermaid
+graph TD
+    CKG[Central Knowledge Graph] -->|Inform| PKG[Personal Knowledge Graphs]
+    DS[Data Sources] -->|Stream| DP[Data Processing]
+    AC[Agentic Crew] -->|Scout| DP
+    DP -->|Update| CKG
+    PKG -->|Influence| AC
+    F[Founders] -->|Interact| PKG
+    S[Startups] -->|Collaborate| PKG
+    C[Consortium] -->|Aggregate| S
+    C -->|Influence| AC
+    AA[AI Arbiter] -->|Direct| AC
+    AA -->|Weigh Inputs| C
+    HO[Human Owners] -->|Instruct| AC
+    HO -->|Guide| AA
+    PKG -->|Generate| KB[Knowledge Board]
+    KB -->|Inform| F
+```

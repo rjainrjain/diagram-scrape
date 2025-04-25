@@ -1,0 +1,50 @@
+flowchart LR
+    subgraph InfoSys["通知管理系统"]
+        direction LR
+
+        Student["学生"]
+        Teacher["教师"]
+        Class["班级"]
+        StudentView["学生视图"]
+        EventView["事件表"]
+        TodoView["待办栏"]
+        MsgView["通知箱"]
+        EventDistribute("班级通知分发系统")
+        EventCenter("学生事务管理系统")
+        StudentDB[("学生信息存储")]
+        ClassDB[("班级信息存储")]
+
+        Student -->|"学生事务"| EventCenter
+        EventCenter -->|"事件"| EventView
+        EventCenter -->|"待办"| TodoView
+
+        Teacher -->|"班级通知"| Class -->|"班级通知"| EventDistribute -->|"通知"| MsgView
+
+        EventView -->|"事件"| StudentView
+        TodoView -->|"待办"| StudentView
+        MsgView -->|"通知"| StudentView
+
+        EventCenter -.-> StudentDB
+        EventDistribute -.-> ClassDB
+
+    end
+
+    subgraph LoginSys["登录管理系统"]
+        direction LR
+
+        
+        User["用户"]
+        Auth("用户认证")
+        StuUser["学生用户"]
+        TchUser["教师用户"]
+
+        UserDB[("用户数据库")]
+
+        User -->|"认证信息"| Auth
+        Auth --->|"学生信息"| StuUser
+        Auth --->|"教师信息"| TchUser
+
+        Auth -.->|"认证信息"| UserDB
+        UserDB -.->|"身份信息"| Auth
+
+    end

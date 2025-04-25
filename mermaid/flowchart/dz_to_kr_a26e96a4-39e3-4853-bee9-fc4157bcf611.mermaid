@@ -1,0 +1,18 @@
+%% Subcircuit DZ to KR
+flowchart TD
+    b((broadcaster)) --> dz
+    dz[%dz] --> bf & dc
+    bf([&bf]) --> dz & zg & kr & sl & fk & kp & dc
+    zg[%zg] --> bb
+    bb[%bb] --> hg & bf
+    hg[%hg] --> dl & bf
+    dl[%dl] --> bf
+    kr([&kr]) --> gf
+    gf([&gf]) --> rx
+    sl[%sl] --> rp
+    rp[%rp] --> jb & bf
+    jb[%jb] --> bf & kp
+    kp[%kp] --> pz
+    pz[%pz] --> zg & bf
+    dc[%dc] --> fk
+    fk[%fk] --> sl

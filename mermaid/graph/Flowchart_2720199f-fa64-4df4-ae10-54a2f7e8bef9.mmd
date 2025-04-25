@@ -1,0 +1,9 @@
+graph TD
+  A[Set up Manager] -->|Questions| B(Menu)
+  B --> C{Choose Role}
+  C -->|Set Up Intern| D[Intern]
+  C -->|Set Up Engineer| E[Engineer]
+  C -->|Finish| F[End Assembly]
+  D --> |Menu| C
+  E --> |Menu| C
+  F --> |Generate Web Page| G[Save Web Page]

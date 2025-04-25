@@ -1,0 +1,92 @@
+---
+title: Elements Diagram
+---
+classDiagram
+    class Element{
+        <<interface>>
+        +render():string*
+    }
+    Element <|.. TextElement
+    Element <|.. HeaderElement
+    Element <|.. BoldElement
+    Element <|.. ItalicElement
+    Element <|.. HighlightedElement
+    Element <|.. LineElement
+    Element <|.. LinkElement
+    Element <|.. ImageElement
+    Element <|.. QuoteElement
+    Element <|.. BulletElement
+    Element <|.. ListElement
+
+    
+    class TextElement{
+        +value:string
+        +render():string
+    }
+
+    class HeaderElement{
+        -level:int
+        -children:Collection~Element~
+        +render():string
+        +addChildren(child: Element): void
+    }
+
+    class BoldElement{
+        -children:Collection~Element~
+        +render():string
+        +addChildren(child: Element): void
+    }
+
+    class ItalicElement{
+        -children:Collection~Element~
+        +render():string
+        +addChildren(child: Element): void
+    }
+
+    class HighlightedElement{
+        -children:Collection~Element~
+        +render():string
+        +addChildren(child: Element): void
+    }
+
+    class LineElement{
+        -children:Collection~Element~
+        +render():string
+        +addChildren(child: Element): void
+    }
+    
+    class LinkElement{
+        -url:string
+        -children:Collection~Element~
+        +render():string
+        +addChildren(child: Element): void
+    }
+
+    class ImageElement{
+        -path:string
+        -width: string
+        -height: string
+        -alt: string
+        +render():string
+    }
+
+    class QuoteElement{
+        -children:Collection~Element~
+        +render():string
+        +addChildren(child: Element): void
+    }
+
+    class BulletElement{
+        -children:Collection~Element~
+        +render():string
+        +addChildren(child: Element): void
+    }
+
+    class ListElement{
+        -children:Collection~Element~
+        +render():string
+        +addChildren(child: Element): void
+    }
+
+    
+

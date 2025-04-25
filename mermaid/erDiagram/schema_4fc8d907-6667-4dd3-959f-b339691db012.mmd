@@ -1,0 +1,44 @@
+erDiagram
+    "publ.user_authentications" {
+        uuid id PK
+        uuid user_id FK
+        text service 
+        text identifier 
+        jsonb details 
+        timestamp_with_time_zone created_at 
+        timestamp_with_time_zone updated_at 
+    }
+
+    "publ.user_emails" {
+        uuid id PK
+        uuid user_id FK
+        citext email 
+        boolean is_verified 
+        boolean is_primary 
+        timestamp_with_time_zone created_at 
+        timestamp_with_time_zone updated_at 
+    }
+
+    "publ.users" {
+        uuid id PK
+        citext username 
+        text name 
+        text avatar_url 
+        boolean is_admin 
+        boolean is_verified 
+        timestamp_with_time_zone created_at 
+        timestamp_with_time_zone updated_at 
+    }
+
+    "publ.videos" {
+        uuid id PK
+        text video_url 
+        text title 
+        uuid user_id FK
+        timestamp_with_time_zone created_at 
+        timestamp_with_time_zone updated_at 
+    }
+
+    "publ.user_authentications" }o--|| "publ.users" : "user_id"
+    "publ.user_emails" }o--|| "publ.users" : "user_id"
+    "publ.videos" }o--|| "publ.users" : "user_id"

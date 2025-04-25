@@ -1,0 +1,39 @@
+classDiagram
+    class Lens {
+        <<trait>>
+        +get(b: B): A
+        +put(a: A, b: B): B
+        +|(other: Lens): PairedLens
+        +->(other: Lens): ChainedLens
+    }
+    class PairedLens {
+        +f: Lens
+        +g: Lens
+        +get(mem: C): (A, B)
+        +put(ab: (A, B), mem: C): C
+        +isPair(): IsPair
+    }
+    class ChainedLens {
+        +f: Lens
+        +g: Lens
+        +get(mem: C): A
+        +put(a: A, mem: C): C
+        +isChain(): IsChain
+    }
+    class Fst {
+        +get(b: (A, B)): A
+        +put(a: A, b: (A, B)): (A, B)
+    }
+    class Snd {
+        +get(b: (A, B)): B
+        +put(a: B, b: (A, B)): (A, B)
+    }
+    class Compatible {
+        <<class>>
+    }
+    Lens <|-- PairedLens
+    Lens <|-- ChainedLens
+    Lens <|-- Fst
+    Lens <|-- Snd
+    PairedLens --> Compatible: uses
+    ChainedLens --> Compatible: uses

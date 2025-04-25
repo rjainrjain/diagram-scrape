@@ -1,0 +1,60 @@
+stateDiagram-v2
+    [*] --> Start
+    Start --> ChooseOperation
+    
+    state ChooseOperation <<choice>>
+    ChooseOperation --> DatabaseOperations : Database
+    ChooseOperation --> TableOperations : Table
+    ChooseOperation --> RowOperations : Row
+    
+    state DatabaseOperations {
+        [*] --> SelectDatabaseOperation
+        state SelectDatabaseOperation <<choice>>
+        SelectDatabaseOperation --> CreateDatabase : Create
+        SelectDatabaseOperation --> LoadDatabase : Load
+        SelectDatabaseOperation --> SaveDatabase : Save
+        CreateDatabase --> ValidateDatabase
+        LoadDatabase --> ValidateDatabase
+        SaveDatabase --> [*]
+        ValidateDatabase --> [*]
+    }
+    
+    state TableOperations {
+        [*] --> SelectTableOperation
+        state SelectTableOperation <<choice>>
+        SelectTableOperation --> AddTable : Add
+        SelectTableOperation --> CreateTable : Create
+        SelectTableOperation --> DropTable : Drop
+        SelectTableOperation --> GetTable : Get
+        SelectTableOperation --> RenameTable : Rename
+        SelectTableOperation --> UnionTables : Union
+        SelectTableOperation --> ManageSchema : Manage Schema
+        AddTable --> ValidateTable
+        CreateTable --> ValidateTable
+        DropTable --> [*]
+        GetTable --> [*]
+        RenameTable --> [*]
+        UnionTables --> ValidateTable
+        ManageSchema --> ValidateTable
+        ValidateTable --> [*]
+    }
+    
+    state RowOperations {
+        [*] --> SelectRowOperation
+        state SelectRowOperation <<choice>>
+        SelectRowOperation --> InsertRow : Insert
+        SelectRowOperation --> DeleteRow : Delete
+        SelectRowOperation --> SelectData : Select
+        SelectRowOperation --> UpdateData : Update
+        InsertRow --> ValidateRow
+        DeleteRow --> [*]
+        SelectData --> [*]
+        UpdateData --> ValidateRow
+        ValidateRow --> [*]
+    }
+    
+    DatabaseOperations --> ChooseOperation
+    TableOperations --> ChooseOperation
+    RowOperations --> ChooseOperation
+    
+    ChooseOperation --> [*] : Exit

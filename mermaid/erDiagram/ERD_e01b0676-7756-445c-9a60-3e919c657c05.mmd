@@ -1,0 +1,63 @@
+---
+title: RealWorld ERD
+---
+erDiagram
+    User ||--|| Profile : "User Info"
+    User ||--|{ Article : "User Article"
+    User ||--|{ Comment : "User Comment"
+    User ||--|{ Follow : "User Follow"
+    User ||--|{ Favorite : "User Favorite Article"
+    Favorite }|--|| Article : "Article Favorite"
+    Article ||--|{ Comment : "Articles-Comment"
+    Article ||--|| Tags : "Articles-Tags"
+    Tags ||--|{ Tag : "Tags-Tag"
+    User {
+        number id PK
+        string email
+        string password
+    }
+    Profile {
+        number id PK
+        number user_id FK
+        string username "Unique"
+        string bio
+        string image
+    }
+    Article {
+        number id PK
+        number author_id FK "User"
+        number tags_id FK "Tags"
+        string title
+        string description
+        string body
+        string description
+        string slug "URL"
+        datetime createdAt
+        datetime updatedAt
+    }
+    Favorite {
+        number id PK
+        number user_id "User"
+        number article_id "Article"
+    }
+    Follow {
+        number id PK
+        number follower_user_id FK "User Follower"
+        number followee_user_id FK "User Followee"
+    }
+    Comment {
+        number id PK
+        number user_id FK "User"
+        number article_id FK "Article"
+        string body
+        datetime createdAt
+        datetime updatedAt
+    }
+    Tags {
+        number article_id FK "Articles"
+        number tag_id FK "Tag"
+    }
+    Tag {
+        number id PK
+        string tagName
+    }

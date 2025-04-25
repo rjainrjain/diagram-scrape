@@ -1,0 +1,15 @@
+sequenceDiagram
+    Client->>Vuex: selectCard(cardNumber)
+    activate Client
+    activate Vuex
+    Vuex->>Vuex: doVote(cardNumber)
+    Vuex->>Vuex: addParticipantVoted(vote)
+    Vuex->>Ably: publish(vote)
+    activate Ably
+    Ably->>Other Clients: broadcast: vote
+    deactivate Ably
+    Client->>Vuex: voteCountForCard(cardNumber)
+    Vuex-->>Client: count
+    Client->>Vuex: numberOfParticipantsVoted()
+    Vuex-->>Client: count
+    deactivate Vuex

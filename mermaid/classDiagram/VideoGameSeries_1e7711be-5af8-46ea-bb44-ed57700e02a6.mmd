@@ -1,0 +1,47 @@
+classDiagram
+  VideoGameSeries -- CreativeWorkSeason
+  VideoGameSeries -- Person
+  VideoGameSeries -- VideoObject
+  VideoGameSeries -- Episode
+  VideoGameSeries -- Thing
+  VideoGameSeries -- CreativeWork
+  VideoGameSeries -- Organization
+  VideoGameSeries -- GamePlayMode
+  VideoGameSeries -- MusicGroup
+  VideoGameSeries -- QuantitativeValue
+  VideoGameSeries -- Place
+  VideoGameSeries -- PostalAddress
+
+
+class VideoGameSeries {
+
+  string season
+  CreativeWorkSeason season
+  CreativeWorkSeason containsSeason
+  Person director
+  Person actor
+  VideoObject trailer
+  Episode episodes
+  Thing characterAttribute
+  number numberOfEpisodes
+  CreativeWorkSeason seasons
+  CreativeWork cheatCode
+  Thing gameItem
+  Organization productionCompany
+  Person actors
+  GamePlayMode playMode
+  string gamePlatform
+  string gamePlatform
+  Thing gamePlatform
+  number numberOfSeasons
+  Person musicBy
+  MusicGroup musicBy
+  QuantitativeValue numberOfPlayers
+  Thing quest
+  Place gameLocation
+  string gameLocation
+  PostalAddress gameLocation
+  Episode episode
+  Person directors
+
+ }

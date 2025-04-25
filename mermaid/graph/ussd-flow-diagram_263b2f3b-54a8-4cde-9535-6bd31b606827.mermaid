@@ -1,0 +1,62 @@
+graph TD
+    Start[Start] -->|Dial USSD code| MainMenu
+    MainMenu -->|1| SendPayment
+    MainMenu -->|2| CheckBalance
+    MainMenu -->|3| ViewHistory
+    MainMenu -->|4| ManageFavorites
+    MainMenu -->|5| IteMenu
+    MainMenu -->|6| AirtimeConversion
+    MainMenu -->|7| ExchangeMenu
+
+    SendPayment -->|Enter recipient| ConfirmRecipient
+    ConfirmRecipient -->|Confirm| EnterAmount
+    EnterAmount -->|Enter amount| ConfirmTransaction
+    ConfirmTransaction -->|Confirm| ProcessPayment
+    ProcessPayment -->|Success| EndSuccess
+    ProcessPayment -->|Failure| EndFailure
+
+    CheckBalance --> DisplayBalance
+    DisplayBalance --> EndSuccess
+
+    ViewHistory --> DisplayTransactions
+    DisplayTransactions --> EndSuccess
+
+    ManageFavorites -->|1| AddFavorite
+    ManageFavorites -->|2| RemoveFavorite
+    AddFavorite --> EnterFavoriteDetails
+    EnterFavoriteDetails --> SaveFavorite
+    SaveFavorite --> EndSuccess
+    RemoveFavorite --> SelectFavoriteToRemove
+    SelectFavoriteToRemove --> ConfirmRemoval
+    ConfirmRemoval --> EndSuccess
+
+    IteMenu -->|1| CreateIte
+    IteMenu -->|2| DonateToIte
+    CreateIte --> EnterIteDetails
+    EnterIteDetails --> ConfirmIteCreation
+    ConfirmIteCreation --> EndSuccess
+    DonateToIte --> SelectIte
+    SelectIte --> EnterDonationAmount
+    EnterDonationAmount --> ConfirmDonation
+    ConfirmDonation --> ProcessDonation
+    ProcessDonation --> IssueNFT
+    IssueNFT --> EndSuccess
+
+    AirtimeConversion --> EnterAirtimeAmount
+    EnterAirtimeAmount --> ConfirmConversion
+    ConfirmConversion --> ProcessConversion
+    ProcessConversion --> EndSuccess
+
+    ExchangeMenu -->|1| XLMToFiat
+    ExchangeMenu -->|2| FiatToXLM
+    XLMToFiat --> EnterXLMAmount
+    EnterXLMAmount --> ConfirmXLMExchange
+    ConfirmXLMExchange --> ProcessXLMExchange
+    ProcessXLMExchange --> EndSuccess
+    FiatToXLM --> EnterFiatAmount
+    EnterFiatAmount --> ConfirmFiatExchange
+    ConfirmFiatExchange --> ProcessFiatExchange
+    ProcessFiatExchange --> EndSuccess
+
+    EndSuccess[End Success]
+    EndFailure[End Failure]

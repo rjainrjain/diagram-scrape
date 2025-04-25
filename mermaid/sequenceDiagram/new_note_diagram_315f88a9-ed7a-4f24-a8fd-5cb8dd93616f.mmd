@@ -1,0 +1,18 @@
+sequenceDiagram
+participant user
+participant browser
+participant server
+
+user ->>browser: Clicks save button
+browser ->>server: (User input) POST request
+activate server
+Note right of browser: 5 HTTP requests
+server -->>server: creates new note object
+server -->>browser: HTTP status code 302 response (URL redirect)
+deactivate server
+browser -->>browser: Reload notes page
+browser ->>server: GET 3 HTTP requests
+activate server
+Note right of browser: Fetch stylesheet, JS Code and raw data of the notes
+server -->>browser: HTTP status code 200 OK
+browser ->>user: Page reloaded presented to user

@@ -1,0 +1,9 @@
+graph TD
+    UI["Interface do Usuário<br/>- Páginas de Produtos<br/>- Carrinho de Compras<br/>- Checkout"]
+    BL["Lógica de Negócio<br/>- Gestão de Pedidos<br/>- Cálculo de Preços<br/>- Validações"]
+    DAL["Acesso a Dados<br/>- Repositório de Produtos<br/>- Repositório de Pedidos<br/>- Cache"]
+    DB["Banco de Dados<br/>- MySQL (Pedidos/Produtos)<br/>- Redis (Cache)"]
+    
+    UI --> BL
+    BL --> DAL
+    DAL --> DB

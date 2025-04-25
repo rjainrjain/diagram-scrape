@@ -1,0 +1,88 @@
+graph TD
+    %% Main ProofJSON Object
+    ProofJSON["ProofJSON Format"]
+
+    %% Subgraphs for clarity and compactness
+    subgraph TheoremBlock["Theorem"]
+        ProofJSON --> Theorem
+        Theorem --> Statement
+        Theorem --> Hypothesis["Hypothesis"]
+        Theorem --> Conclusion["Conclusion"]
+        Theorem --> Status["Status of Proof"]
+        Theorem -->|optional| Proof["Proof"]
+        Theorem -->|optional| Ref["Reference to earlier/later proof"]
+        Theorem -->|optional| Cite["Citation"]
+        Theorem -->|optional| Errors["Errors"]
+        Theorem -->|optional| Missing["Missing Steps"]
+    end
+
+    subgraph DefineBlock["Define"]
+        ProofJSON --> Define
+        Define --> Statement
+        Define --> Term["Term"]
+    end
+
+    subgraph AssertBlock["Assert"]
+        ProofJSON --> Assert
+        Assert --> Claim["Claim"]
+        Assert -->|optional| DeducedFrom
+        Assert -->|optional| ProofMethod["Proof Method"]
+        Assert -->|optional| Calculation["Calculation"]
+        Assert -->|optional| Missing["Missing Steps"]
+        Assert -->|optional| Errors["Errors"]
+    end
+
+    subgraph DeducedFromBlock["Deduced From"]
+        DeducedFrom -->|optional| FromContext["From Context"]
+        DeducedFrom -->|optional| KnownResults["Known Results"]
+    end
+
+    subgraph AssumeBlock["Assume"]
+        ProofJSON --> Assume
+        Assume --> Statement
+    end
+
+    subgraph LetBlock["Let"]
+        ProofJSON --> Let
+        Let --> Variable["Variable"]
+        Let -->|optional| Value["Value"]
+        Let -->|optional| Kind["Kind"]
+        Let -->|optional| Property["Property"]
+    end
+
+    subgraph ProofBlock["Proof"]
+        ProofJSON --> Proof
+        Proof --> Steps["Steps"]
+    end
+
+    subgraph InductionBlock["Induction"]
+        ProofJSON --> Induction
+        Induction --> On["Variable"]
+        Induction --> ProofCases["Induction Cases"]
+    end
+
+    subgraph CasesBlock["Cases"]
+        ProofJSON --> Cases
+        Cases --> OnCondition["Condition/Variable"]
+        Cases --> SplitKind["Split Kind"]
+        Cases -->|optional| Exhaustiveness["Exhaustiveness"]
+        Cases --> ProofCases["Case Objects"]
+    end
+
+    subgraph ContradictionBlock["Contradiction"]
+        ProofJSON --> Contradiction
+        Contradiction --> Assumption["Assumed for Contradiction"]
+        Contradiction --> Proof
+    end
+
+    subgraph ConcludeBlock["Conclude"]
+        ProofJSON --> Conclude
+        Conclude --> Statement
+        Conclude -->|optional| Missing
+        Conclude -->|optional| Errors
+    end
+
+    subgraph RemarkBlock["Remark"]
+        ProofJSON --> Remark
+        Remark --> Statement
+    end

@@ -1,0 +1,23 @@
+
+classDiagram
+    class Main {
+        -Chalkboard chalkboard
+        +main() str
+    }
+    class Chalkboard {
+        -Drawing drawing
+        -Saving saving
+        +create_chalkboard()
+        +detect_mouse_movements()
+    }
+    class Drawing {
+        +draw()
+        +erase()
+    }
+    class Saving {
+        +save()
+        +load()
+    }
+    Main --> Chalkboard
+    Chalkboard --> Drawing
+    Chalkboard --> Saving

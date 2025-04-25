@@ -1,0 +1,48 @@
+classDiagram
+    direction RL
+    class ServiceDiscoverer {
+        <<Trait>>
+        +discover()
+    }
+    ManualServiceDiscoverer --|> ServiceDiscoverer
+    HarnessServiceDiscoverer --|> ServiceDiscoverer
+    FlyServiceDiscoverer --|> ServiceDiscoverer
+    DnsServiceDiscoverer --|> ServiceDiscoverer
+
+    DnsDiscoveryConfig --o DnsServiceDiscoverer
+    DnsDiscoveryConfig : +u16 service_port
+    DnsDiscoveryConfig : +Option~SocketAddr~ dns_server
+    DnsDiscoveryConfig : +String query
+    DnsDiscoveryConfig : +Option~Duration~polling_interval
+    class DnsServiceDiscoverer{
+        +DnsDiscoveryConfig config
+        +new(config: DnsDiscoveryConfig)
+        +discover()
+    }
+
+    FlyDiscoveryConfig --o FlyServiceDiscoverer
+    FlyDiscoveryConfig : +u16 service_port
+    FlyDiscoveryConfig : +String fly_app
+    FlyDiscoveryConfig : +Option~Duration~ polling_interval
+    class FlyServiceDiscoverer{
+        +FlyDiscoveryConfig config
+        +String query
+        +new(config: FlyDiscoveryConfig)
+        +discover()
+    }
+
+    ManualDiscoveryConfig --o ManualServiceDiscoverer
+    ManualDiscoveryConfig : +Vec monoliths
+    class ManualServiceDiscoverer{
+        +ManualDiscoveryConfig config
+        +new(config: ManualDiscoveryConfig)
+        +discover()
+    }
+
+    HarnessDiscoveryConfig --o HarnessServiceDiscoverer
+    HarnessDiscoveryConfig : +u16 port
+    class HarnessServiceDiscoverer{
+        +HarnessDiscoveryConfig config
+        +new(config: HarnessDiscoveryConfig)
+        +discover()
+    }

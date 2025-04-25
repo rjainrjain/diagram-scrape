@@ -1,0 +1,22 @@
+sequenceDiagram
+    participant Client as Client
+    participant Server as Server
+    participant DB as Database
+    participant OpenAI as "External Service: OpenAI"
+
+    Client->>Server: GET /api/projects/:projectId
+    Server->>DB: Query Project by ID
+    DB-->>Server: Project Data
+    Server->>Client: 404 Project not found (if not found)
+    Server->>DB: Aggregate User and UserSkill Data
+    DB-->>Server: User and UserSkill Data
+    Server->>DB: Populate User Skills
+    DB-->>Server: Populated User Skills
+    Server->>Server: Format User Data
+    Server->>DB: Find 'In Progress' Projects for Users
+    DB-->>Server: 'In Progress' Projects Data
+    Server->>Server: Update User Data with Ongoing Projects Count
+    Server->>OpenAI: Request Team Composition Suggestions
+    OpenAI-->>Server: Suggested Team Composition
+    Server->>Server: Parse Suggested Team Response
+    Server->>Client: Respond with Suggested Team Composition

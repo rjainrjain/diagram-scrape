@@ -1,0 +1,29 @@
+sequenceDiagram
+    participant User as User
+    participant Your_app as Your app
+    participant Video_SDK as Video SDK
+    participant Agora as SD-RTN
+    
+    User ->> Your_app: Open App
+    Your_app ->> Video_SDK: Initiate the Video SDK engine: agoraEngine = AgoraRTC.createClient
+    Your_app ->> Video_SDK: Start video in the engine: agoraEngine.init
+    Your_app ->> Video_SDK: Start local media: newline localStream = AgoraRTC.createStream newline localStream.init newline localStream.play
+
+    Video_SDK -->> Your_app: Initialization confirmation
+    Video_SDK -->> Your_app: Video started
+    Video_SDK -->> Your_app: Local media started
+
+    User ->> Video_SDK: Start call
+    Video_SDK ->> Agora: Retrieve authentication token to join channel
+    Agora -->> Video_SDK: Authentication token
+    Video_SDK ->> Agora: Join the channel: agoraEngine.join
+    Agora -->> Video_SDK: join accepted
+    Video_SDK ->> Agora: Push local media to the channel: agoraEngine.publish
+    Agora ->> Video_SDK: Retrieve streaming from the other user: agoraEngine.on('stream-added') newline agoraEngine.subscribe newline agoraEngine.on('stream-subscribed')
+    Video_SDK -->> User: Call started
+    Video_SDK ->> Video_SDK: Receive and send data streams
+
+    User ->> Video_SDK: Leave call
+    Video_SDK ->> Agora: leave the channel: agoraEngine.leave
+    Agora -->> Video_SDK: Channel left
+    Video_SDK -->> User: Call ended

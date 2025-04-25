@@ -1,0 +1,13 @@
+sequenceDiagram
+    participant browser
+    participant server
+
+    Note over browser: User types a new note in the text field and clicks "Save"
+
+    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+    activate server
+    Note over server: The server processes the new note and stores it
+    server-->>browser: 201 Created, new note data in JSON
+    deactivate server
+
+    Note right of browser: The browser updates the list of notes dynamically without a full page reload

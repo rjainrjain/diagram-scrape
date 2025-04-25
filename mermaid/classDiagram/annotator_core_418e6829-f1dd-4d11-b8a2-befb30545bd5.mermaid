@@ -1,0 +1,418 @@
+classDiagram
+direction BT
+class Allele {
+  + from(String) Allele
+  + toString() String
+  + size() int
+   boolean blank
+}
+class AnnotatedOrder {
+  + orderId() OrderId
+  + annotations() List~VariantAnnotations~
+}
+class AnnotatedRequest {
+  - UUID orderId
+  - UUID annotationId
+  - Variant variant
+  - UUID annotationRequestId
+  - String algorithm
+  # canEqual(Object) boolean
+  + from(AnnotationRequest) AnnotatedRequest
+  + hashCode() int
+  + toString() String
+  + equals(Object) boolean
+   Variant variant
+   UUID annotationRequestId
+   String algorithm
+   UUID orderId
+   UUID annotationId
+}
+class AnnotatedResult {
+  + annotationId() UUID
+  + algorithm() String
+  + annotationRequestId() UUID
+  + toDomain() AnnotationResult
+  + orderId() UUID
+  + result() String
+}
+class AnnotatedResultDeserializer {
+  + deserialize(String, byte[]) AnnotatedResult
+}
+class Annotation {
+  + result() String
+  + algorithm() AnnotationAlgorithm
+}
+class AnnotationAlgorithm {
+<<enumeration>>
+  + values() AnnotationAlgorithm[]
+  + valueOf(String) AnnotationAlgorithm
+}
+class AnnotationController {
+  + listAnnotationResults() List~OrderResultResponse~
+  + annotationsResults(UUID) ResponseEntity~OrderResultResponse~
+  + annotateCsvFile(MultipartFile, String) ResponseEntity~OrderResponse~
+}
+class AnnotationId {
+  + uuid() UUID
+  + nextIdentity() AnnotationId
+   String id
+}
+class AnnotationRequest {
+  + annotationId() AnnotationId
+  + from(OrderId, AnnotationId, Variant, AnnotationAlgorithm) AnnotationRequest
+  + algorithm() AnnotationAlgorithm
+  + annotationRequestId() AnnotationRequestId
+  + orderId() OrderId
+  + variant() Variant
+}
+class AnnotationRequestId {
+  - UUID uuid
+  + create() AnnotationRequestId
+  + hashCode() int
+  + equals(Object) boolean
+  + from(UUID) AnnotationRequestId
+  + toString() String
+  + from(String) AnnotationRequestId
+  # canEqual(Object) boolean
+   String id
+   UUID uuid
+}
+class AnnotationRequestPublisher {
+<<Interface>>
+  + publish(AnnotationRequest) void
+}
+class AnnotationResult {
+  + algorithm() AnnotationAlgorithm
+  + annotationRequestId() AnnotationRequestId
+  + annotationId() AnnotationId
+  + result() String
+  + toAnnotation(Variant) VariantAnnotations
+  + orderId() OrderId
+}
+class AnnotationResultConsumer {
+<<Interface>>
+  + consume(AnnotationResult) void
+}
+class AnnotationResultsClient {
+  + sendResults(List~VariantAnnotations~, URI) void
+}
+class AnnotationResultsCsv {
+  - String ref
+  - String chrom
+  - String result
+  - long position
+  - String gene
+  - String alt
+  # canEqual(Object) boolean
+  + equals(Object) boolean
+  + from(VariantAnnotations) AnnotationResultsCsv
+  + toString() String
+  + hashCode() int
+   String alt
+   String result
+   String ref
+   String gene
+   long position
+   String chrom
+}
+class AnnotationService {
+  + createMissingAnnotations(List~Variant~) List~VariantAnnotations~
+  - createMissingAnnotation(Variant) VariantAnnotations
+}
+class AnnotatorCoreApplication {
+  + main(String[]) void
+}
+class BaseIntegrationTest {
+  + initKafka() void
+}
+class Build_gradle {
+  + main(String[]) Unit
+}
+class CalculationTest
+class ConsoleNotifier {
+  + notifyAbutOrderFinished(Order) void
+}
+class CsvBean
+class CsvHandler {
+  + convertToCsvStream(List~CsvBean~) Optional~InputStreamSource~
+}
+class CsvVariantParser {
+  + read(InputStream) List~Variant~
+}
+class EmailNotifier {
+  + notifyAbutOrderFinished(Order) void
+  + createMessage(Order, List~CsvBean~) Optional~MimeMessage~
+}
+class InvalidVariantFormat
+class JSONAnnotation {
+  + from(VariantAnnotations) JSONAnnotation
+  + variant() JSONVariant
+  + annotations() Map~AnnotationAlgorithm, String~
+}
+class JpaAnnotation {
+  - Map~String, String~ results
+  - boolean annotated
+  - JpaVariantDetails variant
+  - Long variantId
+  - UUID annotationId
+  + builder() JpaAnnotationBuilder
+  + toAnnotation() VariantAnnotations
+   JpaVariantDetails variant
+   UUID annotationId
+   Map~String, String~ results
+   boolean annotated
+   Long variantId
+}
+class JpaAnnotationRepository {
+  + isAnnotated(Variant) boolean
+  + findById(AnnotationId) Optional~VariantAnnotations~
+  + findAllByVariantsId(List~Long~) List~JpaAnnotation~
+  + save(VariantAnnotations) void
+  + findByVariant(Variant) Optional~VariantAnnotations~
+  + save(AnnotationResult) void
+  + exists(Variant) boolean
+  - toJpa(VariantAnnotations) JpaAnnotation
+}
+class JpaOrder {
+  - UUID orderId
+  - List~String~ algorithms
+  - List~UUID~ requestsIds
+  - List~Long~ variants
+  + builder() JpaOrderBuilder
+   List~UUID~ requestsIds
+   List~String~ algorithms
+   UUID orderId
+   List~Long~ variants
+}
+class JpaOrderRepository {
+  - toJpa(Order, List~Long~) JpaOrder
+  + save(Order) void
+  - toDomain(JpaOrder, List~JpaVariant~) Order
+  + find(OrderId) Optional~Order~
+  + notExists(OrderPosition) boolean
+  + findAll() List~AnnotatedOrder~
+  + findOrderAnnotations(OrderId) List~VariantAnnotations~
+}
+class JpaTest {
+  + shouldSaveOrder() void
+  + shouldRetrieveAnnotationById() void
+  + shouldSaveAnnotation() void
+  + shouldRetrieveOrderById() void
+  + shouldRetrieveAnnotationByVariant() void
+}
+class JpaVariant {
+  - JpaVariantDetails variant
+  - Long id
+  + builder() JpaVariantBuilder
+   Long id
+   JpaVariantDetails variant
+}
+class JpaVariantDetails {
+  + from(Variant) JpaVariantDetails
+  + toVariant() Variant
+  + builder() JpaVariantDetailsBuilder
+}
+class JpaVariantRepository {
+  + findIdOrCreate(JpaVariantDetails) Long
+  + findOrCreateVariant(JpaVariantDetails) JpaVariant
+  + findAllIds(List~JpaVariantDetails~) List~Long~
+  + findAllByVariants(List~Long~) List~JpaVariant~
+}
+class KafkaAnnotationProducer {
+  + publish(AnnotationRequest) void
+}
+class KafkaAnnotationResultConsumer {
+  + listen(AnnotatedResult) void
+}
+class KafkaConfig
+class MailConfig {
+  + javaMailSender(String, int, String, String) JavaMailSender
+}
+class Nucleotide {
+<<enumeration>>
+  - String value
+  + valueOf(String) Nucleotide
+  + toString() String
+  + from(String) Nucleotide
+  + values() Nucleotide[]
+   String value
+}
+class Order {
+  - OrderId orderId
+  - OrderPositions orderPositions
+  - Set~AnnotationRequestId~ requestIds
+  + builder() OrderBuilder
+  - $default$requestIds() Set~AnnotationRequestId~
+  + acceptResult(AnnotationRequestId) void
+   Set~AnnotationRequestId~ requestIds
+   boolean finished
+   List~AnnotationAlgorithm~ algorithms
+   OrderPositions orderPositions
+   OrderId orderId
+   Stream~OrderPosition~ positions
+   List~Variant~ variants
+}
+class OrderFactory {
+  + createOrder(List~Variant~, List~AnnotationAlgorithm~) Order
+}
+class OrderFactoryTest {
+  ~ shouldCreateOrder() void
+}
+class OrderId {
+  + nextIdentity() OrderId
+  + uuid() UUID
+   String id
+}
+class OrderNotifier {
+<<Interface>>
+  + notifyAbutOrderFinished(Order) void
+}
+class OrderPosition {
+  + variant() Variant
+  + algorithm() AnnotationAlgorithm
+}
+class OrderPositions {
+  + variants() List~Variant~
+  + size() long
+  + algorithms() List~AnnotationAlgorithm~
+   Stream~OrderPosition~ positions
+}
+class OrderRepository {
+<<Interface>>
+  + notExists(OrderPosition) boolean
+  + save(Order) void
+  + find(OrderId) Optional~Order~
+  + findOrderAnnotations(OrderId) List~VariantAnnotations~
+  + findAll() List~AnnotatedOrder~
+}
+class OrderService {
+  + updateOrderWithResult(AnnotationResult) void
+  - createRequests(OrderId, VariantAnnotations) Stream~AnnotationRequest~
+  + handle(Order) void
+  + handleFinishedOrder(Order) void
+}
+class OrderServiceTest {
+  + shouldSaveOrderAndNotify_whenOrderAlreadyFinished() void
+  + shouldUpdateOrderAndNotify_whenResultPassedAndOrderFinished() void
+  + init() void
+  + shouldSaveOrderAndPublishRequests_whenOrderNotFinished() void
+  + shouldUpdateOrderButNotNotify_whenResultPassedAndOrderNotFinished() void
+}
+class Settings_gradle {
+  + main(String[]) Unit
+}
+class SpringDataAnnotationRepository {
+<<Interface>>
+  + findAllByVariantIdIn(List~Long~) List~JpaAnnotation~
+  + findByAnnotationId(UUID) Optional~JpaAnnotation~
+}
+class SpringDataOrderRepository {
+<<Interface>>
+  + findByOrderId(UUID) Optional~JpaOrder~
+}
+class SpringDataVariantRepository {
+<<Interface>>
+  + findByVariant(JpaVariantDetails) Optional~JpaVariant~
+  + findIdByVariant(JpaVariantDetails) Optional~Long~
+  + findAllIdByVariantIn(List~JpaVariantDetails~) List~Long~
+}
+class StubsFactory {
+  + variants() List~Variant~
+  + finishedOrder() Order
+  + annotationResult(OrderId, AnnotationRequest) AnnotationResult
+  + variantAnnotations() List~VariantAnnotations~
+  + requests(OrderId) List~AnnotationRequest~
+  + annotationResults(OrderId) List~AnnotationResult~
+  + annotationResult(OrderId) AnnotationResult
+  + annotations() List~Annotation~
+}
+class TestConfig {
+  + restTemplate() RestTemplate
+}
+class Variant {
+  - String gene
+  - Allele referenceAllele
+  - VariantType type
+  - String chromosome
+  - long position
+  - Allele alternativeAllele
+  + builder() VariantBuilder
+  + toString() String
+  # canEqual(Object) boolean
+  + equals(Object) boolean
+  + hashCode() int
+   VariantType type
+   boolean indel
+   long position
+   String gene
+   Allele referenceAllele
+   String chromosome
+   boolean snv
+   Allele alternativeAllele
+}
+class VariantAnnotations {
+  + from(Variant, List~Annotation~) VariantAnnotations
+  + variant() Variant
+  + from(Variant) VariantAnnotations
+  + annotationId() AnnotationId
+  + annotations() List~Annotation~
+}
+class VariantAnnotator {
+  + consume(AnnotationResult) void
+  + annotate(InputStream, List~AnnotationAlgorithm~) OrderId
+}
+class VariantInput {
+  - String gene
+  - String chrom
+  - String ref
+  - String alt
+  - long position
+  + hashCode() int
+  + toString() String
+  + toVariant() Variant
+  + equals(Object) boolean
+  # canEqual(Object) boolean
+   String alt
+   String ref
+   String gene
+   long position
+   String chrom
+}
+class VariantParser {
+<<Interface>>
+  + read(InputStream) List~Variant~
+}
+class VariantTest {
+  + shouldBuild_whenAllelesAsStringPassed() void
+}
+class VariantsAnnotationsRepository {
+<<Interface>>
+  + exists(Variant) boolean
+  + findById(AnnotationId) Optional~VariantAnnotations~
+  + save(AnnotationResult) void
+  + findByVariant(Variant) Optional~VariantAnnotations~
+  + isAnnotated(Variant) boolean
+  + save(VariantAnnotations) void
+}
+class WebConfig {
+  + restClient() RestTemplate
+  + addCorsMappings(CorsRegistry) void
+}
+class WebHookNotifier {
+  + notifyAbutOrderFinished(Order) void
+}
+class WebTest {
+  + shouldRetrieveOrderById() void
+  # annotationResults(UUID) ResponseEntity~JSONAnnotation[]~
+}
+
+AnnotationResultsCsv  -->  CsvBean 
+CalculationTest  -->  BaseIntegrationTest 
+ConsoleNotifier  ..>  OrderNotifier 
+CsvVariantParser  ..>  VariantParser 
+EmailNotifier  ..>  OrderNotifier 
+JpaAnnotationRepository  ..>  VariantsAnnotationsRepository 
+JpaOrderRepository  ..>  OrderRepository 
+KafkaAnnotationProducer  ..>  AnnotationRequestPublisher 
+VariantAnnotator  ..>  AnnotationResultConsumer 
+WebHookNotifier  ..>  OrderNotifier 

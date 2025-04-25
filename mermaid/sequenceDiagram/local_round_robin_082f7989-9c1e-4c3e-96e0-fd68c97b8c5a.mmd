@@ -1,0 +1,13 @@
+sequenceDiagram
+    participant C as Client
+    participant S1 as Server 0
+    participant S2 as Server 1
+
+    C->>S1: Send Notification 0
+    S1->>S1: Handle Notification 0
+    S1->>S1: Set next server to 1
+    C->>S1: Send Notification 1
+    S1->>S2: Send Notification 1
+    S1->>S1: Set next server to 0
+    S2->>S2: Handle Notification 1
+    S2->>S2: Set next server to 1

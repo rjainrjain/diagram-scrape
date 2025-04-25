@@ -1,0 +1,40 @@
+sequenceDiagram
+    participant User
+    participant Your_app as Your app
+    participant Agora
+    rect rgb(255,255,255)
+        note right of User: Set log file configuration and create engine
+        User->>Your_app: Open app
+        Your_app->>Your_app: Set log file parameters
+        Your_app->>Your_app: Use Voice SDK to create an instance of Agora Engine
+    end
+    rect rgb(255,255,255)
+        note right of User: Pre-call tests
+        User->>Your_app: Start the echo test
+        Your_app->>Agora: Call the method to start the echo test
+        Agora-->>Your_app: Echo test data
+        Your_app->>Agora: Start the network probe test
+        Agora-->>Your_app: Network quality score and statistics
+    end
+    rect rgb(255,255,255)
+        note right of Your_app: Set the audio profile
+        Your_app->>Your_app: Specify audio profile and scenario
+        Your_app->>Agora: Call the method to set the audio profile and scenario
+    end
+    rect rgb(255,255,255)
+        note right of Your_app: Join channel
+        Your_app->>Agora: Join channel
+    end
+    rect rgb(255,255,255)
+        note right of Your_app: Monitor in-call quality
+        Your_app->>Agora: Enable the quality statistics
+        Agora-->>Your_app: Receive network, call, and audio quality statistics
+        Agora-->>Your_app: Receive state change notifications
+        Your_app->>Your_app: Take corrective action
+    end
+    rect rgb(255,255,255)
+        note right of Your_app: Echo cancellation
+        Your_app->>Your_app: Choose audio file
+        Your_app->>Agora: Call the method to start audio mixing
+        Your_app->>Your_app: Use echo-cancellation features
+    end

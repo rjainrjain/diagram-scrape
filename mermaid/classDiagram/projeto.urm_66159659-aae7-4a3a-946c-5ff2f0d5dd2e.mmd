@@ -1,0 +1,87 @@
+classDiagram
+  class Alimento {
+<<abstract>>
+    - codigo : String
+    - nomeDoAlimento : String
+    - preco : double
+    - quantidadeDoProduto : int
+    + Alimento(nomeDoAlimento : String, preco : double, quantidadeDoProduto : int, codigo : String)
+    + alterarAtributosEspecificos(Scanner)* 
+    + calcularImposto() : double
+    + getCodigo() : String
+    + getNomeDoAlimento() : String
+    + getPreco() : double
+    + getQuantidadeDoProduto() : int
+    + getTipo() : String
+    + setCodigo(codigo : String)
+    + setNomeDoAlimento(nomeDoAlimento : String)
+    + setPreco(preco : double)
+    + setQuantidadeDoProduto(quantidadeDoProduto : int)
+    + toString() : String
+  }
+  class Bebida {
+
+    - teorAlcoolico : double
+    + Bebida(nomeDoAlimento : String, preco : double, quantidadeDoProduto : int, codigo : String, teorAlcoolico : double)
+    + alterarAtributosEspecificos(scanner : Scanner)
+    + calcularImposto() : double
+    + getTeorAlcoolico() : double
+    + getTipo() : String
+    + setTeorAlcoolico(teorAlcoolico : double)
+    + toString() : String
+  }
+  class ConsoleUI {
+
+    + ConsoleUI()
+    + iniciar()
+  }
+  class Principal {
+
+    + Principal()
+    + main(args : String[])$ 
+  }
+  class Restaurante {
+
+    - listaDeAlimentos : ArrayList<Alimento>
+    + Restaurante()
+    + adicionarAlimento(novoAlimento : Alimento)
+    + alterarDadosAlimento(nomeDoAlimento : String, codigo : String, scanner : Scanner)
+    + consultarAlimento(nomeDoAlimento : String, codigo : String) : Alimento
+    + excluirAlimento(nomeDoAlimento : String, codigo : String)
+    + listarAlimentos()
+  }
+  class Sobremesa {
+
+    - teorDeAcucar : double
+    + Sobremesa(nomeDoAlimento : String, preco : double, quantidadeDoProduto : int, codigo : String, teorDeAcucar : double)
+    + alterarAtributosEspecificos(scanner : Scanner)
+    + calcularImposto() : double
+    + getTeorDeAcucar() : double
+    + getTipo() : String
+    + setTeorDeAcucar(teorDeAcucar : double)
+    + toString() : String
+  }
+  class Solido {
+
+    - porcao : double
+    - temperatura : double
+    + Solido(nomeDoAlimento : String, preco : double, quantidadeDoProduto : int, codigo : String, porcao : double, temperatura : double)
+    + alterarAtributosEspecificos(scanner : Scanner)
+    + calcularImposto() : double
+    + getPorcao() : double
+    + getTemperatura() : double
+    + getTipo() : String
+    + setPorcao(porcao : double)
+    + setTemperatura(temperatura : double)
+    + toString() : String
+  }
+  class TipoDeAlimento {
+<<interface>>
+    + calcularImposto() : double* 
+    + getTipo() : String* 
+  }
+Restaurante -->  "-listaDeAlimentos" Alimento
+Alimento ..|> TipoDeAlimento
+Bebida --|> Alimento
+Sobremesa --|> Alimento
+Solido --|> Alimento

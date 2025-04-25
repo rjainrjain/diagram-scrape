@@ -1,0 +1,50 @@
+flowchart TD
+    subgraph AC_Power["AC Power System (120V)"]
+        MainPower["Main Power Input"] --> GFCI["GFCI Protection"]
+        GFCI --> PowerStrip["Surge Protected Power Strip"]
+        PowerStrip --> FanPower["Fan Power Input"]
+        PowerStrip --> HumPower["Humidifier Power Input"]
+        PowerStrip --> HeatPower["Heater Power Input"]
+    end
+
+    subgraph DC_Power["DC Power System"]
+        PowerStrip --> PSU["5V Power Supply\n2A minimum"]
+        PSU --> Pico["Raspberry Pi Pico"]
+        PSU --> Sensors["Sensor Power Distribution"]
+        PSU --> RelayPower["Relay Module\nPower Input"]
+    end
+
+    subgraph Controller["Pico Control System"]
+        Pico --> LevelShifter["Logic Level Shifter\n3.3V <-> 5V"]
+        
+        Pico -->|"I2C0 GP0/1"| BME["BME280\nTemp/Humidity"]
+        Pico -->|"UART GP16/17"| CO2["MH-Z19B\nCO2 Sensor"]
+        Pico -->|"ADC GP26"| WaterSensor["Water Detection"]
+        
+        Pico -->|"GP2"| RelayFan["Relay 1\nFan Control"]
+        Pico -->|"GP3"| RelayHum["Relay 2\nHumidifier Control"]
+        Pico -->|"GP4"| RelayHeat["Relay 3\nHeater Control"]
+        Pico -->|"GP5"| RelaySpare["Relay 4\nSpare"]
+    end
+
+    subgraph Relays["Relay Outputs"]
+        RelayFan --> FanControl["Fan\nRelay Switch"]
+        RelayHum --> HumControl["Humidifier\nRelay Switch"]
+        RelayHeat --> HeatControl["Heater\nRelay Switch"]
+        
+        FanControl -.->|"Switched AC"| FanPower
+        HumControl -.->|"Switched AC"| HumPower
+        HeatControl -.->|"Switched AC"| HeatPower
+    end
+
+    subgraph SafetySystems["Safety Systems"]
+        WaterSensor -->|Alert| Pico
+        BME -->|Temp Limits| Pico
+        CO2 -->|Air Quality| Pico
+    end
+
+    style AC_Power fill:#ffe6e6
+    style DC_Power fill:#e6f3ff
+    style Controller fill:#e6ffe6
+    style Relays fill:#fff5e6
+    style SafetySystems fill:#f0e6ff

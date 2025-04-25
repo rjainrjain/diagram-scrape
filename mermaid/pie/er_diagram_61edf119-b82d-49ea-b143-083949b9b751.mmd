@@ -1,0 +1,78 @@
+erDiagram
+ Partecipante {
+  INTEGER partecipanteId PK
+  TEXT nome
+  TEXT cognome
+ }
+
+ Istruttore {
+  INTEGER istruttoreId PK
+  TEXT nome
+  TEXT cognome
+ }
+
+ Corso {
+  INTEGER corsoId PK
+  TEXT denominazione
+  TEXT descrizione
+ }
+
+ CorsoOfferto {
+  INTEGER corsoOffertoId PK
+  INTEGER corsoId FK
+  INTEGER istruttoreId FK
+  INTEGER numeroMassimoPartecipanti
+  TEXT descrizione
+  TEXT inizio
+  TEXT fine
+ }
+
+ Giorno {
+  INTEGER giornoId PK
+  TEXT giorno
+  TEXT abbreviazione
+ }
+
+ FasciaOraria {
+  INTEGER fasciaOrariaId PK
+  INTEGER giornoId FK
+  TEXT inizio
+  TEXT fine
+ }
+
+ Sala {
+  INTEGER salaId PK
+  TEXT sala
+  INTEGER capienza
+ }
+
+ Orario {
+  INTEGER corsoOffertoId PK
+  INTEGER fasciaOrariaId PK
+  INTEGER salaId FK
+ }
+
+ Partecipazione {
+  INTEGER partecipanteId PK
+  INTEGER corsoOffertoId PK
+  TEXT dataRilascioCertificato
+  TEXT dataScadenzaCertificato
+ }
+
+ Specializzazione {
+  INTEGER istruttoreId PK
+  INTEGER corsoId PK
+  TEXT titolo PK
+ }
+
+ CorsoOfferto }o--|| Istruttore : istruttoreId
+ CorsoOfferto }o--|| Corso : corsoId
+ FasciaOraria }o--|| Giorno : giornoId
+ Orario }o--|| Sala : salaId
+ Orario }o--|| FasciaOraria : fasciaOrariaId
+ Orario }o--|| CorsoOfferto : corsoOffertoId
+ Partecipazione }o--|| CorsoOfferto : corsoOffertoId
+ Partecipazione }o--|| Partecipante : partecipanteId
+ Specializzazione }o--|| Corso : corsoId
+ Specializzazione }o--|| Istruttore : istruttoreId
+

@@ -1,0 +1,23 @@
+---
+title: Spartakus container architecture
+---
+
+flowchart TD
+  S["Volunteer\n\nMetrics publisher"]
+  C["Collector\n\nMetrics receiver"]
+  K["Kubernetes API"]
+
+  subgraph k8s-cluster[Kubernetes cluster]
+    S --> |"queries\n[HTTP]"| K
+  end
+  S ---> |"pushes metrics to\n[HTTP]"| C
+
+  classDef focusSystem      fill:#1168bd,stroke:#0b4884,color:#ffffff
+  classDef supportingSystem fill:#666,stroke:#0b4884,color:#ffffff
+  classDef consumingSystem  fill:#08427b,stroke:#052e56,color:#ffffff
+  classDef systemBoundary   fill:#eee,stroke:#ccc,stroke-width:2px,stroke-dasharray: 5 5
+
+  class S focusSystem
+  class C consumingSystem
+  class K supportingSystem
+  class k8s-cluster systemBoundary

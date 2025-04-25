@@ -1,0 +1,22 @@
+sequenceDiagram
+    participant User
+    participant PlantWateringApp
+    participant OpenWeatherMapAPI
+    participant FCM
+    participant Database
+    
+    User->>PlantWateringApp: Open the app
+    PlantWateringApp->>PlantWateringApp: Load user data from the database
+    PlantWateringApp->>OpenWeatherMapAPI: Fetch current weather data
+    OpenWeatherMapAPI-->>PlantWateringApp: Return weather data
+    PlantWateringApp->>PlantWateringApp: Update weather data
+    PlantWateringApp->>PlantWateringApp: Adjust watering schedule based on weather data
+    PlantWateringApp->>PlantWateringApp: Check if any plants need watering
+    PlantWateringApp->>FCM: Send push notifications for watering reminders
+    FCM-->>PlantWateringApp: Return success
+    PlantWateringApp->>User: Display watering reminders
+    User->>PlantWateringApp: Water the plants
+    PlantWateringApp->>PlantWateringApp: Mark watering schedule as completed
+    PlantWateringApp->>Database: Update watering schedule status
+    Database-->>PlantWateringApp: Return success
+    PlantWateringApp->>User: Display updated watering schedule

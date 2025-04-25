@@ -1,0 +1,44 @@
+erDiagram
+    EMPLOYEE {
+        int employeeId PK
+        varchar firstName
+        varchar lastName
+        varchar title
+        datetime startDate
+        int managerId FK
+    }
+    CUSTOMER {
+        int customerId PK
+        varchar firstName
+        varchar lastName
+        varchar address
+        varchar city
+        varchar zipcode
+        varchar email
+    }
+    MODEL {
+        int modelId PK
+        varchar model
+        varchar EngineType
+    }
+    INVENTORY {
+        int inventoryId PK
+        int modelId FK
+        varchar colour
+        varchar year
+        bit isAvailable
+    }
+    SALES {
+        int salesId PK
+        int inventoryId FK
+        int customerId FK
+        int employeeId FK
+        decimal salesAmount
+        datetime soldDate
+    }
+
+    EMPLOYEE ||--o{ SALES : "manages"
+    CUSTOMER ||--o{ SALES : "makes"
+    INVENTORY ||--o{ SALES : "includes"
+    MODEL ||--o{ INVENTORY : "defines"
+    EMPLOYEE }|--|| EMPLOYEE : "reports"

@@ -1,0 +1,9 @@
+sequenceDiagram
+    participant Verifier
+    participant Wallet
+
+    Verifier->>Wallet: (1) Authorization Request with Request URI
+    Wallet->>Verifier: (2) HTTP GET Request to Request URI
+    Note over Wallet: (2.5) HTTP GET Response <br/>with Request Object and Presentation Definition
+    Wallet->>Wallet: Process Request Object and determine available Credentials <br/>Authenticate End-User and gather consent
+    Wallet->>Verifier: (3) Authorization Response with Verifiable Presentation(s)

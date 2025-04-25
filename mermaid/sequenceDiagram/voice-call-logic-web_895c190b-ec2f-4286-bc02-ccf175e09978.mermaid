@@ -1,0 +1,30 @@
+```mermaid
+sequenceDiagram
+    participant User
+    participant Voice_SDK as Voice SDK
+    participant Agora
+
+    User->>Voice_SDK: Open App
+    Voice_SDK->>Voice_SDK: Initiate the Voice SDK engine
+    note right of Voice_SDK: agoraEngine = AgoraRTC.createClient
+    Voice_SDK->>Voice_SDK: Set the required event listeners
+    note right of Voice_SDK: agoraEngine.on('user-published')
+    note right of Voice_SDK: agoraEngine.on('user-unpublished')
+    User->>Voice_SDK: Start call
+    Voice_SDK->>Voice_SDK: Retrieve authentication token to join channel
+    Voice_SDK->>Agora: Join a channel
+    note right of Voice_SDK: agoraEngine.join
+    Agora-->>Voice_SDK: Join accepted
+    Voice_SDK->>Voice_SDK: Create audio track
+    note right of Voice_SDK: AgoraRTC.createMicrophoneAudioTrack
+    Voice_SDK->>Voice_SDK: Push local audio track to the channel
+    note right of Voice_SDK: agoraEngine.publish
+    Voice_SDK->>Voice_SDK: Retrieve streaming from other users
+    note right of Voice_SDK: agoraEngine.on('user-published')
+    Voice_SDK->>Voice_SDK: Play remote audio tracks
+    note right of Voice_SDK: remoteAudioTrack.play
+    Voice_SDK->>Voice_SDK: Receive and send data streams
+    User->>Voice_SDK: Leave call
+    Voice_SDK->>Agora: Leave the channel
+    note right of Voice_SDK: agoraEngine.leave
+```

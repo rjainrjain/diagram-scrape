@@ -1,0 +1,43 @@
+sequenceDiagram
+    User ->> Gateway NodeJS: Call POST /transaction
+    Gateway NodeJS ->> Transaction Server: Call gRPC CreateTransaction
+    Transaction Server ->> PostgerSQL: get last transaction by transaction id
+    alt already exists
+        PostgerSQL ->> Transaction Server: return transaction data
+        Transaction Server ->> Gateway NodeJS: return error already exists
+    else not found
+        PostgerSQL ->> Transaction Server: return error not found
+        Transaction Server ->> PostgreSQL: create transaction
+        PostgreSQL ->> Transaction Server: success
+    end
+
+    Transaction Cron ->> PostgreSQL: get unpublished transaction data
+    PostgreSQL ->> Transaction Cron: return transaction data
+    Transaction Cron ->> Google Pubsub: publish transaction data to user_service-transaction.created
+
+    User Pubsub ->> Google Pubsub: consume transaction data from user_service-transaction.created
+    User Pubsub ->> PostgreSQL: deduct user balance
+    alt error
+        PostgerSQL ->> User Pubsub: return error
+        User Pubsub ->> PostgreSQL: create user balance event with failed transaction status
+        PostgerSQL ->> User Pubsub: success
+    else success
+        PostgerSQL ->> User Pubsub: success
+        User Pubsub ->> PostgreSQL: create user balance event with pending transaction status
+        PostgerSQL ->> User Pubsub: success
+    end
+
+    User Cron ->> PostgreSQL: get unpublished user balance event
+    PostgreSQL ->> User Cron: return user balance event data
+    User Cron ->> Google Pubsub: publish user balance event to transaction_service-transaction.reserved
+
+    Transaction Pubsub ->> Google Pubsub: consume user balance event data from transaction_service-transaction.reserved
+    Transaction Pubsub ->> PostgreSQL: get transaction by transaction id
+    PostgreSQL ->> Transaction Pubsub: return transaction data
+    alt user balance event with failed transaction status
+        Transaction Pubsub ->> PostgreSQL: create transaction event with failed status
+        PostgreSQL ->> Transaction Pubsub: success
+    else user balance event with pending transaction status
+        Transaction Pubsub ->> PostgreSQL: create transaction event with pending status
+        PostgreSQL ->> Transaction Pubsub: success
+    end

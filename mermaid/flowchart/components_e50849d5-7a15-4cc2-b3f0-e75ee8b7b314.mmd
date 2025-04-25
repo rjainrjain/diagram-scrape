@@ -1,0 +1,20 @@
+flowchart BT
+    User -->|Creates, views, completes, uncompletes \nand deletes ToDos via HTTPS| Gunicorn
+    Gunicorn -->|Passes HTTP requests to and responses from| Flask(Flask app)
+    Flask -->|Routes requests to correct methods of| ToDoApp(ToDo App)
+    ToDoApp <-->|Requests ToDo data from \nand provides user form data to| DataLayer(Data Layer)
+    ToDoApp <-->|Injects ToDo data and receives formatted data\n for populating the html| ViewModel
+    HtmlTemplate(Html Templates) -->|Provides html to be populated| ToDoApp
+    DataLayer <-->|Retrieves, Creates, Updates, and Deletes Cards data| Trello
+    subgraph App [ToDo App]
+        Gunicorn
+        Flask
+        ToDoApp
+        HtmlTemplate
+        ViewModel
+        DataLayer
+    end
+    subgraph External
+        Trello
+    end
+

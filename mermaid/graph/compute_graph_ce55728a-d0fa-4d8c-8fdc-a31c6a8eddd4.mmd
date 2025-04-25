@@ -1,0 +1,43 @@
+sequenceDiagram
+autonumber
+actor User as User
+participant Res as Graph Resources
+participant Cli as CLI
+participant Config
+participant Graph as Graph
+participant ExecPlan as Execution Plan
+participant Runtime as Runtime
+participant Component as WASM Component
+
+User ->> Res: Provide graph files
+User ->> Cli: Run cillio-cli compute ./graph
+
+Cli ->> Config: Load config json
+Config -->> Cli: GraphConfig
+Cli ->> Graph: New Graph from GraphConfig
+Graph -->> Cli: Graph
+
+Cli ->> Res: Get WASM Components
+Res -->> Cli: Components List
+Cli ->> Cli: Graph components coverage
+
+Cli ->> ExecPlan: Create sequential execution plan from graph
+ExecPlan ->> ExecPlan: Topological sort nodes for sequential list
+ExecPlan ->> ExecPlan: Sequential list to execution steps
+ExecPlan -->> Cli: Sequential Execution Plan
+
+Cli ->> Runtime: Create WASM Runtime
+Runtime -->> Cli: Runtime
+Cli ->> Cli: Load Graph WASM files to Bytearrays
+Cli ->> Runtime: Load WASM Bytearrays to Runtime Components
+Runtime ->> Runtime: Parse and store WASM Components
+Runtime -->> Cli: Graph WASM Components loaded
+
+Cli ->> ExecPlan: Execute Execution Plan with Runtime
+ExecPlan ->> ExecPlan: Execute Steps sequentially
+ExecPlan ->> Runtime: Instanciate WASM Component for Step
+Runtime -->> ExecPlan: Component Instance
+ExecPlan ->> ExecPlan: Get compute Function from WASM
+ExecPlan ->> Component: Call compute Function
+Component ->> Component: Compute Results
+Component -->> ExecPlan: Computation Results

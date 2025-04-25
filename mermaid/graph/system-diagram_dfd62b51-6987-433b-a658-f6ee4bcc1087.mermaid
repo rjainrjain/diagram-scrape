@@ -1,0 +1,24 @@
+graph TD
+    A[Client] -->|Upload CSV| B(API Server)
+    B -->|Validate CSV| C{CSV Validator}
+    C -->|Valid| D[Request Manager]
+    C -->|Invalid| B
+    D -->|Create Request| E[(Database)]
+    D -->|Queue Job| F[Image Processor]
+    F -->|Process Images| G[AWS S3]
+    F -->|Update Status| E
+    B -->|Return Request ID| A
+    A -->|Check Status| B
+    B -->|Get Status| E
+    F -->|Job Complete| H[Webhook Service]
+    H -->|Notify| I[External Service]
+    
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#333,stroke-width:2px
+    style C fill:#dfd,stroke:#333,stroke-width:2px
+    style D fill:#ddf,stroke:#333,stroke-width:2px
+    style E fill:#fdd,stroke:#333,stroke-width:2px
+    style F fill:#dff,stroke:#333,stroke-width:2px
+    style G fill:#ffd,stroke:#333,stroke-width:2px
+    style H fill:#ddf,stroke:#333,stroke-width:2px
+    style I fill:#fdf,stroke:#333,stroke-width:2px

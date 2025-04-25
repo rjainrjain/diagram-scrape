@@ -1,0 +1,13 @@
+
+sequenceDiagram
+    participant M as main.py
+    participant G as Game
+    participant U as UI
+    participant GA as GameAlgorithm
+    M->>G: start_game()
+    G->>U: display_board()
+    U->>G: handle_events()
+    G->>GA: generate_tile()
+    GA->>G: update_score()
+    G->>U: display_score()
+    U->>G: check_game_over()

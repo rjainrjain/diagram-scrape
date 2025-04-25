@@ -1,0 +1,13 @@
+classDiagram
+    class ReactiveUserControl~MyViewModel~
+    class ReactiveObject
+    class MyView
+    class MyViewModel
+    class MyViewBindingModel~MyView,MyViewModel~
+    class ControlBindingModel
+    ReactiveUserControl~MyViewModel~ ..|> MyView
+    ReactiveObject ..|> MyViewModel
+    MyView "1" --> "1" MyViewModel
+    MyView "1" --> "1" MyViewBindingModel
+    MyViewModel "1" --> "1" MyViewBindingModel
+    MyViewBindingModel "1" --> "1..*" ControlBindingModel

@@ -1,0 +1,31 @@
+
+classDiagram
+    class Main {
+        -MindMap mind_map
+        -LLMExploration llm_exploration
+        -LanguageSupport language_support
+        -OntologyDatabase ontology_database
+        +run() None
+    }
+    class MindMap {
+        +render_map(concepts: dict) None
+        +add_node(concept: str) None
+        +remove_node(concept: str) None
+    }
+    class LLMExploration {
+        +explore(concept: str) dict
+        +generate_summary(concept: str) str
+        +generate_flashcards(concept: str) list
+    }
+    class LanguageSupport {
+        +translate(text: str, target_lang: str) str
+        +detect_language(text: str) str
+    }
+    class OntologyDatabase {
+        +save_ontology(concepts: dict) None
+        +load_ontology() dict
+    }
+    Main --> MindMap
+    Main --> LLMExploration
+    Main --> LanguageSupport
+    Main --> OntologyDatabase

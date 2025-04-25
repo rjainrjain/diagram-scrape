@@ -1,0 +1,26 @@
+
+%% https://mermaid-js.github.io/mermaid-live-editor
+
+classDiagram
+  DocumentGroup "1" --> "1..*" Document
+  Document "1" --> "*" Quotation
+  Quotation "1" --> "1..**" Category
+  Category "1" --> "*" CodeGroup
+  Category .. DocumentGroup
+  CodeGroup .. DocumentGroup
+  class DocumentGroup{
+    + name
+  }
+	class Document{
+    + name
+	}
+	class Quotation{
+    + content
+	}
+	class Category{
+    + name
+	}
+  class CodeGroup{
+    + name
+  }
+					

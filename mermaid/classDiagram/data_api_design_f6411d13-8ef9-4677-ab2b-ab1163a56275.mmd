@@ -1,0 +1,21 @@
+classDiagram
+    class Recipe{
+        +int id
+        +str name
+        +str ingredients
+        +float cost
+        +datetime created_at
+        +datetime updated_at
+        +__init__(self, name: str, ingredients: str, cost: float)
+        +calculate_cost(self)
+    }
+    class User{
+        +int id
+        +str username
+        +str password
+        +datetime created_at
+        +datetime updated_at
+        +__init__(self, username: str, password: str)
+        +check_password(self, password: str)
+    }
+    User "1" -- "*" Recipe: has

@@ -1,0 +1,26 @@
+flowchart TB
+  A((Start))
+  B[(Data)]
+  C[Get Next Element *a*]
+  D[Get Next Element *b*]
+  E{Compare *a* and *b*}
+  F[Swap *a* and *b*]
+  G{Remaining Elements That Aren't *a*?}
+  H{Remaining Elements?}
+  I[Output Sorted List]
+  J((Stop))
+  A-->C
+  C-->D
+  C<-->B
+  D-->E
+  D<-->B
+  E-->|yes|F
+  E-->|no|G
+  F-->G
+  G-->|yes|D
+  G-->|no|H
+  H-->|yes|C
+  H-->|no|I
+  I-->B
+  I-->J
+

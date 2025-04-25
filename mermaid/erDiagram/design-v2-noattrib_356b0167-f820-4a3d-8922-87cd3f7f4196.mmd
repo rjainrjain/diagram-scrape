@@ -1,0 +1,67 @@
+erDiagram
+     User {
+
+    }
+
+     Event {
+
+    }
+
+     Venue {
+
+    }
+
+     WeddingType {
+
+    }
+
+     Table {
+
+    }
+
+     RSVP {
+
+    }
+
+     County {
+
+    }
+
+     VenueType {
+
+    }
+
+
+    
+
+
+    eventLocation{
+
+    }
+
+    chat{
+            
+      }
+
+     member{
+            
+      }
+
+      chatMessage{
+      }
+
+
+    User ||--o{ RSVP : responds
+    Event ||--o{ RSVP : has
+    Event ||--o{ Venue : takes
+    Venue ||--o{ Table : has
+    Venue ||--o{ WeddingType : offers
+    Venue ||--o{ County : located 
+    Venue ||--o{ VenueType : has 
+    RSVP ||--o{ Table : sits
+    Event ||--o{ eventLocation : has
+    eventLocation ||--o{ Venue : takes
+    chat ||--o{ member : has
+    member ||--o{ User : has
+    chat ||--o{ chatMessage : has
+

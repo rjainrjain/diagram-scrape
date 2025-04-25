@@ -1,0 +1,22 @@
+sequenceDiagram
+actor User
+participant FE_ARp
+participant BE_ARp
+participant BIZ_EVENTS_LAP_SERVICE
+
+note right of User: User authenticated
+note over User, BIZ_EVENTS_LAP_SERVICE : Retrieve Notices List
+    User ->> FE_ARp : Access to notices list
+    activate FE_ARp
+        FE_ARp ->> BE_ARp : GET /notices <br> Authentication: Bearer <Session Token>
+        activate BE_ARp
+            BE_ARp ->> BE_ARp : Validate session token
+            note right of BE_ARp : Retrieving CF from token
+            BE_ARp ->> BIZ_EVENTS_LAP_SERVICE : GET /bizevents/notices-service/v1/paids
+            activate BIZ_EVENTS_LAP_SERVICE
+                BIZ_EVENTS_LAP_SERVICE -->> BE_ARp : Retrieve paid notice list
+            deactivate BIZ_EVENTS_LAP_SERVICE
+            BE_ARp -->> FE_ARp : #
+        deactivate BE_ARp
+        FE_ARp -->> User: #
+    deactivate FE_ARp

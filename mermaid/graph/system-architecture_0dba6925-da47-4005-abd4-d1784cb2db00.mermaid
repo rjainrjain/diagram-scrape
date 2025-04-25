@@ -1,0 +1,11 @@
+graph TD
+    A[Client] -->|Upload CSV| B(Upload API)
+    A -->|Check Status| C(Status API)
+    B -->|Store Request| D[(MongoDB)]
+    B -->|Enqueue Job| E[Redis Queue]
+    E -->|Process Job| F[Worker Service]
+    F -->|Process Images| G[Image Processing Service]
+    G -->|Store Results| D
+    F -->|Trigger Webhook| H[Webhook Service]
+    H -->|Notify| I[Client Webhook Endpoint]
+    C -->|Fetch Status| D

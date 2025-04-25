@@ -1,0 +1,120 @@
+erDiagram
+    ARTIST ||--o{ GALLERY : creates
+    ARTIST ||--o{ ARTWORK : creates
+    GALLERY ||--o{ GALLERY_ARTWORK : contains
+    GALLERY_ARTWORK }o--|| ARTWORK : references
+    ARTWORK ||--o{ IMAGE : has
+    ARTWORK ||--|| ARTWORK_METADATA : has
+    TAG }o--o{ ARTWORK : categorizes
+    IMAGE ||--o{ EXIF_DATA : contains
+    ARTIST ||--o{ ARTIST_PREFERENCE : has
+    ARTWORK }o--o{ TRANSLATION : has
+    GALLERY }o--o{ TRANSLATION : has
+
+    ARTIST {
+        int id PK
+        string keycloak_id
+        string username
+        string email
+        string default_language
+        datetime created_at
+        datetime updated_at
+        datetime last_indexed
+    }
+
+    ARTIST_PREFERENCE {
+        int id PK
+        int artist_id FK
+        string preference_key
+        string preference_value
+    }
+
+    GALLERY {
+        int id PK
+        int artist_id FK
+        string status
+        datetime created_at
+        datetime updated_at
+        datetime last_indexed
+    }
+
+    GALLERY_ARTWORK {
+        int gallery_id PK,FK
+        int artwork_id PK,FK
+        int order
+        datetime created_at
+        datetime updated_at
+    }
+
+    ARTWORK {
+        int id PK
+        int artist_id FK
+        datetime created_at
+        datetime updated_at
+        datetime last_indexed
+    }
+
+    IMAGE {
+        int id PK
+        int artwork_id FK
+        string original_filename
+        string storage_bucket
+        string storage_path
+        string public_url
+        int width
+        int height
+        string format
+        int file_size
+        string version
+        string parent_version
+        string status
+        datetime processed_at
+        text processing_details
+        datetime created_at
+        datetime updated_at
+    }
+
+    EXIF_DATA {
+        int id PK
+        int image_id FK
+        string key
+        string value
+    }
+
+    ARTWORK_METADATA {
+        int id PK
+        int artwork_id FK
+        string artist_name
+        int year_created
+        string medium
+        string technique
+        string dimensions
+        string edition_info
+        string style_movement
+        string plate_material
+        string paper_type
+        string ink_type
+        string printing_press
+        string location
+        string availability
+        decimal price
+        datetime created_at
+        datetime updated_at
+    }
+
+    TAG {
+        int id PK
+        datetime created_at
+        datetime updated_at
+    }
+
+    TRANSLATION {
+        int id PK
+        int entity_id
+        string entity_type
+        string language_code
+        string field_name
+        text translated_content
+        datetime created_at
+        datetime updated_at
+    }

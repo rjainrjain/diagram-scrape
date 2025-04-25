@@ -1,0 +1,17 @@
+graph TD
+    A[User] --> B[UserProfile]
+    A --> C[Quiz]
+    C --> D[Question]
+    D --> E[Answer]
+    A --> F[QuizAttempt]
+    F --> G[UserAnswer]
+    G --> D
+    G --> E
+
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#333,stroke-width:2px
+    style C fill:#fdd,stroke:#333,stroke-width:2px
+    style D fill:#dfd,stroke:#333,stroke-width:2px
+    style E fill:#ffd,stroke:#333,stroke-width:2px
+    style F fill:#dff,stroke:#333,stroke-width:2px
+    style G fill:#fdf,stroke:#333,stroke-width:2px

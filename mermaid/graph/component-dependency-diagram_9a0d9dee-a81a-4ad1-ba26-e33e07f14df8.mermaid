@@ -1,0 +1,16 @@
+graph TD
+    A[Qualtrics Plugin] -->|Depends on| B[Web App API]
+    B -->|Depends on| C[Authentication Service]
+    B -->|Depends on| D[Data Processing Service]
+    D -->|Depends on| E[Hashing Service]
+    D -->|Depends on| F[Blockchain Service]
+    F -->|Depends on| G[Cardano Node]
+    B -->|Depends on| H[Database Service]
+    I[User Interface] -->|Depends on| B
+    I -->|Depends on| C
+    J[Admin Dashboard] -->|Depends on| B
+    J -->|Depends on| C
+    K[Monitoring Service] -->|Monitors| A
+    K -->|Monitors| B
+    K -->|Monitors| F
+    K -->|Monitors| G

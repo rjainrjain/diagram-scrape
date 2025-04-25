@@ -1,0 +1,21 @@
+---
+title: Work Order lifecycle
+---
+stateDiagram-v2
+  direction LR
+  [*] --> draft
+  draft --> open
+  open --> waiting_for_goods
+  waiting_for_goods --> open
+  waiting_for_goods --> scheduled
+  open --> progressing
+  open --> scheduled
+  scheduled --> progressing
+  state progressing {
+    in_progress --> paused
+    paused --> in_progress
+  }
+  draft --> cancelled
+  open --> cancelled
+  progressing --> cancelled
+  progressing --> completed

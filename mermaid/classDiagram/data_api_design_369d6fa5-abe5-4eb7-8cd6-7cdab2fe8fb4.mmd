@@ -1,0 +1,30 @@
+classDiagram
+    class Game{
+        -int score
+        -int high_score
+        +start_game()
+        +end_game()
+        +pause_game()
+        +resume_game()
+        +update_score()
+    }
+    class Snake{
+        -int length
+        -int speed
+        -List[Tuple[int, int]] body
+        +move()
+        +eat_food()
+        +check_collision()
+    }
+    class Food{
+        -int x
+        -int y
+        +generate()
+    }
+    class Level{
+        -int difficulty
+        +set_difficulty()
+    }
+    Game "1" -- "1" Snake: has
+    Game "1" -- "1" Food: has
+    Game "1" -- "1" Level: has

@@ -1,0 +1,77 @@
+classDiagram
+    class Usuario {
+        -String id
+        -String login
+        -String senha
+        -String nome
+        -String? sobrenome
+        -Papel papel
+        -DateTime dataCriacao
+        -DateTime dataAtualizacao
+        +criarQuiz()
+        +responderQuiz()
+    }
+    class Papel {
+        <<enumeration>>
+        CLIENTE
+        ADMIN
+        ROOT
+    }
+    class Categoria {
+        -String id
+        -String nome
+        +obterQuizzes()
+    }
+    class Quiz {
+        -String id
+        -String titulo
+        -String? descricao
+        -Boolean publicado
+        -DateTime dataCriacao
+        -DateTime dataAtualizacao
+        +adicionarQuestao()
+        +publicar()
+        +despublicar()
+    }
+    class Questao {
+        -String id
+        -String titulo
+        -TipoQuestao tipo
+        -String? imagem
+        +adicionarResposta()
+        +obterRespostaCorreta()
+    }
+    class TipoQuestao {
+        <<enumeration>>
+        OBJETIVA
+        DISCURSIVA
+    }
+    class Resposta {
+        -String id
+        -String texto
+        -Boolean estaCorreta
+        +marcarComoCorreta()
+        +marcarComoIncorreta()
+    }
+    class RespostaQuiz {
+        -String id
+        -DateTime dataResposta
+        +submeterResposta()
+    }
+    class RespostaQuestao {
+        -String id
+        -String? respostaDiscursiva
+        +definirResposta()
+        +estaCorreta()
+    }
+    Usuario "1" -- "*" Quiz : cria
+    Usuario "1" -- "*" RespostaQuiz : submete
+    Categoria "1" -- "*" Quiz : categoriza
+    Quiz "1" -- "*" Questao : contem
+    Questao "1" -- "*" Resposta : possui
+    Quiz "1" -- "*" RespostaQuiz : recebe
+    RespostaQuiz "1" -- "*" RespostaQuestao : contem
+    Questao "1" -- "*" RespostaQuestao : responde
+    Resposta "1" -- "*" RespostaQuestao : selecionada para
+    Questao -- TipoQuestao : possui
+    Usuario -- Papel : possui

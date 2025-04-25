@@ -1,0 +1,10 @@
+graph TD;
+  A[Request /token/validate] --> B[Check if token exists in Header];
+  B -- No --> C[Raise credentialsException];
+  B -- Yes --> D[Decode token];
+  D --> E[Get 'email' from payload];
+  E -- No --> F[Raise credentialsException];
+  E -- Yes --> G[Query User by email];
+  G -- User not found --> H[Raise credentialsException];
+  G -- User found --> I[Return User];
+  D -- JWTError --> F[Raise credentialsException];

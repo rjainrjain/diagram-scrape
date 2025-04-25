@@ -1,0 +1,12 @@
+graph TD
+    loop{{Scanner 생성}}
+    loop --> a[score 변수 준비]
+    a --> c
+    c[/score 입력/]
+    c --> d[실행 조건 검사]
+    d --> |true| c
+    d --> |false| f{{Scanner 종료}}
+    f --> e[score 출력] 
+
+style c fill:dodgerblue,color:white
+style d fill:firebrick,color:white

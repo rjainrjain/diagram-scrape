@@ -1,0 +1,31 @@
+---
+title: version 8 - custom offline PHP static site generator
+---
+
+%%{ init: {'theme': 'neutral'} }%%
+graph LR
+
+subgraph offline
+   database[(database)]
+   source{{original images}}
+   generator[[PHP generator]]
+   gimp([Image editor]) ---> source
+   sql([SQL editor]) --> database
+end
+
+subgraph online[2016 dacorsa.com]
+   images{{prepared images}}
+   html{{generated html}}
+end
+
+database -.- source
+
+database --> generator
+generator -- ftp --> html
+
+source --> generator
+generator -- ftp --> images
+
+html -.-> browser(((WWW)))
+images -.-> browser(((WWW)))
+

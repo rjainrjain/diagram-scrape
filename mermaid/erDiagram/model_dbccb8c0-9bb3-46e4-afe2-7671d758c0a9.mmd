@@ -1,0 +1,33 @@
+erDiagram
+    LibraryGroup {
+        id ILN "primary key"
+    }    
+    Library {
+        id ELN "primary key"
+        id ILN "foreign key"
+        id ISIL "optional, unique"
+    }
+    LibraryGroup ||--|{ Library : contains
+    Title {
+        id PPN "primary key"
+    }
+    Title ||--|{ Item : ""
+    Item {
+        id EPN "primary key"
+        id PPN "foreign key"
+    }
+    Library ||--|{ Item : holds
+    Item ||--o{ Copy : ""
+    Copy {
+        id EPN "foreign key and part of primary key"
+        id xoccurrence "part of primary key"
+        string sst "optional, can yield Department"
+        string label "optional"
+        posInt number
+    }
+    Library ||--o{ Department : "has"
+    Department {
+        id ISIL "foreign key"
+        string code "optional"
+    }
+    Copy }|--o| Department : "at" 

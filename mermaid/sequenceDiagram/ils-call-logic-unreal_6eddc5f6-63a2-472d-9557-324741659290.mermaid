@@ -1,0 +1,32 @@
+```mermaid
+sequenceDiagram
+    participant User
+    participant Video_SDK as Video SDK
+    participant Your_app as Your app
+    participant Host
+    participant Audience
+    participant Agora
+    participant SD_RTN as SD-RTN
+
+    User->>Video_SDK: Open App -> Initiate the Agora Video SDK engine: agora::rtc::createAgoraRtcEngine()
+    Video_SDK->>Your_app: Enable the audio and video modules 
+    Note right of Your_app: agoraEngine.enableVideo() <br/> agoraEngine.enableAudio()
+    Video_SDK->>Your_app: Set the channel profile
+    Note right of Your_app: RtcEngineContext context <br/> context.channelProfile = CHANNEL_PROFILE_COMMUNICATION
+
+    User->>Video_SDK: Close app -> Clean up local resources
+    Video_SDK->>User: agoraEngine->release()
+
+    Note over Host: Start a live streaming event 
+    Host->>Agora: Request Auth Token
+    Agora-->>Host: Auth Token
+    Host->>Your_app: Set up local video
+    Host->>SD_RTN: Send data stream
+
+    Note over Audience: Join a live streaming event 
+    Audience->>Agora: Request Auth Token
+    Agora-->>Audience: Auth Token
+    Audience->>Your_app: Set user role: audience
+    Audience->>Your_app: agoraEngine->setupRemoteVideo()
+    SD_RTN-->>Audience: Receive data stream
+```

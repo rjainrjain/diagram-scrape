@@ -1,0 +1,20 @@
+sequenceDiagram
+    participant Data Scientist
+    participant Sonar
+    participant Capsule
+    participant Miners
+    participant IPFS
+
+    Data Scientist ->> Sonar: requests randomly initialized model (sending $).
+    Sonar ->> Capsule: requests that capsule initialize public/private keypair and model.
+    Capsule ->> IPFS: capsule initializes model according to the spec and encrypts it with the public key, storing the result on IPFS.
+    Capsule ->> Sonar: capsule sends public key and the IPFS address of the model to sonar.
+    Miners ->> Sonar: Miners read that a new model is available, and make an internal decision as to whether they should participate.
+    Miners ->> IPFS: A subset of miners downloads the model from IPFS, and computes a gradient.
+    Miners ->> IPFS: Miners submit their gradients to IPFS, and receive an address.
+    Miners ->> Sonar: Miners submit the IPFS address for their gradient to Sonar.
+    Data Scientist ->> Sonar: sends an encrypted loss for each submitted gradient to Sonar.
+    Sonar ->> Capsule: requests Capsule to sort the encrypted losses for each gradient and return the sorted list + weights for each one.
+    Capsule ->> Sonar: decides how each gradient should be weighted.
+    Sonar ->> Mines: according to the gradient weights chosen by Capsule, Sonar splits the reward amongst miners.
+    Capsule ->> Sonar: submits a refreshed version of the model (with the new weights).

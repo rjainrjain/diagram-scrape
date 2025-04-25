@@ -1,0 +1,27 @@
+flowchart TD
+    subgraph ConfigPhase[规则配置阶段]
+        A[URL分析] --> B[页面标定工具]
+        B --> |存储提取规则| C[(规则数据库)]
+        B --> |验证规则| D[规则验证]
+        D --> |验证结果| B
+    end
+
+    subgraph ProcessPhase[数据处理阶段]
+        E[爬虫HTML数据] --> F[URL匹配器]
+        C --> F
+        F --> G[内容提取器]
+        G --> H[LLM处理器]
+        H --> I[结果验证]
+        I --> |不通过| H
+        I --> |通过| J[(结果数据库)]
+    end
+
+    subgraph Monitor[监控系统]
+        K[规则匹配监控]
+        L[内容提取监控]
+        M[LLM处理监控]
+    end
+
+    F --> K
+    G --> L
+    H --> M

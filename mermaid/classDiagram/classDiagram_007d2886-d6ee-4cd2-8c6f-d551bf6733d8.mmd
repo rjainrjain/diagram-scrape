@@ -1,0 +1,70 @@
+---
+Library Management System
+---
+
+classDiagram
+    class User{
+        +firstName: string
+        +lastName: string
+        +fullName: string
+        +booksLended: Set~Book~
+        +validate()$
+    }
+
+    note for User "fullName should be derived from firstName and lastName"
+
+    class Book{
+        +title: string
+        +author: string
+        +isbn: string
+        +isCheckedOut: boolean
+        +checkoutCount: int
+        +ratings: List~Rating~
+        +history: List~Transaction~
+        +isAddedToLibrary: boolean
+        +usedISBN: Set~string~$
+        +MAX_CHECKOUTS: int$
+        +DUE_TIME_INTERVAL: int$
+        +addToLibrary()
+        +checkout()
+        +return()
+        +rate()
+        +calculateAverageRating()
+        +getTotalReviews()
+        +getReviewsWithRating()
+        +getReviewsWithComment()
+        +validate()$
+        -isValidISBN()$
+    }
+    
+    class Transaction{
+        +type: string
+        +date: Date
+        +user: User
+        +validate()$
+    }
+
+    note for Transaction "type can be return or checkout"
+
+    class Library{
+        +books: List~Book~$
+        +getOverdueBooks()$
+        +getBooksByAuthor()$
+        +getBookdsByTitle()$
+        +sort()$
+        +save()$
+        +load()$
+    }
+
+    class Review{
+        +rating: int
+        +comment: string
+        +user: User
+        +validate()$
+    }
+
+    Library "1" o-- "0..*" Book
+    Review "0..*" o-- "1" User
+    Book "1" *-- "0..1" Review
+    Book "1" *-- "0..*" Transaction
+    Transaction "0..*" o-- "1" User

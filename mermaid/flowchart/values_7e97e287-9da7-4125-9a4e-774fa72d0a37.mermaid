@@ -1,0 +1,73 @@
+flowchart LR
+    subgraph Inverter
+        inverterReceiveDashRequest(( )) -->
+        inverterSendDash(Send dash\nvalues) -->
+        inverterDashEnd(( ))
+
+        inverterReceiveOnlRequest(( )) -->
+        inverterSendOnl(Send instantaneous\nvalues) -->
+        inverterOnlEnd(( ))
+
+        inverterReceiveParamRequest(( )) -->
+        inverterSendParam(Send device\nparameters) -->
+        inverterParamEnd(( ))
+    end
+    subgraph Backend
+        subgraph Fetch
+            backendFetchStart(( )) -->
+            backendGateway{X}
+
+            backendRequestDash(Request dash\nvalues) -->
+            backendReceiveDash(( ))
+
+            backendParallelGateway{+}
+
+            backendRequestOnl(Request instantaneous\nvalues) -->
+            backendReceiveOnl(( ))
+
+            backendRequestParam(Request device\nparameters) -->
+            backendReceiveParam(( ))
+
+            backendParallelClosingGateway{+}
+
+            backendParallelGateway --> backendRequestOnl
+            backendParallelGateway --> backendRequestParam
+            backendReceiveOnl --> backendParallelClosingGateway
+            backendReceiveParam --> backendParallelClosingGateway
+
+            backendParallelClosingGateway -->
+            backendMerge(Merge values)
+
+            backendClosingGateway{X}
+
+            backendGateway -->|is not logged in| backendRequestDash
+            backendGateway -->|is logged in| backendParallelGateway
+            backendReceiveDash --> backendClosingGateway
+            backendMerge --> backendClosingGateway
+
+            backendClosingGateway -->
+            backendSimplifyValueStructure(Simplify data\nstructure) -->
+            backendMapValueKeys(Convert keys\nto readable\nformat) -->
+            backendFetchEnd(( ))
+        end
+        backendReceiveRequest(( )) --->
+        Fetch ------------->
+        backendMap(Merge and\ntransform values\nto API\nformat) -->
+        backendSend(Send values) -->
+        backendEnd(( ))
+    end
+    subgraph Frontend
+        frontendStart(( )) -->
+        frontendRequest(Request values) -->
+        frontendReceive(( )) -->
+        frontendDisplay(Display values) -->
+        frontendEnd(( ))
+    end
+    frontendRequest -.-> backendReceiveRequest
+    backendRequestDash -.-> inverterReceiveDashRequest
+    inverterSendDash -.-> backendReceiveDash
+    backendRequestOnl -.-> inverterReceiveOnlRequest
+    inverterSendOnl -.-> backendReceiveOnl
+    backendRequestParam -.-> inverterReceiveParamRequest
+    inverterSendParam -.-> backendReceiveParam
+    backendSend -.-> frontendReceive

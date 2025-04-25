@@ -1,0 +1,18 @@
+graph LR
+
+  test[Test Load]
+  lb[Load Balancer]
+  
+  subgraph cloud ["Cloud"]
+    direction LR
+    lb[Load Balancer]
+    vm1
+    vm2
+    vm3
+    lb -->|az1| vm1
+    lb -->|az2| vm2
+    lb -->|az3| vm3
+  end
+  
+  test --> lb
+

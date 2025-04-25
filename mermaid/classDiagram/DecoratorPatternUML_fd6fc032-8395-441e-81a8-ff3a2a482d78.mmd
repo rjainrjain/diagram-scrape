@@ -1,0 +1,26 @@
+classDiagram
+    class Component {
+        +methodA()
+        +methodB()
+    }
+    class ConcreteComponent {
+        +methodA()
+        +methodB()
+    }
+    class Decorator {
+        +methodA()
+        +methodB()
+    }
+    class ConcreteDecoratorOne {
+        +methodA()
+        +methodB()
+    }
+    class ConcreteDecoratorTwo {
+        +methodA()
+        +methodB()
+    }
+    Component <|-- ConcreteComponent : IS-A
+    Component <|-- Decorator : IS-A
+    Component <-- Decorator : HAS-A
+    Decorator <|-- ConcreteDecoratorOne : IS-A
+    Decorator <|-- ConcreteDecoratorTwo : IS-A

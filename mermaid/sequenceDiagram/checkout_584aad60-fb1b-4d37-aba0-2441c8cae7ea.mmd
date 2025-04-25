@@ -1,0 +1,28 @@
+sequenceDiagram
+    actor u as user
+    participant oc as order/checkout
+    %% participant ks as kafka-Stock
+    participant kp as Pay-topic
+    participant cp as consumer-Pay
+    participant out as Outcomes
+    participant co as consumer-Order
+    %% participant cs as consumer-Stock
+    activate out
+    u ->> oc : checkout
+    activate oc
+    oc ->> kp: pay amnt, tId
+    %% oc ->> ks: reduce amnt
+    cp ->> kp: pull
+    kp -->> cp: msg
+    Note over cp: pay transaction in db
+    cp ->> out : outcome
+    co ->> out : pull
+    out -->> co : msg
+    Note over co : if both stock and pay success messages have been read
+    co ->> out : success tId
+    oc ->> out : pull
+    out -->> oc : msg
+    oc -->> u : success
+    deactivate oc
+    
+    

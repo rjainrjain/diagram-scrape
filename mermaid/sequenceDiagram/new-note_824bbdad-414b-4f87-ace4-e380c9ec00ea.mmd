@@ -1,0 +1,19 @@
+sequenceDiagram
+    participant browser
+    participant server
+
+    browser->>browser: User writes a note and clicks save button
+
+    browser->>browser: Client-side validation
+
+    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+    activate server
+    server-->>browser: 200 Success
+    deactivate server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+    activate server
+    server-->>browser: Updated notes via JSON
+    deactivate server
+
+    Note right of browser: The browser updates the page with the new note

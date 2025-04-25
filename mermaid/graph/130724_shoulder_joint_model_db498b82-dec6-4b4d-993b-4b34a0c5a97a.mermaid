@@ -1,0 +1,23 @@
+graph TD
+    A[Servo 1: Shoulder rotation] --> |UHMWPE| B[Servo 2: Shoulder flexion/extension]
+    B --> |UHMWPE| C[Servo 3: Elbow joint]
+    C --> |UHMWPE| D[Servo 4: Wrist joint]
+    D --> |TPU| E[Fixed paw structure]
+    
+    F[Microcontroller] --> A
+    F --> B
+    F --> C
+    F --> D
+    
+    G[Power supply] --> F
+    
+    H[3D printed / laser-cut parts] --> A
+    H --> B
+    H --> C
+    H --> D
+    H --> E
+
+    I[Materials]
+    I --> |"UHMWPE (Ultra-High Molecular Weight Polyethylene)"| J[For joints]
+    I --> |"TPU (Thermoplastic Polyurethane)"| K[For paw and shock absorption]
+    I --> |"Aluminum alloy"| L[For main structural components]

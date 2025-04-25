@@ -1,0 +1,31 @@
+sequenceDiagram
+Title: Process of transferring ERC20/223 Token
+participant Web3 AS Web3 APP
+participant TransferDapps AS TokenTransfer(ÐApps)
+participant PointToken AS InternalDistributionToken
+participant HistoryDapps AS TransferHistory(ÐApps)
+participant ERCToken AS ERC Token
+participant BlockChain AS Ethereum Block Chain
+
+BlockChain-->>Web3: receive Exchange()
+
+Web3->>+TransferDapps: Request transfer of token
+
+    TransferDapps->>+PointToken: Is the signature used in internal distribution tokens?
+    PointToken-->>-TransferDapps: reply
+
+    TransferDapps->>TransferDapps: Validation of information obtained from signatures and parameters
+
+    TransferDapps->>+HistoryDapps: Confirm that it has not been transferred yet
+    HistoryDapps-->>-TransferDapps: reply
+
+    TransferDapps->>TransferDapps: Calculate the number of ERC tokens
+
+    TransferDapps->>+ERCToken: Transfer a token
+    ERCToken-->>BlockChain: emit Transfer()
+    ERCToken-->>-TransferDapps: reply
+
+    TransferDapps->>+HistoryDapps: Record as transferred
+    HistoryDapps-->>-TransferDapps: reply
+
+TransferDapps-->>-Web3: reply

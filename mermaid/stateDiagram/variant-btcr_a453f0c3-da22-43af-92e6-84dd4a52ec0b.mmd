@@ -1,0 +1,20 @@
+stateDiagram-v2
+    direction LR
+    state "⚙️ build" as Build
+    state "⚙️ test" as Test
+    state "✅ VCS commit (src + tests)" as Commit
+    state "❌ VCS revert (src + tests)" as Revert
+    [*] --> Build
+    Build --> Test: pass
+    Build --> [*]: fail
+    Test --> Commit: pass
+    Test --> Revert: fail
+    Commit --> [*]
+    Revert --> [*]
+    classDef actionClass fill: #0077CC
+    classDef okClass fill: #006600
+    classDef failClass fill: #660000
+    class Build actionClass
+    class Test actionClass
+    class Commit okClass
+    class Revert failClass

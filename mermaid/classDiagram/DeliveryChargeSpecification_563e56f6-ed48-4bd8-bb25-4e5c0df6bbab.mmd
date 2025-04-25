@@ -1,0 +1,22 @@
+classDiagram
+  DeliveryChargeSpecification -- Place
+  DeliveryChargeSpecification -- GeoShape
+  DeliveryChargeSpecification -- AdministrativeArea
+  DeliveryChargeSpecification -- DeliveryMethod
+
+
+class DeliveryChargeSpecification {
+
+  Place ineligibleRegion
+  string ineligibleRegion
+  GeoShape ineligibleRegion
+  GeoShape eligibleRegion
+  string eligibleRegion
+  Place eligibleRegion
+  AdministrativeArea areaServed
+  GeoShape areaServed
+  string areaServed
+  Place areaServed
+  DeliveryMethod appliesToDeliveryMethod
+
+ }

@@ -1,0 +1,15 @@
+---
+title: Pet
+---
+classDiagram
+    direction LR
+    class PetShopCustomer
+    PetShopCustomer : +touch()
+    class Pet
+    <<abstract>> Pet
+    Pet : +react()
+    class Dog
+    class Cat
+    PetShopCustomer --> Pet
+    Dog --|> Pet
+    Cat --|> Pet

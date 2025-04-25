@@ -1,0 +1,7 @@
+graph TD
+    DHT11 -->|Temperature and Humidity| ESP-32
+    MoistureSensor --> |moisture| ESP-32
+    ESP-32 --> |home/esp32/plants/$deviceID| MQTT
+    MQTT --> statsCollector
+    statsCollector --> InfluxDB
+    InfluxDB --> Grafana

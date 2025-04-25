@@ -1,0 +1,97 @@
+flowchart TD
+    Start((Start)) --> Splash[Splash Screen]
+    Splash --> CheckAuth{Check Auth}
+    
+    subgraph Authentication
+        CheckAuth -->|Not Logged In| Login[Login Screen]
+        Login -->|New User| Register[Register Screen]
+        Register -->|Success| SetupWallet
+        Login -->|Success| Dashboard
+        CheckAuth -->|Logged In| Dashboard
+    end
+
+    subgraph Main Flow
+        Dashboard[Dashboard] -->|View Balance| Wallet[Wallet Screen]
+        Dashboard -->|Plan Journey| TripPlanner[Trip Planner]
+        Dashboard -->|View History| History[Transaction History]
+        Dashboard -->|Scan to Pay| NFCCheck{Check NFC}
+    end
+
+    subgraph Wallet Management
+        Wallet --> TopUp[Top Up Screen]
+        TopUp -->|Bank Transfer| BankPayment[Bank Payment]
+        TopUp -->|Credit Card| CardPayment[Card Payment]
+        TopUp -->|Over Counter| CounterPayment[Counter Payment]
+        TopUp -->|GCash| GCashFlow[GCash Payment]
+        TopUp -->|Maya| MayaFlow[Maya Payment]
+        
+        subgraph E-Wallet Processing
+            GCashFlow -->|Link Account| GCashLink[Link GCash Account]
+            GCashLink -->|Verify OTP| GCashVerify{Verify GCash}
+            GCashVerify -->|Valid| GCashPay[Process GCash Payment]
+            GCashVerify -->|Invalid| ErrorHandler
+            
+            MayaFlow -->|Link Account| MayaLink[Link Maya Account]
+            MayaLink -->|Verify OTP| MayaVerify{Verify Maya}
+            MayaVerify -->|Valid| MayaPay[Process Maya Payment]
+            MayaVerify -->|Invalid| ErrorHandler
+            
+            GCashPay --> ProcessPayment
+            MayaPay --> ProcessPayment
+        end
+        
+        BankPayment --> ProcessPayment{Process Payment}
+        CardPayment --> ProcessPayment
+        CounterPayment --> ProcessPayment
+        
+        ProcessPayment -->|Success| UpdateBalance[Update Balance]
+        ProcessPayment -->|Failed| ErrorHandler[Error Handler]
+    end
+
+    subgraph Trip Planning
+        TripPlanner -->|Select Station| StationList[Station List]
+        StationList --> RouteCalculation[Route Calculation]
+        RouteCalculation --> DisplayRoute[Display Route]
+        DisplayRoute --> FareEstimate[Fare Estimate]
+        FareEstimate -->|Proceed| NFCCheck
+    end
+
+    subgraph NFC Payment
+        NFCCheck -->|NFC Available| InitNFC[Initialize NFC]
+        NFCCheck -->|No NFC| ShowQR[Show QR Code]
+        
+        InitNFC --> ValidateCard{Validate Card}
+        ValidateCard -->|Valid| ProcessFare[Process Fare]
+        ValidateCard -->|Invalid| ErrorHandler
+        
+        ProcessFare -->|Success| ConfirmPayment[Payment Confirmation]
+        ProcessFare -->|Failed| ErrorHandler
+    end
+
+    subgraph History Management
+        History --> FilterTransactions[Filter Transactions]
+        FilterTransactions --> DisplayTransactions[Display Transactions]
+        DisplayTransactions --> TransactionDetails[Transaction Details]
+    end
+
+    subgraph Error Handling
+        ErrorHandler --> RetryOption{Retry?}
+        RetryOption -->|Yes| ProcessPayment
+        RetryOption -->|No| Dashboard
+    end
+
+    subgraph Settings
+        Dashboard -->|Settings| AppSettings[App Settings]
+        AppSettings --> NFCSettings[NFC Settings]
+        AppSettings --> NotificationSettings[Notification Settings]
+        AppSettings --> SecuritySettings[Security Settings]
+        AppSettings --> ProfileSettings[Profile Settings]
+        AppSettings --> EWalletSettings[E-Wallet Settings]
+    end
+
+    style Dashboard fill:#f9f,stroke:#333,stroke-width:4px
+    style NFCCheck fill:#bbf,stroke:#333,stroke-width:2px
+    style ProcessPayment fill:#bbf,stroke:#333,stroke-width:2px
+    style ErrorHandler fill:#fbb,stroke:#333,stroke-width:2px
+    style GCashVerify fill:#bbf,stroke:#333,stroke-width:2px
+    style MayaVerify fill:#bbf,stroke:#333,stroke-width:2px

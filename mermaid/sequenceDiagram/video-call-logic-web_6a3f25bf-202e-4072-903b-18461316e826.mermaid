@@ -1,0 +1,31 @@
+```mermaid
+sequenceDiagram
+    participant User
+    participant Your_app
+    participant Agora
+
+    note right of Your_app: Video SDK
+    Your_app->>+Your_app: Initiate the Video SDK engine: agoraEngine = AgoraRTC.createClient
+    Your_app->>+Your_app: Set the required event listeners:&#10;agoraEngine.on("user-published")&#10;agoraEngine.on("user-unpublished")
+    Your_app-->>-Your_app: Initialization complete
+
+    note right of Agora: SD-RTN
+    Agora->>+Agora: initiate
+    Agora->>+Agora: Retrieve authentication token to join channel
+    Agora->>+Agora: Join a channel: agoraEngine.join
+    Agora->>+Agora: Join accepted
+    Agora->>+Agora: Create local media tracks:&#10;AgoraRTC.createMicrophoneAudioTrack&#10;AgoraRTC.createCameraVideoTracker
+    Agora->>+Agora: Push local media tracks to the channel: agoraEngine.publish
+    Agora->>+Agora: Retrieve streaming from the other user: agoraEngine.on("user-published")
+    Agora->>+Agora: Play remote media tracks: remoteVideoTrack.play&#10; remoteAudioTrack.play
+    Agora->>+Agora: Receive and send data streams
+    Agora-->>-Agora: leave the channel: agoraEngine.leave
+
+    User->>+Your_app: Open App
+    User->>+Your_app: Start call
+    Your_app->>+Agora: Connect
+    Agora-->>-Your_app: Join accepted
+    Your_app-->>-User: Call started
+    User->>+Your_app: Leave call
+    Your_app-->>-User: App closed
+```

@@ -1,0 +1,39 @@
+graph TD
+  subgraph Core Concepts
+    A[Scalability] --> A1[Vertical Scaling]
+    A --> A2[Horizontal Scaling]
+    B[Load Balancing]
+    C[Content Delivery Networks]
+    D[Caching]
+  end
+
+  subgraph Network & Protocols
+    E[IP Address]
+    F[TCP]
+    G[DNS] --> E
+    H[HTTP]
+    I[REST] --> H
+    J[GraphQL] --> H
+    K[gRPC]
+    L[WebSockets]
+  end
+
+  subgraph Data & Storage
+    M[Databases] --> M1[SQL]
+    M --> M2[NoSQL]
+    N[ACID Compliance] --> M1
+    O[Sharding]
+    P[Replication]
+    Q[CAP Theorem]
+    R[Message Queues]
+  end
+
+  subgraph System Design Considerations
+    A --> B
+    C --> D
+    B --> M
+    O --> M
+    P --> M
+    Q --> M
+    R --> M
+  end

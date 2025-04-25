@@ -1,0 +1,32 @@
+classDiagram
+    class SortAlgorithms {
+        +insertionSort(int[] array)
+        +selectionSort(int[] array)
+        +analyzeTimeComplexity()
+    }
+    
+    SortAlgorithms --> InsertionSort : uses
+    SortAlgorithms --> SelectionSort : uses
+    SortAlgorithms --> TimeComplexityAnalysis : performs
+    
+    class InsertionSort {
+        +sort(int[] array)
+    }
+    
+    class SelectionSort {
+        +sort(int[] array)
+    }
+    
+    class TimeComplexityAnalysis {
+        +analyze()
+    }
+    
+    InsertionSort : -Loop through array
+    InsertionSort : -Insert each element in correct position
+    
+    SelectionSort : -Loop through array
+    SelectionSort : -Find minimum element
+    SelectionSort : -Swap with current position
+    
+    TimeComplexityAnalysis : -Print Insertion Sort complexity
+    TimeComplexityAnalysis : -Print Selection Sort complexity

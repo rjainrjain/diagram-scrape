@@ -1,0 +1,36 @@
+graph TB
+    A[Start] -->|Initiates| B[GitLab CI Pipeline]
+    
+    B -->|Tests Code| C[Test Stage]
+
+    B -->|Builds Images| D[Build Stage]
+    D -->|Django Image| F[Build Django]
+    D -->|Spring Image| G[Build Spring]
+    D -->|React Image| H[Build React]
+    D -->|Hugo Image| I[Build Hugo]
+
+    F -->|Push to Registry| J[Image Registry]
+    G -->|Push to Registry| J[Image Registry]
+    H -->|Push to Registry| J[Image Registry]
+    I -->|Push to Registry| J[Image Registry]
+
+    J -->|Images for Deployment| E[Deploy Stage]
+    E -->|Updates Compose Template| K[Update Docker Compose]
+
+    subgraph Docker Compose Deployment
+    L[Docker Compose Template]
+    M[ELK]
+    P[Graylog]
+    Q[DBs]
+    R[Django]
+    S[Spring]
+    T[React]
+    U[Hugoe]
+    X[Kafka]
+    Z[Treafik]
+    end
+
+    K -->|Deploy with Updated Images| L
+    E -->|Triggers Deployment| L
+
+    style Docker_Compose_Deployment fill:#f9f,stroke:#333,stroke-width:2px

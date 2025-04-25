@@ -1,0 +1,29 @@
+classDiagram
+  GeospatialGeometry -- Place
+  GeospatialGeometry -- GeospatialGeometry
+
+
+class GeospatialGeometry {
+
+  Place geoContains
+  GeospatialGeometry geoContains
+  GeospatialGeometry geoIntersects
+  Place geoIntersects
+  Place geoTouches
+  GeospatialGeometry geoTouches
+  Place geoCoveredBy
+  GeospatialGeometry geoCoveredBy
+  Place geoEquals
+  GeospatialGeometry geoEquals
+  GeospatialGeometry geoCrosses
+  Place geoCrosses
+  GeospatialGeometry geoCovers
+  Place geoCovers
+  Place geoWithin
+  GeospatialGeometry geoWithin
+  GeospatialGeometry geoDisjoint
+  Place geoDisjoint
+  GeospatialGeometry geoOverlaps
+  Place geoOverlaps
+
+ }

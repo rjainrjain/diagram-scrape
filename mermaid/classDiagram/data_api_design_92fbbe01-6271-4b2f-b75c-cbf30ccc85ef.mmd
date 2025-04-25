@@ -1,0 +1,70 @@
+classDiagram
+    class Survey{
+        +str title
+        +str description
+        +List[Question] questions
+        +List[Participant] participants
+        +List[Response] responses
+        +str create_survey()
+        +str edit_survey()
+        +str delete_survey()
+        +str add_participant()
+        +str remove_participant()
+        +str send_survey()
+        +str collect_responses()
+        +str generate_report()
+        +str export_data()
+        +str customize_design()
+    }
+    class Question{
+        +str text
+        +str type
+        +List[str] options
+    }
+    class Participant{
+        +str name
+        +str email
+    }
+    class Response{
+        +Participant participant
+        +List[Answer] answers
+    }
+    class Answer{
+        +Question question
+        +str value
+    }
+    class Report{
+        +Survey survey
+        +str generate_report()
+        +str export_data()
+    }
+    class Email{
+        +str send_email()
+    }
+    class Database{
+        +str save_survey()
+        +str get_survey()
+        +str save_participant()
+        +str get_participant()
+        +str save_response()
+        +str get_response()
+    }
+    class Authentication{
+        +str register_user()
+        +str login_user()
+        +str logout_user()
+    }
+    class Utils{
+        +str validate_email()
+        +str validate_survey()
+        +str validate_response()
+    }
+    Survey "1" -- "1..*" Question: has
+    Survey "1" -- "0..*" Participant: has
+    Survey "1" -- "0..*" Response: has
+    Response "1" -- "1..*" Answer: has
+    Report "1" -- "1" Survey: has
+    Email "1" -- "0..*" Participant: has
+    Database "1" -- "0..*" Survey: has
+    Database "1" -- "0..*" Participant: has
+    Database "1" -- "0..*" Response: has

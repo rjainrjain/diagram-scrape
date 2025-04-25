@@ -1,0 +1,13 @@
+classDiagram
+namespace tcpip {
+    class Client
+}
+
+class SimpleDelayFilter
+BiquadraticFilter "1" *-- "n" SingleBiquadraticFilter
+
+Client <|-- TcpClient
+
+Controller *-- ErrorHandler
+Controller "1" *-- "2" TcpClient
+Controller <|-- ControllerCell

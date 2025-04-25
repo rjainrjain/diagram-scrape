@@ -1,0 +1,78 @@
+flowchart TB
+    subgraph Apresentacao[Camada de Apresentação]
+        IU[InterfaceUsuario]
+        IQ[InterfaceQuestionario]
+        IR[InterfaceResposta]
+        PA[PainelAdmin]
+    end
+    subgraph Nucleo[Camada de Núcleo]
+        NU[NucleoUsuario]
+        NQ[NucleoQuestionario]
+        NR[NucleoResposta]
+    end
+    subgraph Dominio[Camada de Domínio]
+        subgraph Modelos
+            M1[Usuario]
+            M2[Questionario]
+            M3[Categoria]
+            M4[Questao]
+            M5[Resposta]
+            M6[RespostaQuestionario]
+            M7[RespostaQuestao]
+        end
+        
+        subgraph Enums[Enumeracoes]
+            E1[Papel]
+            E2[Tipo]
+        end
+        
+        subgraph DTOs[ObjetosTransferencia]
+            D1[UsuarioDTO]
+            D2[QuestionarioDTO]
+            D3[RespostaDTO]
+        end
+    end
+    subgraph Infraestrutura[Camada de Infraestrutura]
+        subgraph BancoDados[Banco de Dados]
+            DB1[Repositorios]
+            DB2[Migracoes]
+            DB3[Esquemas]
+        end
+        
+        subgraph Seguranca
+            S1[Autenticacao]
+            S2[Autorizacao]
+            S3[Criptografia]
+        end
+    end
+    subgraph Servicos[Camada de Serviços]
+        SU[ServicoUsuario]
+        SQ[ServicoQuestionario]
+        SR[ServicoResposta]
+        SC[ServicoCategoria]
+    end
+    subgraph Utilitarios[Camada de Utilitários]
+        subgraph Validadores
+            V1[ValidadorEntrada]
+            V2[ValidadorRegrasNegocio]
+        end
+        
+        subgraph Auxiliares
+            H1[AuxiliarData]
+            H2[AuxiliarTexto]
+            H3[AuxiliarFormato]
+        end
+    end
+    %% Dependências entre camadas
+    Apresentacao --> Nucleo
+    Nucleo --> Dominio
+    Nucleo --> Servicos
+    Servicos --> Dominio
+    Servicos --> Infraestrutura
+    Infraestrutura --> Dominio
+    Utilitarios --> Dominio
+    Utilitarios --> Servicos
+    %% Estilo
+    classDef default fill:#f9f9f9,stroke:#333,stroke-width:2px;
+    classDef layerStyle fill:#e4e4e4,stroke:#333,stroke-width:4px;
+    class Apresentacao,Nucleo,Dominio,Infraestrutura,Servicos,Utilitarios layerStyle;

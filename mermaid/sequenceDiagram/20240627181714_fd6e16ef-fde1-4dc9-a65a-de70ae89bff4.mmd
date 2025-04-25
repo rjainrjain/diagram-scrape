@@ -1,0 +1,16 @@
+
+sequenceDiagram
+    participant A as FlaskApp
+    participant SM as StoreManager
+    participant PF as ProductForm
+    participant CF as CheckoutForm
+    A->>SM: initialize_app()
+    SM->>PF: add_product_form()
+    PF->>SM: product_data
+    SM->>SM: add_product(product)
+    SM->>PF: remove_product_form()
+    PF->>SM: product_id
+    SM->>SM: remove_product(product_id)
+    SM->>CF: checkout_form()
+    CF->>SM: cart_data
+    SM->>SM: checkout(cart)

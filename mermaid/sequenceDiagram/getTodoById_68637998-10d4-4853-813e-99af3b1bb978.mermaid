@@ -1,0 +1,17 @@
+sequenceDiagram
+    title: Sequence Diagram for Getting a Todo by ID
+    note over Client: API Route: GET /api/todos/{id}
+    note over Client: Path Parameter: id (string)
+    note over Client: Response: 200 OK, { id, title, description, completed, created_at }
+    
+    participant Client
+    participant Server
+    participant Service
+    participant Storage
+
+    Client->>Server: GET /api/todos/{id}
+    Server->>Service: getTodoById(id)
+    Service->>Storage: getTodoById(id)
+    Storage-->>Service: Todo
+    Service-->>Server: Todo
+    Server-->>Client: 200 OK, Todo

@@ -1,0 +1,26 @@
+sequenceDiagram
+  participant Axios as Axios instance
+  participant Stor as sessionStorage
+  participant API as API Endpoint
+  participant Refr as Refresh Token Endpoint
+
+  Axios->>Stor: Retrieve JWT token
+  Stor-->>Axios: Return token 
+  Axios->>API: Send request with Authorization header
+  API->>Axios: Return response/error
+
+  Note over Axios,API: If no error, pass response further
+
+  API--xAxios: Return 403 error
+
+  Note over Axios,API: If error.status is 403
+
+  Axios->>Stor: Retrieve refreshToken
+  Stor-->>Axios: Return refreshToken
+  Axios->>Refr: Refresh token request
+  Refr-->>Axios: Send new JWT token
+  Axios->>Stor: Update JWT token in sessionStorage
+  Axios->>API: Retry original request with new token
+  API-->>Axios: Return response/error
+
+  Note over Axios,API: If any error, reject

@@ -1,0 +1,18 @@
+
+graph LR;
+	classDef Topic fill:#7FDBFF;
+	classDef Collection fill:#fc9846;
+	classDef CodeService fill:#5fd36a
+
+    Device-->|publish|position[Topic: position]
+    position[Topic: /section1/tag/tagName]-->processTagMessage[Code Service: processTagMessage];
+    processTagMessage-->|update position|entities[Collection: entities]
+    processTagMessage-->|if new event detected, create|events[Collection: events]
+    processTagMessage-->|if event should close, update|events[Collection: events]
+    processTagMessage-->|if new event detected, publish|eventTriggered[Topic: eventTriggered]
+
+
+
+    class position,eventTriggered Topic
+    class entities,events Collection
+    class processTagMessage CodeService

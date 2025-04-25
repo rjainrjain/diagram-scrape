@@ -1,0 +1,17 @@
+graph LR
+  A[Start] --> B[Validate Password]
+  B --> C{Passwords Match?}
+  C -- Yes --> D[Create User]
+  D --> E[Generate Token]
+  E --> F[Return User]
+  C -- No --> G[Password Mismatch]
+  G --> H[Return Error]
+
+  style A fill:#63c2de
+  style B fill:#63c2de
+  style C fill:#63c2de
+  style D fill:#63c2de
+  style E fill:#63c2de
+  style F fill:#63c2de
+  style G fill:#ff6666
+  style H fill:#ff6666

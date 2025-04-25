@@ -1,0 +1,67 @@
+
+<div class="mermaid">
+
+
+flowchart TD
+    A[Rocket] -..->|PUB Rocket Telemetrics| rocket.telemetrics.topic
+    A -..-> |PUB Payload Telemetrics| payload.telemetrics.topic
+    A -..-> |PUB Complete Telemetrics| logs.topic 
+
+    subgraph "`**KAFKA**`"
+    rocket.telemetrics.topic
+    payload.telemetrics.topic
+    logs.topic
+    end
+
+    rocket.telemetrics.topic -..- |SUB rocket.telemetrics.topic| G
+    payload.telemetrics.topic -..- |SUB payload.telemetrics.topic| H
+
+    rocket.telemetrics.topic -..- |SUB rocket.telemetrics.topic| View-Department
+    payload.telemetrics.topic -..- |SUB payload.telemetrics.topic| View-Department
+
+    View-Department ==> |Emit event| C([Web Dashboards])
+
+    G[Telemetrie Dept] -->|Store rocket telemetrics| L[(Mongo\n telemetrics)]
+    H[Payload Dept]  --> |Store payload telemetrics|M[(Mongo\n payload)]
+
+
+    I[Mission commander] <--> |POST /rocket\n POST /rocket/load| J
+    I -..- |SUB logs.topic| logs.topic
+
+    J[Rocket Dept] <--> |POST /rocket/setpayload\n POST /rocket/takeoff\n POST /rocket/destroy\n POST /rocket/maxQ| A
+
+
+    I --> |GET /status| K[Weather Dept]
+
+    scenarios.scripts -..- |SUB logs.topic| logs.topic
+
+
+    A[Rocket] -..->|PUB Rocket Telemetrics| rocket.telemetrics.topic
+    A -..-> |PUB Payload Telemetrics| payload.telemetrics.topic
+
+    subgraph "`**KAFKA**`"
+    rocket.telemetrics.topic
+    payload.telemetrics.topic
+    end
+
+    rocket.telemetrics.topic -..- |SUB rocket.telemetrics.topic| G
+    payload.telemetrics.topic -..- |SUB payload.telemetrics.topic| H
+
+    rocket.telemetrics.topic -..- |SUB rocket.telemetrics.topic| View-Department
+    payload.telemetrics.topic -..- |SUB payload.telemetrics.topic| View-Department
+
+    View-Department ==> |Emit event| C([Web Dashboards])
+
+    G[Telemetrie Dept] -->|Store rocket telemetrics| L[(Mongo\n telemetrics)]
+    H[Payload Dept]  --> |Store payload telemetrics|M[(Mongo\n payload)]
+
+
+    I[Mission commander] <--> |POST /rocket\n POST /rocket/load| J
+
+    J[Rocket Dept] <--> |POST /rocket/setpayload\n POST /rocket/takeoff\n POST /rocket/destroy\n POST /rocket/maxQ| A
+
+
+    I --> |GET /status| K[Weather Dept]
+
+
+</div>

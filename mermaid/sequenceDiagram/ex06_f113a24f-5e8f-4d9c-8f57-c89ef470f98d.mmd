@@ -1,0 +1,12 @@
+sequenceDiagram
+participant browser
+participant server
+participant Javascript
+
+
+Note right of browser: When the user enters input:
+Note left of Javascript: JS stops default action when form is submitted
+browser ->> server : POST REQUEST to "https://studies.cs.helsinki.fi/exampleapp/new_note_spa"
+server -->> browser : status code 202 note created
+Note left of server: There's no redirect
+Javascript -x browser: JS creates new note, renders it on the page  

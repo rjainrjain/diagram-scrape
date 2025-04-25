@@ -1,0 +1,94 @@
+sequenceDiagram
+    title: API: Create a mission
+    participant Client as Web
+    participant API as API Server
+    participant Auth as Auth Middleware
+    participant Routing
+    participant Service as Service Layer
+    participant Formatter as Formatter Layer
+    participant DB as PostgreSQL DB
+    participant MessageBroker as Message Broker
+
+    Client->>API: Send request
+    API->>Auth: Validate if the JWT in the request headers is correctly signed and has required scopes.<br>NOTE: outside the scope of hackathon implementation
+
+    break If auth validation error
+        Auth -->> API: Return error
+        API-->>Client: Return error response
+    end
+
+    note over Auth: Internal parameters set
+
+    Auth ->> Routing: Route specific logic execution starts
+
+    note over Routing: Only forward following external parameters to service:<br>name [request body] [mandatory]<br>resume_folder_url [request body] [mandatory]<br>skills [request body] [optional]<br>total_experience_details [request body] [optional]<br>min_cgpa [request body] [optional]<br>custom_selection_criteria [request body] [optional]
+
+    Routing ->> Service: Call respective service class with above mentioned<br>internal and external parameters.
+
+    note over Service: Validate mandatory parameters' presence and ensure correct types for all parameters.
+
+    break If mandatory checks or type checks fail
+        Service -->> Routing: Return error
+        Routing ->> Formatter: Call the Formatter passing service response
+        Formatter-->>Client: Return error response
+    end
+
+    note over Service: Validate name for max length and for allowed characters.
+
+    break If validation errors
+        Service -->> Routing: Return error
+        Routing ->> Formatter: Call the Formatter passing service response
+        Formatter-->>Client: Return error response
+    end
+
+    note over Service: Validate skills (if present) to be a valid Array of strings and for max array length.<br>Validate each element of the array for allowed characters and max string length.
+
+    break If validation errors
+        Service -->> Routing: Return error
+        Routing ->> Formatter: Call the Formatter passing service response
+        Formatter-->>Client: Return error response
+    end
+
+    note over Service: Validate total_experience_details (if present) for allowed format.
+
+    break If validation errors
+        Service -->> Routing: Return error
+        Routing ->> Formatter: Call the Formatter passing service response
+        Formatter-->>Client: Return error response
+    end
+
+    note over Service: Validate min_cgpa (if present) to be a float number between and including 5 and 10.
+
+    break If validation errors
+        Service -->> Routing: Return error
+        Routing ->> Formatter: Call the Formatter passing service response
+        Formatter-->>Client: Return error response
+    end
+
+    note over Service: Validate custom_selection_criteria (if present) max allowed length.
+
+    break If validation errors
+        Service -->> Routing: Return error
+        Routing ->> Formatter: Call the Formatter passing service response
+        Formatter-->>Client: Return error response
+    end
+
+    note over Service: Validate resume_folder_url to be a valid URL. Also check if the Google drive folder exists.
+
+    break If validation errors
+        Service -->> Routing: Return error
+        Routing ->> Formatter: Call the Formatter passing service response
+        Formatter-->>Client: Return error response
+    end
+
+    Service ->> DB: Create entry in missions table with status CREATED
+    DB -->> Service: Query response
+
+    Service ->> DB: Fetch record which just now got created using mission ID
+    DB -->> Service: Query response
+
+    Service ->> MessageBroker: Enqueue task to be picked up by "Task Splitter", forwarding the mission ID
+
+    Service -->> Routing: Return service response
+    Routing ->> Formatter: Call the Formatter passing service response
+    Formatter-->>Client: Return response

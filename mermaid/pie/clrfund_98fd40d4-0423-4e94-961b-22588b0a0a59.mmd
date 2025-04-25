@@ -1,0 +1,86 @@
+%% To render this diagram, paste the code into the live editor https://mermaid-js.github.io/mermaid-live-editor/ or use Mermaid CLI
+
+sequenceDiagram
+    participant Owner
+    participant PoolContributor
+    participant Recipient
+    participant Factory
+    participant MACIFactory
+    participant UserRegistry
+    participant RecipientRegistry
+    participant Contributor
+    participant FundingRound
+    participant MACI
+    participant Coordinator
+    
+    Owner ->> MACIFactory: deploy MACI factory
+    Owner ->> UserRegistry: deploy user registry
+    Owner ->> RecipientRegistry: deploy recipient registry
+    Owner ->> Factory: deploy funding round factory
+    Owner ->> MACIFactory: transfer ownership to Factory ( call transferOwnership() )
+    Owner ->> RecipientRegistry: set max number of recipients
+    Owner ->> RecipientRegistry: transfer control to Factory ( call setController() )
+    Owner ->> Factory: set MACI parameters if necessary ( call setMaciParameters() )
+    Coordinator -->> Owner: provide public key
+    Owner ->> Factory: set coordinator ( call setCoordinator() )
+    PoolContributor ->> Factory: donate to the matching pool
+
+    loop Adding recipients
+        Recipient -->> Owner: ask for registration
+        Owner ->> RecipientRegistry: call addRecipient()
+    end
+    
+    loop Every round
+        Owner ->> Factory: call deployNewRound()
+        Factory ->> FundingRound: deploy FundingRound contract
+        Factory ->> MACIFactory: call deployMaci()
+        MACIFactory ->> MACI: create new MACI instance
+        Factory ->> FundingRound: call setMaci()
+        
+        loop Funding
+            Note over Contributor, FundingRound: contributor registers with their verified address
+            Contributor ->> FundingRound: donate to the pool ( call contribute() )
+            FundingRound ->> UserRegistry: check that user is verified ( call isVerifiedUser() )
+            FundingRound ->> MACI: call signUp()
+            Note right of Contributor: contributor creates encrypted message(s)
+            alt Single message submission
+                Contributor ->> MACI: vote ( call publishMessage() )
+            else Batch submission
+                Contributor ->> FundingRound: vote ( call submitMessageBatch() )
+                FundingRound ->> MACI: call publishMessage()
+            end
+        end
+        
+        Note over FundingRound, MACI: contribution / signup deadline
+        Note over MACI: voting deadline
+
+        alt Allocation of funds
+            Coordinator ->> MACI: process messages ( call batchProcessMessage() )
+            Note left of Coordinator: coordinator tallies the votes and generates proofs
+            Coordinator ->> MACI: prove the correctness of vote tally ( call proveVoteTallyBatch() )
+            Note left of Coordinator: coordinator uploads the tally to IPFS
+            Coordinator ->> FundingRound: call publishTallyHash()
+            Note right of Owner: owner verifies the tally
+            Owner ->> Factory: call transferMatchingFunds()
+            Factory ->> PoolContributor: pull matching funds from funding sources
+            Factory ->> FundingRound: transfer matching funds and finalize the round
+            FundingRound ->> MACI: verify the total amount of spent voice credits ( call verifySpentVoiceCredits() )
+            FundingRound ->> MACI: call totalVotes()
+            Note over FundingRound: round can not be cancelled anymore
+
+            loop Distribution
+                Recipient ->> FundingRound: submit vote tally, amount of spent voice credits and proofs ( call claimFunds() )
+                FundingRound ->> RecipientRegistry: find the corresponding vote option index
+                FundingRound ->> MACI: verify the proofs
+                FundingRound ->> Recipient: transfer funds
+            end
+        else Cancelling round
+            Owner ->> Factory: call cancel()
+            Factory ->> FundingRound: call cancel()
+
+            loop Withdrawal
+                Contributor ->> FundingRound: call withdrawContribution()
+                FundingRound ->> Contributor: transfer funds
+            end
+        end
+    end

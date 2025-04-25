@@ -1,0 +1,48 @@
+erDiagram
+    Card {
+        string scryfall_id
+        string name
+        string mana_cost
+        decimal mana_value
+        string type_line
+        string oracle_text
+        string keywords
+        int power
+        int toughness
+        string color_identity
+        string set_name
+        string rarity
+        int edhrec_rank
+        string img_url
+        json archetype_weights
+    }
+    
+    Archetype {
+        int id
+        string name
+        string description
+        json keywords
+        json oracle_patterns
+    }
+    
+    ColorIdentity {
+        string colors
+    }
+    
+    Cube {
+        string name
+        string description
+        datetime created_at
+        datetime updated_at
+    }
+    
+    User {
+        int id
+        string username
+    }
+    
+    Card }|--|| ColorIdentity : "has"
+    Archetype }|--|{ ColorIdentity : "possible_colors"
+    Cube }|--|{ Card : "contains"
+    Cube }|--|{ Archetype : "supports"
+    Cube }|--|| User : "owned_by"

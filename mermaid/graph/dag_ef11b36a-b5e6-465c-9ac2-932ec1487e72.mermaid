@@ -1,0 +1,55 @@
+graph TD;
+%% Standart definitions
+    fuente(("            Fuente            "));
+    sumidero(("            Sumidero            "));
+
+%% Controllers
+%% Without state
+    proy(("           Proyección            "));
+    filDec(("     Filtro por Década     "));
+    filIndie(("     Filtro por Indie     "));
+    filAction(("   Filtro por Action   "));
+    filPos(("     Filtro por Positivo     "));
+    filEng(("     Filtro por Inglés     "));
+
+%% With State
+    counter(("     Contador Sisop     "));
+    top10(("            TOP 10            "));
+    top5(("            TOP 5            "));
+    count(("     Contador 50.000     "));
+    per90(("        Percentil 90        "));
+    joinnerQ3(("    Joinner Query 3    "));
+    joinnerQ4(("    Joinner Query 4    "));
+    joinnerQ5(("    Joinner Query 5    "));
+
+    fuente --> proy
+%% Query 1
+    proy --> counter
+    counter --> sumidero
+
+%% Query 2
+    proy --> filIndie
+    filIndie --> filDec
+    filDec --> top10
+    top10 --> sumidero
+
+%% Query 3
+    proy --> filPos
+    filPos --> joinnerQ3
+    filIndie --> joinnerQ3
+    joinnerQ3 --> top5
+    top5 --> sumidero
+
+%% Query 4
+    proy --> filAction
+    filAction --> joinnerQ4
+    filPos -->|Los que no pasan el filtro| filEng
+    filEng --> joinnerQ4
+    joinnerQ4 --> count
+    count --> sumidero
+
+%% Query 5
+    filAction --> joinnerQ5
+    filPos -->|Los que no pasan el filtro| joinnerQ5
+    joinnerQ5 --> per90
+    per90 --> sumidero

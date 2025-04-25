@@ -1,0 +1,61 @@
+erDiagram
+    USER {
+        int id PK
+        string username
+        string password_hash
+        string email
+        datetime created_at
+        datetime updated_at
+    }
+
+    CATEGORY {
+        int id PK
+        string name
+        string description
+    }
+
+    SUBFORUM {
+        int id PK
+        int category_id FK
+        string name
+        string description
+    }
+
+    THREAD {
+        int id PK
+        int subforum_id FK
+        int user_id FK
+        string title
+        datetime created_at
+        datetime updated_at
+    }
+
+    POST {
+        int id PK
+        int thread_id FK
+        int user_id FK
+        text content
+        datetime created_at
+        datetime updated_at
+    }
+
+    FLAG {
+        int id PK
+        int user_id FK
+        int thread_id FK
+        int post_id FK
+        string reason
+        string status
+        datetime created_at
+    }
+
+    USER ||--o{ THREAD : creates
+    USER ||--o{ POST : writes
+    USER ||--o{ FLAG : reports
+
+    CATEGORY ||--o{ SUBFORUM : contains
+    SUBFORUM ||--o{ THREAD : contains
+    THREAD ||--o{ POST : contains
+
+    THREAD ||--o{ FLAG : may_have
+    POST ||--o{ FLAG : may_have

@@ -1,0 +1,29 @@
+classDiagram 
+
+  class CalibratedModelParametersBase~TSubModel,TCalibrator~ {
+    Host : IHost
+    SubModel : TSubModel
+    Calibrator : TCalibrator
+  }
+  
+  class ValueMapperCalibratedModelParametersBase~TSubModel,TCalibrator~ {
+    SubModel
+    Calibrator
+  }
+  
+  ValueMapperCalibratedModelParametersBase~TSubModel,TCalibrator~ -> CalibratedModelParametersBase~TSubModel,TCalibrator~
+  
+  class FeatureWeightsCalibratedModelParameters~TSubModel, TCalibrator~ {
+    GetFeatureWeights : (weights: ref VBuffer<float>)
+  }
+
+  class PlattCalibrator {
+    Offset : Double
+    Slope : Double
+    PredictProbability : (output : float, a : Double, b : Double) : float
+  }
+  
+  class ICalibrator {
+    PredictProbability : (:float) : float
+  }
+  <<interface>> ICalibrator

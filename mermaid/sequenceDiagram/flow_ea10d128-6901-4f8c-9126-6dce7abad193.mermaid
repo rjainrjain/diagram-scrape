@@ -1,0 +1,32 @@
+sequenceDiagram
+    participant User
+    participant App as App (Mobile/Desktop)
+    participant P2P as P2P Network (LibP2P)
+    participant WebRTC
+    participant DB as BoltDB
+    participant Enc as Encryption
+
+    User ->> App: Launch App
+    App ->> Enc: Generate KeyPair
+    Enc -->> App: Return KeyPair
+
+    User ->> App: Register with Display Name
+    App ->> P2P: Connect to P2P Network
+
+    User ->> App: Initiate Chat with Peer
+    App ->> P2P: Find Peer
+    P2P -->> App: Peer Found
+
+    User ->> App: Send Message
+    App ->> Enc: Encrypt Message
+    Enc -->> App: Encrypted Message
+    App ->> P2P: Send Encrypted Message
+    P2P -->> App: Message Delivered
+
+    User ->> App: Start Voice/Video Call
+    App ->> WebRTC: Initialize WebRTC Session
+    WebRTC ->> Enc: Secure Media Stream
+    WebRTC -->> App: Media Stream Established
+    App ->> P2P: Notify Peers of Call
+
+    App ->> DB: Store Chat History

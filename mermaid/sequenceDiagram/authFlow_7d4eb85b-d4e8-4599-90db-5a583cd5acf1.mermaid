@@ -1,0 +1,42 @@
+%% Documentation: https://github.com/mermaid-js/mermaid
+%% Editor: https://mermaid.live/edit
+
+sequenceDiagram
+title Authentication Service 
+
+participant Browser
+participant Server
+participant Lens
+participant Metamask
+participant DB as Database
+
+
+
+Browser->>Lens: Get challenge text graphQL call
+Lens->>Browser: Response with text
+
+Browser->>Metamask: Sign the text using the private key
+Metamask->>Browser: Signature
+
+Browser->>Lens: Verify signature graphQL call
+Lens->>Browser: Response with acccess Token and refresh Token
+
+Browser->>Server: Authenticate API request
+
+note over Server: Verify the signature signature
+break
+    note over Server: If verification failed
+end
+
+
+Server->>DB: Fetch the user details
+DB->>Server: User details
+
+alt if user details not found
+    Server->>DB: Create new user
+    DB->>Server: Success
+end
+
+note over Server: Create cookie
+
+Server->>Browser: Success Response with set cookie header

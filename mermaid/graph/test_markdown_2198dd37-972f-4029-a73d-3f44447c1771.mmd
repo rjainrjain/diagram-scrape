@@ -1,0 +1,66 @@
+---
+title: "Towards minimizing data-acquisition for a pixel-based USCT echo imaging method"
+brief: "A manuscript on USCT research, to be submitted to a journal, part of the requirement to fullfile a PhD degree"
+date: 2023-10-01T00:27:25+09:00
+lastmod: 2024-01-13T02:40:46+09:00
+---
+
+# Introduction
+<!--
+@brief
+1. about breast cancer
+   - Japan's issue
+   - Global issue
+2. about USCT imaging method
+   - compared w/ conventional ultrasound diagnosis
+   - echo mode and transmission mode
+   - major imaging methods
+   - synthetic aperture
+   - issues in USCT practice
+3. proposed method brief
+4. structure of the paper
+-->
+#introduction
+
+<!-- Breast cancer status in Japan and in the global -->
+Breast cancer is the most prevalent cancer among women, represents a significant health challenge not only in Japan but also worldwide [@cite:JP-Cancer].
+While developed countries have seen relatively high survival rates due to advanced healthcare systems, the scenario remains challenging in many parts of the world [@cite:2].
+This disparity is largely attributed to the stage at diagnosis, with late detection often leading to poorer outcomes [@cite:3].
+Consequently, the emphasis on early diagnosis is paramount, highlighting the need for effective and efficient screening methods.
+
+<!-- about USCT imaging method -->
+Ultrasound Computed Tomography (USCT) is a promising technology for breast cancer diagnosis [@cite:4].
+In a USCT system, ultrasound transducer elements are typically arranged on a closed-circle, facilitating both back-scattered (echo) and transmission (passed-through) waves to generate images.
+The echo mode, akin to conventional ultrasound B-mode imaging, provides an echogenicity map, while the transmission mode offers insights into tissue attenuation and sound speed.
+
+<!-- define the range -->
+The focus of this research is on echo mode imaging.
+Since the echo mode USCT builds upon and enhances conventional handheld ultrasound techniques, the familiarity and accumulated knowledge base in conventional ultrasound practice should allow a smoother transition and integration of USCT into existing diagnostic frameworks.
+
+<!-- state the issue -->
+Synthetic aperture is a well-established echo imaging method method.
+It is known for its high spatial resolution, achieved by synthesizing a large virtual aperture from multiple small-aperture transmissions [@cite:5].
+This process, however, requires numerous transmissions, leading to lengthy data acquisition times and substantial data volumes.
+For example, a commerical USCT system shown in [@fig:01] featuring 2048 elements arranged on a radius 117 mm circle usually requires hundreds of transmissions using apertures moving across the enclosed region of interest, collecting several gigabytes data to build a tomographic image.
+This extensive data acquisition requirement limits the throughput of diagnosis and poses challenges for large-scale screening.
+
+<!-- latex -->
+\begin{figure}[tb]
+\begin{center}
+\includegraphics[width=6.5cm]{figure-01.eps}
+\caption{A commercial ultrasound computed tomography system.}
+\label{fig:01}
+\end{center}
+\end{figure}
+<!----------->
+
+<!-- state the objective and call back pixel-based method -->
+In this study, we investigate minimizing the data required for image reconstruction for a given region of interest and pixel resolution, based on a pixel based USCT echo imaging method we have proposed.
+
+<!-- state the structure of the paper -->
+The remaining part of this paper is organized as follows.
+First, we give an in-depth explanation on the pixel-based imaging method in [@sec:1].
+Second, we depic the strategy towards a minimal data-acquisition scheme for echo imaging in [@sec:2].
+Third, we detail the simulation experiments that verify our proposal in [@sec:3].
+After that, we present the simulation experiment results in [@sec:4] and discuss them in [@sec:5].
+We conclude our findings in [@sec:6].

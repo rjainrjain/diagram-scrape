@@ -1,0 +1,97 @@
+sequenceDiagram
+    participant Gracz 1
+    participant Gracz 2
+    participant Gracz N
+    Note left of Gracz N: ...
+    participant Kolejka
+
+    Gracz 1->>Kolejka: Utworzenie lobby
+    activate Kolejka
+    create participant Serwer
+    Kolejka->>Serwer: Utworzenie serwera gry
+    Serwer-->>Kolejka: Potwierdzenie utworzenia serwera
+    Kolejka-->>Gracz 1: Przesłanie informacji o porcie serwera
+    deactivate Kolejka
+
+
+    Gracz 1->>Serwer: Dołączanie do gry
+    activate Serwer
+    Serwer-->>Gracz 1: Przesłanie informacji o mapie
+    deactivate Serwer
+
+    Gracz 2->>Kolejka: Prośba o dołączenie do gry
+    activate Kolejka
+    Kolejka-->>Gracz 2: Przesłanie informacji o porcie serwera
+    deactivate Kolejka
+    Gracz 2->>Serwer: Dołączanie do gry
+    activate Serwer
+    Serwer-->>Gracz 2: Przesłanie informacji o mapie
+    Serwer-->>Gracz 1: Przesłanie informacji o dołączeniu drugiego gracza
+    deactivate Serwer
+
+    Gracz 1->>Serwer: Przesłanie informacji o gotowości
+    activate Serwer
+    Serwer-->>Gracz 2: Rozpropagowanie gotowości pierwszego gracza
+    deactivate Serwer
+
+    Gracz 2->>Serwer: Przesłanie informacji o gotowości
+    activate Serwer
+    Serwer-->>Gracz 1: Rozpropagowanie gotowości drugiego gracza
+    deactivate Serwer
+    par
+        Serwer-->>Gracz 1: Rozpoczęcie gry
+        activate Serwer
+    and
+        Serwer-->>Gracz 2: Rozpoczęcie gry
+        deactivate Serwer
+    end
+
+    Note over Gracz 1, Serwer: Rozgrywka
+
+    loop
+        alt Ruch gracza
+            Gracz 1->>Serwer: Przesłanie informacji o akcji
+            activate Serwer
+            Note left of Serwer: Sprawdzenie poprawności akcji
+            par
+                Serwer-->>Gracz 1: Rozpropagowanie akcji
+            and
+                Serwer-->>Gracz 2: Rozpropagowanie akcji
+                deactivate Serwer
+            end
+        else Synchronizacja
+            par
+                Serwer-->>Gracz 1: Przesłanie aktualizacji stanu
+                activate Serwer
+            and
+                Serwer-->>Gracz 2: Przesłanie aktualizacji stanu
+                deactivate Serwer
+            end
+        end
+    end
+
+    Note over Gracz 1, Serwer: Zakończenie rozgrywki
+
+    par
+        Serwer-->>Gracz 1: Przesłanie informacji o końcu gry
+        activate Serwer
+    and
+        Serwer-->>Gracz 2: Przesłanie informacji o końcu gry
+        deactivate Serwer
+    end
+
+    Gracz 1->>Serwer: Opuszczenie gry
+    activate Serwer
+    Serwer-->>Gracz 2: Informacja o opuszczeniu gry przez pierwszego gracza
+    deactivate Serwer
+    
+    Gracz 2->>Serwer: Opuszczenie gry
+    activate Serwer
+    Serwer-->>Gracz 1: Informacja o opuszczeniu gry przez drugiego gracza
+    deactivate Serwer
+
+    Serwer->>Kolejka: Informacja o pustym serwerze
+    activate Kolejka
+    Kolejka->>Serwer: Usunięcie serwera
+    deactivate Kolejka
+

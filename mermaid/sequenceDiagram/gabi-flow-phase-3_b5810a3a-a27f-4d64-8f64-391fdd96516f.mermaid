@@ -1,0 +1,28 @@
+sequenceDiagram
+    actor Agent
+    box Purple Sales Call UIs
+    participant GABI UI
+    participant Purchase App
+    end
+    box Blue API
+    participant GABI API
+    participant WDO API
+    end
+    box Green Post Sale UIs
+    participant DCT
+    end
+    Agent->>+GABI UI: Agent Opens GABI UI from CRM
+    GABI UI->>+GABI API: Agent submits DIFY lead data
+    GABI API->GABI UI: 
+    GABI UI->>-Agent: 
+    Agent->>Purchase App: Agent Completes Purchase of WDS product
+    Purchase App->>Agent: 
+    Agent->>+DCT: Agent visits DCT via WDH
+    DCT->>WDO API: GET /v1/sales-call-info
+    WDO API->>GABI API: GET/v1/leads
+    GABI API->>WDO API: 
+    WDO API->>DCT: 
+    DCT->>DCT: Sales Agent and Customer Fill Out And Submit DCT
+    DCT->>-Agent: 
+    note right of Agent: Site Setup for Build
+     

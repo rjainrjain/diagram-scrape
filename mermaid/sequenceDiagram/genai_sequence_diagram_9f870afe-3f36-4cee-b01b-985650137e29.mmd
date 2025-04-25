@@ -1,0 +1,29 @@
+sequenceDiagram
+autonumber
+    participant Scope as Scope
+        Scope->>Select: Define the usecase
+    participant Select as Select
+    participant Adapt as Adapt and align model
+    participant AppInt as Application integrations
+    
+    Select->>Adapt: Choose an existing model or pretrain your own
+
+    rect rgb(220, 232, 245)
+        Adapt->>Adapt: Prompt Engineering
+    
+        rect rgb(237, 235, 235)
+            alt
+                Adapt->>Adapt: Fine-tuning
+            end
+        end
+        
+        Adapt->>Adapt: Align with human feedback
+        Adapt->>Adapt: Evaluate
+    end
+
+    Adapt->>AppInt: Model is ready to deploy
+    
+    rect rgb(212, 250, 224)
+        AppInt->>AppInt: Optimize and deploy model for inference
+        AppInt->>AppInt: Augment model and build LLM-powered applications
+    end

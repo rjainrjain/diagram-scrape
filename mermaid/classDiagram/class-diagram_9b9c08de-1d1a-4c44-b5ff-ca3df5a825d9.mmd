@@ -1,0 +1,13 @@
+classDiagram
+  Person <|-- Employee
+
+  class Person {
+    +firstName : string
+    +lastName : string
+    +toString() string
+  }
+
+  class Employee {
+    +email : string
+    +username : string
+  }

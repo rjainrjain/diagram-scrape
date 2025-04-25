@@ -1,0 +1,18 @@
+sequenceDiagram
+  autonumber
+
+  box aqua
+  actor A as Alice
+  end
+
+  box darksalmon
+  participant Zoe
+  end
+
+  box skyblue Contract
+  participant C as offer-up.contract
+  end
+
+    A-)C: makeTradeInvitation()
+    A-)Zoe: offer(toJoin, proposal, { Price })
+    A-)Zoe: E(seat).getPayout('Items')

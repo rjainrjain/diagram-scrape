@@ -1,0 +1,174 @@
+erDiagram
+    EMPRESA ||--o{ INSTALACION : tiene
+    INSTALACION ||--o{ AREA : contiene
+    INSTALACION ||--o{ USUARIO : trabaja_en
+    USUARIO ||--o{ ROL : tiene
+    ROL ||--o{ PERMISO : incluye
+    PERSONA ||--o{ AUTORIZACION : recibe
+    AUTORIZACION }o--|| AREA : para
+    PERSONA ||--o{ VEHICULO : posee
+    PERSONA ||--o{ REGISTRO : tiene
+    VEHICULO ||--o{ REGISTRO : involucrado_en
+    AREA ||--o{ REGISTRO : controla_acceso
+    TIPO_ACCESO ||--o{ REGISTRO : define
+    USUARIO ||--o{ REGISTRO : registra
+    USUARIO ||--o{ AUTORIZACION : otorga
+    EVENTO_AUDITORIA ||--o{ USUARIO : realizado_por
+    AUTORIZACION ||--o{ DOCUMENTO : tiene
+    REGISTRO ||--o{ DOCUMENTO : tiene
+    PERSONA ||--o{ DOCUMENTO : tiene
+    VEHICULO ||--o{ DOCUMENTO : tiene
+    INTEGRACION ||--o{ REGISTRO : genera
+    VEHICULO ||--o{ CARGA : transporta
+    REGISTRO ||--o{ UBICACION_REGISTRO : tiene
+    INSTALACION ||--o{ CONFIGURACION : tiene
+    TIPO_CARGA ||--o{ CARGA : clasifica
+
+    EMPRESA {
+        int id PK
+        string nombre UK
+        string direccion
+        string telefono
+    }
+    INSTALACION {
+        int id PK
+        string nombre
+        string tipo
+        string direccion
+        int empresa_id FK
+        boolean maneja_vehiculos
+        boolean maneja_cargas_peligrosas
+    }
+    AREA {
+        int id PK
+        string nombre
+        string descripcion
+        int instalacion_id FK
+        boolean es_zona_peligrosa
+    }
+    USUARIO {
+        int id PK
+        string username UK
+        string password_hash
+        string nombre
+        string apellido
+        string email UK
+        boolean activo
+        int instalacion_id FK
+    }
+    ROL {
+        int id PK
+        string nombre
+        string descripcion
+    }
+    PERMISO {
+        int id PK
+        string nombre
+        string descripcion
+    }
+    PERSONA {
+        int id PK
+        string apellido
+        string nombre
+        string dni UK
+        int empresa_id FK
+        boolean es_particular
+        text observaciones
+        date fecha_nacimiento
+        char sexo
+        boolean activo
+        string foto_url
+    }
+    AUTORIZACION {
+        int id PK
+        int persona_id FK
+        int area_id FK
+        date fecha_desde
+        date fecha_hasta
+        int autorizado_por FK
+        datetime fecha_autorizacion
+        boolean activa
+    }
+    VEHICULO {
+        int id PK
+        string patente UK
+        string marca
+        string modelo
+        int persona_id FK
+        boolean sin_patente
+        text observaciones
+        boolean es_activo
+        string foto_url
+        boolean es_vehiculo_peligroso
+    }
+    CARGA {
+        int id PK
+        int vehiculo_id FK
+        int tipo_carga_id FK
+        float cantidad
+        string unidad_medida
+        text descripcion
+    }
+    TIPO_CARGA {
+        int id PK
+        string nombre
+        boolean es_peligrosa
+        string codigo_un
+    }
+    REGISTRO {
+        int id PK
+        int persona_id FK
+        int vehiculo_id FK
+        int area_id FK
+        int tipo_acceso_id FK
+        datetime fecha_hora_entrada
+        datetime fecha_hora_salida
+        int registrado_por FK
+        text observaciones
+        boolean es_entrada
+        string foto_entrada_url
+        string foto_salida_url
+    }
+    UBICACION_REGISTRO {
+        int id PK
+        int registro_id FK
+        int area_id FK
+        datetime fecha_hora
+        int actualizado_por FK
+    }
+    TIPO_ACCESO {
+        int id PK
+        string nombre
+        string descripcion
+    }
+    EVENTO_AUDITORIA {
+        int id PK
+        int usuario_id FK
+        string tipo_evento
+        text descripcion
+        datetime fecha_hora
+        string ip_address
+    }
+    DOCUMENTO {
+        int id PK
+        string nombre
+        string tipo
+        string url
+        datetime fecha_subida
+        int subido_por FK
+        string entidad_tipo
+        int entidad_id
+    }
+    INTEGRACION {
+        int id PK
+        string nombre
+        string tipo
+        json configuracion
+    }
+    CONFIGURACION {
+        int id PK
+        int instalacion_id FK
+        string clave
+        string valor
+        string tipo_valor
+    }

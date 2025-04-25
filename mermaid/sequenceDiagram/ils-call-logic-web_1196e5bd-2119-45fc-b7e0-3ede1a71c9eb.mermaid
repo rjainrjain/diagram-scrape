@@ -1,0 +1,29 @@
+sequenceDiagram
+    participant User1 as User
+    participant VideoSDK as Video SDK
+    participant Agora as SD-RTN
+
+    User1 ->> VideoSDK: Open App
+    VideoSDK ->> VideoSDK: agoraEngine = AgoraRTC.createClient
+    VideoSDK ->> VideoSDK: App.init
+    VideoSDK ->> VideoSDK: stream = AgoraRTC.createStream
+    VideoSDK ->> VideoSDK: stream.init
+    VideoSDK ->> VideoSDK: stream.play
+    rect rgb(238, 238, 238)
+        note right of VideoSDK: Host
+        VideoSDK ->> VideoSDK: agoraEngine.setClientRole("host")
+        VideoSDK ->> Agora: agoraEngine.join
+        VideoSDK ->> Agora: agoraEngine.publish
+        Agora -->> VideoSDK: Channel joined
+    end
+    rect rgb(238, 238, 238)
+        note right of VideoSDK: Audience
+        VideoSDK ->> VideoSDK: agoraEngine.setClientRole("audience")
+        VideoSDK ->> Agora: agoraEngine.join
+        Agora -->> VideoSDK: Channel joined
+        Agora ->> VideoSDK: agoraEngine.on("stream-added")
+        VideoSDK ->> Agora: agoraEngine.subscribe
+        VideoSDK ->> Agora: agoraEngine.on("stream-subscribed")
+        Agora -->> VideoSDK: Receive data stream
+    end
+    User1 -->> VideoSDK: agoraEngine.leave

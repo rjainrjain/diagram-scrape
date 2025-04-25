@@ -1,0 +1,52 @@
+classDiagram
+class Player {
+   -string name
+   -Role role
+   -int yellowCardCnt
+   -bool haveRedCard
+   -int supendedWeeks
+}
+class RealTeam {
+   -string name
+   -List~Player*~ players
+}
+class Account {
+   -string username
+   -string password
+}
+class User {
+   -Player* GoalKeeper
+   -List~Player*~ Defender
+   -Player* Midfielder
+   -Player* Forward
+}
+Account --> Admin
+class Role{
+   <<Enumeration>>
+   GOAL_KEEPER
+   DEFENDER
+   MIDFIELDER
+   FORWARD
+}
+class Week {
+   -List~Game~ games
+   -List~Player*~ injured
+   -List~Player*~ yellowCardRecieved
+   -List~Player*~ redCardRecieved
+   -map Player to int playerScore
+}
+class System {
+   -List~RealTeam~ leagueTeams
+   -List~Admins~ admins
+   -List~User~ users
+   -List~Week~ weeks
+   -List~Player~ players
+}
+RealTeam --> System
+Admin --> System
+User --> System
+Week --> System
+Player --> System
+Player --> User
+Player --> RealTeam
+Player --> Week

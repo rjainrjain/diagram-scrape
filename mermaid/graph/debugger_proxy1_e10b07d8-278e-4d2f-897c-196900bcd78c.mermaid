@@ -1,0 +1,24 @@
+%%{
+  init: {
+    'theme': 'base',
+    'themeVariables': {
+      'primaryColor': '#ee502e',
+      'primaryTextColor': '#fff',
+      'primaryBorderColor': '#cf4520',
+      'lineColor': '#4b5357',
+      'secondaryColor': '#97a7af'
+    }
+  }
+}%%
+
+%% Copyright 2022-2024, MicroEJ Corp. Content in this space is free for read and redistribute. Except if otherwise stated, modification is subject to MicroEJ Corp prior approval.
+%% MicroEJ is a trademark of MicroEJ Corp. All other trademarks and copyrights are the property of their respective owners.
+
+
+graph LR 
+    IDE(IDE\nDebugger) --> |JDWP request| JDWP(VEE Debugger Proxy) 
+    JDWP --> |JDWP reply| IDE
+    JDWP -.-> | JDWP event| IDE
+    JDWP --> |load| ELF(Executable\napplication.out)
+    JDWP --> |load| MEMDUMP(VEE Memory Dump)
+    JDWP --> |use| Jars(VEE Port)

@@ -1,0 +1,21 @@
+flowchart LR
+    Client[Client App]
+    Gateway[API Gateway]
+    Cognito[Cognito]
+    Lambda[Lambda]
+    
+    subgraph Authentication
+        Client -->|1. Get tokens| Cognito
+        Cognito -->|2. ID, Access tokens| Client
+    end
+    
+    subgraph API Request
+        Client -->|3. Request with Access Token| Gateway
+        Gateway -->|4. Validate token| Cognito
+        Gateway -->|5. Forward request + claims| Lambda
+        Lambda -->|6. Response| Gateway
+        Gateway -->|7. Response| Client
+    end
+
+    style Authentication fill:#f9f,stroke:#333
+    style API Request fill:#bbf,stroke:#333

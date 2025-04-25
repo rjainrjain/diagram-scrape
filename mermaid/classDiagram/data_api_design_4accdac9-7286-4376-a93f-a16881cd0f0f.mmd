@@ -1,0 +1,34 @@
+
+    classDiagram
+        class Main{
+            +str start()
+            +str stop()
+        }
+        class DataProcessor{
+            +DataFrame load_data(str)
+            +DataFrame process_data(DataFrame)
+        }
+        class MLModel{
+            +void train_model(DataFrame)
+            +dict predict_parameters(DataFrame)
+        }
+        class ECUInterface{
+            +void send_parameters(dict)
+        }
+        class WebInterface{
+            +void display_data(DataFrame)
+            +void display_recommendations(dict)
+        }
+        class SecurityChecker{
+            +void check_code()
+        }
+        class DocumentationGenerator{
+            +void generate_docs()
+        }
+        Main -- DataProcessor: Uses
+        Main -- MLModel: Uses
+        Main -- ECUInterface: Uses
+        Main -- WebInterface: Uses
+        Main -- SecurityChecker: Uses
+        Main -- DocumentationGenerator: Uses
+    

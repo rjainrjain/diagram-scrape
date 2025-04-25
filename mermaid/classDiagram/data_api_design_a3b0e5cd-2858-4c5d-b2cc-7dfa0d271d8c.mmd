@@ -1,0 +1,18 @@
+classDiagram
+    class User{
+        +str education
+        +str qualifications
+        +str english_levels
+        +__init__(education: str, qualifications: str, english_levels: str)
+        +update_info(education: str, qualifications: str, english_levels: str)
+    }
+    class Report{
+        +int id
+        +User user
+        +str content
+        +__init__(user: User)
+        +generate()
+        +save()
+        +print()
+    }
+    User "1" -- "1" Report: generates

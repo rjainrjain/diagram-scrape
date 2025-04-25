@@ -1,0 +1,4 @@
+graph TB
+    QueryVector[Query Vector] --> AnnoyIndex[Annoy Index]
+    AnnoyIndex --> NearestNeighbors[k Nearest Neighbors]
+    NearestNeighbors --> FinalSelection[Selection & Ranking]

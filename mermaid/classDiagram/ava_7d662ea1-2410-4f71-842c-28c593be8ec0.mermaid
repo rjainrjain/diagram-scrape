@@ -1,0 +1,119 @@
+classDiagram
+
+    User *-- Message
+    class User {
+        telegramId: Int
+        is_bot: Boolean
+        first_name: String
+        last_name: String
+        username: String
+        language_code: String
+        is_premium: Boolean
+
+        getByTelegramId(telegramId: Int): User
+        getByUsername(username: String): User
+    }
+
+    Message *-- Voice
+    Message *-- Document
+    Message *-- Audio
+    Message *-- Response
+    class Message {
+        telegramId: Int
+        messageThread: Int
+        date: String [format: "date"]
+        chat_id: Chat
+        text: String
+        user_id: User
+
+        getByTelegramId(telegramId: Int): Message
+        getByMessageThread(messageThread: Int): [Message]
+        getByDate(date: String): [Message]
+    }
+
+    class Audio {
+        message_id: Message
+        fileId: String
+        duration: Int
+        performer: String
+        title: String
+        file_name: String
+        mime_type: String
+    }
+
+    class Document {
+        message_id: Message
+        fileId: String
+        file_uniqueId: String
+        file_name: String
+        mime_type: String
+        file_size: Int
+    }
+
+    class Voice {
+        message_id: Message
+        fileId: String
+        file_uniqueId: String
+        duration: Int
+        mime_type: String
+        file_size: Int
+    }
+
+    Chat *-- Message
+    Chat *-- ChatLocation
+    Chat *-- ChatPermissions
+    class Chat {
+        telegramId: Int
+        title: String
+        bio: String
+        description: String
+
+        getByTelegramId(telegramId: Int): Chat
+    }
+
+    class ChatPermissions {
+        can_send_messages: Boolean
+        can_send_audios: Boolean
+        cand_send_documents: Boolean
+        can_send_photos: Boolean
+        can_send_video_notes: Boolean
+        can_send_voice_notes: Boolean
+        can_send_polls: Boolean
+        can_send_other_messages: Boolean
+        can_add_web_page_previews: Boolean
+        can_change_info: Boolean
+        can_invite_users: Boolean
+        can_pin_messages: Boolean
+        can_manage_topics: Boolean
+        chat_id: Chat
+    }
+
+    class ChatLocation{
+        chat_id: Chat
+        longitude: Float
+        latitude: Float
+        horizontal_accuracy: Float
+        live_period: Int
+        heading: Int
+        proximity_alert_radius: Int
+
+        getByLatLong(lat: Float, long: Float): [ChatLocation]
+    }
+
+    class Fact {
+        question: String
+        answer: String
+
+        findByAnswer(search: String): [Fact]
+    }
+
+    class Response {
+        message_id: Message
+        test: String
+    }
+
+    class Prompt {
+        message_id: Message
+        role: String
+        prompt: String
+    }

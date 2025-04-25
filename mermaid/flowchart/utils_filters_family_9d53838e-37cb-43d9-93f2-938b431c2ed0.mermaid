@@ -1,0 +1,24 @@
+flowchart TD
+    A[Start] --> B[FilterDevicesByFamily]
+    B --> C{Iterate through devices}
+    C -->|Next device| D[Extract family and model]
+    D --> E{IsAffectedFamily}
+    E -->|Yes| F[Add to affected devices]
+    E -->|No| G[Add to unaffected devices]
+    F --> C
+    G --> C
+    C -->|All devices processed| H[Return affected and unaffected devices]
+
+    subgraph IsAffectedFamily Function
+        I[Start IsAffectedFamily] --> J{Check if family exists in AffectedFamilies}
+        J -->|Yes| K{Iterate through affected models}
+        J -->|No| L[Return false]
+        K -->|Model match| M[Return true]
+        K -->|No match| N[Continue to next model]
+        N --> K
+        K -->|All models checked| L
+    end
+
+    E -.-> I
+
+    style IsAffectedFamily Function fill:#f9f,stroke:#333,stroke-width:2px

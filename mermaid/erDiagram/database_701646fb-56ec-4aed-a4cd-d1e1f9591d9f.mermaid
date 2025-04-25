@@ -1,0 +1,337 @@
+    erDiagram
+
+        User }o--o{ Classroom : "creates"
+        
+        Classroom }|--|{ Classroom_MEMBERS : "creates"
+        Classroom }o--o{ CLASSROOM_ASSIGNMENTS : "creates"
+        Classroom }o--o{ CLASSROOM_ATTACHMENTS : "creates"
+        Classroom ||--|| Chat : "creates"
+
+        %% CLASSROM )---( Assignment
+        CLASSROOM_ASSIGNMENTS }o--o{ CLASSROOM_ASSIGNMENT_ATTACHMENTS : "creates"
+        CLASSROOM_ASSIGNMENT_ATTACHMENTS }o--o{ File : "contains"
+        CLASSROOM_ATTACHMENTS }o--o{ File : "contains"
+        Classroom }o--o{ Assignment : "creates"
+        Assignment }o--o{ ASSIGNMENT_COMMENT : "contains"
+        SUBMITTED_ASIGNMENT ||--|| Assignment : "contains"
+        SUBMITTED_ASIGNMENT ||--|| SUBMITTED_ASIGNMENT_ATTACHMENTS : "contains"
+        User }o--o{ SUBMITTED_ASIGNMENT : "creates"
+
+        %% CLASSROOM )--( Post
+        Classroom }o--o{ Post : "contains"
+        Post }o--o{ POST_ATTACHMENTS : "contains"
+        Post }o--o{ POST_COMMENTS : "contains"
+
+        %% CHAT
+        Chat }|--|{ CHAT_MEMBERS : "contains"
+        Chat }o--o{ CHAT_MESSAGES : "contains"
+        CHAT_MESSAGES }o--o{ CHAT_MESSAGE_ATTACHMENTS : "contains"
+
+        %% QUIZ )--( Classrom & QUIZ )--( Quiz_subjects
+        Classroom }o--o{ Quiz : "contains"
+            %% TEXT
+        Quiz }o--o{ QUESTION_TEXT : "contains"
+            %% ORDER
+        Quiz }o--o{ QUESTION_ORDER : "contains"
+        QUESTION_ORDER }|--|{ QUESTION_ORDER_OPTIONS : "contains"
+            %% CHECKBOX
+        Quiz }o--o{ QUESTION_CHECKBOX : "contains"
+        QUESTION_CHECKBOX }|--|{ QUESTION_CHECKBOX_OPTIONS : "contains"
+            %% RAIDO
+        Quiz }o--o{ QUESTION_RADIO : "contains"
+        QUESTION_RADIO }|--|{ QUESTION_RADIO_OPTIONS : "contains"
+            %% PAIR
+        Quiz }o--o{ QUESTION_PAIR_COLLECTION : "contains"
+        QUESTION_PAIR_COLLECTION }|--|{ QUESTION_PAIR_COLLECTION_PAIR : "contains"
+        QUESTION_PAIR_COLLECTION_PAIR }|--|{ QUESTION_PAIR_OPTIONS : "contains"
+            %% FILE
+        Quiz }o--o{ QUESTION_FILE : "contains"
+
+        
+
+        %% USER SUBMITTED QUIZ
+        User }o--o{ SUBMITTED_QUIZ : "creates"
+        SUBMITTED_QUIZ }o--o{ QUESTION_TEXT_ANSWER : "contains"
+        SUBMITTED_QUIZ }o--o{ QUESTION_CHECKBOX_ANSWER : "contains"
+        SUBMITTED_QUIZ }o--o{ QUESTION_RADIO_ANSWER : "contains"
+        SUBMITTED_QUIZ }o--o{ QUESTION_PAIR_COLLECTION_ANSWER : "contains"
+        SUBMITTED_QUIZ }o--o{ QUESTION_ORDER_ANSWER : "contains"
+        SUBMITTED_QUIZ }o--o{ QUESTION_FILE_ANSWER : "contains"
+        
+
+
+
+        %% TODO ADD WORK TOGETHER GROUPS
+    
+        User {
+            uuid subjectId PK
+            uuid profilePicture FK
+        }
+  
+
+        %% 
+        %% CLASSROOM
+        %% 
+        Classroom {
+            uuid id PK
+            string name
+            uuid createdBy FK
+            string joinCode
+            DateTime createdAt
+            uuid chatId FK
+        }
+
+        Classroom_MEMBERS {
+            uuid userId PK
+            uuid ClassroomId FK
+        }
+
+        CLASSROOM_ATTACHMENTS {
+            uuid fileId fk
+            uuid classroomId FK
+            datetime attachedAt
+            string topic
+        }
+        CLASSROOM_ASSIGNMENTS {
+            uuid assignmentId FK
+            uuid belongTo FK
+            uuid createdBy FK
+        }
+        CLASSROOM_ASSIGNMENT_ATTACHMENTS {
+            uuid assignmentId FK
+            uuid fileId FK
+        }
+
+
+
+        %% 
+        %% ASSIGNMENT
+        %% 
+        Assignment {
+            uuid id PK
+            string name
+            string contents
+            uuid createdBy
+            uuid classroomId FK
+            DateTime createdAt
+            uuid files FK
+        }
+
+        %%  An assigment submitted by an user
+        SUBMITTED_ASIGNMENT {
+            uuid assignmentId
+            uuid userId
+            datetime submittedAt
+        }
+        SUBMITTED_ASIGNMENT_ATTACHMENTS {
+            uuid submittedAssignmentId FK
+            uuid fileId FK
+        }
+
+        %% A table that contains all the comments made under an assignment these are public to everyone
+        ASSIGNMENT_COMMENT {
+            uuid belongsTo FK
+            uuid userId FK
+            datetime createdAt
+
+        }
+
+        Post {
+            uuid id PK
+            string title
+            %% markdown contents
+            string contents
+            uuid createdBy
+            DateTime createdAt
+            %% which classroom does the post belong to
+            uuid belongsTo FK
+            uuid attachments
+        }
+        POST_ATTACHMENTS {
+            uuid postId FK 
+            uuid fileId FK
+        }
+        POST_COMMENTS {
+            uuid id
+            uuid postedBy FK
+            string contents
+        }
+
+
+        %% 
+        %% FILE
+        %% 
+        File {
+            uuid id PK
+            string name
+            string mimetype
+            datetime createdAt
+            datetime updatedAt
+            uuid Classroom FK
+            uuid owner
+            uuid sharedWith
+            string key
+            %% if user attaches it to a quiz or assignment the system locks the file so it cannot be edited after submission
+            bool locked 
+            bool systemFile
+        }
+
+        %% 
+        %% CHAT
+        %% 
+        Chat {
+            uuid id PK
+            string name
+            datetime createdAt
+            uuid createdBy FK
+        }
+
+        CHAT_MEMBERS {
+            uuid chatId FK
+            uuid userId FK
+        }
+
+        CHAT_MESSAGES {
+            uuid id
+            uuid sentBy
+            uuid sentTo
+            uuid contents
+            datetime sentAt
+        }
+
+        CHAT_MESSAGE_ATTACHMENTS {
+            uuid messageId
+            uuid fileId
+
+        }
+
+
+        %% 
+        %% QUESTIONS/QUIZ
+        %% 
+        Quiz {
+            uuid id PK
+            string name
+            uuid createdBy FK
+            datetime createdAt
+            datetime deadline
+            %% if the users can view the result after a submittion
+            bool viewAfterSubmittion
+        }
+        SUBMITTED_QUIZ {
+            uuid quiz FK
+            uuid userId FK
+            datetime createdAt
+        }
+        
+        QUESTION_TEXT {
+            uuid id PK
+            uuid quizId FK
+            string title
+            string answer
+        }
+        QUESTION_TEXT_ANSWER {
+            string answer
+            uuid createdBy FK 
+        }
+   
+
+        QUESTION_RADIO {
+            uuid quizId FK
+            uuid id PK
+            string title
+        }
+        QUESTION_RADIO_OPTIONS {
+            uuid id PK
+            uuid radioId FK
+            string title
+            bool answer
+        }
+        QUESTION_RADIO_ANSWER {
+            %% The quiz question this answer is replyting to
+            uuid belongsTo FK
+            %% user.id
+            uuid createdBy FK
+            %% option selected by the user (question_radio_options.id)
+            uuid selectedId FK
+
+        }
+
+
+        QUESTION_CHECKBOX {
+            uuid id PK
+            uuid quizId FK
+            string title
+        }
+        QUESTION_CHECKBOX_OPTIONS {
+            uuid id PK
+            uuid belongsTo FK
+            string name
+            bool answer
+        }
+        QUESTION_CHECKBOX_ANSWER {
+            %% selected = question_checkbox_options.id
+            uuid selectedId FK
+            %% user.id
+            uuid createdBy FK
+            %% question_checkbox.id
+            uuid questionId FK
+        }
+
+        QUESTION_PAIR_COLLECTION {
+            uuid id PK
+            uuid quizId FK
+            string title
+        }
+        QUESTION_PAIR_COLLECTION_PAIR {
+            uuid belongsTo FK
+            uuid left FK
+            uuid right FK
+        }
+
+        QUESTION_PAIR_OPTIONS {
+            uuid id PK
+            string contents
+        }
+
+        QUESTION_PAIR_COLLECTION_ANSWER {
+            uuid questionPairId FK
+            uuid createdBy FK
+            uuid left FK
+            uuid right FK
+        }
+
+        QUESTION_ORDER {
+            uuid id PK
+            uuid quizId FK
+            string title
+        }
+        QUESTION_ORDER_ANSWER {
+            uuid optionId FK
+            int place
+            uuid createdBy FK
+        }
+
+        QUESTION_ORDER_OPTIONS {
+            uuid id PK
+            uuid belongsTo FK
+            string title
+            int place "1...3"
+        }
+
+        QUESTION_FILE {
+            uuid id PK
+            uuid quizId FK
+            string title
+        }
+        QUESTION_FILE_ANSWER {
+            uuid answerTo FK
+            uuid createdBy FK
+            uuid fileId FK
+        }
+
+     
+    
+        %% TODO groups for assignments
+        %% TODO chat for assignment groups
+        

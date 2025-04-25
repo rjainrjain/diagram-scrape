@@ -1,0 +1,65 @@
+classDiagram
+
+    BitMatrix <|-- TargetBitMatrix
+    BitMatrix <|-- QueryBitMatrix
+    BitMatrixStrategy <|-- BitMatrixStrategy1
+    BitMatrixStrategy <|-- BitMatrixStrategy2
+    TargetBitMatrix <|-- TargetBitMatrixOptimized
+    QueryBitMatrix <|-- QueryBitMatrixOptimized
+    BitMatrix o-- BitMatrixStrategy
+
+    class BitMatrix {
+        <<abstract>>
+        +compute(): void << abstract >>
+        +get_matrix(): list of bitmaps/dictionaries
+        +get_graph(): graph
+        +get_matrix_indices(): list of edges
+        +is_computed(): bool
+        +split_bitmap_row(row_num): list of bitmaps
+        +split_bitmap(bitmap): list of bitmaps
+        -_lazy_computing(): void
+
+        -graph: graph
+        -bit_matrix_strategy: BitMatrixStrategy
+        -matrix: list
+        -matrix_indices: list
+        -computed: bool
+    }
+    class QueryBitMatrix {
+        +compute(): void
+        +find_candidates(target_bitmatrix: TargetBitMatrix): list of candidates
+        -_adapt_query_to_target(target_graph: Graph): void
+    }
+    class TargetBitMatrix {
+        +compute(): void
+    }
+    class TargetBitMatrixOptimized {
+        +compute(): void
+    }
+    class QueryBitMatrixOptimized {
+        +find_candidates(target_bitmatrix: TargetBitMatrix): list of candidates
+    }
+
+    class BitMatrixStrategy {
+        -Graph graph
+        <<abstract>>
+        +BitMatrixStrategy()
+        +set_graph(graph) : void
+        +str_to_bitmap(string) : bitmap << abstract >>
+        +compute_row(edge) : bitmap << abstract >>
+        -_get_row_string(edge) : string
+        -_compute_node_string_bitmap(node) : string
+        -_compute_edge_string_bitmap(edge) : string
+    }
+
+    class BitMatrixStrategy1 {
+        +BitMatrixWithBitArray(graph)
+        +compute_row(edge) : bitarray
+        +str_to_bitmap(string) : bitarray
+    }
+
+    class BitMatrixStrategy2 {
+        +BitMatrixWithBitArray(graph)
+        +compute_row(edge) : BitArray
+        +str_to_bitmap(string) : BitArray
+    }

@@ -1,0 +1,38 @@
+erDiagram
+    User ||--|{ Dog : owns
+    User ||--|{ Comment : creates
+    User ||--|{ DogSittingRequest : creates
+    User ||--|{ DogSittingRequest : accepts
+
+User {
+int id
+string name
+string email
+string password
+}
+
+Dog {
+int id
+int owner_id
+string name
+string breed
+int age
+sting description
+}
+
+DogSittingRequest {
+int id
+int dog_id
+int sitter_id
+DateTime start
+DateTime end
+boolean accepted
+}
+
+Comment {
+int id
+int dog_id
+int sitter_id
+int rating
+string comment
+}

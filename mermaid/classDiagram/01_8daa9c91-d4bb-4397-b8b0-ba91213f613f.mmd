@@ -1,0 +1,39 @@
+classDiagram 
+    class Iterable {
+        <<interface>>
+    }
+    class Collection {
+        <<interface>>
+    }
+    class Collections {
+        <<도우미 클래스>>
+    }
+    class List {
+        <<interface>>
+    }
+    class Queue {
+        <<interface>>
+    }
+    class Set {
+        <<interface>>
+    }
+    class Deque {
+        <<interface>>
+    }
+    class SortedSet {
+        <<interface>>
+    }
+    
+    Iterable <|-- Collection
+    Collection <|-- List
+    Collection <|-- Queue
+    Collection <|-- Set
+    List <|-- ArrayList
+    List <|-- Vector
+    List <|-- LinkedList
+    Queue <|-- Deque
+    Deque <|-- LinkedList
+    Queue <|-- PriorityQueue
+    Set <|-- HashSet
+    Set <|-- SortedSet
+    SortedSet <|-- TreeSet

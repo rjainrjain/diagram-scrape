@@ -1,0 +1,10 @@
+sequenceDiagram
+    participant browser
+    participant server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/spa
+    activate server
+    server-->>browser: HTML, CSS, and JavaScript files
+    deactivate server
+
+    Note right of browser: The SPA intiializes and renders the notes view

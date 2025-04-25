@@ -1,0 +1,25 @@
+stateDiagram
+    state "initial" as Initial
+    state "dateSelected" as DateSelected
+    state "startSelected" as StartSelected
+    state "endSelected" as EndSelected
+    state "confirmed" as Confirmed
+    state "meetingSet" as MeetingSet
+
+    [*] --> Initial
+    Initial --> DateSelected : Date
+    DateSelected --> Initial : Back
+    DateSelected --> StartSelected : TimeStart
+    StartSelected --> DateSelected : Back
+    StartSelected --> EndSelected : TimeEnd
+    EndSelected --> StartSelected : Back
+    EndSelected --> Confirmed : Confirmed
+    Confirmed --> EndSelected : Back
+    Confirmed --> MeetingSet : 'Meeting ready'
+
+    Initial --> Initial : Reset
+    DateSelected --> Initial : Reset
+    StartSelected --> Initial : Reset
+    EndSelected --> Initial : Reset
+    Confirmed --> Initial : Reset
+    MeetingSet --> Initial : Reset

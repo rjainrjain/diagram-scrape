@@ -1,0 +1,12 @@
+sequenceDiagram
+    participant M as Main
+    participant A as AudioProcessor
+    participant W as WebInterface
+    participant C as ConfigManager
+    M->>C: load_config()
+    M->>W: update_ui()
+    M->>A: start_streaming()
+    Note over M,A: User starts streaming
+    M->>A: stop_streaming()
+    Note over M,A: User stops streaming
+    M->>C: save_config()

@@ -1,0 +1,50 @@
+---
+title: ZKit domain model
+---
+
+erDiagram
+
+    Plan ||--|{ Project : zitems
+    Plan ||--|{ Pillar : pillars
+    Plan ||--o{ ProjectDelivery : commits
+
+    Project ||--o| ProjectDelivery : commits
+    Project ||--|{ Pillar : leadClimber
+    Project ||--o{ Project : crossPillar
+
+    Pillar ||--|| CapacityPlan : capacity
+
+    CapacityPlan ||--|{ ResourceCapacity : resCaps
+    CapacityPlan ||--|{ ResourceCapacity : resAdjustments
+
+    ResourceCapacity ||--|| ResourceType : resType
+
+    CapacityPlan {
+	    string name
+		string description
+        int yearSliceCnt
+    }
+
+    ResourceCapacity {
+        int capacity
+        int yearSlice
+    }
+
+    ResourceType {
+        string name
+        string abbreviation
+    }
+
+    Plan {
+        string name
+    }
+
+    Project {
+        int rank
+        string name
+        string documentation
+        string description
+        string state
+        int subProject 
+    }
+

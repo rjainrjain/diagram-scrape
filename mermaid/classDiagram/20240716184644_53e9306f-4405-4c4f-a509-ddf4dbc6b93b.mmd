@@ -1,0 +1,27 @@
+
+classDiagram
+    class User {
+        -name: str
+        -preferences: dict
+        +rate_movie(movie: str, rating: int) None
+        +provide_feedback(movie: str, feedback: str) None
+    }
+    class Reviewer {
+        -name: str
+        +generate_questionnaire(movie: str) str
+        +provide_feedback(movie: str, feedback: str) None
+    }
+    class MovieDatabase {
+        -movies: dict
+        +add_movie(movie: str) None
+        +get_movie_details(movie: str) dict
+    }
+    class RecommendationSystem {
+        -user: User
+        -reviewer: Reviewer
+        -movie_database: MovieDatabase
+        +get_personalized_recommendations() list
+    }
+    User --> RecommendationSystem
+    Reviewer --> RecommendationSystem
+    MovieDatabase --> RecommendationSystem

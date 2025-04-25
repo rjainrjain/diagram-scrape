@@ -1,0 +1,15 @@
+sequenceDiagram
+    participant user
+    participant browser
+    participant server
+
+    user->>browser: Enters note text and clicks Save button
+
+    Note right of browser: The browser sends the new note data to the server using JavaScript
+
+    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+    activate server
+    server-->>browser: Response with status code 201 (Created)
+    deactivate server
+
+    Note right of browser: The browser updates the notes list without reloading the page

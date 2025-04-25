@@ -1,0 +1,67 @@
+flowchart LR
+subgraph S1
+  id0(AP1 / APP1)
+  id1(Projet1)
+  id2(Remediation 1)
+end S1
+subgraph S2
+  id3(AP2 / APP2)
+  id4(Projet2)
+  id5(Remediation 2)
+  id6(Programmation Web)
+end S2
+subgraph S3
+  id7(C1)
+  id8(BDD1)
+  id9(Labo MathInfo)
+  id10(Algo)
+end S3
+subgraph S4
+  id11(C2)
+  id12(Algo des arbres)
+  id13(Automates)
+  id14(Architecture des systèmes)
+  id15(Math pour l'info)
+end S4
+subgraph S5
+  id16(C3)
+  id17(Java)
+  id18(Analyse Syntaxique)
+  id19(Reseaux)
+end S5
+subgraph S6
+  id20(Graphes)
+  id21(Programmation Système)
+  id22(Compilation)
+  id23(Programmation Fonctionnelle)
+  id24(BDD 2)
+end S6
+
+id0 --python,prog-struturee--> id1
+id0 --python,prog-struturee--> id3
+id3 --recursivite,complexite,trie--> id4
+id0 --prog-struturee--> id6
+id0 --prog-struturee--> id7
+id6 --CSS,HTML--> id8
+id0 --python--> id8
+id3 --algorithme,complexite--> id9
+id3 --algorithme,complexite--> id10
+id7 --C--> id11
+id7 --C,liste-chainee--> id12
+id8 --ensemble--> id13
+id8 --ensemble--> id14
+id10 --induction,preuve--> id15
+id11 --C--> id16
+id11 --allocation-dynamique,C,compilation-separee--> id17
+id11 --C--> id18
+id13 --automate,expression-reguliere--> id18
+id12 --parcours-d'arbre,file--> id20
+id13 --vocabulaire-graphe--> id20
+id16 --C--> id21
+id16 --C--> id22
+id14 --assembleur--> id22
+id18 --grammaire--> id22
+id21 --appel-systeme--> id22
+id12 --structure-recursive--> id23
+id17 --evaluation-paresseuse--> id23
+id8 --base-de-donnee-relationnel--> id24

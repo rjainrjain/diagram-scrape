@@ -1,0 +1,46 @@
+graph TD
+    subgraph DataProducers ["Data Producers"]
+        PC["PC Client"]
+        GameServers["Game servers"]
+        MobileClient["Mobile Client"]
+        SDK["SDK"]
+    end
+    subgraph AWSCloud ["AWS Cloud"]
+        subgraph CICD ["CI/CD Pipeline"]
+            kinesis:streams["Kinesis Data Streams"]
+            flink:service["Managed Service for Apache Flink"]
+            cloudwatch:monitoring["CloudWatch"]
+            sns:notifications["SNS"]
+            apigateway:api["API Gateway"]
+            dynamodb:table["DynamoDB"]
+            kinesis:firehose["Kinesis Data Firehose"]
+            s3:bucket["S3"]
+            glue:service["AWS Glue"]
+            athena:query["Athena"]
+            quicksight:analytics["QuickSight"]
+        end
+    end
+    subgraph DataConsumers ["Data Consumers"]
+        Admins["Admins"]
+        LiveOps["LiveOps"]
+    end
+    PC --> kinesis:streams
+    GameServers --> kinesis:streams
+    MobileClient --> apigateway:api
+    SDK --> apigateway:api
+    apigateway:api <--> dynamodb:table
+    apigateway:api --> kinesis:streams
+    kinesis:streams --> flink:service
+    flink:service --> cloudwatch:monitoring
+    cloudwatch:monitoring --> sns:notifications
+    flink:service --> kinesis:firehose
+    kinesis:firehose --> s3:bucket
+    s3:bucket <-- glue:service
+    s3:bucket --> athena:query
+    athena:query --> quicksight:analytics
+    
+    sns:notifications --> DataConsumers
+    quicksight:analytics --> DataConsumers
+
+    classDef aws fill:#FF9900,stroke:#232F3E,stroke-width:2px,color:#232F3E;
+    class kinesis:streams,flink:service,cloudwatch:monitoring,sns:notifications,apigateway:api,dynamodb:table,kinesis:firehose,s3:bucket,glue:service,athena:query,quicksight:analytics aws;

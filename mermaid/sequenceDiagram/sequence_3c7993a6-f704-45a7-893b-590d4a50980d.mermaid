@@ -1,0 +1,27 @@
+sequenceDiagram
+
+    participant MainVerticle;
+    participant WatcherVerticle;
+    participant File System;
+
+    activate MainVerticle
+
+    MainVerticle->>File System: Set up file system watcher
+
+    loop
+        File System->>WatcherVerticle: Sends new/updated CSV event
+        activate WatcherVerticle
+
+        loop for each item
+            alt is audio
+                note right of WatcherVerticle: In parallel:<br>(1) converts audio to MP4 and inserts into Pairtree, and<br>(2) generates waveform data and stores on Amazon S3.<br>See audio sequence diagram below for details.
+            else is video
+                note right of WatcherVerticle: Inserts video MP4 into Pairtree.<br>See video sequence diagram below for details.
+            end
+        end
+
+        WatcherVerticle->>File System: Writes modified CSV file
+        deactivate WatcherVerticle
+    end
+
+    deactivate MainVerticle

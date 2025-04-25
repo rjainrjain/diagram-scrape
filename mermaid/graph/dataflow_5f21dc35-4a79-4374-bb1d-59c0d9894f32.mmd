@@ -1,0 +1,52 @@
+---
+title: Chromatography ROM Parameter Estimation
+---
+%%{init: {'theme': 'base', 'flowchart': {'curve': 'basis', 'diagramPadding': 10, "htmlLabels": false }}}%%
+flowchart TB
+%%{config: { 'fontFamily': 'Menlo', 'fontSize': 18, 'fontWeight': 400 } }%%
+    column(["`**Column Model**
+_geometry | flowrate | adsorption model_ ...`"])
+
+    rom{{"Reduced-order
+        model template
+        in Cadet"}}
+
+    subgraph hdsim[HD Workflow]
+    packGen[[Packing generation]] 
+    meshGen[[Mesh generation]]
+    sim[[HD Simulation]]
+    post[[Post-processing]]
+    end
+
+    column --> hdsim
+
+    packGen --> meshGen --> sim --> post
+    packGen --> post
+
+    chromoo[[Chromoo]]
+    post2[[Post-processing]]
+    best(["Best fit(s)"])
+
+    params(["`**Model Parameters**
+_velocity | porosity | particle size distribution_`"])
+
+    refs(["`**Reference Data**
+            _breakthrough curve | solute mass_`"])
+
+    inputs(["`**Optimization Inputs**
+_Parameter bounds | Objectives | Scores_`"])
+
+    post --> refs --> chromoo
+    inputs --> chromoo
+    post --> params
+    rom --> chromoo
+    params --> rom
+    column --> rom
+
+    chromoo --> post2 --> best
+    classDef data fill:#fff,stroke:#333
+    classDef process fill:#fff,stroke:#333
+    class inputs,params,refs,column,rom,best,vel,por,mass,psd data
+    class packGen,meshGen,sim,post,chromoo,post2 process
+    style hdsim fill:#aec7e8,stroke-dasharray: 5 5,stroke-width:1px,stroke:#333
+

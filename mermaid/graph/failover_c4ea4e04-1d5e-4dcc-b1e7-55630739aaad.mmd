@@ -1,0 +1,65 @@
+graph TD
+    user([User])
+    route53:r53[Route 53]
+    cloudfront:cf[CloudFront]
+    waf:waf[WAF]
+    alb:alb[ALB]
+    ec2:ec2[EC2]
+    autoscaling:asg[Auto Scaling]
+    elasticache:cache[ElastiCache]
+    rds:primary[RDS Primary]
+    rds:secondary[RDS Secondary]
+    dynamodb:dynamo[DynamoDB]
+    sqs:queue[SQS]
+    lambda:func[Lambda]
+    s3:storage[S3]
+
+    user --> route53:r53
+    route53:r53 --> cloudfront:cf
+    cloudfront:cf --> waf:waf
+    waf:waf --> alb:alb
+    alb:alb --> ec2:ec2
+    ec2:ec2 <--> elasticache:cache
+    ec2:ec2 --> rds:primary
+    rds:primary --> rds:secondary
+    ec2:ec2 <--> dynamodb:dynamo
+    ec2:ec2 --> sqs:queue
+    sqs:queue --> lambda:func
+    lambda:func --> s3:storage
+    lambda:func --> dynamodb:dynamo
+    autoscaling:asg --> ec2:ec2
+
+    subgraph "Region A"
+        cloudfront:cf
+        waf:waf
+        alb:alb
+        ec2:ec2
+        autoscaling:asg
+        elasticache:cache
+        rds:primary
+        sqs:queue
+        lambda:func
+    end
+
+    subgraph "Region B (Failover)"
+        rds:secondary
+    end
+
+    subgraph "Global Services"
+        route53:r53
+        dynamodb:dynamo
+        s3:storage
+    end
+
+    classDef default fill:#f9f9f9,stroke:#333,stroke-width:2px;
+    classDef global fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
+    classDef regionA fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px;
+    classDef regionB fill:#fff3e0,stroke:#e65100,stroke-width:2px;
+    classDef user fill:#f3e5f5,stroke:#4a148c,stroke-width:2px;
+
+    class route53:r53,dynamodb:dynamo,s3:storage global;
+    class cloudfront:cf,waf:waf,alb:alb,ec2:ec2,autoscaling:asg,elasticache:cache,rds:primary,sqs:queue,lambda:func regionA;
+    class rds:secondary regionB;
+    class user user;
+
+    linkStyle default stroke:#999,stroke-width:2px,fill:none;

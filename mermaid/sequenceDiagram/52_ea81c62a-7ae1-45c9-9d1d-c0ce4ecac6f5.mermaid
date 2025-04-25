@@ -1,0 +1,13 @@
+sequenceDiagram;
+    participant User as User
+    participant App as App
+    participant Auth as AWX Authorization Server
+    participant API as AWX API
+    
+    User->>App: (1) Click login link
+    App->>Auth: (2) Authenticate with Username + Password to /oauth/token
+    Auth->>Auth: (3) Validate Username + Password
+    Auth->>App: (4) Access Token
+    App->>API: (5) Request user data with Access Token
+    API->>App: (6) Response
+

@@ -1,0 +1,79 @@
+classDiagram
+class Ambito {
+	idAmbito: INTEGER
+	ambito: TEXT
+}
+
+class Beneficiario {
+	idBeneficiario: INTEGER
+	beneficiario: TEXT
+}
+
+class Donatore {
+	idDonatore: INTEGER
+	cognome: TEXT
+	nome: TEXT
+	email: TEXT
+	CF: TEXT
+	IBAN: TEXT
+}
+
+class Obiettivo {
+	idObiettivo: INTEGER
+	obiettivo: TEXT
+}
+
+class Organizzazione {
+	idOrganizzazione: INTEGER
+	partitaIVA: TEXT
+	denominazione: TEXT
+	indirizzo: TEXT
+	IBAN: TEXT
+}
+
+class Progetto {
+	idProgetto: INTEGER
+	idOrganizzazione: INTEGER
+	titolo: TEXT
+	sogliaMinima: REAL
+	ricompensa: TEXT
+	stato: TEXT
+	tempoLimite: TEXT
+	ammontare: REAL
+}
+
+class ProgettoAmbito {
+	idProgetto: INTEGER
+	idAmbito: INTEGER
+}
+
+class ProgettoBeneficiario {
+	idProgetto: INTEGER
+	idBeneficiario: INTEGER
+}
+
+class ProgettoObiettivo {
+	idProgetto: INTEGER
+	idObiettivo: INTEGER
+}
+
+class Donazione {
+	idDonazione: INTEGER
+	idDonatore: INTEGER
+	idProgetto: INTEGER
+	importo: REAL
+	modalita: TEXT
+	dataPagamento: TEXT
+	dataRestituzione: TEXT
+}
+
+Progetto "*" -- "1" Organizzazione : idOrganizzazione
+ProgettoAmbito "*" -- "1" Ambito : idAmbito
+ProgettoAmbito "*" -- "1" Progetto : idProgetto
+ProgettoBeneficiario "*" -- "1" Beneficiario : idBeneficiario
+ProgettoBeneficiario "*" -- "1" Progetto : idProgetto
+ProgettoObiettivo "*" -- "1" Obiettivo : idObiettivo
+ProgettoObiettivo "*" -- "1" Progetto : idProgetto
+Donazione "*" -- "1" Progetto : idProgetto
+Donazione "*" -- "1" Donatore : idDonatore
+

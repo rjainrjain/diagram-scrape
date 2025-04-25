@@ -1,0 +1,19 @@
+graph LR
+    A(request)
+    B(readCache)
+    C(readDb)
+    D(updateDb)
+    E(updateCache)
+    F(finalize)
+    G(catch)
+    A --> |OK| B
+    B --> |OK| C
+    C --> |OK| D
+    D --> |OK| E
+    E --> |OK| F
+    A --> |Fail| G
+    B --> |Fail| G
+    C --> |Fail| G
+    D --> |Fail| G
+    E --> |Fail| G
+    F --> |Fail| G

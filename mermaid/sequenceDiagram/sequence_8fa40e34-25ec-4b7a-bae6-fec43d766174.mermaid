@@ -1,0 +1,28 @@
+sequenceDiagram
+    participant browser
+    participant server
+
+    browser->>server: HTTP POST {domain}/exampleapp/new_note
+    activate server
+    server-->>browser: HTTP 302 (URL REDIRECT)
+    deactivate server
+
+    browser->>server: HTTP GET {domain}/exampleapp/notes
+    activate server
+    server-->>browser: HTTP 200 (OK)
+    deactivate server
+
+    browser->>server: HTTP GET {domain}/exampleapp/main.css
+    activate server
+    server-->>browser: HTTP 200 (OK)
+    deactivate server
+
+    browser->>server: HTTP GET {domain}/exampleapp/main.js
+    activate server
+    server-->>browser: HTTP 200 (OK)
+    deactivate server
+
+    browser->>server: HTTP GET {domain}/exampleapp/data.json
+    activate server
+    server-->>browser: HTTP 200 (OK)
+    deactivate server

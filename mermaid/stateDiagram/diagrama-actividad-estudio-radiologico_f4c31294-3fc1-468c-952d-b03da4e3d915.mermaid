@@ -1,0 +1,34 @@
+stateDiagram-v2
+    [*] --> SolicitarEstudio
+    SolicitarEstudio --> AsignarTecnico
+    AsignarTecnico --> RealizarRadiografia
+    RealizarRadiografia --> SubirImagen
+    SubirImagen --> ValidarImagen
+    ValidarImagen --> ClasificarImagen : Imagen válida
+    ValidarImagen --> RealizarRadiografia : Imagen inválida
+    ClasificarImagen --> AnalizarResultados
+    AnalizarResultados --> GenerarInformePreliminar
+    GenerarInformePreliminar --> RevisionMedica
+    RevisionMedica --> AjustarDiagnostico
+    AjustarDiagnostico --> GenerarInformeFinal
+    GenerarInformeFinal --> NotificarPaciente
+    NotificarPaciente --> [*]
+
+    state SolicitarEstudio {
+        [*] --> IngresarDatosPaciente
+        IngresarDatosPaciente --> SeleccionarTipoEstudio
+        SeleccionarTipoEstudio --> [*]
+    }
+
+    state ClasificarImagen {
+        [*] --> ProcesarImagen
+        ProcesarImagen --> AplicarModeloML
+        AplicarModeloML --> DetectarAnomalias
+        DetectarAnomalias --> [*]
+    }
+
+    state RevisionMedica {
+        [*] --> RevisarResultadosIA
+        RevisarResultadosIA --> AnalizarImagen
+        AnalizarImagen --> [*]
+    }

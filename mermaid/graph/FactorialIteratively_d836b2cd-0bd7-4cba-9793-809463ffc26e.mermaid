@@ -1,0 +1,20 @@
+graph TD
+    A[Start of method body] --> B[Initialize factorialResult = 1]
+    B --> C[Initialize theCurrentMultiplier = 1]
+    C --> D{For Loop Condition:<br>Is theCurrentMultiplier <= aFactorialNumber?}
+    D -->|Yes| E[Multiply factorialResult *<br>theCurrentMultiplier]
+    E --> F[Increment theCurrentMultiplier]
+    F --> |Loop back| D
+    D -->|No| G[Return factorialResult]
+    G --> H[End of for loop]
+    
+    subgraph Factorial.Iteratively
+    A
+    B
+    C
+    D
+    E
+    F
+    G
+    H
+    end

@@ -1,0 +1,85 @@
+stateDiagram-v2
+  direction LR
+
+  %% s_global_start state
+  [*] --> s_global_start
+  s_global_start --> s_done: t_done
+  s_global_start --> s_global_start: t_line_break
+  s_global_start --> s_global_start: t_space
+  s_global_start --> s_global_expecting_delimiter: t_key
+  s_global_start --> s_global_start: t_comment_begin
+  s_global_start --> s_global_start: t_comment
+  s_global_start --> s_section_expecting_name: t_section_name_begin
+  s_global_start --> s_done: default
+
+  %% s_global_expecting_delimiter state
+  s_global_expecting_delimiter --> s_global_expecting_value: t_key_value_delimiter
+  s_global_expecting_delimiter --> s_global_expecting_delimiter: t_space
+  s_global_expecting_delimiter --> s_done: default
+
+  %% s_global_expecting_value state
+  s_global_expecting_value --> s_global_after_value: t_value
+  s_global_expecting_value --> s_global_after_value: t_line_break
+  s_global_expecting_value --> s_done: t_done
+  s_global_expecting_value --> s_global_expecting_value: t_space
+  s_global_expecting_value --> s_global_expecting_value: t_comment_begin
+  s_global_expecting_value --> s_global_after_value: t_comment
+  s_global_expecting_value --> s_done: default
+
+  %% s_global_after_value state
+  s_global_after_value --> s_done: t_done
+  s_global_after_value --> s_global_after_value: t_space
+  s_global_after_value --> s_global_after_value: t_comment_begin
+  s_global_after_value --> s_global_after_value: t_comment
+  s_global_after_value --> s_global_start: t_line_break
+  s_global_after_value --> s_done: default
+
+  %% s_section_expecting_key state
+  s_section_expecting_key --> s_done: t_done
+  s_section_expecting_key --> s_section_expecting_key: t_line_break
+  s_section_expecting_key --> s_section_expecting_key: t_space
+  s_section_expecting_key --> s_section_expecting_delimiter: t_key
+  s_section_expecting_key --> s_section_expecting_key: t_comment_begin
+  s_section_expecting_key --> s_section_expecting_key: t_comment
+  s_section_expecting_key --> s_section_expecting_name: t_section_name_begin
+  s_section_expecting_key --> s_done: default
+
+  %% s_section_expecting_name state
+  s_section_expecting_name --> s_section_expecting_name_end: t_section_name
+  s_section_expecting_name --> s_done: default
+
+  %% s_section_expecting_name_end state
+  s_section_expecting_name_end --> s_section_after_section_name: t_section_name_end
+  s_section_expecting_name_end --> s_done: default
+
+  %% s_section_after_section_name state
+  s_section_after_section_name --> s_done: t_done
+  s_section_after_section_name --> s_section_after_section_name: t_space
+  s_section_after_section_name --> s_section_after_section_name: t_comment
+  s_section_after_section_name --> s_section_expecting_key: t_line_break
+  s_section_after_section_name --> s_done: default
+
+  %% s_section_expecting_delimiter state
+  s_section_expecting_delimiter --> s_section_expecting_value: t_key_value_delimiter
+  s_section_expecting_delimiter --> s_section_expecting_delimiter: t_space
+  s_section_expecting_delimiter --> s_done: default
+
+  %% s_section_expecting_value state
+  s_section_expecting_value --> s_section_after_value: t_value
+  s_section_expecting_value --> s_section_after_value: t_line_break
+  s_section_expecting_value --> s_done: t_done
+  s_section_expecting_value --> s_section_expecting_value: t_space
+  s_section_expecting_value --> s_section_expecting_value: t_comment_begin
+  s_section_expecting_value --> s_section_after_value: t_comment
+  s_section_expecting_value --> s_done: default
+
+  %% s_section_after_value state
+  s_section_after_value --> s_done: t_done
+  s_section_after_value --> s_section_after_value: t_space
+  s_section_after_value --> s_section_after_value: t_comment_begin
+  s_section_after_value --> s_section_after_value: t_comment
+  s_section_after_value --> s_section_expecting_key: t_line_break
+  s_section_after_value --> s_done: default
+
+  %% s_done state
+  s_done --> [*]

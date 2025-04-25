@@ -1,0 +1,28 @@
+classDiagram
+    class Go
+    class Dart
+    class Rust
+
+    class LibP2P
+    class WebRTC
+    class Flutter
+    class Tauri
+
+    class BoltDB
+
+    class Encryption {
+        End-to-End Encryption
+    }
+
+    class CentralNode {
+        Optional Central Node
+    }
+
+    Go --> LibP2P
+    Dart --> Flutter
+    Rust --> Tauri
+    LibP2P --> BoltDB
+    WebRTC --> BoltDB
+    Go --> Encryption
+    Dart --> Encryption
+    Rust --> Encryption

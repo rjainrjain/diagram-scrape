@@ -1,0 +1,13 @@
+graph TD
+    A[Input] --> B{Input Type}
+    B -->|Text| C[Text Embedding]
+    B -->|Image| D[CLIP Image Embedding]
+    B -->|Audio| E[Whisper ASR]
+    E --> F[Text Embedding]
+    D --> G[Image Projection Layer]
+    C --> H[Fusion Layer]
+    F --> H
+    G --> H
+    H --> I[Phi Model]
+    I --> J[QLoRA Adapter]
+    J --> K[Output Text]

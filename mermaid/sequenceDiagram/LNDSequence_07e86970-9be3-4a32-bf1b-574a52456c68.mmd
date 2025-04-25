@@ -1,0 +1,34 @@
+%%{
+  init: {
+    'theme': 'base',
+    'themeVariables': {
+      'activationBorderColor':'#000',
+      'activationBkgColor':'#F00',
+      'primaryColor': '#FFF',
+      'primaryTextColor': '#000',
+      'primaryBorderColor': '#000',
+      'lineColor': '#000',
+      'secondaryColor': '#FFF',
+      'labelBoxBorderColor':'#F00',
+      'tertiaryColor': '#000',
+      'fontFamily':'Times New Roman'
+    }
+  }
+}%%
+sequenceDiagram
+    autonumber
+    activate Settler
+    Settler->>Settler: Generates preimage
+    Settler->>Settler: Computes payment hash for the preimage  
+    Settler->>Issuer: Sends the payment hash
+    deactivate Settler
+    activate Issuer
+    Issuer->>Issuer: Creates a HODL invoice with the payment hash and timeout
+    Issuer->>Payer: Sends the HODL invoice
+    deactivate Issuer
+    Payer->>Issuer: Pay (accepts the HODL invoice)
+    alt settler confirms
+      Settler->>Payer: Reveals the preimage (settles the HODL invoice)
+    else timeout
+      Issuer->>Payer: Gets payment back
+    end

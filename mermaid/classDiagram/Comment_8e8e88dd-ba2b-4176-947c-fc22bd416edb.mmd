@@ -1,0 +1,25 @@
+classDiagram
+
+    class AbstractInterface~ResourceRead, ResourceQuery, ResourceCreate, ResourceUpdate~ {
+        <<Interface>>
+        List~ResourceRead~ Find(ResourceQuery query)
+        ResourceRead Create(ResourceCreate data)
+        ResourceRead Read(string id)
+        ResourceRead Update(string id, ResourceUpdate data)
+        ResourceRead Delete(string id)
+    }
+
+    class CommentsInterface {
+        <<Interface>>
+        List~CommentRead~ Find(CommentQuery query)
+        CommentRead Create(CommentCreate data)
+        CommentRead Read(string id)
+        CommentRead Update(string id, CommentUpdate data)
+        CommentRead Delete(string id)
+    }
+    
+    AbstractInterface <|-- UsersInterface
+    AbstractInterface <|-- IssuesInterface
+    AbstractInterface <|-- CommentsInterface
+
+    style CommentsInterface fill:yellow

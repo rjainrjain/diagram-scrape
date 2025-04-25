@@ -1,0 +1,27 @@
+flowchart LR
+    A[POST  /register] --> D
+    A --> C
+    A --> B
+
+    B[Validate om/username] --> bOk
+    B --> BnotOK --> CREATED
+
+    bOk[Valid] --> OK
+    BnotOK[Invalid] 
+…    
+    CREATED[201 Created]
+    OK[200 Ok]
+    BAD_REQUEST[400  Bad request]
+    A[POST  /register] --> D
+    A --> C
+    A --> B
+
+    B[Validate om/username] --> bOk
+    B --> BnotOK --> CREATED
+
+    bOk[Valid] --> OK
+    BnotOK[Invalid] 
+…    
+    CREATED[201 Created]
+    OK[200 Ok]
+    BAD_REQUEST[400  Bad request]

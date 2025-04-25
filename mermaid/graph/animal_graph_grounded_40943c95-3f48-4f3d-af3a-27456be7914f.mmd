@@ -1,0 +1,19 @@
+graph LR
+  whale(Whale)-->|lives in|water(Water)
+  bear(Bear)-->|is a|mammal(Mammal)
+  fish(Fish)-->|lives in|water
+  whale-->|is a|mammal
+  cat(Cat)-->|is a|mammal
+  cat-->|has|fur
+  bear-->|has|fur(Fur)
+  mammal-->|is a|animal(Animal)
+  mammal-->|has|vertebra(Vertebra)
+  fish-->|is a|animal
+  moby_dick(Moby dick)-->|is a|whale
+  nemo(Nemo)-->|is a|fish
+  mbp[Moby Dick Properties: <br/>Location: 2km SW of Manhattan island<br/>Weight: 70 tons<br/>Eats: Captain's legs<br/>Breathes underwater: false]--> moby_dick
+  nemop[Nemo Properties:<br/>Location: 42 Wallaby Way, Sidney<br/>Likes: anemonae<br/>Breathes underwater: true]-->nemo
+  pooh(Winnie the Pooh)-->|is a|bear
+  poohp[Winnie the Pooh Properties:<br/>Eats: honey]-->pooh
+  tom(Tom)-->|is_a|cat
+  tomp[Tom Properties:<br/>Eats: mice<br/>Weight: 4kg] --> tom

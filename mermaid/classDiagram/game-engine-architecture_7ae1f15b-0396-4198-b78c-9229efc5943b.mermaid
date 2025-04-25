@@ -1,0 +1,39 @@
+classDiagram
+    class Engine {
+        +Initialize()
+        +Run()
+        +Shutdown()
+    }
+    class Renderer {
+        -DirectX12API
+        +RenderFrame()
+    }
+    class UISystem {
+        -HTMLParser
+        -CSSParser
+        +RenderUI()
+    }
+    class InputManager {
+        +ProcessInput()
+    }
+    class AudioSystem {
+        +PlaySound()
+    }
+    class PhysicsEngine {
+        +SimulatePhysics()
+    }
+    class ResourceManager {
+        +LoadAsset()
+        +UnloadAsset()
+    }
+    class SceneManager {
+        +LoadScene()
+        +UpdateScene()
+    }
+    Engine --> Renderer
+    Engine --> UISystem
+    Engine --> InputManager
+    Engine --> AudioSystem
+    Engine --> PhysicsEngine
+    Engine --> ResourceManager
+    Engine --> SceneManager

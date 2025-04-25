@@ -1,0 +1,64 @@
+classDiagram
+  class User {
+    + UUID4 id
+    + String First_name,
+    + String Last_name
+    - String Email
+    - String Password
+    - Boolean isAdmin
+    - DateTime createAt
+    - DateTime updateAt
+
+    + Void Login()
+    + create_user()
+    + update_user()
+    + delete_user()
+  }
+
+  class Place  {
+    + UUID4 id
+    + String title
+    + String description
+    + Float price
+    + String place
+    - DateTime createAt
+    - DateTime updateAt
+
+    + create()
+    + update()
+    + delete()
+    + list()
+  }
+
+  class Review {
+    + UUID4 id
+    + Float rating
+    + String comment
+    - String user_id
+    - String place_id
+    - DateTime createAt
+    - DateTime updateAt
+
+    + add_review()
+    + update_review()
+    + delete_review()
+    + list_by_place()
+  }
+
+  class Amenity  {
+    + UUID4 id
+    + String name
+    + String description
+    - DateTime createAt
+    - DateTime updateAt
+
+    + add_amenity()
+    + updated_amenity()
+    + delete_amenity()
+    + list()
+  }
+
+    User "1" --> "*" Place : owns
+    User "1" --> "*" Review : Writes
+    Place "1" --> "*" Review : receives
+    Place "1" o-- "*" Amenity : has

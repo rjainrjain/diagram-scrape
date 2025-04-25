@@ -1,0 +1,41 @@
+sequenceDiagram
+    title Notes - Single Page Application - New Note Addition
+    participant browser
+    participant server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/spa
+    activate server
+    server-->>browser: HTML document
+    deactivate server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.css
+    activate server
+    server-->>browser: the css file
+    deactivate server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/spa.js
+    activate server
+    server-->>browser: the JavaScript file
+    deactivate server
+
+    Note right of browser: The browser starts executing the JavaScript code that fetches the JSON from the server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+    activate server
+    server-->>browser: [{ "content": "una nota", "date": "2024-07-22T16:20:03.963Z"} ... ]
+    deactivate server
+
+    Note right of browser: The browser executes the callback function that renders the notes
+    Note right of browser: User enters a new note and clicks the submit button
+
+    browser->>browser: Handle form submission
+    Note right of browser: JavaScript intercepts the form submission, prevents default behavior, creates new note
+
+    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+    Note right of browser: The request contains new note as JSON with Content-Type header set to 'application/json'
+    activate server
+    server-->>browser: HTTP 201 Created 
+    deactivate server
+
+    Note right of browser: The note is added to the notes list, and the page is re-rendered with the updated notes
+

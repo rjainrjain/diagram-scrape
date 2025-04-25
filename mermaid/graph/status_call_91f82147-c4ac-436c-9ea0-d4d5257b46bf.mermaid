@@ -1,0 +1,8 @@
+graph LR
+  status --> errorStatus
+  status --> boilButtonClickedAndLidClose
+  status --> turnOnKeepWarm
+  errorStatus --> errorTemperatureTooHighUpdate
+  errorStatus --> errorTemperatureNotIncreasedUpdate
+  errorStatus --> waterOverflowUpdate
+  errorStatus --> waterLevelTooLowUpdate

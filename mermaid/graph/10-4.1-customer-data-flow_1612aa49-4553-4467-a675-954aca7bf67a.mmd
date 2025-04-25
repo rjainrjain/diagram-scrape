@@ -1,0 +1,86 @@
+%% title: 10-4.1 Customer Data Flow
+%% description: Section 10 - System Environment - Figure 10-4.1 Customer Data Flow
+graph LR
+  subgraph AWS GovCloud
+    subgraph Cloud Foundry Components
+      subgraph Container Management Segments
+        Cell["Cell"]
+        AppContainer{"Customer<br>Application"}
+        Dashboard{Dashboard<br>dashboard.fr.cloud.gov}
+      end
+      Router{Router}
+      SSHProxy[SSH Proxy]
+      UAA["User Authentication/Authorization (UAA)<br>login.fr.cloud.gov"]
+      CloudController[Cloud Controller<br>api.fr.cloud.gov]
+      ServiceBroker[Service Broker]
+      InternalService["Internal Service<br>e.g. Service Account<br>Identity Provider"]
+      HM[Health Monitor]
+      Loggregator[Loggregator]
+    end
+    subgraph Customer Logs
+      Q[AWS Elasticache Redis Queue]
+      Logstash[Logstash]
+      ES[Elasticsearch]
+      Kibana[Kibana<br>logs.fr.cloud.gov]
+    end
+    subgraph AWS Brokered Services VPC
+      AWSService("AWS Services e.g.<br>AWS RDS Postgresql, MySQL<br>AWS Elasticache Redis<br>AWS ElasticSearch/OpenSearch")
+    end
+    subgraph SAML IDP
+      SAML{cloud.gov fallback IDP<br>providing MFA}
+    end
+    ALB("Application Load Balancer (ALB)")
+    CloudControllerDB(Cloud Controller<br>RDS DB)
+    CloudWatch[AWS CloudWatch Logs]
+    S3[S3]
+  end
+  subgraph Customer Responsibility
+    CustomerSAML{"Single Sign-on (SSO)<br>providing MFA"}
+  end
+  subgraph AWS East/West
+    cloudfront["AWS CloudFront"]
+  end
+
+  Customer((Customer))
+  statuspage["StatusPage<br>cloudgov.statuspage.io"]
+
+
+  Router-->Cell
+  SSHProxy--SSH using temporary key-->Router
+  CloudController-.API Request Sets up temporary SSH key.->SSHProxy
+  CloudController--Request for provision-->ServiceBroker
+  CloudController--Provision/scale application instances-->Cell
+  CloudControllerDB-->CloudController
+  ServiceBroker--Provisions-->InternalService
+  ServiceBroker--Provisions-->AWSService
+  InternalService--Service protocol-->AppContainer
+  AWSService--Service protocol-->AppContainer
+  HM--Monitoring of assigned port-->AppContainer
+  Cell-.Container.->AppContainer
+  AppContainer-->Loggregator
+  Cell-.Container.->Dashboard
+
+  Loggregator-->Logstash
+  Logstash-->Q
+  Q-->ES
+  Logstash-->CloudWatch
+  Logstash-->S3
+  ES-->Kibana
+
+  Customer--"Web HTTP 80 or HTTPS 443"-->ALB
+  Customer--SSH port 2222 using temporary key-->ALB
+  Customer--"Web request HTTPS 443"-->statuspage
+  Customer--"Web HTTP 80 or HTTPS 443"-->cloudfront
+
+  cloudfront --"Web request HTTPS 443"--> ALB
+
+  ALB --SSH port 2222 using temporary key--> SSHProxy
+  ALB --"Web HTTP 80 or HTTPS 443"--> Router
+  ALB --API request HTTPS 443--> CloudController
+  ALB -- "Triggered by web request HTTPS 443 only" --> Kibana
+
+  UAA-.Authentication.->CustomerSAML
+  UAA-.Authentication.->SAML
+  CloudController-.Authorization.->UAA
+  SSHProxy-.Authorization.->UAA
+  Kibana-.Authorization.->UAA

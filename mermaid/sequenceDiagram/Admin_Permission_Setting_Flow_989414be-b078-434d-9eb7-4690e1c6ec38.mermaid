@@ -1,0 +1,28 @@
+sequenceDiagram
+    participant U as User
+    participant F as Frontend
+    participant B as Backend
+    participant DB as Database
+
+    U->>F: 관리자 목록 페이지 접속
+    F->>B: 관리자 목록 요청
+    B->>DB: 관리자 데이터 조회
+    DB-->>B: 관리자 데이터 반환
+    B-->>F: 관리자 목록 전송
+    F-->>U: 관리자 목록 표시
+
+    U->>F: 특정 관리자의 "권한 설정" 클릭
+    F->>B: 역할 및 권한 목록 요청
+    B->>DB: 역할 및 권한 데이터 조회
+    DB-->>B: 역할 및 권한 데이터 반환
+    B-->>F: 역할 및 권한 목록 전송
+    F-->>U: 권한 설정 페이지 표시
+
+    U->>F: 역할 및 권한 선택
+    U->>F: "저장" 버튼 클릭
+    F->>B: 선택된 역할 및 권한 전송
+    B->>DB: admin_role 테이블에 데이터 삽입
+    B->>DB: role_permission 테이블에 데이터 삽입
+    DB-->>B: 삽입 결과 반환
+    B-->>F: 저장 결과 전송
+    F-->>U: 저장 완료 메시지 표시

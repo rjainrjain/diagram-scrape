@@ -1,0 +1,15 @@
+sequenceDiagram
+    actor author as Author
+
+    create participant backend as Build Backend
+    author -->> backend: Project (inc. source, metadata, etc.)
+    destroy backend
+    backend -->> author: myproject-1.0.0-py3-none-any.whl
+
+    create participant index as PyPI
+    author -->> index: myproject-1.0.0-py3-none-any.whl
+
+    actor user as User
+
+    user -->> index: I want myproject v1.0.0
+    index -->> user: myproject-1.0.0-py3-none-any.whl

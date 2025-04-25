@@ -1,0 +1,17 @@
+sequenceDiagram
+  actor User
+  participant ChatFeature as Chat Feature
+  participant Proxy as LLM Proxy
+
+  User->>ChatFeature: Enter chat message
+  ChatFeature->>ChatFeature: Update local chat state
+  ChatFeature->>Proxy: Send prompt and open stream
+  ChatFeature-->>User: Display sent message
+  loop Streaming Response
+    Proxy-->>ChatFeature: Forward response chunk
+    ChatFeature->>ChatFeature: Update last LLM message
+    ChatFeature-->>User: Display new response chunk
+  end
+  Proxy-->>ChatFeature: Forward end of stream
+  ChatFeature->>ChatFeature: Finalize chat history
+  ChatFeature-->>User: Indicate response completion

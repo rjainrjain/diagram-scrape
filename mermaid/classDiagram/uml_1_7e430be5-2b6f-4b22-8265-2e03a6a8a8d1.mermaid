@@ -1,0 +1,58 @@
+classDiagram
+class User {
+    +UUID4 id
+    +String email
+    +String name
+    -String Password
+    -boolean administrator
+    -DateTime created_at
+    -DateTime updated_at
+    +create_user()
+    +edit_user()
+    +delete_user()
+    +void login()
+}
+
+class Place {
+    +UUID4 id
+    -UUID4 ownerID
+    +String name
+    +String location
+    +Float price
+    +list Amenity
+    +list Review
+    -DateTime created_at
+    -DateTime updated_at
+    +create_place()
+    +edit_place()
+    +delete_place()
+    +Float calculatePrice()
+    +search()
+}
+
+class Review {
+    +UUID4 id
+    +Float rating
+    +String comment
+    -DateTime created_at
+    -DateTime updated_at
+    +create_review()
+    +edit_review()
+    +delete_review()
+    +list_by_place()
+}
+
+class Amenity {
+    +UUID4 id
+    +String type
+    -DateTime created_at
+    -DateTime updated_at
+    +create_amenity()
+    +edit_amenity()
+    +delete_amenity()
+    +list()
+}
+
+User "1" --> "*" Review : writes
+Place "1" --> "*" Review : receives
+Place "1" o-- "*" Amenity : contains

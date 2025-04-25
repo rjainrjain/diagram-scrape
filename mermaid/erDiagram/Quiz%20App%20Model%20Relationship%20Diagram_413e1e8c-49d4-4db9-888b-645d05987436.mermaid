@@ -1,0 +1,60 @@
+erDiagram
+    User ||--o{ Quiz : creates
+    User ||--o{ QuizAttempt : takes
+    User ||--|| UserProfile : has
+    Quiz ||--|{ Question : contains
+    Question ||--|{ Answer : has
+    Quiz ||--o{ QuizAttempt : has
+    QuizAttempt ||--|{ UserAnswer : contains
+    Question ||--o{ UserAnswer : references
+    Answer ||--o{ UserAnswer : selects
+
+    User {
+        int id PK
+        string username
+        string email
+    }
+    Quiz {
+        int id PK
+        string title
+        string description
+        string category
+        int creator FK
+        datetime created_at
+        datetime updated_at
+    }
+    Question {
+        int id PK
+        int quiz FK
+        string text
+        int order
+    }
+    Answer {
+        int id PK
+        int question FK
+        string text
+        boolean is_correct
+    }
+    QuizAttempt {
+        int id PK
+        int quiz FK
+        int user FK
+        int score
+        duration time_taken
+        datetime started_at
+        datetime completed_at
+    }
+    UserAnswer {
+        int id PK
+        int quiz_attempt FK
+        int question FK
+        int answer FK
+        boolean is_correct
+    }
+    UserProfile {
+        int id PK
+        int user FK
+        string bio
+        int quizzes_taken
+        int quizzes_created
+    }

@@ -1,0 +1,66 @@
+erDiagram
+  User {
+    int user_id PK
+    string username
+    string email
+    string password
+    date date_joined
+    string profile_picture
+  }
+  Video {
+    int video_id PK
+    int user_id FK
+    string title
+    string description
+    date upload_date
+    string video_url
+    string thumbnail_url
+    int views_count
+  }
+  Category {
+    int category_id PK
+    string name
+    string description
+  }
+  VideoCategory {
+    int video_id FK
+    int category_id FK
+  }
+  Comment {
+    int comment_id PK
+    int video_id FK
+    int user_id FK
+    string content
+    date comment_date
+  }
+  Like {
+    int video_id FK
+    int user_id FK
+  }
+  Subscription {
+    int subscriber_id FK
+    int subscribed_to_id FK
+    date subscription_date
+  }
+  Playlist {
+    int playlist_id PK
+    int user_id FK
+    string name
+    string description
+    date creation_date
+  }
+  PlaylistVideo {
+    int playlist_id FK
+    int video_id FK
+  }
+  User ||--o{ Video : uploads
+  User ||--o{ Comment : makes
+  User ||--o{ Like : likes
+  User ||--o{ Subscription : subscribes
+  User ||--o{ Playlist : creates
+  Video ||--o{ Comment : has
+  Video ||--o{ Like : receives
+  Video ||--o{ VideoCategory : belongs_to
+  VideoCategory ||--|{ Category : categorized_in
+  Playlist ||--o{ PlaylistVideo : contains
+  PlaylistVideo ||--o{ Video : includes

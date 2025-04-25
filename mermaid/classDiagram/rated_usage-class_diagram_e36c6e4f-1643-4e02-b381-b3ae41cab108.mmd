@@ -1,0 +1,49 @@
+%%{init: {'theme': 'base', 'themeVariables': {
+  'lineColor': '#a8201a',
+  'primaryColor': '#fae5c7',
+  'primaryBorderColor': '#0f8b8d'
+}}}%%
+classDiagram
+  direction TB
+  class Party {
+    string id
+    string name
+    string role
+    string @referredType
+  }
+  class RatedUsage {
+    string id
+    string usageDate
+    string description
+    string usageType
+    string status
+    Party relatedParty
+    RatedProductUsage ratedProductUsage
+    List~UsageCharacteristic~ usageCharacteristics
+  }
+  class UsageCharacteristic {
+    string id
+    string name
+    string valueType
+    string value
+  }
+  class RatedProductUsage {
+    bool isBilled
+    string ratingAmountType
+    string ratingDate
+    BucketValueConvertedInAmount bucketValueConvertedInAmount
+    ProductRef productRef
+  }
+  class BucketValueConvertedInAmount {
+    string unit
+    int value
+  }
+  class ProductRef {
+    string id
+    string name
+  }
+  Party --o RatedUsage
+  UsageCharacteristic --* RatedUsage
+  RatedUsage *-- RatedProductUsage
+  RatedProductUsage o-- ProductRef
+  RatedProductUsage o-- BucketValueConvertedInAmount

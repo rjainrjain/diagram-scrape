@@ -1,0 +1,19 @@
+sequenceDiagram
+    participant CompanyRep
+    participant Website
+    participant Backend
+
+    CompanyRep ->> Website: Access internship listings
+    Website ->> Backend: Request internship listings
+    Backend -->> Website: Respond with internship listings
+    Website -->> CompanyRep: Display internship listings
+
+    CompanyRep ->> Website: View internship details
+    Website ->> Backend: Request internship details
+    Backend -->> Website: Respond with internship details
+    Website -->> CompanyRep: Display internship details
+
+    CompanyRep ->> Website: View student profiles
+    Website ->> Backend: Request student profiles
+    Backend -->> Website: Respond with student profiles
+    Website -->> CompanyRep: Display student profiles

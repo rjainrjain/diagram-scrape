@@ -1,0 +1,39 @@
+sequenceDiagram
+
+  participant CoreLogic as Core Logic
+  participant RequestList as Request List
+  participant BlackList as Black List
+  participant HttpClient as HTTP Client
+
+  Note over CoreLogic,HttpClient: Precondition: Core Logic has been informed by message <br>streamer of new aggregator configuration and cache state
+
+  loop while HTTP Client returns missing media items
+
+    CoreLogic ->>+ HttpClient: GET: missing media <br>items from State API
+    HttpClient -->>- CoreLogic: missing media items
+
+    CoreLogic ->>+ RequestList: Create Request List from URLs<br> of missing media items
+    RequestList ->>+ BlackList: get black listed media items
+    BlackList -->>- RequestList: black listed media items
+    RequestList ->> RequestList: Remove black listed media items from list
+    RequestList -->>- CoreLogic: created
+
+    loop while Request List has requests
+
+      CoreLogic ->>+ RequestList: execute next request
+      RequestList ->>+ HttpClient: GET: media item URLs
+      HttpClient -->>- RequestList: Response status
+        
+      alt status code indicates success
+        RequestList->>RequestList: Remove request
+      else forbidden status code
+        RequestList->>RequestList: Remove request
+        RequestList->>BlackList: Add media item to black list
+      else count of status code exceeds allowed occurrences
+        RequestList->>RequestList: Remove request
+      else
+        RequestList->>RequestList: Keep request
+      end
+      
+    end
+  end

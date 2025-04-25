@@ -1,0 +1,4 @@
+flowchart TD
+    A(start) -- setup -->  B[pinMode setzen] --> C
+    C[c = Zeichen aus Text] --> D[Bits von c ausgeben] -- über Länge vom Text --> C
+    D --> E[Alle LEDs LOW setzen] --> F(Ende)

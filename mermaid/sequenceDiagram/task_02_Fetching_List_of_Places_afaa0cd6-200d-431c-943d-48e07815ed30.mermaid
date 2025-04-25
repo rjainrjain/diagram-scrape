@@ -1,0 +1,12 @@
+sequenceDiagram
+participant User
+participant API
+participant BusinessLogic
+participant Database
+
+User->>API: request a list of places
+API->>BusinessLogic: Validate request and Retrieve a list
+BusinessLogic->>Database: Research Places
+Database-->>BusinessLogic: list of the places
+BusinessLogic-->>API: Return Data place
+API-->>User: Return displays a list of Places

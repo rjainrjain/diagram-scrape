@@ -1,0 +1,121 @@
+classDiagram
+direction LR
+
+class AuthService {
+  <<service>>
+  +CreateUser(UserCredentialsRequest) User
+}
+AuthService --> `UserCredentialsRequest`
+AuthService --> `User`
+
+
+
+
+%% 
+
+class UserRole{
+  <<enumeration>>
+  USER
+  ADMIN
+}
+
+
+
+
+%% 
+
+class User {
+  + uint32 user_id
+  + string username
+  + UserRole role
+  + uint32 updated_at_timestamp
+}
+User --> `UserRole`
+
+
+
+
+
+%% 
+
+class UserCredentialsRequest {
+  + string username
+  + string password
+}
+
+
+
+
+
+%% 
+
+class VerifyUserRequest {
+  + uint32 user_id
+}
+
+
+
+
+
+%% 
+
+class ChangeUserPasswordRequest {
+  + uint32 user_id
+  + string old_password
+  + string new_password
+}
+
+
+
+
+
+%% Used to specify empty request/response rpc types
+
+class Empty {
+}
+
+
+
+
+class RuntimeService {
+  <<service>>
+  +CreateRuntime(CreateRuntimeRequest) BriefRuntime
+}
+RuntimeService --> `CreateRuntimeRequest`
+RuntimeService --> `BriefRuntime`
+
+
+
+
+
+%% 
+
+class CreateRuntimeRequest {
+  + string tag
+  + string dockerfile
+}
+
+
+
+
+
+%% 
+
+class BriefRuntime {
+  + string tag
+  + string registry_url
+}
+
+
+
+
+
+%% 
+
+class DetailedRuntime {
+  + string tag
+  + string registry_url
+  + string dockerfile
+}
+
+

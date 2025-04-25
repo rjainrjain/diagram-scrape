@@ -1,0 +1,42 @@
+classDiagram
+  class AccountsConfig {
+    default_auto_field : str
+    name : str
+  }
+  class CustomUser {
+  }
+  class CustomUserAdmin {
+    add_form
+    form
+    list_display : list
+    model
+  }
+  class CustomUserChangeForm {
+  }
+  class CustomUserCreationForm {
+  }
+  class LoginForm {
+    password : CharField
+    username : CharField
+  }
+  class Meta {
+    fields : tuple
+    model
+  }
+  class Meta {
+    fields : tuple
+    model
+  }
+  class Migration {
+    dependencies : list
+    initial : bool
+    operations : list
+  }
+  class Profile {
+    user : OneToOneField
+  }
+  CustomUserChangeForm --* CustomUserAdmin : form
+  CustomUserCreationForm --* CustomUserAdmin : add_form
+  CustomUser --* CustomUserAdmin : model
+  CustomUser --* Meta : model
+  CustomUser --* Meta : model

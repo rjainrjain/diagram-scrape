@@ -1,0 +1,95 @@
+classDiagram
+class TipoMorsetto {
+	tipoMorsettoId: INTEGER
+	tipo: TEXT
+	diametro: INTEGER
+}
+
+class TipoCavo {
+	tipoCavoId: INTEGER
+	cavo: TEXT
+	colore: TEXT
+	sezione: REAL
+}
+
+class TipoFrutto {
+	tipoFruttoId: INTEGER
+	frutto: TEXT
+	note: TEXT
+}
+
+class Parete {
+	pareteId: INTEGER
+	parete: TEXT
+}
+
+class TipoScatola {
+	TipoScatolaId: INTEGER
+	tipoScatola: TEXT
+	lunghezza: REAL
+	larghezza: REAL
+	profondita: REAL
+	moduli: INTEGER
+	descrizione: TEXT
+}
+
+class Scatola {
+	scatolaId: INTEGER
+	tipoScatolaId: INTEGER
+	pareteId: INTEGER
+	spigolo: INTEGER
+	distanzaSpigolo: INTEGER
+	altezzaTerra: INTEGER
+	tipo: TEXT
+	descrizione: TEXT
+}
+
+class Canalizzazione {
+	canalizzazioneId: INTEGER
+	scatolaOrigineId: INTEGER
+	scatolaDestinazioneId: INTEGER
+	diametro: INTEGER
+	lunghezza: INTEGER
+	descrizione: TEXT
+	cavi: INTEGER
+}
+
+class Linea {
+	lineaId: INTEGER
+	linea: TEXT
+}
+
+class Cavo {
+	cavoId: INTEGER
+	tipoCavoId: INTEGER
+	lineaId: INTEGER
+	canalizzazioneId: INTEGER
+}
+
+class Frutto {
+	fruttoId: INTEGER
+	tipoFruttoId: INTEGER
+	scatolaId: INTEGER
+	posizione: INTEGER
+}
+
+class Connessione {
+	cavoOrigineId: INTEGER
+	cavoDestinazioneId: INTEGER
+	tipoMorsettoId: INTEGER
+}
+
+Scatola "*" -- "1" Parete : spigolo
+Scatola "*" -- "1" Parete : pareteId
+Scatola "*" -- "1" TipoScatola : tipoScatolaId
+Canalizzazione "*" -- "1" Scatola : scatolaDestinazioneId
+Canalizzazione "*" -- "1" Scatola : scatolaOrigineId
+Cavo "*" -- "1" Canalizzazione : canalizzazioneId
+Cavo "*" -- "1" Linea : lineaId
+Cavo "*" -- "1" TipoCavo : tipoCavoId
+Frutto "*" -- "1" Scatola : scatolaId
+Frutto "*" -- "1" TipoFrutto : tipoFruttoId
+Connessione "*" -- "1" TipoMorsetto : tipoMorsettoId
+Connessione "*" -- "1" Cavo : cavoDestinazioneId
+Connessione "*" -- "1" Cavo : cavoOrigineId
+

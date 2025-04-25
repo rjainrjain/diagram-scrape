@@ -1,0 +1,17 @@
+
+sequenceDiagram
+    participant TA as TravelAdvisor
+    participant WS as WeatherService
+    participant TS as TrafficService
+    participant RS as RecommendationService
+    participant UIS as UIService
+    participant NS as NotificationsService
+    TA->>WS: get_weather()
+    WS-->>TA: return weather_data
+    TA->>TS: get_traffic()
+    TS-->>TA: return traffic_data
+    TA->>RS: get_recommendations(weather_data, traffic_data)
+    RS-->>TA: return recommendations
+    TA->>UIS: display_recommendations(recommendations)
+    TA->>NS: send_notifications(weather_data)
+    NS-->>TA: notifications_sent

@@ -1,0 +1,15 @@
+graph TD
+    A[Public Dataset] -->|Fetch hourly| B[Data Ingestion Service]
+    B -->|Raw Data| C[Data Lake]
+    B -->|Trigger| D[Data Processing Service]
+    D -->|Read| C
+    D -->|Transform| E[Data Transformation]
+    E -->|Processed Data| F[Database]
+    E -->|Data Increments| G[Remote Location]
+    H[REST API Service] -->|Read/Write| F
+    I[Authentication Service] --> H
+    J[Monitoring Service] -->|Monitor| B
+    J -->|Monitor| D
+    J -->|Monitor| F
+    K[Backfill Service] -->|Detect & Fix| C
+    K -->|Detect & Fix| F

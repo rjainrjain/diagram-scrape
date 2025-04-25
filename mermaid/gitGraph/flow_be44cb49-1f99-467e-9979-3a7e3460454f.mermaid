@@ -1,0 +1,49 @@
+%%{init: {
+    'theme': 'base',
+    'gitGraph': {
+        'showCommitLabel': false,
+        'mainBranchName': 'main'
+    }
+}}%%
+gitGraph LR:
+    commit tag:"1.2"
+    
+    branch develop
+    checkout develop
+    commit
+    commit
+
+    checkout main
+    branch hotfix/1.2.1
+    checkout hotfix/1.2.1
+    commit
+
+    checkout main
+    merge hotfix/1.2.1 tag:"1.2.1"
+    checkout develop
+    merge hotfix/1.2.1
+
+    checkout develop
+    branch feature/feat4
+    commit
+
+    checkout develop
+    branch feature/feat5
+    checkout feature/feat5
+    commit
+
+    checkout develop
+    merge feature/feat4
+    branch release/1.3
+    checkout release/1.3
+    commit
+
+    checkout feature/feat5
+    commit
+    checkout develop
+    merge feature/feat5
+
+    checkout main
+    merge release/1.3 tag:"1.3"
+    checkout develop
+    merge release/1.3

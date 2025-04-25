@@ -1,0 +1,19 @@
+flowchart TB
+  schema(Edit Schema - /schema.json)
+  schema ==> allowsRendering[Does this schema allow pdf/html rendering?] ==yes==> generateContentTS["Update<br>/packages/generate-${schemaName}-pdf-template/src/generateContents.ts"] ==> generateContentJS["Build<br>/packages/generate-${schemaName}-pdf-template/dist/generateContent.js"] ==> generatePDFmin(Copy the generated code to<br>/generate-pdf.min.js) ==> validCert["Generate<br>/fixtures/${schemaName}/${version}/valid_cert.pdf"]
+  generateStyles(/generate-pdf.styles.json) ==> validCert
+  vaidCertJSON["/fixtures/${schemaName}/${version}/valid_cert.json"] & translations["/fixtures/${schemaName}/${version}/translations.json"] ==> generateTemplateHBS["Generate<br>/fixtures/${schemaName}/${version}/template_hbs.html"] & validCert
+  templateHBS(/template.hbs) ==> generateTemplateHBS
+  validCert ==> generatePDFSpec[Add a new test object to<br>/packages/generate-pdf/test/generate-pdf.spec.ts]
+
+  schema =====> emailOrVatId{{"Did your schema-change<br>company identifiers (email, VAT...)?"}} ==yes==> updateExtractEmails[Update<br>/packages/extract-emails library]
+  schema =====> deliveryProps{{Did your schema-change<br>edit delivery properties?}} ==yes==> updateCertificateSummary[Update<br>/packages/certificate-summary library]
+  schema ==> certificatets["Generate<br>/fixtures/${schemaName}/${version}/certificate.ts"]
+  schema ==> editHtmlGeneration[Do you need to edit the html generation?] ==yes==> generateHtml[If necessary, update<br>/packages/generate-html/src/index.ts] ==> needHelpers[Do you need to add new handlebars helpers?] ==yes==> generateHtmlHelpers[Add any new helpers in the above<br>file in the `handlebarsBaseOptions` function] ==> updateTemplate(Add any new helpers to `template.hbs`<br>in the schema repository if necessary) ==> templateHBS
+  needHelpers ==no==> templateHBS
+  
+  style schema fill:#f96
+  style generatePDFmin fill:#f96
+  style generateStyles fill:#f96
+  style templateHBS fill:#f96
+  style updateTemplate fill:#f96

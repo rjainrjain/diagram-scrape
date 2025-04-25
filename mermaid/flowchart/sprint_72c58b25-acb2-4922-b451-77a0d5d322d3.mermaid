@@ -1,0 +1,25 @@
+flowchart LR
+    subgraph S1[Sprint 1]
+        a[Sprint 1 Starts] --> a1[Duration: 4 weeks]
+        a1 --> aa[New Features]
+        aa --> b1(feature/1) 
+        aa --> b2(feature/2)
+        aa --> b3(feature/3)
+        b1 & b2 & b3 --> m[main]
+        m -. Sprint 1 Complete .-> c1(Create new branch 'release/1' from 'main')
+    end
+    subgraph R1[Release 1]
+        c2[deploy 'release/1'] -.-> q[QA] -. Validation passes .-> q2[Deploy to UAT] 
+        q2 -.Users Verify Application .-> q4[Deploy to Production]
+        
+    end
+    subgraph S2[Sprint 2]
+        S2a[Sprint 2 Start] --> S2aa[Duration: 6 weeks]
+        S2aa --> S2a1[New Features]
+        S2a1 --> S2b1(feature/3)  & S2b3(feature/5) & S2b4(feature/6)
+        S2b1 ==> S2b2(feature/4) 
+        S2b2 & S2b3 & S2b4 --> mm[main]
+        mm -. Sprint 2 Complete .-> cc1(Create new branch 'release/2' from 'main')
+    end
+    S1 --> R1 
+    R1 --> S2

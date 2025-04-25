@@ -1,0 +1,51 @@
+sequenceDiagram
+    participant User
+    participant Your_app as Your app
+    participant SDK as Signaling SDK
+    participant Agora
+
+    User ->>+ Your_app: Start
+
+    rect rgb(255, 255, 255)
+        note right of Your_app: Open app
+        Your_app ->>+ SDK: Create a Signaling client
+        Your_app ->>+ SDK: Add client event callbacks
+        Your_app ->>+ SDK: Create a Signaling channel
+        Your_app ->>+ SDK: Add channel event callbacks
+        Your_app ->>+ SDK: Log in to Signaling
+        Your_app ->>+ SDK: Join a channel
+    end
+
+    rect rgb(255, 255, 255)
+    note right of Your_app: Read and write user metadata
+        Your_app ->>+ SDK: Set local user metadata
+        SDK -->> Your_app: Add, update, or delete local user metadata
+        Your_app ->>+ SDK: Subscribe to metadata of remote users
+        SDK -->> Yourapp: On user metadata updated callback
+        Your_app ->>+ SDK: Retrieve metadata of a remote user
+    end
+
+    rect rgb(255, 255, 255)
+    note right of Your_app: Read and write channel metadata
+        Your_app ->>+ SDK: Set channel metadata
+        SDK -->> Your_app: Add, update, or delete channel metadata
+        SDK -->> Your_app: On channel metadata updated callback
+        Your_app ->>+ SDK: Retrieve channel metadata
+    end
+
+    rect rgb(255, 255, 255)
+    note right of Your_app: Use locks
+        Your_app ->>+ SDK: Set a lock
+        SDK -->> Your_app: Acquire the lock
+        SDK -->> Your_app: Specify the lock name when updating metadata
+    end
+
+    rect rgb(255, 255, 255)
+        note right of Your_app: Close
+        Your_app ->>+ SDK: Leave the channel
+        SDK -->> Your_app: Release locks
+        SDK -->> Your_app: Unsubscribe from user metadata update notifications
+        Your_app ->>+ SDK: Log out of Signaling
+    end
+
+    Your_app -->>- User: End

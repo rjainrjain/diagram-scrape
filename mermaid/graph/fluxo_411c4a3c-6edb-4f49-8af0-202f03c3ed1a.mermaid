@@ -1,0 +1,37 @@
+graph TD
+    A[Start] --> B[Display Main Menu]
+    B --> C{User Choice}
+    C -->|1| D[Encryption Flow]
+    C -->|2| E[Decryption Flow]
+    C -->|3| F[Exit]
+
+    D --> G[Prompt for text to encrypt]
+    G --> H[Generate full key]
+    H --> H1[Generate Vigenère key]
+    H1 --> H2[Determine number of columns]
+    H2 --> H3[Generate column order]
+    H3 --> I[Encrypt with Vigenère cipher]
+    I --> J[Encrypt with Columnar Transposition]
+    J --> K[Display encrypted text and full key]
+    K --> B
+
+    E --> L[Prompt for text to decrypt]
+    L --> M[Prompt for full key]
+    M --> M1[Parse full key]
+    M1 --> M2[Extract Vigenère key]
+    M2 --> M3[Extract number of columns]
+    M3 --> M4[Extract column order]
+    M4 --> N[Decrypt with Columnar Transposition]
+    N --> O[Decrypt with Vigenère cipher]
+    O --> P[Display decrypted text]
+    P --> B
+
+    F --> Q[End]
+
+    subgraph "Key Generation"
+    H1 --> H2 --> H3
+    end
+
+    subgraph "Key Parsing"
+    M1 --> M2 --> M3 --> M4
+    end

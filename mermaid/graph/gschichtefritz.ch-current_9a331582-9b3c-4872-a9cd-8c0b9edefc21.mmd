@@ -1,0 +1,21 @@
+The current [gschichtefritz.ch](https://www.gschichtefritz.ch) code is written in Python, utilizing FastAPI and Pydantic. It went live in January 2024. Functionality and complexity have been minimized.
+Payment options have been simplified to QR bill only. Accounting continues to be managed with the legacy software.
+With digital delivery only and no more personalized audio autographs, the entire process now runs fully automated, without any human interaction.
+
+Here’s an overview.
+```{mermaid}
+mindmap
+  root((GF current))
+    Shop
+      Login
+      QR Bill
+        Delivery: PDF
+        Processing: Activate order
+      MP3 Download
+    Website
+    Email
+      Shop related Emails
+    App Backend
+      Onboarding
+      Delivery
+```

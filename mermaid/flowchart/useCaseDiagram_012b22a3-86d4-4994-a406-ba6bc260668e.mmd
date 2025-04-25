@@ -1,0 +1,17 @@
+flowchart LR
+    User --> Register
+    User --> LogIn
+
+    subgraph ScooterApp
+    Register --> LogIn
+    LogIn --> removeScooter
+    LogIn --> addScooter
+    end
+
+    subgraph Scooter
+    removeScooter --> UndockScooter
+    UndockScooter --> requestRepair
+    UndockScooter --> recharge
+    UndockScooter --> confirmUndock
+    addScooter --> DockScooter
+    end

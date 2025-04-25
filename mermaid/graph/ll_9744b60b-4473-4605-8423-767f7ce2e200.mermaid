@@ -1,0 +1,105 @@
+//LIST STRUCTURE
+graph LR
+    A["head | (value1, next)"] --> B["node2 | (value2, next)"] --> C["node3 | (value3, NULL)"]
+    classDef gray fill:#EEEEEE,stroke:#333
+    classDef blue fill:#6B96C3,stroke:#333
+    class A blue
+    class B gray
+    class C gray
+
+//GETTING STARTED OUTPUT
+graph LR
+    A["0 | (11, NULL)"]
+    classDef blue fill:#6B96C3,stroke:#333
+    class A blue
+
+//APPEND OUTPUT
+graph LR
+    0["0 | (11, 1)"] --> 1["1 | (0, 3)"] --> 2["2 | (1, 3)"] --> 3["3 | (4, 5)"] --> 4["4 | (9, 5)"] --> 5["5 | (16, 6)"] --> 6["6 | (25, 7)"] --> 7["7 | (36, 8)"] --> 8["8 | (49, 9)"] --> 9["9 | (64, 10)"] -->10["10 | (81, NULL)"]
+    classDef gray fill:#EEEEEE,stroke:#333
+    classDef blue fill:#6B96C3,stroke:#333
+    class 1,2,3,4,5,6,7,8,9,10 gray
+    class 0 blue
+
+
+//DROP_DUPLICATES OUTPUT 1
+graph LR
+    0["0 | (11, 1)"] --> 1["1 | (5, 3)"] -->|X| 2["2 | (5, 3)"] --> 3["3 | (7, 5)"] -->|X| 4["4 | (7, 5)"] --> 5["5 | (3, 7)"] -->|X| 6["6 | (5, 7)"] --> 7["7 | (4, 8)"] --> 8["8 | (1, 9)"] --> 9["9 | (8, 10)"] -->10["10 | (2, NULL)"]
+    1 --> 3
+    3 --> 5
+    5 --> 7
+    classDef gray fill:#EEEEEE,stroke:#333
+    classDef blue fill:#6B96C3,stroke:#333
+    classDef red fill:#FF3333,stroke:#333
+    class 1,3,5,7,8,9,10 gray
+    class 2,4,6 red
+    class 0 blue
+
+//DROP_DUPLICATES OUTPUT 2
+graph LR
+    0["0 | (11, 1)"] --> 1["1 | (5, 2)"] --> 2["2 | (5, 3)"] --> 3["3 | (7, 4)"] --> 4["4 | (7, 5)"] --> 5["5 | (3, 7)"] -->|X| 6["6 | (5, 7)"] --> 7["7 | (4, 8)"] --> 8["8 | (1, 9)"] --> 9["9 | (8, 10)"] -->10["10 | (2, NULL)"]
+    5 --> 7
+    classDef gray fill:#EEEEEE,stroke:#333
+    classDef blue fill:#6B96C3,stroke:#333
+    classDef red fill:#FF3333,stroke:#333
+    class 1,3,5,6,7,8,9,10 gray
+    class 6 red
+    class 0 blue
+
+
+//REVERSE OUTPUT 1
+graph LR
+    0["0 | (11, NULL)"] -->|X| 1["1 | (5, 0)"] -->|X| 2["2 | (7, 1)"] -->|X| 3["3 | (3, 2)"] -->|X| 4["4 | (9, 3)"] -->|X| 5["5 | (4, 4)"] -->|X| 6["6 | (1, 5)"] -->|X| 7["7 | (8, 6)"] -->|X| 8["8 | (2, 7)"]
+    8 --> 7
+    7 --> 6
+    6 --> 5
+    5 --> 4
+    4 --> 3
+    3 --> 2
+    2 --> 1
+    1 --> 0
+    classDef gray fill:#EEEEEE,stroke:#333
+    classDef blue fill:#6B96C3,stroke:#333
+    classDef red fill:#FF3333,stroke:#333
+    class 0,1,2,3,4,5,6,7 gray
+    class 8 blue
+
+
+//REVERSE OUTPUT 2
+graph LR
+    0["0 | (11, 5)"] -->|X| 1["1 | (5, 0)"] -->|X| 2["2 | (7, 1)"] -->|X| 3["3 | (3, 2)"] -->|X| 4["4 | (9, 3)"] -->|X| 5["5 | (4, 6)"] --> 6["6 | (1, 7)"] --> 7["7 | (8, 8)"] --> 8["8 | (2, NULL)"]
+    0 --> 5
+    4 --> 3
+    3 --> 2
+    2 --> 1
+    1 --> 0
+    classDef gray fill:#EEEEEE,stroke:#333
+    classDef blue fill:#6B96C3,stroke:#333
+    classDef red fill:#FF3333,stroke:#333
+    class 0,1,2,3,5,6,7,8 gray
+    class 4 blue
+
+//SORT OUTPUT
+graph LR
+    0["0 | (11, NULL)"] -->|X| 1["1 | (5, 2)"] --> 2["2 | (7, 6)"] -->|X| 3["3 | (3, 4)"] --> 4["4 | (4, 1)"] -->|X| 5["5 | (1, 7)"] -->|X| 6["6 | (8, 0)"] -->|X| 7["7 | (2, 3)"]
+    5 --> 7
+    7 --> 3
+    4 --> 1
+    2 --> 6
+    6 --> 0
+    classDef gray fill:#EEEEEE,stroke:#333
+    classDef blue fill:#6B96C3,stroke:#333
+    class 0,1,2,3,4,6,7,8 gray
+    class 5 blue
+
+
+//SOCIAL
+graph LR
+    0["0 | (11, 1)"] --> 1["1 | (5, 3)"] -->|X| 2["2 | (5, 3)"] --> 3["3 | (7, NULL)"]
+    1 --> 3
+    classDef gray fill:#EEEEEE,stroke:#333
+    classDef blue fill:#6B96C3,stroke:#333
+    classDef red fill:#FF3333,stroke:#333
+    class 1,3,5,7,8,9,10 gray
+    class 2,4,6 red
+    class 0 blue

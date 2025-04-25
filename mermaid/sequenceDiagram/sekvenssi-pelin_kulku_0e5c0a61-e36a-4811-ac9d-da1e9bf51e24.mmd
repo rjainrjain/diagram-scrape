@@ -1,0 +1,47 @@
+sequenceDiagram
+    participant Player
+    participant UI/Index
+    participant VideoPokerService
+    participant Dealer
+    participant Deck
+    participant PokerHandEvaluator
+    participant HandValue
+
+
+Player ->> UI/Index: Do you want to Play Video poker? (y/n) y
+UI/Index ->> VideoPokerService: deal_hand(5)
+VideoPokerService ->> Dealer: deal_hand(count, self.deck)
+Dealer ->> Deck: get_card(card_number)
+Deck -->> Dealer: card
+Dealer -->> VideoPokerService: hand
+VideoPokerService -->> UI/Index: käsi jaettu
+UI/Index ->> VideoPokerService: get_hand()
+VideoPokerService -->> UI/Index: hand
+UI/Index ->> VideoPokerService: evaluate_hand()
+VideoPokerService ->> PokerHandEvaluator: basic_evaluation(self.hand.get_hand_as_string_list())
+PokerHandEvaluator ->> HandValue: Hand Value vakiot
+PokerHandEvaluator -->> VideoPokerService: hand_value
+VideoPokerService -->> UI/Index: hand_value
+UI/Index ->> Player: Kortit jaettu ja käsi arvioitu
+
+
+Player ->> UI/Index: Vaihda nämä kortit
+UI/Index ->> VideoPokerService: replace_cards(cards_to_replace)
+VideoPokerService ->> Dealer: replace_cards(cards, self.hand, self.deck)
+Dealer ->> Deck: get_card(card_number)
+Deck -->> Dealer: card
+Dealer -->> VideoPokerService: hand
+VideoPokerService -->> UI/Index: Kortit vaihdettu
+UI/Index ->> VideoPokerService: get_hand()
+VideoPokerService -->> UI/Index: hand
+UI/Index ->> VideoPokerService: evaluate_hand()
+VideoPokerService ->> PokerHandEvaluator: basic_evaluation(self.hand.get_hand_as_string_list())
+PokerHandEvaluator ->> HandValue: Hand Value vakiot
+PokerHandEvaluator -->> VideoPokerService: hand_value
+VideoPokerService -->> UI/Index: Käden yhdistelmä arvioitu
+UI/Index ->> VideoPokerService: get_pay_out_for_hand(pay_out_table))
+VideoPokerService -->> UI/Index: Korttiyhdistelmän voitto arvioitu
+UI/Index ->> User: Päivitä pelaajan pelitilin saldo
+User -->> UI/Index: Pelaajan pelitilin saldo päivitetty
+UI/Index -->> Player: Kortit vaihdettu, Käden korttiyhdistelmä arvioitu, Voitto laskettu.<br>Do you want to continue? (y/n)
+

@@ -1,0 +1,15 @@
+---
+config:
+  theme: default
+---
+sequenceDiagram
+participant User
+participant API
+participant BusinessLogic
+participant Database
+User->>+API: API Call (Fetching a List of Places)
+API->>+BusinessLogic: Validate and Process Retrieve Request
+BusinessLogic->>+Database: Search places
+Database-->>-BusinessLogic: Return a list of places
+BusinessLogic-->>-API: Return Success/Failure
+API-->>-User: Return a list of places

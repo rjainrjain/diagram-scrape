@@ -1,0 +1,34 @@
+flowchart LR
+    andromeda_kernel.wasm["andromeda_kernel.wasm"]
+
+    andromeda_vfs.wasm["andromeda_vfs.wasm"]
+    andromeda_adodb.wasm["andromeda_adodb.wasm"]
+    andromeda_economics.wasm["andromeda_economics.wasm"]
+    andromeda_cw721.wasm["andromeda_cw721.wasm"]
+    andromeda_auction.wasm["andromeda_auction.wasm"]
+    andromeda_crowdfund.wasm["andromeda_crowdfund.wasm"]
+    andromeda_marketplace.wasm["andromeda_marketplace.wasm"]
+    andromeda_cw20.wasm["andromeda_cw20.wasm"]
+    andromeda_cw20_exchange.wasm["andromeda_cw20_exchange.wasm"]
+    andromeda_cw20_staking.wasm["andromeda_cw20_staking.wasm"]
+    andromeda_merkle_airdrop.wasm["andromeda_merkle_airdrop.wasm"]
+    andromeda_lockdrop.wasm["andromeda_lockdrop.wasm"]
+
+    andromeda_kernel.wasm --> andromeda_vfs.wasm
+    andromeda_kernel.wasm --> andromeda_adodb.wasm
+    andromeda_kernel.wasm --> andromeda_economics.wasm
+    andromeda_kernel.wasm --> andromeda_cw721.wasm
+    andromeda_kernel.wasm --> andromeda_auction.wasm
+    andromeda_kernel.wasm --> andromeda_crowdfund.wasm
+    andromeda_kernel.wasm --> andromeda_marketplace.wasm
+    andromeda_kernel.wasm --> andromeda_cw20.wasm
+    andromeda_kernel.wasm --> andromeda_cw20_exchange.wasm
+    andromeda_kernel.wasm --> andromeda_cw20_staking.wasm
+    andromeda_kernel.wasm --> andromeda_merkle_airdrop.wasm
+    andromeda_kernel.wasm --> andromeda_lockdrop.wasm
+
+    andromeda_cw721.wasm --> andromeda_crowdfund.wasm
+    andromeda_cw20.wasm --> andromeda_cw20_exchange.wasm
+    andromeda_cw20.wasm --> andromeda_cw20_staking.wasm
+    andromeda_cw20.wasm --> andromeda_lockdrop.wasm
+

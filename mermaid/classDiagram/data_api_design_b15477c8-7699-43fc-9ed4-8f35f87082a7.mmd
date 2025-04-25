@@ -1,0 +1,23 @@
+classDiagram
+    class SalesforceAPI{
+        +str api_url
+        +str access_token
+        +__init__(self, api_url: str, access_token: str)
+        +get_orders(self)
+        +update_order(self, order_id: str, data: dict)
+    }
+    class SmartEquipAPI{
+        +str api_url
+        +str access_token
+        +__init__(self, api_url: str, access_token: str)
+        +get_orders(self)
+        +process_order(self, order_id: str)
+    }
+    class Integration{
+        +SalesforceAPI salesforce_api
+        +SmartEquipAPI smarthequip_api
+        +__init__(self, salesforce_api: SalesforceAPI, smarthequip_api: SmartEquipAPI)
+        +sync_orders(self)
+    }
+    SalesforceAPI "1" -- "1" Integration: uses
+    SmartEquipAPI "1" -- "1" Integration: uses

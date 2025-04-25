@@ -1,0 +1,12 @@
+sequenceDiagram
+    participant User
+    participant API
+    participant BusinessLogic
+    participant Database
+
+    User->>API: add new Review
+    API->>BusinessLogic: Validate and create Review
+    BusinessLogic->>Database: Save New Review To Data
+    Database-->>BusinessLogic: Confirm Save
+    BusinessLogic-->>API: Return Success/Failure
+    API-->>User: Return Success Of New Review

@@ -1,0 +1,64 @@
+---
+title: Homelab Servers
+---
+
+flowchart LR
+    classDef cluster fill:#ffffff00,stroke:#aabbccff,stroke-width:3px,rx:8px,ry:8px;
+    classDef node fill:#ffffff00,stroke:#aabbccff,stroke-width:2px,rx:5px,ry:5px;
+    classDef no_border stroke:#ffffff00,stroke-width:0px;
+
+    subgraph raspberry_pi_3b["Raspberry Pi 3B"]
+        tvheadend("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/tvheadend.png' style='min-width:80px;max-width:80px' /></div>Tvheadend")
+
+        %% hidden_raspberry_pi_3b(" ")
+        %% class hidden_raspberry_pi_3b no_border
+    end
+
+    subgraph raspberry_pi_4b_2g["Raspberry Pi 4B 2G"]
+        %% TODO: Mark TeamViewer / AnyDesk here
+
+        hidden_raspberry_pi_4b_2g(" ")
+        class hidden_raspberry_pi_4b_2g no_border
+    end
+
+    subgraph raspberry_pi_4b_4g["Raspberry Pi 4B 4G"]
+        gatus_2("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/gatus.png' style='min-width:80px;max-width:80px' /></div>Gatus-2")
+        pihole_2("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /></div>PiHole-2")
+        unifi_controller("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/unifi.png' style='min-width:80px;max-width:80px' /></div>Unifi<br />Controller")
+
+        %% hidden_raspberry_pi_4b_4g(" ")
+        %% class hidden_raspberry_pi_4b_4g no_border
+    end
+
+    subgraph odroid_h3["Odroid H3"]
+        changedetection("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/changedetection.png' style='min-width:80px;max-width:80px' /></div>Changedetection")
+        dockerhub_proxy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/docker.png' style='min-width:80px;max-width:80px' /></div>DockerHub<br />cache<br />proxy")
+        gatus("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/gatus.png' style='min-width:80px;max-width:80px' /></div>Gatus")
+        healthchecks("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/healthchecks.png' style='min-width:80px;max-width:80px' /></div>Healthchecks")
+        home_assistant("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/home-assistant.png' style='min-width:80px;max-width:80px' /></div>Home<br />Assistant")
+        homepage("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/homepage.png' style='min-width:80px;max-width:80px' /></div>Homepage")
+        jellyfin("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/jellyfin.png' style='min-width:80px;max-width:80px' /></div>Jellyfin")
+        minio("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/minio.png' style='min-width:80px;max-width:80px' /></div>MinIO")
+        ntfy("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/ntfy.png' style='min-width:80px;max-width:80px' /></div>Ntfy")
+        omada_controller("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.5em'><img src='../../../../icons/tp-link-omada.png' style='min-width:80px;max-width:80px' /></div>Omada<br />Controller")
+        pihole("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/pihole.png' style='min-width:80px;max-width:80px' /></div>PiHole")
+        smtp4dev("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/smtp4dev.png' style='min-width:80px;max-width:80px' /></div>Smtp4dev")
+        speedtest_tracker("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:0.75em'><img src='../../../../icons/speedtest-tracker.png' style='min-width:80px;max-width:80px' /></div>Speedtest<br />Tracker")
+
+        hidden_odroid_h3(" ")
+        class hidden_odroid_h3 no_border
+
+        changedetection ~~~ dockerhub_proxy ~~~ gatus
+        healthchecks ~~~ home_assistant ~~~ homepage
+        jellyfin ~~~ minio ~~~ ntfy
+        omada_controller ~~~ pihole ~~~ smtp4dev
+        speedtest_tracker ~~~ hidden_odroid_h3
+    end
+
+    odroid_h3
+    raspberry_pi_3b
+    raspberry_pi_4b_2g
+    raspberry_pi_4b_4g
+
+    %% Note: Enable in future:
+    %% smb("<div style='position:relative;width:80px;height:80px;margin:0 auto;margin-bottom:1em'><img src='../../../../icons/filebrowser.png' style='min-width:80px;max-width:80px' /></div>SMB")

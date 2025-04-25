@@ -1,0 +1,10 @@
+graph TD
+  subgraph Enterprise Front-End Deps.
+    enterprise-app --> enterprise-gateway-api
+  end
+
+  subgraph Enterprise Gateway Deps.
+    enterprise-gateway-api --> enterprise-auth-service
+    enterprise-gateway-api --> anybotics-service
+    enterprise-gateway-api --> leaderboard-service
+  end

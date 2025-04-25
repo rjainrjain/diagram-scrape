@@ -1,0 +1,6 @@
+erDiagram
+   AGGREGATES {
+       value-object true}
+   SCENARIO-MANAGEMENT o{--o{ AGGREGATES : "creates"
+    AGGREGATES ||--o{ AGGREGATE : "contains"
+    AGGREGATES ||--o{ AGGREGATOR-ITEM : "defines"

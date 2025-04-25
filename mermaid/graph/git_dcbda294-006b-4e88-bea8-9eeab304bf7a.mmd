@@ -1,0 +1,19 @@
+---
+title: git
+---
+gitGraph
+    checkout main
+    commit id: "commit1"
+    commit
+    
+    branch new_branch
+    checkout new_branch
+    commit
+    commit
+
+    checkout main
+    merge new_branch
+    commit
+    
+    checkout main
+    commit tag: "tag" type: HIGHLIGHT

@@ -1,0 +1,23 @@
+sequenceDiagram
+    participant User as "User"
+    rect rgb(255, 255, 255)
+        note left of User: Implemented by you
+        participant App as "App"
+        participant DAS as "Developer's Authentication System"
+    end
+    rect rgb(255, 255, 255)
+        note right of SD-RTN: Provided by Agora
+        participant SD-RTN as "SD-RTN"
+    end
+
+    %% Flows
+    User ->> App: Start the app
+    User ->> App: Select a channel
+    App ->> DAS: Login to your identity management system
+    DAS ->> App: Validate user request against internal security
+    App ->> DuffleBag: Request an Agora authentication token using channel name, role, token type and user ID
+    DAS ->> SD-RTN: Use integrated Agora library to  generate a token
+    SD-RTN ->> DAS: Validate the token
+    DAS ->> App: Return the token to the client
+    App ->> User: Join a channel with user ID, channel name, and token
+    App -->> User: Trigger the callback after adding user to the channel

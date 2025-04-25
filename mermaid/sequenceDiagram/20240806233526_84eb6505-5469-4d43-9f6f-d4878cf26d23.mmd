@@ -1,0 +1,22 @@
+
+sequenceDiagram
+    participant M as Main
+    participant MM as MindMap
+    participant LE as LLMExploration
+    participant LS as LanguageSupport
+    participant OD as OntologyDatabase
+    M->>MM: render_map(concepts)
+    M->>LE: explore(concept)
+    LE-->>M: return exploration_data
+    M->>LE: generate_summary(concept)
+    LE-->>M: return summary
+    M->>LE: generate_flashcards(concept)
+    LE-->>M: return flashcards
+    M->>LS: translate(text, target_lang)
+    LS-->>M: return translated_text
+    M->>LS: detect_language(text)
+    LS-->>M: return language
+    M->>OD: save_ontology(concepts)
+    OD-->>M: None
+    M->>OD: load_ontology()
+    OD-->>M: return concepts

@@ -1,0 +1,26 @@
+```mermaid
+sequenceDiagram
+    participant Your_app as "Your App"
+    participant Agora as "Agora"
+    participant SAE as "Spatial Audio Extension"
+
+    Your_app->>Agora: AgoraRTC.createClient
+    Your_app->>Agora: AgoraRTC.registerExtension
+    Your_app->>SAE: spatialAudioExtension.updateSelfPosition
+    Your_app->>Agora: AgoraRTCClient.join
+    Agora->>Your_app: client.on('user-published')
+    Your_app->>Agora: AgoraRTCClient.subscribe
+    Your_app->>SAE: spatialAudioExtension.createProcessor
+    SAE->>Your_app: remoteTrack.pipe(processor).pipe(track.processorDestination)
+    SAE->>Your_app: remoteTrack.Play
+    Your_app->>SAE: processor.updateRemotePosition
+    Your_app->>Agora: AgoraRTC.createBufferSourceAudioTrack
+    Your_app->>SAE: spatialAudioExtension.createProcessor
+    Agora->>Your_app: track.pipe(processor).pipe(track.processorDestination)
+    Agora->>Your_app: track.Play
+    Your_app->>SAE: processor.updatePlayerPositionInfo
+    Your_app-->>Agora: client.on('user-unpublished')
+    Your_app->>SAE: processor.removeRemotePosition
+    Your_app->>Agora: AgoraRTC.leave
+    Your_app->>SAE: processor.clearRemotePosition
+```

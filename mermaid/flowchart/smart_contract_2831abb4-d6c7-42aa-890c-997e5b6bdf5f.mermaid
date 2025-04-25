@@ -1,0 +1,10 @@
+flowchart LR
+    owner[Owner]
+    tsf[Ticket Shop Factory]
+    ts[Ticket Shop]
+    pm[Shop Paymaster]
+    tnft[Ticket NFT]
+
+    owner --crete ticket shop--> tsf
+    tsf --> ts
+    ts --> pm & tnft

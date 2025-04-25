@@ -1,0 +1,40 @@
+%%{init: {
+    'theme': 'base',
+    'gitGraph': {
+        'showCommitLabel': false,
+        'mainBranchName': 'trunk'
+    }
+}}%%
+gitGraph LR:
+    
+    commit
+    commit
+
+    branch short1
+    checkout short1
+    commit
+
+    checkout trunk
+    commit
+
+    checkout trunk
+    branch short2
+    commit
+
+    checkout trunk
+    commit
+
+    checkout short1
+    commit
+
+    checkout short2
+    commit
+
+    checkout trunk
+    merge short1
+
+    checkout short2
+    commit
+
+    checkout trunk
+    merge short2

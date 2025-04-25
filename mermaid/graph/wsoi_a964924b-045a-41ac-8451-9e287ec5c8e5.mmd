@@ -1,0 +1,13 @@
+graph
+  G[Smart Cache Graph]
+  Attr[User Attributes Service]
+  U[Authenticated Users]
+  IdP[Identity Provider]
+  M[Service Mesh]
+  E[Event Log]
+
+  U --> |makes request | M
+  G --> |interacts with | Attr
+  G --> |validates against | IdP
+  M --> |routes traffic| G
+  E --> |feeds data | G

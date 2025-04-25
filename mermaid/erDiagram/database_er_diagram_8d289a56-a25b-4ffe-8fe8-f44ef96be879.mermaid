@@ -1,0 +1,32 @@
+erDiagram
+    AUTHOR ||--|{ BOOK:"writes"
+    COLLECTION_BOOKS }|--|| BOOK:"part of"
+    COLLECTION ||--o{ COLLECTION_BOOKS:"contains"
+
+    BOOK {
+        serial book_id pk, fk
+        serial author_id fk
+        timestamp created_ts
+        text title
+        date publish_date "NULLABLE"
+        smallint edition  "NULLABLE"
+        text description "NULLABLE"
+        text genre "NULLABLE"
+    }
+    
+    AUTHOR {
+        serial author_id pk, fk
+        timestamp created_ts
+        text first_name
+        text last_name
+    }
+
+    COLLECTION_BOOKS {
+        serial collection_id pk, fk
+        serial book_id pk, fk
+    }
+
+    COLLECTION {
+        timestamp created_ts
+        text title pk
+    }

@@ -1,0 +1,6 @@
+sequenceDiagram
+    Browser->>Portal: get OAuth2 access_token 
+    Browser->>Portal: get JWT for token service
+    Browser->>Token Service: request resources owned by user<br/>for a particular tool with the JWT
+    Browser->>Token Service: request AWS tokens for a resource
+    Browser->>S3: upload file using AWS tokens

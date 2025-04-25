@@ -1,0 +1,36 @@
+sequenceDiagram
+    participant User
+    participant Your_app
+    participant Video_SDK
+    participant Host
+    participant Audience
+    participant SD_RTN as Agora
+
+    User ->>+ Your_app: Open app
+    Your_app ->>+ Video_SDK: Initiate the Video SDK engine: AgoraEngine = AgoraRtcEngineKit.sharedEngine
+    Your_app ->> Video_SDK: Start video in the engine: agoraEngine.enableVideo()
+    
+    Video_SDK ->>+ SD_RTN: Set SD-RTN configurations
+    
+    Video_SDK ->>+ Host: agoraEngine.setClientRole(broadcaster)
+    Video_SDK ->> Host: agoraEngine.setupLocalVideo(videoCanvas)
+    Video_SDK ->> Host: agoraEngine?.joinChannel
+    Host ->> Host: Start a live streaming event
+    Host ->> Host: Start local video
+    Host ->> Host: Send data stream
+    Host ->> Audience: Stream video
+
+    Video_SDK ->>+ Audience: agoraEngine.setClientRole(audience)
+    Video SDK ->> Audience: agoraEngine?.joinChannel
+    Audience ->> Audience: Join live streaming event
+    Video_SDK ->> Audience: agoraammaEngine.setupRemoteVideo(videoCanvas)
+    Audience ->> Audience: Retrieve streaming from hosts
+    Host ->> Audience: Stream data
+    Audience ->>- Audience: Leave live streaming event
+
+    Your_app ->> Video_SDK: Close app triggers cleanup
+    Video_SDK ->> Video_SDK: agoraEngine.stopPreview()
+    Video_SDK ->> Video_SDK: agoraEngine.leaveChannel(nil)
+    VideoCPU ->> Video_SDK: AgoraRtcEngineKit.destroy()
+
+    Your_app ->>- User: Close app

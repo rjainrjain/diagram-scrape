@@ -1,0 +1,64 @@
+graph TD
+    A[Landing Page] --> B{User Logged In?}
+    B -->|No| C[Login Page]
+    B -->|Yes| D[Dashboard]
+    C --> E{Has Account?}
+    E -->|No| F[Registration Page]
+    E -->|Yes| C
+    F --> C
+    D --> G[Account Overview]
+    D --> H[Budget Overview]
+    D --> I[Recent Transactions]
+    D --> J[Quick Actions]
+    
+    G --> K[Account List]
+    K --> L[Create Account]
+    K --> M[Edit Account]
+    K --> N[Delete Account]
+    K --> O[View Account Details]
+    
+    O --> P[Account Transactions]
+    O --> Q[Account Balance]
+    
+    H --> R[Budget List]
+    R --> S[Create Budget]
+    R --> T[Edit Budget]
+    R --> U[Delete Budget]
+    R --> V[View Budget Performance]
+    
+    I --> W[Transaction List]
+    W --> X[Create Transaction]
+    W --> Y[Edit Transaction]
+    W --> Z[Delete Transaction]
+    
+    X --> AA{Transaction Type}
+    AA -->|Income/Expense| AB[Select Account]
+    AA -->|Transfer| AC[Select From/To Accounts]
+    AB --> AD[Enter Transaction Details]
+    AC --> AD
+    AD --> AE[Save Transaction]
+    
+    J --> X
+    J --> S
+    J --> AF[Pay Bills]
+    
+    V --> AG[Overall Budget Performance]
+    V --> AH[Individual Budget Performance]
+    
+    D --> AI[Settings]
+    AI --> AJ[Update Profile]
+    AI --> AK[Change Password]
+    AI --> AL[Notification Preferences]
+    
+    D --> AM[Logout]
+    AM --> A
+    
+    classDef page fill:#D4E6F1,stroke:#2C3E50,stroke-width:2px;
+    classDef process fill:#FAE5D3,stroke:#2C3E50,stroke-width:2px;
+    classDef data fill:#E8DAEF,stroke:#2C3E50,stroke-width:2px;
+    classDef decision fill:#FCF3CF,stroke:#2C3E50,stroke-width:2px;
+    
+    class A,C,D,F page;
+    class G,H,I,J,K,O,R,W,AI process;
+    class P,Q,V,AG,AH data;
+    class B,E,AA decision;

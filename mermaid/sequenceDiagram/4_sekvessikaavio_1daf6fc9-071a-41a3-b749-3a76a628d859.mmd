@@ -1,0 +1,31 @@
+sequenceDiagram
+    participant browser
+    participant server
+    participant database
+
+    webURL https://studies.cs.helsinki.fi
+
+    browser->>server: GET webURL/exampleapp/notes
+    activate server
+    server-->>browser: HTML document
+    deactivate server
+
+    browser->>server: GET webURL/exampleapp/main.js
+    activate server
+    server-->>browser: Javascript file (main.js)
+    deactivate server
+
+    Note right of browser: The browser executes javascript code (main.js)
+
+    browser->>server: GET webURL/exampleapp/data.json
+    activate server
+    server-->>browser: data.json
+    deactivate server
+    
+    Note right of browser: The browser handles data.json and renders new elements based on data that data.json has in it.
+
+    browser->>server: POST webURL/exampleapp/new_note
+    activate server
+    server-->>database: INSERT INTO notes (note_field) VALUES (note_name)
+    server-->>browser: GET webURL/exampleapp/notes
+    deactivate server

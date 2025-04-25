@@ -1,0 +1,165 @@
+%%{init: {"theme": "default" }}%%
+flowchart BT
+
+  classDef default background-repeat:no-repeat,background-attachment:fixed,background-position:center,margin-bottom:10px
+  
+  subgraph validator [Conformance]
+    DMV["Model Validator<br/>Library<br/><img src='https://travis-ci.com/openactive/data-model-validator.svg?branch=master'/>"]
+    click DMV "https://github.com/openactive/data-model-validator/"
+    RPDEValidator["RPDE Validator<br/>Library<br/><img src='https://travis-ci.com/openactive/rpde-validator.svg?branch=master'/>"]
+    click RPDEValidator "https://github.com/openactive/rpde-validator/"
+    TS["OpenActive Test Suite<br/><img src='https://github.com/openactive/openactive-test-suite/workflows/Reference%20Implementation/badge.svg'/>"]
+    click TS "https://github.com/openactive/openactive-test-suite/"
+  end
+
+  DMVS --> DMV --> models
+  DMVS --> RPDEValidator 
+
+  DMVS["Validator GUI<br/><img src='https://travis-ci.com/openactive/data-model-validator-site.svg?branch=master'/>"] 
+  click DMVS "https://github.com/openactive/data-model-validator-site/"
+
+
+  
+  subgraph models [Models]
+  Schema["Schema.org"]
+  DM["Data Models<br/><img src='https://travis-ci.com/openactive/data-models.svg?branch=master'/>"]
+  click DM "https://github.com/openactive/data-models"
+  TestInterface["Test Interface<br/><img src='https://github.com/openactive/test-interface/workflows/Deploy%20to%20GitHub%20Pages/badge.svg?branch=master'/>"]
+  click TestInterface "https://github.com/openactive/test-interface"
+  Beta["Beta Namespace<br/><img src='https://github.com/openactive/ns-beta/workflows/Deploy%20to%20GitHub%20Pages/badge.svg?branch=master'/>"]
+  click Beta "https://github.com/openactive/ns-beta"
+  end
+  
+
+  subgraph ExtensionSupport [Extension Support]
+  CF["Cloudflare<br/>Reverse Proxy<br/><img src='https://github.com/openactive/cloudflare-reverse-proxy/workflows/Deploy%20to%20Cloudflare/badge.svg?branch=master'/>"]
+  click CF "https://github.com/openactive/cloudflare-reverse-proxy"
+  
+  ExtensionNS["Extension<br/>Namespace"]
+  click ExtensionNS "https://github.com/openactive/ns-extension"
+  ExtensionDocs["Extension<br/>Documentation<br/>Generator"]
+  click ExtensionDocs "https://github.com/openactive/extension-documentation-generator"
+  end
+  TestInterface & Beta --> ExtensionSupport
+  NS & ActivityList --> CF 
+
+  Ref.NET[".NET Open Booking Reference<br/>Implementation<br/><img src='https://github.com/openactive/OpenActive.Server.NET/workflows/OpenActive%20Test%20Suite/badge.svg?branch=master'/>"]
+  click Ref.NET "https://github.com/openactive/OpenActive.Server.NET#openactive-reference-implementation-"
+
+  OA.Server.NET["Open Booking SDK .NET<br/><img src='https://github.com/openactive/OpenActive.Server.NET/workflows/OpenActive.Server.NET.Tests/badge.svg?branch=master'/>"]
+  click OA.Server.NET "https://github.com/openactive/OpenActive.Server.NET#openactiveservernet--"
+
+  OA.Fakedatabase.NET["Fake Database .NET<br/><img src='https://github.com/openactive/OpenActive.Server.NET/workflows/OpenActive.FakeDatabase.NET.Tests/badge.svg?branch=master'/>"]
+  click OA.Fakedatabase.NET "https://github.com/openactive/OpenActive.Server.NET#openactivefakedatabasenet--"
+
+  model-lib["Model Generator"]
+  click model-lib "https://github.com/openactive/models-lib"
+  Schema.NET["Schema.NET<br/><img src='https://github.com/RehanSaeed/Schema.NET/workflows/Build/badge.svg?branch=master'/>"]
+  click Schema.NET "https://github.com/RehanSaeed/Schema.NET"
+  
+  OA.NET["Model Library<br/>.NET"]
+  click OA.NET "https://github.com/openactive/OpenActive.NET"
+  models-php["Model Library<br/>PHP"]
+  click models-php "https://github.com/openactive/models-php"
+  models-ruby["Model Library<br/>Ruby"]
+  click models-ruby "https://github.com/openactive/models-ruby"
+  models-ts["Model Library<br/>JavaScript / TypeScript"]
+  click models-ts "https://github.com/openactive/models-ts"
+
+  OA.Dataset.NET["Dataset Site<br/>Library .NET"]
+  click OA.Dataset.NET "https://github.com/openactive/OpenActive.DatasetSite.NET"
+  dataset-site-php["Dataset Site<br/>Library PHP"]
+  click dataset-site-php "https://github.com/openactive/dataset-site-template-php"
+  dataset-site-ruby["Dataset Site<br/>Library Ruby"]
+  click dataset-site-ruby "https://github.com/openactive/dataset-site-template-ruby"
+  
+
+  ref-php["PHP Open Data<br/>Reference<br/>Implementation"]
+  click ref-php "https://github.com/openactive/models-php-test"
+  ref-ruby["Ruby Open Data<br/>Reference<br/>Implementation"]
+  click ref-ruby "https://github.com/openactive/models-ruby-test"
+
+
+
+
+  ActivityList["Activity List<br/>JSON-LD<br/><img src='https://travis-ci.com/openactive/activity-list.svg?branch=master'/>"]
+  click ActivityList "https://github.com/openactive/activity-list"
+  ActivityListEditor["Activity List<br/>Editor"]
+  click ActivityListEditor "https://github.com/openactive/activity-list-editor"
+
+
+  subgraph specs [Specifications]
+  RPDESpec["RPDE<br/>Specification"]
+  click RPDESpec "https://openactive.io/realtime-paged-data-exchange/"
+  OpenBookingSpec["Open Booking API<br/>Specification"]
+  click OpenBookingSpec "https://openactive.io/open-booking-api/EditorsDraft"
+  ModelsSpec["Modelling<br/>Specification"]
+  click ModelsSpec "https://openactive.io/modelling-opportunity-data/"
+  end
+
+  model-lib --> models
+
+
+
+  models-php --> model-lib
+  OA.NET --> model-lib
+  models-ruby --> model-lib
+  models-ts --> model-lib
+  
+  subgraph ts-lib [JavaScript/TypeScript Libraries]
+  models-ts
+  end
+
+  subgraph ruby-lib [Ruby Libraries]
+  ref-ruby --> dataset-site-ruby --> models-ruby
+  ref-ruby --> models-ruby
+  end
+
+  subgraph net-lib [.NET Libraries]
+  Ref.NET --> OA.Server.NET --> OA.NET & OA.Dataset.NET
+  Ref.NET --> OA.Fakedatabase.NET
+  OA.Dataset.NET --> OA.NET --> Schema.NET --> Schema
+  end
+
+  subgraph php-lib [PHP Libraries]
+  ref-php --> dataset-site-php --> models-php
+  ref-php --> models-php
+  end
+
+
+
+
+
+  DMV --> ActivityList
+  
+  subgraph act [Activity List]
+  ActivityList --> ActivityListEditor
+  end
+
+
+  
+
+
+	DM -. Conforms to .-> specs
+
+
+
+  validator -. Conforms to .-> specs
+
+  Ref.NET<-. Tested By .-> TS
+  ref-php-. Tested By .-> TS
+  ref-ruby-. Tested By .-> TS
+  
+  TS --> DMV
+  TS --> RPDEValidator
+
+  subgraph Documentation [Documentation]
+  Docs["Developer<br/>Documentation<br/><img src='https://travis-ci.com/openactive/developer-documentation.svg?branch=master'/>"]
+  click Docs "https://github.com/openactive/developer-documentation/"
+  NS["OpenActive<br/>Namespace<br/><img src='https://travis-ci.com/openactive/openactive.github.io.svg?branch=master'/>"]
+  click NS "https://github.com/openactive/openactive.github.io"
+  end
+  Documentation --> DM
+  Docs --> Beta
+
+  OA.Server.NET -. Conforms to .-> TestInterface

@@ -1,0 +1,43 @@
+classDiagram
+    JobAnnouncer --> UI: 1. submitCompanyForm(companyData)
+    UI --> CompanyController: 2. validateAndProcessCompany(companyData)
+    CompanyController --> CompanyController: 3. validateCompanyData(companyData)
+    CompanyController --> CompanyRepository: 4. checkDuplicateTextID(taxID)
+    CompanyRepository --> DBConnector: 5. execute(Q2.2J.1, taxID)
+    DBConnector --> CompanyRepository: 6. return queryResult
+    CompanyRepository --> CompanyController: 7. return isDuplicate()
+    CompanyController --> UI: 8. showSummary(companyData)
+
+    JobAnnouncer --> UI: 9. confirmRegistration()
+    UI --> CompanyController: 10. createCompanyAccount(companyData)
+    CompanyController --> CompanyRepository: 11. saveCompany(companyData)
+    CompanyRepository --> DBConnector: 12. execute(Q2.2J.2, companyData)
+    DBConnector --> CompanyRepository: 13. return insertResult
+    CompanyRepository --> CompanyController: 14. return saveStatus
+    CompanyController --> UI: 15. redirectToVerification()
+    CompanyController --> UI: 16. showError(validationError)
+
+    class JobAnnouncer {
+    }
+
+    class UI {
+        +showSummary()
+        +redirectToVerification()
+        +showError()
+        +submitCompanyForm()
+        +confirmRegistration()
+    }
+
+    class CompanyController {
+        +validateAndProcessCompany()
+        +createCompanyAccount()
+    }
+
+    class CompanyRepository {
+        +checkDuplicateTextID()
+        +saveCompany()
+    }
+
+    class DBConnector {
+        +executeQuery()
+    }

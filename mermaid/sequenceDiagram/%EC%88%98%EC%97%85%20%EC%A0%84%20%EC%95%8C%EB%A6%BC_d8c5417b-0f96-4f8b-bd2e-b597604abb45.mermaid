@@ -1,0 +1,18 @@
+sequenceDiagram
+    participant Batch
+    participant DB
+    participant Messenger
+    Batch->>DB: 예약된 수업, 사용자 조회
+    activate DB
+    DB->>Batch: 예약된 수업, 사용자 응답
+    deactivate DB
+    Batch->>DB: 알림 대상 추가
+
+    Batch->>DB: 알림 대상 조회
+    activate DB
+    DB->>Batch: 알림 대상 응답
+    deactivate DB
+    Batch->>Messenger: 알림 요청
+    activate Messenger
+    Messenger->>Batch: 알림 응답
+    deactivate Messenger

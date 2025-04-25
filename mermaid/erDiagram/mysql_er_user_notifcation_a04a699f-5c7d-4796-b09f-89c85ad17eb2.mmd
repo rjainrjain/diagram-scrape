@@ -1,0 +1,10 @@
+erDiagram
+    TABLE_NAME {
+        mediumint(9) id PK "NOT NULL AUTO_INCREMENT"
+        tinytext name "NOT NULL"
+        text email "NOT NULL"
+        tinytext user_type "NOT NULL"
+        datetime notification_time "DEFAULT '0000-00-00 00:00:00' NOT NULL"
+        int notify_after "NOT NULL"
+        boolean notified "DEFAULT 0 NOT NULL"
+    }

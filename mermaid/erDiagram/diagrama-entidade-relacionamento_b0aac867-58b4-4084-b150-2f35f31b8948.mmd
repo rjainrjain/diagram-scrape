@@ -1,0 +1,27 @@
+erDiagram
+    EVENTO {
+        UUID id PK
+        String titulo
+        String descricao
+        Datetime data
+        Boolean remoto
+        String url_imagem
+        String url_evento
+    }
+    CUPOM {
+        UUID id PK
+        Integer desconto
+        String codigo
+        Datetime validade
+        UUID evento_id FK
+    }
+    ENDERECO {
+        UUID id PK
+        String uf
+        String cidade
+        UUID evento_id FK
+    }
+
+    EVENTO ||--o{ CUPOM : "possui"
+    EVENTO ||--o{ ENDERECO : "ocorre em"
+

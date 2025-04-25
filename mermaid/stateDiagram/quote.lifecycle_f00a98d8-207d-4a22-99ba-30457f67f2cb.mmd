@@ -1,0 +1,11 @@
+---
+title: Quote lifecycle
+---
+stateDiagram-v2
+  direction LR
+  [*] --> draft
+  draft --> submitted
+  submitted --> accepted
+  submitted --> refused
+  submitted --> voided
+  draft --> voided

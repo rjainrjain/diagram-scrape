@@ -1,0 +1,20 @@
+stateDiagram-v2
+    [*] --> username/password 
+    username/password --> BN: SHA()
+    BN --> POW: 1000ms > pow > 100ms
+    BN --> Horcrux.redeem(...)
+    POW --> Horcrux.redeem(...)
+
+    state Horcrux.redeem(...) {                
+        *BN --> SHA
+        *nonce --> SHA 
+        SHA --> storage[sha] : read value 
+    }
+
+    Horcrux.redeem(...) --> block
+    block --> XOR    
+    ECDSA --> privateKey
+    note left of ECDSA : private key is produced by Seed from SHA(BN,POW) 
+    privateKey --> XOR
+    XOR --> base64
+

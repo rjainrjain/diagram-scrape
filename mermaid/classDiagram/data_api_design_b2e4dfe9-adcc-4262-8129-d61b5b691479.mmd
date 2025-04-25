@@ -1,0 +1,29 @@
+classDiagram
+    class NovelGenerator{
+        +str prompt
+        +str writing_style
+        +int chapter_count
+        +str genre
+        +generate_novel()
+    }
+    class DialogueEnhancer{
+        +str text
+        +enhance_dialogue()
+    }
+    class ScriptTransitioner{
+        +str novel_text
+        +transition_to_script()
+    }
+    class EmbeddingStorage{
+        +str text
+        +store_embedding()
+        +retrieve_embedding()
+    }
+    class CustomAgent{
+        +str text
+        +learn_from_text()
+    }
+    NovelGenerator "1" -- "1" DialogueEnhancer: uses
+    NovelGenerator "1" -- "1" ScriptTransitioner: uses
+    NovelGenerator "1" -- "1" EmbeddingStorage: uses
+    NovelGenerator "1" -- "1" CustomAgent: uses

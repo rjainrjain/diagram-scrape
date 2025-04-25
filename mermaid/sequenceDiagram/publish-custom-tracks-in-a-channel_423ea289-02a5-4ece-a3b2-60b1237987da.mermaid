@@ -1,0 +1,15 @@
+```mermaid
+sequenceDiagram
+    participant V as Video to be captured
+    participant T as Third-party video capture module
+    participant C as Captured video frames
+    participant A as Agora SDK
+    participant CT as Custom video track
+    participant M as main channel
+
+    V ->> T: Capture start
+    T ->> C: Frame capture
+    C ->> A: Frame transfer
+    A ->> CT: Track creation
+    CT ->> M: Track added
+```

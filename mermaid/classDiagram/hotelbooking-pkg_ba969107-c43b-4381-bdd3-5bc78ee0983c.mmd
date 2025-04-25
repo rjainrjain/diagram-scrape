@@ -1,0 +1,65 @@
+classDiagram
+    %% Packages
+    class Booking {
+        - bookingId : String
+        - checkInDate : Date
+        - checkOutDate : Date
+        - status : String
+        + createBooking()
+        + cancelBooking()
+    }
+
+    class User {
+        - userId : String
+        - name : String
+        - email : String
+        + login()
+        + register()
+        + searchRooms()
+        + makePayment()
+    }
+
+    class Room {
+        - roomId : String
+        - roomType : String
+        - price : Double
+        - status : String
+        + checkAvailability()
+    }
+
+    class Payment {
+        - paymentId : String
+        - amount : Double
+        - paymentDate : Date
+        + processPayment()
+        + refundPayment()
+    }
+
+    class Notification {
+        - notificationId : String
+        - message : String
+        - sentDate : Date
+        + sendNotification()
+    }
+
+    %% Relationships
+    User "1" --> "*" Booking : makes
+    Booking "1" --> "*" Room : books
+    Booking "1" --> "1" Payment : includes
+    Booking "1" --> "*" Notification : triggers
+
+    %% Package Diagram Structure
+    package "HotelBookingSystem" {
+        [Booking]
+        [User]
+        [Room]
+        [Payment]
+        [Notification]
+    }
+
+    package "HotelBookingSystem" {
+        [Booking] --> [User]
+        [Booking] --> [Room]
+        [Booking] --> [Payment]
+        [Booking] --> [Notification]
+    }

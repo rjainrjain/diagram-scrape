@@ -1,0 +1,24 @@
+%%{
+  init: {
+    'theme': 'base',
+    'themeVariables': {
+      'primaryColor': '#FFFFFF',
+      'primaryTextColor': '#000',
+      'primaryBorderColor': '#000',
+      'lineColor': '#000',
+      'secondaryColor': '#000',
+      'tertiaryColor': '#000',
+      'fontFamily':'Times New Roman'
+    }
+  }
+}%%
+classDiagram
+    class OnionLayer{       
+        +String peer_name 
+    }
+    class OnionRoute{
+        +peel(Bytes private_key):OnionLayer
+        +grow(OnionLayer layer,Bytes public_key)
+        +is_empty():Boolean
+    }
+    OnionRoute  o--  OnionLayer : onion

@@ -1,0 +1,21 @@
+classDiagram
+    class `ReprodutorMusical`{
+            +tocar()
+            +pausar()
+            +selecionarMusica(String musica)
+    }
+    class `AparelhoTelefonico`{
+            +ligar(String numero)
+            +atender()
+            +iniciarCorreioVoz(String musica)
+    }
+    class `NavegadorInternet` {
+            +exibirPagina(String url)
+            +adicionarNovaAba()
+            +atualizarPagina()
+    }
+
+    `ReprodutorMusical` --> `Iphone2007`
+    `AparelhoTelefonico` --> `Iphone2007`
+    `NavegadorInternet` --> `Iphone2007`
+  

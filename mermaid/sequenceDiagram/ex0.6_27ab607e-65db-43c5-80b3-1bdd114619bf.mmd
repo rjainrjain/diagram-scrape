@@ -1,0 +1,17 @@
+sequenceDiagram
+    participant browser
+    participant server
+
+    Note right of browser: The browser sends the POST request the page with content and time stams in the body
+
+    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+    activate server
+
+    Note left of server: The server answers with json message note created 
+
+    server-->>browser: JSON
+    deactivate server
+
+
+
+

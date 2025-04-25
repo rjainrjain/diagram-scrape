@@ -1,0 +1,48 @@
+graph TB
+
+subgraph Host Operating System
+  subgraph Container1
+    C1A[Application]
+    C1B[Libraries]
+    C1C[Binaries]
+  end
+
+  subgraph Container2
+    C2A[Application]
+    C2B[Libraries]
+    C2C[Binaries]
+  end
+
+  Kernel
+end
+
+subgraph Virtual Machine 1
+  subgraph Guest Operating System 1
+    G1A[Application]
+    G1B[Libraries]
+    G1C[Binaries]
+  end
+  Kernel1
+end
+
+subgraph Virtual Machine 2
+  subgraph Guest Operating System 2
+    G2A[Application]
+    G2B[Libraries]
+    G2C[Binaries]
+  end
+  Kernel2
+end
+
+Kernel --> Container1
+Kernel --> Container2
+Kernel1 --> G1A
+Kernel1 --> G1B
+Kernel1 --> G1C
+Kernel2 --> G2A
+Kernel2 --> G2B
+Kernel2 --> G2C
+
+classDef container fill:#f9f,stroke:#333,stroke-width:4px;
+class Container1,Container2 container
+classDef vm fill:#d9f,stroke:#333,stroke-width:4px;

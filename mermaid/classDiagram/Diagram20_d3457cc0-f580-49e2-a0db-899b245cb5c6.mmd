@@ -1,0 +1,71 @@
+classDiagram
+  TradingCalendar <|-- FilterIterator
+  TradingCalendar *-- DailyIterator : DI
+  TradingCalendar *-- Yasumi
+  <<vendor>> Yasumi
+  class TradingCalendar{
+    -holidaysCalculator
+    __construc($iterator)
+    +accept()
+    -initCalculator($year)
+  }
+  class Yasumi{
+    +nextWorkingDay()
+    +create()
+    +getAvailableLocales()
+    +createByISO3166_2()
+    +getProviders()
+    +prevWorkingDay()
+  }
+  class DailyIterator{
+    const INTERVAL
+    const START
+    const END
+    -int lowerlimit
+    -int upperlimit
+    -DateTime date
+    -DateTime startDate
+    -int direction
+    __construct($start, $end)
+    +current()
+    +next()
+    +key()
+    +valid()
+    +rewind()
+    +setDirection($direction)
+    +getDirection()
+    +setStartDate($date)
+  }
+  DailyIterator <|-- Iterator
+  class MonthlyIterator{
+    -innerIterator
+    -interval
+    __construct(TradingCalendar $iterator)
+    +current()
+    +next()
+    +key()
+    +valid()
+    +rewind()
+    +toBeginning($date)
+    +seek($position)
+    +getInnerIterator()
+  }
+  class WeeklyIterator{
+    -innerIterator
+    -interval
+    __construct(TradingCalendar $iterator)
+    +current()
+    +next()
+    +key()
+    +valid()
+    +rewind()
+    +toBeginning($date)
+    +seek($position)
+    +getInnerIterator()
+  }
+  TradingCalendar --* MonthlyIterator : DI
+  TradingCalendar --* WeeklyIterator : DI
+  MonthlyIterator <|-- SeekableIterator
+  MonthlyIterator <|-- OuterIterator
+  WeeklyIterator <|-- SeekableIterator
+  WeeklyIterator <|-- OuterIterator

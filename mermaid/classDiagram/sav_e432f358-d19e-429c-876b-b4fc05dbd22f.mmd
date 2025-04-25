@@ -1,0 +1,175 @@
+classDiagram
+    direction LR
+
+    class DataGenerator {
+        +static int[] randomNumbers(numElements: int): int[]
+        +static char[] randomChars(numElements: int): char[]
+    }
+
+
+    class MainApp {
+        +main(args: String[]): void
+    }
+
+    class ArgumentProcessor {
+        +processArguments(args: String[]): ProcessedArgs
+    }
+
+    class ProcessedArgs {
+        +String algorithm
+        +String type
+        +String order
+        +String valueListType
+        +int numElements
+        +String manualValues
+        +int pauseDuration
+        +ProcessedArgs(algorithm: String, type: String, order: String, valueListType: String, numElements: int, manualValues: String, pauseDuration: int)
+    }
+
+    class UtilitiesCLI {
+        +static void getEffectGraphics()
+        +static void getMessageUses()
+        +static void showTitle()
+    }
+
+    class InputValidator {
+        +static boolean validateInput(algorithm: String, type: String, order: String, valueList: String): boolean
+        +static String getAlgorithmFullName(algorithm: String): String
+        +static String getTypeFullName(type: String): String
+        +static String getOrderFullName(order: String): String
+        +static String getValueListFullName(valueList: String): String
+        +static int[] manualInputIntArray(input: String): int[]
+        +static char[] manualInputCharArray(input: String): char[]
+    }
+
+    class SortController {
+        +SortController(panel: SortPanel, pauseDuration: int, order: String)
+        +bubbleSort(array: int[])
+        +bubbleSort(array: char[])
+        +selectionSort(array: int[])
+        +selectionSort(array: char[])
+        +insertionSort(array: int[])
+        +insertionSort(array: char[])
+        +quickSort(array: int[], low: int, high: int)
+        +quickSort(array: char[], low: int, high: int)
+        -panel: SortPanel
+        -pauseDuration: int
+        -ascending: boolean
+    }
+
+    class SortViewerFrame {
+        +SortViewerFrame()
+        +startSorting()
+        -sizeField: JTextField
+        -pauseField: JTextField
+        -algorithmBox: JComboBox
+        -typeBox: JComboBox
+        -orderBox: JComboBox
+        -valueListBox: JComboBox
+        -control: SortController
+        -panel: SortPanel
+    }
+
+    class ButtonUtil {
+        +ButtonUtil(text: String, action: ActionListener)
+        -text: String
+        -action: ActionListener
+    }
+
+    class SortHandler {
+        -control: SortController
+        -panel: SortPanel
+        +SortHandler(control: SortController, panel: SortPanel)
+        +void sort(algorithm: String, array: int[])
+        +void sort(algorithm: String, array: char[])
+    }
+
+    class Sorting {
+        <<abstract>>
+        +Sorting(panel: SortPanel, ascending: boolean, pauseDuration: int)
+        +sort(array: int[])
+        +sort(array: char[])
+        -executeSort(array: int[])
+        -executeSort(array: char[])
+        -highlightBar(index: int)
+        -sleep()
+        -panel: SortPanel
+        -ascending: boolean
+        -pauseDuration: int
+    }
+
+    class BubbleSort {
+        +BubbleSort(panel: SortPanel, ascending: boolean, pauseDuration: int)
+        +sort(array: int[])
+        +sort(array: char[])
+        -executeSort(array: int[])
+        -executeSort(array: char[])
+    }
+
+    class SelectionSort {
+        +SelectionSort(panel: SortPanel, ascending: boolean, pauseDuration: int)
+        +sort(array: int[])
+        +sort(array: char[])
+        -executeSort(array: int[])
+        -executeSort(array: char[])
+    }
+
+    class InsertionSort {
+        +InsertionSort(panel: SortPanel, ascending: boolean, pauseDuration: int)
+        +sort(array: int[])
+        +sort(array: char[])
+        -executeSort(array: int[])
+        -executeSort(array: char[])
+    }
+
+    class QuickSort {
+        +QuickSort(panel: SortPanel, ascending: boolean, pauseDuration: int)
+        +sort(array: int[])
+        +sort(array: char[])
+        -executeSort(array: int[])
+        -executeSort(array: char[])
+        -quickSortHelper(array: int[], low: int, high: int)
+        -partition(array: int[], low: int, high: int): int
+        -quickSortHelper(array: char[], low: int, high: int)
+        -partition(array: char[], low: int, high: int): int
+    }
+
+    class SortPanel {
+        +setIntArray(array: int[])
+        +setCharArray(array: char[])
+        +setCurrentBar(index: int)
+        -paintComponent(g: Graphics)
+        -updateBuffer()
+        -drawArray(g: Graphics, int, int)
+        -getMaxValue(array: int[]): int
+        -getMaxValue(array: char[]): int
+        -intArray: int[]
+        -charArray: char[]
+        -isCharArray: boolean
+        -buffer: BufferedImage
+        -barSpacing: int
+        -currentBar: int
+    }
+
+    MainApp --> ArgumentProcessor : Uses
+    MainApp --> SortViewerFrame : Calls
+    ArgumentProcessor --> ProcessedArgs : Creates
+    ArgumentProcessor --> UtilitiesCLI : Uses
+    ArgumentProcessor --> InputValidator : Validates
+
+    SortHandler --> SortController : Uses
+    SortHandler --> SortPanel : Uses
+    DataGenerator --> SortViewerFrame : Uses
+    SortViewerFrame --> InputValidator : Uses
+    SortViewerFrame --> SortController : Uses
+
+    SortController --> Sorting : Uses
+    Sorting <|-- BubbleSort : Inherits
+    Sorting <|-- SelectionSort : Inherits
+    Sorting <|-- InsertionSort : Inherits
+    Sorting <|-- QuickSort : Inherits
+    SortPanel <-- Sorting : Uses
+
+    SortController --> SortPanel : Uses
+    SortViewerFrame --> ButtonUtil : Uses
+    SortViewerFrame --> SortPanel : Uses

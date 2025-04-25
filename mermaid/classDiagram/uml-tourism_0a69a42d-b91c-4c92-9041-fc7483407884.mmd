@@ -1,0 +1,257 @@
+---
+title: Tourism UML
+---
+
+classDiagram
+  %% Booking relations
+  Customer "1" *-- "*" Booking
+  Booking "1" o-- "0..*" ShipRoom
+  Booking "*" o-- "1" PackageHoliday
+  Booking "1" o-- "0..*" HotelRoom
+
+  %% Package holiday relations
+  PackageHoliday "*" o-- "0..1" Cruise
+  PackageHoliday "*" o-- "0..1" Hotel
+  PackageHoliday "1" o-- "1" HolidayType
+
+  Flight "1" o-- "1" Aircraft 
+  Booking "1" o-- "0..*" FlightBooking
+  AircraftCrew "1" *-- "1..*" Pilot
+  AircraftCrew "1" *-- "0..*" CabinCrew
+  Flight "1" o-- "1" AircraftCrew 
+  FlightBooking "1" o-- "1" Flight
+  FlightBooking "1" o-- "0..1" AirportParking
+  Cruise "1" --o "1" Ship
+
+
+  %% Flight
+  Aircraft "1" <|-- "1" Plane
+  Aircraft "1" <|-- "1" Helicopter
+
+  Ship "1" *-- "*" ShipRoom
+  Ship "1" *-- "1" ShipCrew
+  ShipCrew "1" *-- "*" ShipEmployee
+  ShipCrew "1" *-- "1" ShipCaptain
+  Cruise "1" o-- "0..*" PackageRep
+
+  %% Hotel relations
+  Hotel "*" o-- "0..*" PackageRep
+  Hotel "1" o-- "*" HotelRoom
+
+  %% Employee relations
+  Pilot --|> Employee
+  CabinCrew --|> Employee
+  CabinCrew o-- CabinCrewRank
+  ShipEmployee o-- ShipEmployeeType
+  ShipEmployee --|> Employee
+  ShipCaptain --|> Employee
+  PackageRep --|> Employee
+
+  %% Booking classes
+  class Customer{
+    -String fullName
+    -String email
+    -String address
+    -Date signUpDate
+    -BigDecimal amountSpent
+    -int packagePoints
+  }
+  class Booking{
+    -Customer customer
+    -PackageHoliday packageHoliday
+    -int totalCost
+    -int totalPaid
+    -List~Flight~bookedFlights 
+    -Date startDate
+    -Date endDate
+    +cancelBooking() bool
+  }
+  class PackageHoliday{
+    -String packageHolidayId
+    -HolidayType holidayType
+    -Hotel hotel
+    -Cruise cruise
+    -BigDecimal baseCost
+    -bool hasPreCruiseHotel
+    -bool includesFlights
+    -bool isAllInclusive
+  }
+  class AirportParking{
+    -String registrationNumber
+    -Date parkingStart
+    -Date parkingEnd
+    +getParkingValid() bool
+  }
+  class FlightBooking{
+    -AirportParking parking
+    -String seatingClass
+    -int seatNumber
+    -int baggageWeight
+    -bool checkedIn
+    -Date checkedInTime
+    -bool missedFlight
+    +checkIn()
+    +cancelBooking() bool
+  }
+
+  %% Transport classes
+  class Flight{
+    -Aircraft aircraft
+    -Crew flightCrew
+    -Date flightDate
+    -Time flightStartTime
+    -int flightDuration
+    -String origAirport
+    -int origGate
+    -String origCountry
+    -String origIATA
+    -String destAirport
+    -int destGate
+    -String destCountry
+    -String destIATA
+    +getFlightStartTime() Time
+    +getArrivalTime() Date
+    +getPilot() Pilot
+  }
+  class Cruise{
+    -Ship ship
+    -String originPort
+    -String endPort
+    -List~String~ portsOfCall
+    +getShip() Ship
+    +getPortsOfCall() List~String~
+  }
+  class ShipRoom{
+    -int roomNum
+    -String roomType
+  }
+  class Ship{
+    -String shipName
+    -String registeredCountry
+    -int crewNumber
+    -List~ShipRoom~ Rooms
+    -Cruise currentCruise
+    -List~Cruise~ previousCruises
+    +getShipName() String
+    +getTotalRooms() int
+    +getAvailableRooms() int
+    +getClosedRooms() int
+    +getCrewNumber() int
+    +getCurrentCruise() Cruise
+    +getPreviousCruises() List~Cruise~
+  }
+  class Aircraft{
+    <<Interface>>
+    -String aircraftName
+    -String aircraftRegistration
+    -String aircraftManufacturer
+    -int fuelAmount
+    -int callSign
+    +fly()
+    +land()
+    +refuel(int fuelAmount)
+    +getAircraftName() String
+  }
+  class Helicopter{
+    -String aircraftName
+    -String aircraftRegistration
+    -String aircraftManufacturer
+    -int fuelAmount
+    -int callSign
+    +fly()
+    +land()
+    +hover()
+    +refuel(int fuelAmount)
+    +getAircraftName() String
+  }
+  class Plane{
+    -String aircraftName
+    -String aircraftRegistration
+    -String aircraftManufacturer
+    -int fuelAmount
+    -int callSign
+    +fly()
+    +land()
+    +refuel(int fuelAmount)
+    +getAircraftName() String
+  }
+
+  class HotelRoom{
+    -int roomNumber
+  }
+
+  %% Hotel classes
+  class Hotel{
+    -String name
+    -String address
+    -String country
+    -bool hasResteraunt 
+    -int numStandardRooms
+    -int numSuites
+    -int stars
+    -List~HotelRoom~ hotelRooms
+    -PackageRep hotelPackageRep
+  }
+
+  %% Employee classes
+  class Employee{
+    -int employeeNumber
+    -String employeeName
+    -BigDecimal salary
+    -String address
+    -int phoneNum
+    +getEmployeeNum() String
+    +getName() String
+    +getPhoneNum() int
+  }
+  class AircraftCrew{
+    -List~Pilot~ pilots
+    -List~CabinCrew~ cabinCrew 
+  }
+  class ShipCrew{
+    -ShipCaptain shipCaptain
+    -List~ShipEmployee~ shipEmployees
+  }
+  class CabinCrew{
+    -String crewPosition
+    -CabinCrewRank cabinCrewRank
+  }
+  class Pilot{
+    -String pilotLicence 
+    -String firstAidLisence
+    -String daysFlying
+  }
+  class ShipEmployee{
+    -String crewType
+    -String crewBunk
+    -String crewArea
+  }
+  class ShipCaptain{
+    -String captainLicence
+    -String experience
+  }
+  class PackageRep{
+    -String repType
+    -String location
+    -int repPhoneNum
+  }
+  class CabinCrewRank{
+    <<Enumeration>>
+    FLIGHTATTENDANT,
+    SENIORCREWMEMBER,
+    PURSER,
+    CHIEFPURSER,
+  }
+  class ShipEmployeeType{
+    <<Enumeration>>
+    MAINTENANCE,
+    HOSPITALITY,
+    CLEANING,
+    BRIDGE,
+  }
+  class HolidayType{
+    <<Enumeration>>
+    CRUISE
+    HOTEL
+  }
+

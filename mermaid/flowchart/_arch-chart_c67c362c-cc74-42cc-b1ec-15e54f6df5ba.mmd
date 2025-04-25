@@ -1,0 +1,3 @@
+flowchart LR
+PR{"TAP harness\n prove"} === TC{"Test case\n chflags/11.t"} --- E["Assertion\n expect none stat ${n1} flags"] 
+<==> PJD{pjdfstest binary} <==> S[/"Syscall\n stat(n1).st_flags"/]

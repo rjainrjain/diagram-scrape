@@ -1,0 +1,12 @@
+graph TD
+    A[User] -->|Interacts with| B[Web Frontend]
+    B -->|API Calls| C[API Gateway]
+    C -->|Routes Requests| D[User Service]
+    C -->|Routes Requests| E[Ballot Service]
+    C -->|Routes Requests| F[Voting Service]
+    D -->|Reads/Writes| G[(User Database)]
+    E -->|Reads/Writes| H[(Ballot Database)]
+    F -->|Interacts with| I[Blockchain Network]
+    I -->|Executes| J[Smart Contracts]
+    K[Admin Dashboard] -->|Manages| E
+    K -->|Monitors| I

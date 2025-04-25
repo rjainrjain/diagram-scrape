@@ -1,0 +1,9 @@
+graph TD;
+    core-->server;
+    core-->ui;
+    core-.->data;
+    core-->db;
+    db-->server;
+    core-->cli;
+    db-->cli;
+    data-.->cli;

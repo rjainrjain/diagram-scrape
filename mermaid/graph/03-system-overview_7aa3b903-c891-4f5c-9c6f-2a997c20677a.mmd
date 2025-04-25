@@ -1,0 +1,14 @@
+flowchart TB
+    sources[(Program Sources)] -- strings --> analysis
+    subgraph analysis
+    direction LR
+        Parsing[1.Parsing] -- AST --> Cleaning[2.Cleaning]
+        Cleaning -- Cleaned AST --> Tokenization[3.Tokenization]
+    end
+    analysis -- token sequences --> optional
+    subgraph optional[optional filtering]
+        direction LR
+        Indexing[4.Indexing] --> Filtering[5.Filtering]
+    end
+    optional -- filtered token sequences --> Detection[6.Detection]
+    Detection -- matches --> result(((Reports)))

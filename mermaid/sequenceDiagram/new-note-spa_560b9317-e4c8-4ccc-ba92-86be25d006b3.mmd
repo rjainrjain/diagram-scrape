@@ -1,0 +1,9 @@
+sequenceDiagram
+    participant browser
+    participant server
+
+    browser-->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+    activate server
+    Note right of browser: The browser sends the new note to the server with payload: { content: "HTML is easy", date: "2023-1-1" }
+    server-->>browser: { message: "note created" }
+    deactivate server

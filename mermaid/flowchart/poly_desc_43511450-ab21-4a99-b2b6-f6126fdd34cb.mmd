@@ -1,0 +1,125 @@
+flowchart BT
+classDef blue fill:#66deff,stroke:#000,color:#000
+classDef green fill:#6ad98b,stroke:#000,color:#000
+classDef red fill:#f4cccc,stoke:#000,color:#000
+
+subgraph key
+    c_green[Polygamist]:::green
+    c_blue[Child of Second Wife]:::blue
+    c_red[Famous]:::red
+end
+
+me[Soren Christian Rasmussen]
+p1(Craig Rasmussen)
+p2(Ann Munk)
+
+subgraph parents[.]
+    p1 --> me
+    p2 --> me
+end
+
+g0_1(Woodrow Rasmussen)
+g0_2(Carolyn Frey)
+g0_3(Keith Munk)
+g0_4(Myrtle Fitzgerald)
+
+g0_1 --> p1
+g0_3 --> p2
+g0_4 --> p2
+
+m0(Christian Ipsen Munch):::green
+m1(Niels Peter\nLarsen Domgaard):::green
+m0 -..-> g0_3
+m1 -..-> g0_3
+
+g1_1(Ivan Rasmussen)
+g1_2(Martha Elmina Wilde)
+g1_4(Sadie McBride)
+g1_1 --> g0_1
+g1_2 --> g0_1
+
+
+g2_3 --> g1_2
+g2_4 --> g1_2
+
+
+subgraph Frey
+g0_2 --> p1
+g1_4 --> g0_2
+g2_7 --> g1_4
+g2_8 --> g1_4
+g3_16 --> g2_8
+g4_01(Amasa Mason Lyman):::green
+g4_01 --> g3_16
+g3_81(Reuben Augustus McBride):::green
+g3_81 --> g2_7
+end
+
+g2_1(Hans C. Rasmussen):::green
+g2_2(Emma Jensen):::blue
+g2_3(Albert Wilde)
+g2_4(Tora Keller):::blue
+g2_7(Charles Reuben McBride):::green
+g2_8(Rhoda Alice Lyman)
+
+g2_1 --> g1_1
+g2_2 --> g1_1
+
+
+
+
+g2_1 --daughter--> g1_d1(Christina Victoria Rasmussen)
+g2_3 -.second wife.-> g1_d1
+g1_2 -.Sister-in-law &\n Step-mother.-> g1_d1
+
+g3_4(Mads Christian Jensen):::green
+g3_6(Thomas H. Wilde):::green
+g3_8(James Keller):::green
+g3_16(Francis Lyman):::green
+
+g3_4 --> g2_2
+g3_6 --> g2_3
+g3_8 --> g2_4
+
+subgraph Fitzergald
+    g1_11(Heber Fitzgerald)
+    g1_12(Myrtle Kirkham)
+    g1_11 --> g0_4
+    g1_12 --> g0_4
+
+    g2_21(James Kirkham):::green
+    g2_22(Martha Mercer)
+    g2_21 --> g1_12
+    g2_22 --> g1_12
+    g2_23(Manessah Fitzgerald)
+    g2_24(Melissa Ann Smith)
+    g2_23 --> g1_11
+    g2_24 --> g1_11
+    g3_41(Absalom Wamsley Smith):::green
+    g3_42(Amy Emily Downs)
+    g3_41 --> g2_24
+    g3_42 --> g2_24
+
+    g4_41(Ezekiel Downs):::green
+    g4_41--> g3_42
+
+    g4_51(Jacob Smith)
+    g4_52(Anna Wamsley)
+    g4_51 --> g3_41
+    g4_52 --> g3_41
+
+
+
+    g3_31(John Mercer):::green
+    g3_31 --> g2_22
+
+    f1_2(Restore Lippincott):::red
+    f1_2 -..-> g4_52
+    f2(Perry Fitzgerald):::green --> g2_23
+    saint(St. John Fischer):::red -..-> g4_52
+    f1_2 -..-> prod1(Kevin Bacon):::red
+    f1_2 -..-> prod2(George W. Bush):::red
+    f1_2 -..-> prod3(Richard Nixon):::red
+end
+
+shake[Shakespeare's Grandpa]:::red

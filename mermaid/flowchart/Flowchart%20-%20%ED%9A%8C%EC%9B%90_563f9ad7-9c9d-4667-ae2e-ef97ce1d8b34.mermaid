@@ -1,0 +1,41 @@
+flowchart TB
+    classDef red color:#cbcdcc,fill:#b10000;
+
+    A([사용자]) --> B{회원}
+
+    B ---Yes:::red-----------> C[로그인]
+    B ---No:::red--> D[회원가입] 
+
+    D --> D1[아이디로 사용할 이메일 기입]
+    D1 --> D11{이메일 중복확인}
+    D11 -.->|중복| D1
+    D11 -->|신규| D2{인증 코드 이메일 발송}
+    D2 --->|메일 발송 성공| D22{이메일 인증}
+    D22 -.->|실패| D2
+    D22 -->|성공| D4[다른 항목 기입]
+
+
+    D --> D3[닉네임 기입<br>link:중복 검사 통과 후 닉네임 변경]
+    D3 --> D33[닉네임 중복확인] -->|닉네임 검색 1| D34[(RDB)] -.->|중복| D3
+    D34 -->|닉네임 검색 2| D35[(Redis)] -.->|중복| D3
+    D35 -->|닉네임 등록| D6[(Redis)] --> D4
+    D4 --> D5[가입 완료]
+    D4 --> D8[접속 종료]
+    D5 -->|데이터 저장| D9[(RDB)] --> C
+    D5 & D8 -->|닉네임 삭제| D7[(redis)]
+
+    C --> G{권한 별<br>기능}
+    G ---Admin--> G1[CRUD<br>+<br>MEMBER 권한 관리<br>+<br>탈퇴자 탈퇴 철회]
+    G ---Member--> G2[CRUD]
+    G ---Withdrawal--> G3[R - 타인 게시글]
+    G ---Anonymous--> G3[R - 타인 게시글]
+    C --> E([로그아웃])
+    C --> F[탈퇴] --> F1{30일 경과} 
+    F1 ---도달:::red--> F2[게시글 삭제] --> F3([계정 완전 삭제])
+    F1 ---미만:::red--> F4([탈퇴 철회 가능])
+
+    click D3 "https://blog.zhyun.kim/415"
+
+    linkStyle 7,10 stroke-width:2px,fill:none,stroke:red;
+    linkStyle 15,17 stroke-width:2px,fill:none,stroke:red;
+    

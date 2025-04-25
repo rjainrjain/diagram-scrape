@@ -1,0 +1,29 @@
+```mermaid
+sequenceDiagram
+    participant Token_server as "Token server"
+    participant Your_app as "Your app"
+    participant Agora_Signaling as "Agora Signaling"
+
+    Token_server->>Your_app: Configure your token server using your App Id and App Certificate
+    Token_server->>Your_app: Request an RTM token using a user Id
+    Token_server->>Your_app: Validate request against internal security and generate a token
+    Token_server->>Your_app: Return RTM token to App
+    Your_app->>Agora_Signaling: Log in to Signaling using the user Id and the RTM token
+    Your_app->>Agora_Signaling: Initiate the Signaling Engine using the App Id
+    Agora_Signaling->>Your_app: Validate the token
+    Your_app->>Agora_Signaling: Log in user, then trigger callback
+
+    Token_server->>Your_app: Request an RTC token using a user Id, and a stream channel name
+    Token_server->>Your_app: Validate request against internal security and generate token
+    Token_server->>Your_app: Return RTC token to App
+    Your_app->>Agora_Signaling: Join a stream channel using channel name, user Id, and the RTC token
+    Agora_Signaling->>Your_app: Validate the token
+
+    Your_app->>Your_app: Trigger event: token privilege will expire
+    Token_server->>Your_app: Request an RTM token using the user ID
+    Token_server->>Your_app: Validate request against internal security and generate a token
+    Token_server->>Your_app: Return RTM token to App
+    Your_app->>Agora_Signaling: Send RTM token to Signaling with a call to renew token
+    Agora_Signaling->>Your_app: Validate the token
+    Your_app->>Your_app: Trigger callback
+```

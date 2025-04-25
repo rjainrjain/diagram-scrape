@@ -1,0 +1,65 @@
+```mermaid
+erDiagram
+    ACCOUNT ||--o{ CONTACT : has
+    ACCOUNT ||--o{ LEGAL_CASE : has
+    CONTACT ||--o{ LEGAL_CASE : involved_in
+    LEGAL_CASE ||--o{ TIME_ENTRY : has
+    LEGAL_CASE ||--o{ DOCUMENT : contains
+    TIME_ENTRY ||--o{ BILLING : generates
+    USER ||--o{ TIME_ENTRY : creates
+    USER ||--o{ LEGAL_CASE : manages
+
+    ACCOUNT {
+        string Name
+        string Type
+        date Client_Since
+        string Industry
+    }
+
+    CONTACT {
+        string FirstName
+        string LastName
+        string Email
+        string Phone
+        string Role
+    }
+
+    LEGAL_CASE {
+        string Case_Number
+        string Status
+        date Open_Date
+        date Close_Date
+        string Practice_Area
+        string Description
+        User Assigned_Attorney
+    }
+
+    TIME_ENTRY {
+        datetime Start_Time
+        datetime End_Time
+        number Hours
+        string Description
+        number Billing_Rate
+    }
+
+    DOCUMENT {
+        string Name
+        string Type
+        datetime Upload_Date
+        string Version
+    }
+
+    BILLING {
+        string Invoice_Number
+        date Invoice_Date
+        number Total_Amount
+        string Status
+    }
+
+    USER {
+        string Name
+        string Email
+        string Role
+        string Department
+    }
+```

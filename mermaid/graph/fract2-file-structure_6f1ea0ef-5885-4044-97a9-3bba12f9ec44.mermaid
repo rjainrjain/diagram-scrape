@@ -1,0 +1,69 @@
+graph TD
+A[fract2-development 755]:::directory --> B(LICENSE.md 644):::finished
+A --> C(README.md 644):::finished
+A --> D[config 755]:::directory
+A --> E[distribution 755]:::directory
+A --> F[docs 755]:::directory
+A --> G(fract2-dist-packager.sh 755):::script
+A --> H(index.php 644)
+A --> I[packages 755]:::directory
+A --> J[system 755]:::directory
+A --> K[templates 755]:::directory
+
+D --> D1(config.yaml 644)
+D --> D2(database.yaml 644):::finished
+
+E --> E1(fract2-setup.sh 755):::script
+
+F --> F1(architecture_overview.md 644):::finished
+F --> F2(database_design.md 644):::finished
+F --> F3(fract2-file-structure.mermaid 644):::finished
+F --> F4(fract2_file_structure.md 644):::finished
+F --> F5(installation_process.md 644):::finished
+F --> F6(package_structure.md 644):::finished
+F --> F7(security_considerations.md 644):::finished
+
+I --> I1[f2.atom.tar 755]:::directory
+I --> I2[f2.content.tar 755]:::directory
+I --> I3[f2.users.tar 755]:::directory
+I --> I4[f2.webcomponents 755]:::directory
+
+I4 --> I4A[src 755]:::directory
+I4 --> I4B[assets 755]:::directory
+I4 --> I4C[templates 755]:::directory
+I4 --> I4D(package.yaml 644):::finished
+
+I4A --> I4A1[Components 755]:::directory
+I4A --> I4A2[Services 755]:::directory
+
+I4A1 --> I4A1A(Fract2BaseComponent.js 644):::finished
+I4A1 --> I4A1B(Fract2InfoCard.js 644):::finished
+
+I4A2 --> I4A2A(WebComponentLoader.php 644):::finished
+
+I4B --> I4B1[css 755]:::directory
+I4B1 --> I4B1A(fract2-info-card.css 644):::finished
+
+I4C --> I4C1(webcomponents.twig 644):::finished
+
+J --> J1[bootstrap 755]:::directory
+J --> J2[core.tar 755]:::directory
+J1 --> J1A(tarStreamWrapper.php 644):::finished
+
+J2 --> J2A[database 755]:::directory
+J2A --> J2A1[mariadb 755]:::directory
+J2A --> J2A2[postgres 755]:::directory
+J2A1 --> J2A1A(MariaDBConnection.php 644):::finished
+J2A1 --> J2A1B(MariaDBQuery.php 644):::finished
+J2A2 --> J2A2A(PostgresConnection.php 644):::finished
+J2A2 --> J2A2B(PostgresQuery.php 644):::finished
+
+K --> K1(index.twig 644)
+
+L[fract2-setup 755]:::directory --> L1(distribution.tar 644):::archive
+L --> L2(fract2-setup.sh 755):::script
+
+classDef directory stroke:#FFFF00,stroke-width:4px;
+classDef finished stroke:#90EE90,stroke-width:4px;
+classDef script fill:#FFA07A,stroke:#333,stroke-width:2px;
+classDef archive stroke:#FFA500,stroke-width:4px;

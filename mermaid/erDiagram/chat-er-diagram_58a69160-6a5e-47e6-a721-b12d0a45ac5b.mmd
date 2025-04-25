@@ -1,0 +1,47 @@
+erDiagram
+     User {
+
+        email string PK
+    }
+
+   
+     Table {
+        id int PK
+        venueID int FK
+        capacity int
+        chatID int FK
+    }
+
+
+
+    chat{
+    id int PK
+    created_by int
+            
+      }
+      chatMessage{
+        id int PK
+        chatID int
+        message string
+        created_at timestamp
+        created_by int
+        reply int FK
+      }
+
+     member{
+        chatID int
+        userID int
+        IsAdmin bool
+            
+      }
+
+
+
+
+    chat ||--o{ member : has
+    Table |o--o| chat : has
+    member ||--o{ User : has
+    chat ||--o{ chatMessage : has
+    chatMessage |o--o{ chatMessage : has
+
+

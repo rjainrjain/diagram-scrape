@@ -1,0 +1,36 @@
+classDiagram
+class Game {
+  +run()
+  +initialize()
+  +handleInput()
+  +updateGameState()
+  +draw()
+  -width
+  -height
+  -snake
+  -food
+}
+
+class Snake {
+  +grow()
+  +move(direction)
+  +isCollidingWithWall()
+  +isCollidingWithSelf()
+  -segments
+  -direction
+}
+
+class Vector2D {
+  +x
+  +y
+}
+
+class InputHandler {
+  +processKeyPress(key)
+  -possibleDirections
+  -currentDirection
+}
+
+Game "1" *-- "0..*" Snake : has
+Snake "1" -left- Vector2D : position
+InputHandler "1" *-- "1" Game : handles

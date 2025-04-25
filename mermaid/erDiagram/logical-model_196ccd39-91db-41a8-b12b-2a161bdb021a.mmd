@@ -1,0 +1,114 @@
+erDiagram
+    OBSERVATION_TYPE{
+        int id "ID / primary key"
+        str name "Short name for observation type"
+        str description "Description of observation type"
+        str link "Link to definition of observation type"
+    }
+    FEATURE_TYPE{
+        int id "ID / primary key"
+        str name "Short name for feature type"
+        str description "Description of feature type"
+        str link "Link to definition of feature type"
+    }
+    USERS{
+        str id "ID / primary key"
+        str name "Name of user"
+    }
+    OBSERVED_PROPERTY{
+        int id "ID / primary key"
+        str short_name "Short name representation of observed property, e.g. 'at'"
+        str standard_name "CF standard name (if applicable), e.g. 'air_temperature'"
+        str units "Canonical units, e.g. 'Kelvin'"
+        str description "Description of observed property"
+        str link "Link to definition / source of observed property"
+    }
+    OBSERVING_PROCEDURE{
+        int id "ID / primary key"
+        str name "Name of observing procedure"
+        str description "Description of observing procedure"
+        str link "Link to further information"
+    }
+    RECORD_STATUS{
+        int id "ID / primary key"
+        str name "Short name for status"
+        str description "Description of the status"
+    }
+    HOSTS{
+        str id "ID / primary key"
+        str name "Preferred name of host"
+        str description "Description of host"
+        str link "URI to host, e.g. to OSCAR/Surface"
+        Geography location "Location of station"
+        float elevation "Elevation of station above mean sea level"
+        str wigos_station_identifier "WIGOS station identifier"
+        str facility_type "Type of observing facility, fixed land, mobile sea, etc"
+        str date_established "Date host was first established"
+        str wmo_region "WMO region in which the host is located"
+        str territory "Territory the host is located in"
+        datetime valid_from "Date from which the details for this record are valid"
+        datetime valid_to "Date after which the details for this record are no longer valid"
+        int version "Version number of this record"
+        datetime change_date "Date this record was changed"
+        str comments "Free text comments on this record, for example description of changes made etc"
+    }
+    OBSERVERS{
+        str id "ID / primary key"
+        str name "Name of sensor"
+        str description "Description of sensor"
+        str link "Link to further information"
+        Geography location "Location of observer"
+        float elevation "Elevation of observer above mean sea level"
+    }
+    COLLECTIONS{
+        str id "ID / primary key"
+        str name "Name of collection"
+        str link "Link to further information on collection"
+    }
+    FEATURES{
+        str id "ID / primary key"
+        Geography geometry ""
+        float elevation "Elevation of feature above mean sea level"
+        str name "Name of feature"
+        str description "Description of feature"
+        str link "Link to further information on feature"
+    }
+    SOURCE{
+        str id "ID / primary key"
+        str name "Name of source"
+        str link "Link to further information on source"
+    }
+    OBSERVATIONS{
+        str id "ID / primary key"
+        Geography location "Location of observation"
+        float elevation "Elevation of observation above mean sea level"
+        datetime phenomenon_start "Start time of the phenomenon being observed or observing period, if missing assumed instantaneous with time given by phenomenon_end"
+        datetime phenomenon_end "End time of the phenomenon being observed or observing period"
+        float result_value "The value of the result in float representation"
+        str result_uom "Units used to represent the value being observed"
+        str result_description "str representation of the result if applicable"
+        dict result_quality "JSON representation of the result quality, key / value pairs"
+        datetime result_time "Time that the result became available"
+        datetime valid_from "Time that the result starts to be valid"
+        datetime valid_to "Time after which the result is no longer valid"
+        str report_id "Parent report ID, used to link coincident observations together"
+        dict parameter "List of key/ value pairs in dict"
+        int version "Version number of this record"
+        datetime change_date "Date this record was changed"
+        str comments "Free text comments on this record, for example description of changes made etc"
+    }
+    HOSTS }o--||USERS: "Record modified by"
+    HOSTS }o--||RECORD_STATUS: "Record has status"
+    FEATURES }o--||FEATURE_TYPE: "Is a"
+    FEATURES }o--o|FEATURES: "Contained in "
+    OBSERVATIONS }o--o|OBSERVATION_TYPE: "Is a"
+    OBSERVATIONS }o--||HOSTS: "Observed at"
+    OBSERVATIONS }o--o|OBSERVERS: "Observed by"
+    OBSERVATIONS }o--||OBSERVED_PROPERTY: "Estimates / measures"
+    OBSERVATIONS }o--o|OBSERVING_PROCEDURE: "Observed using"
+    OBSERVATIONS }o--o|COLLECTIONS: "Belongs to"
+    OBSERVATIONS }o--o|FEATURES: "Feature of interest"
+    OBSERVATIONS }o--||USERS: "Record modified by"
+    OBSERVATIONS }o--||RECORD_STATUS: "Record has status"
+    OBSERVATIONS }o--||SOURCE: "Record comes from"
+

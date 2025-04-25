@@ -1,0 +1,11 @@
+---
+title: Sale lifecycle
+---
+stateDiagram-v2
+  direction LR
+  [*] --> draft
+  [*] --> open
+  draft --> open
+  open --> completed
+  open --> voided
+  draft --> voided

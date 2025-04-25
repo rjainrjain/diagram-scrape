@@ -1,0 +1,27 @@
+sequenceDiagram
+    participant Web Services
+    participant Backend
+    participant Oracle
+    participant Blockchain Gateway
+    Web Services->>Backend: Trigger moderation
+    Backend->>Oracle: Send moderator list
+    activate Oracle
+    Note over Web Services,Backend: Project management period
+    Note over Blockchain Gateway: Initiate moderation
+    Oracle->>Blockchain Gateway: Request moderation
+    Blockchain Gateway-->>Oracle: Confirmation
+    Oracle-->>Backend: Mark moderation start
+    Web Services->>Backend: Send encrypted votes
+    Backend->>Oracle: Send encrypted votes
+    Oracle->>Blockchain Gateway: Send encrypted votes
+    Blockchain Gateway-->>Oracle: Confirmation
+    Oracle-->>Backend: Update vote count
+    Note over Oracle: Decrypt votes
+    Oracle->>Blockchain Gateway: Send decrypted votes
+    Blockchain Gateway-->>Oracle: Broadcast boolean votes
+    Oracle-->>Backend: Reveal vote result
+    Note over Blockchain Gateway: Change status
+    Oracle->>Blockchain Gateway: Request cancellation
+    Blockchain Gateway-->>Oracle: Confirmation
+    Oracle-->>Backend: Change status
+    deactivate Oracle

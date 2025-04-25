@@ -1,0 +1,82 @@
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#00b1c7', 'secondaryColor': '#414042', 'tertiaryColor': '#6c757d', 'primaryBorderColor': '#00c2db'}}}%%
+sequenceDiagram
+    participant M as Médico
+    participant API as API Gateway
+    participant BD as Base de Datos
+    participant ML as Modelo ML
+    participant AN as Anonimizador
+    participant DS as Dataset Central
+
+    M->>API: Solicitar estudio RX de paciente
+    activate API
+    API->>BD: Buscar estudio
+    activate BD
+    BD-->>API: Datos del estudio e imagen
+    deactivate BD
+    API-->>M: Mostrar estudio e imagen
+    deactivate API
+
+    M->>API: Solicitar clasificaciones
+    activate API
+    API->>ML: Obtener clasificaciones
+    activate ML
+    ML-->>API: Tags de clasificación
+    deactivate ML
+    API-->>M: Mostrar tags sugeridos
+    deactivate API
+
+    loop Para cada tag
+        alt Tag correcto
+            M->>API: Aceptar tag
+        else Tag incorrecto
+            M->>API: Rechazar tag
+        else Nuevo tag
+            M->>API: Agregar nuevo tag
+        end
+    end
+
+    M->>API: Agregar notas e informe
+    activate API
+    API->>BD: Guardar notas e informe
+    activate BD
+    BD-->>API: Confirmación
+    deactivate BD
+    API-->>M: Confirmación guardado
+    deactivate API
+
+    opt Captura para dataset
+        M->>API: Solicitar captura para dataset
+        activate API
+        API->>AN: Anonimizar imagen
+        activate AN
+        AN-->>API: Imagen anonimizada
+        deactivate AN
+        API->>DS: Guardar imagen y tags en dataset
+        activate DS
+        DS-->>API: Confirmación
+        deactivate DS
+        API-->>M: Confirmación de captura
+        deactivate API
+    end
+
+    alt Estudio requiere segunda opinión
+        M->>API: Marcar para segunda opinión
+        API->>BD: Actualizar estado del estudio
+        BD-->>API: Confirmación
+        API-->>M: Notificación enviada a otro médico
+    else Estudio incompleto o con errores
+        M->>API: Solicitar repetición de estudio
+        API->>BD: Marcar estudio para repetición
+        BD-->>API: Confirmación
+        API-->>M: Notificación enviada a técnico RX
+    end
+
+    opt Generar informe final
+        M->>API: Solicitar generación de informe
+        activate API
+        API->>BD: Recopilar datos del estudio
+        BD-->>API: Datos completos
+        API->>API: Generar informe PDF
+        API-->>M: Informe generado
+        deactivate API
+    end

@@ -1,0 +1,20 @@
+flowchart TD
+  hasapi[Has an API / Pydantic schemas]
+  haspythonclients[Has Python clients]
+  hascomplexapi[Has complex API?]
+  hasmanyclients[Has many Python clients?]
+  updatescritical[Critical to update clients for most API changes?]
+  standard[Standard server repo]
+  monorepo[Client server monorepo]
+  App --> hasapi
+  hasapi -->|No|standard
+  hasapi -->|Yes|haspythonclients
+  haspythonclients -->|No|standard
+  haspythonclients -->|Yes|hascomplexapi
+  hascomplexapi -->|No|hasmanyclients
+  hascomplexapi -->|Yes|monorepo
+  hasmanyclients -->|No|updatescritical
+  hasmanyclients -->|Yes|monorepo
+  updatescritical -->|No|standard
+  updatescritical -->|Yes|monorepo
+

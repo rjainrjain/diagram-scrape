@@ -1,0 +1,39 @@
+flowchart TD
+    %% Nodes
+    A("feature/jira-01")
+    B("develop")
+    C("release/v1.0.0")
+    D("Master")
+    E("Bug fixes development")
+    G("Tag v1.0.0")
+    H("hotfix/v1.0.1")
+    K("Tag v1.0.1")
+    L("Hot fixes development")
+
+    %% Edge connections between nodes
+    B --> |1. Developer starts by new branch| A
+    A-->|2. merge to Develop| B --> | 3. Developer create Release branch | C --> | 6. On suceessfull testing | D
+    E --> | 4. In case of bug found in release branch developer directly commit to this branch | C 
+    C --> | 5. Back Merge Bug fixed in release branch to | B
+    D --> | 7. On successfull deployment | G
+    D --> | 8. Creates hotfix branch to fix issue found post release | H
+    H --> | 10. Merge back to master | D
+    D --> | 11. Tag next minor version | K
+    L --> | 9. developer commits to hotfix branch | H 
+    
+    
+    %% Labels for clarity
+    class B fill:#f9f,stroke:#333,stroke-width:2px
+    class C fill:#ff9,stroke:#333,stroke-width:2px
+    class E fill:#9f9,stroke:#333,stroke-width:2px
+    class H fill:#f99,stroke:#333,stroke-width:2px
+    style B color:white, fill:#2962FF,stroke:#2962FF,stroke-width:1px
+    style A color:white, fill:#FFAA33,stroke:#FFAA33,stroke-width:1px
+    style C color:white, fill:#ff6b35,stroke:#ff6b35,stroke-width:1px
+    style D color:white, fill:#00C853,stroke:#00C853,stroke-width:1px
+    style G color:white, fill:#AA00FF,stroke:#AA00FF,stroke-width:1px
+    style H color:white, fill:red,stroke:red,stroke-width:1px
+    style K color:white, fill:#AA00FF,stroke:#AA00FF,stroke-width:1px
+
+
+

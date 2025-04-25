@@ -1,0 +1,53 @@
+stateDiagram-v2
+    [*] --> FetchTemplate
+    FetchTemplate --> InitializeConfig : Template Found
+    InitializeConfig --> EnsureSecret
+    
+    EnsureSecret --> EnsureService : Secret Created/Updated
+    EnsureSecret --> HandleError : Error
+
+    EnsureService --> EnsurePVC : Service Created/Updated
+    EnsureService --> HandleError : Error
+
+    EnsurePVC --> EnsureStatefulSet : PVC Created/Updated
+    EnsurePVC --> HandleError : Error
+
+    EnsureStatefulSet --> ResourcesEnsured : StatefulSet Created/Updated
+    EnsureStatefulSet --> HandleError : Error
+
+    HandleError --> [*] : Return Error
+
+    ResourcesEnsured --> [*] : All Resources Created/Updated
+
+    state HandleError {
+        [*] --> LogError
+        LogError --> UpdateFailedStatus
+        UpdateFailedStatus --> ReturnError
+        ReturnError --> [*]
+    }
+
+    note right of FetchTemplate
+        Fetches the template using TemplateManager
+    end note
+
+    note right of InitializeConfig
+        Initializes KodeResourceConfig
+    end note
+
+    note right of EnsureSecret
+        Creates or updates the Secret
+        if Credentials are specified
+    end note
+
+    note right of EnsureService
+        Creates or updates the Service
+    end note
+
+    note right of EnsurePVC
+        Creates or updates the PVC
+        if Storage is specified
+    end note
+
+    note right of EnsureStatefulSet
+        Creates or updates the StatefulSet
+    end note

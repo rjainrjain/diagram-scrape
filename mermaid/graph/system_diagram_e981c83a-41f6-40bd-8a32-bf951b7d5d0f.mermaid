@@ -1,0 +1,45 @@
+graph TD
+    %% Main Flow for Check-In Process
+    A[Shifty Web Application] -->|POST 요청: 출근 버튼 클릭| B[API Gateway]
+    B -->|POST 요청: /checkIn| C[CheckIn Lambda Function]
+    C -->|데이터 삽입 또는 업데이트| E[(DynamoDB Table)]
+    C -->|Slack로 인사 메시지 전송| D[Slack API]
+    C -->|출근 시간 기준 9시간 후 알림 스케줄링| F[EventBridge]
+    F -->|Trigger| G[EndOfDay Lambda Function]
+    G -->|퇴근 인사 메시지 전송| D
+    
+    %% LLM Agent Interaction Flow for Check-In
+    subgraph InteractionLoop_CheckIn [Check-In Interaction Loop]
+        C -.->|LLM 에이전트 요청| H[LLM Agent]
+        H -.->|응답 메시지 생성| C
+        C -.->|대화 내용 및 횟수 삽입 또는 업데이트| E
+        C -.->|Slack 메시지 전송| D
+    end
+
+    %% LLM Agent Interaction Flow for End-of-Day
+    subgraph InteractionLoop_EndOfDay [End-of-Day Interaction Loop]
+        G ---|LLM 에이전트 요청| H2[LLM Agent]
+        H2 ---|응답 메시지 생성| G
+        G ---|대화 내용 및 횟수 삽입 또는 업데이트| E
+        G ---|Slack 메시지 전송| D
+    end
+    
+    %% Descriptions for clarity
+    A:::web
+    B:::gateway
+    C:::lambda
+    D:::slack
+    E:::database
+    F:::eventbridge
+    G:::lambda
+    H:::llm_agent
+    H2:::llm_agent_endofday
+    
+    classDef web fill:#f9f,stroke:#333,stroke-width:2px;
+    classDef gateway fill:#bbf,stroke:#333,stroke-width:2px;
+    classDef lambda fill:#9f9,stroke:#333,stroke-width:2px;
+    classDef slack fill:#f96,stroke:#333,stroke-width:2px;
+    classDef database fill:#9ff,stroke:#333,stroke-width:2px;
+    classDef eventbridge fill:#fb9,stroke:#333,stroke-width:2px;
+    classDef llm_agent fill:#fcc,stroke:#333,stroke-width:2px;
+    classDef llm_agent_endofday fill:#fdd,stroke:#333,stroke-width:2px;

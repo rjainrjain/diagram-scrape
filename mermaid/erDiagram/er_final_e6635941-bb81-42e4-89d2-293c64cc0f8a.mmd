@@ -1,0 +1,48 @@
+erDiagram
+    REVIEWS }o--|| BOOKS : contains
+    REVIEWS {
+        int id
+        int userId
+        varchar(135) bookId
+        int rating
+        date timestamp
+        text review
+        tinyint(1) recommended
+    }
+    BOOKS {
+        varchar(135) bookId
+        varchar(255) title
+        varchar series
+        varchar author
+        mediumtext description
+        varchar language
+        varchar isbn
+        json genres
+        int quantity
+    }
+    USER ||--o{ FRIENDS : has
+    USER {
+        int id
+        varchar username
+        varchar password
+        varchar email
+        varchar phone
+        timestamp timeCreated
+        timestamp lastLogin
+        varchar profilePicture
+    }
+
+    USER ||--|| CARTITEMS : has
+    CARTITEMS ||--|| BOOKS : has
+    CARTITEMS {
+        int id
+        int userId
+        varchar bookId
+    }
+
+    FRIENDS {
+        int id
+        int userId
+        int friendId
+        ennum status
+    }

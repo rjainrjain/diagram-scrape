@@ -1,0 +1,71 @@
+
+https://mermaidjs.github.io/mermaid-live-editor/
+
+
+sequenceDiagram
+
+participant S as Mode1 
+participant M as Fixed / Mode2
+participant D as TVWS SAS
+
+M --X D: HTTPS
+
+opt Initialize session
+  activate M
+    M ->>+ D:  initializationRequest
+    D ->>- M :  initializationResponse
+  deactivate M
+end
+
+opt Register device
+  activate M
+    M ->>+ D:   registrationRequest
+    D ->>- M :   registrationResponse
+  deactivate M
+end
+
+alt Request spectrum
+  activate M
+    M ->>+ D:   availableSpectrumRequest
+    activate D
+      D ->>- M :   availableSpectrumResponse
+
+      M ->>+ D : spectrumUseNotify
+      D ->>- M : spectrumUseResponse
+    deactivate D
+  deactivate M
+end
+
+alt Request spectrum by proxy
+  activate S
+    S ->>+ M: availableSpectrumRequest
+    activate M
+      M ->>+ D:   availableSpectrumRequest
+      activate D
+        D ->>- M : availableSpectrumResponse
+        M ->>- S : availableSpectrumResponse
+        S ->>+ M : spectrumUseNotify
+  deactivate S
+        M ->>+ D : spectrumUseNotify
+        D ->>- M : spectrumUseResponse
+      deactivate D
+    deactivate M
+end
+
+
+   
+   
+   
+   
+   {
+  "theme": "default",
+  "themeCSS": ".loopText { fill: brown; }",
+  "sequence": {
+          "diagramMarginY": 25,
+          "actorMargin": 200,
+          "height": 35,
+          "boxMargin": 15,
+          "boxTextMargin": 15,
+          "mirrorActors": false
+        }
+}

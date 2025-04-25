@@ -1,0 +1,22 @@
+---
+title: Article Operation
+---
+classDiagram
+    class ArticleOperation {
+        repository
+        presenter
+        +show()
+    }
+    class ArticleRepositoryInterface
+    <<interface>> ArticleRepositoryInterface
+    class ArticlePresenterInterface
+    <<interface>> ArticlePresenterInterface
+    class ArticleRepositoryInterface {
+        <<interface>>
+    }
+    class ArticlePresenter
+    class ArticleRepository
+    ArticleOperation --> ArticleRepositoryInterface
+    ArticleOperation --> ArticlePresenterInterface
+    ArticlePresenter --|> ArticlePresenterInterface
+    ArticleRepository --|> ArticleRepositoryInterface

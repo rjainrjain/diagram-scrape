@@ -1,0 +1,98 @@
+---
+title: Survey Routing Diagram
+---
+erDiagram
+    Question_100 {
+        option answer_0
+        option answer_1
+        option answer_2
+        option answer_3
+        option answer_4
+    }
+
+    Question_101 {
+        option answer_0
+        option answer_1
+        option answer_2
+        option answer_3
+        option answer_4
+        option answer_5
+    }
+
+    Question_102 {
+        option answer_0
+        option answer_1
+        option answer_2
+        option answer_3
+        option answer_4
+    }
+
+    Question_103 {
+        option answer_0
+        option answer_1
+        option answer_2
+        option answer_3
+    }
+
+    Question_104 {
+        option answer_0
+        option answer_1
+        option answer_2
+        option answer_3
+        option answer_4
+    }
+
+    Question_105 {
+        option answer_0
+        option answer_1
+        option answer_2
+        option answer_3
+        option answer_4
+    }
+
+    Question_106 {
+        option answer_0
+        option answer_1
+        option answer_2
+        option answer_3
+    }
+
+    Question_107 {
+        option answer_0
+        option answer_1
+        option answer_2
+        option answer_3
+        option answer_4
+        option answer_5
+    }
+
+    Question_108 {
+        option answer_0
+        option answer_1
+        option answer_2
+        option answer_3
+        option answer_4
+    }
+
+    Question_109 {
+        option answer_0
+        option answer_1
+        option answer_2
+        option answer_3
+        option answer_4
+        option answer_5
+    }
+
+    Start_Survey ||--|| Question_100 : ""
+    Question_100 ||--|| Question_101 : "0"
+    Question_100 ||--|| Question_103 : "1, 2, 3, and 4"
+    Question_101 ||--|| Question_102 : "0, 1, 2, 3, 4, and 5"
+    Question_102 ||--|| Question_105 : "0, 1, 2, 3, and 4"
+    Question_105 ||--|| Question_109 : "0, 1, 2, 3, and 4"
+    Question_103 ||--|| Question_104 : "0, 1, 2, and 3"
+    Question_104 ||--|| Question_106 : "0, 1, and 2"
+    Question_104 ||--|| Question_107 : "3, and 4"
+    Question_106 ||--|| Question_109 : "0, 1, 2, and 3"
+    Question_107 ||--|| Question_108 : "0, 1, 2, 3, 4, and 5"
+    Question_108 ||--|| Question_109 : "0, 1, 2, 3, and 4"
+    Question_109 ||--|| End_Survey : ""

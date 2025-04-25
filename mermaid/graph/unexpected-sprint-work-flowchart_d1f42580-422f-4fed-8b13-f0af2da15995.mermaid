@@ -1,0 +1,46 @@
+---
+title: When should work be added to the current sprint?
+---
+%%{
+  init: {
+    'theme': 'dark',
+    'themeVariables': {
+      'useMaxWidth': false
+    }
+  }
+}%%
+flowchart TB
+    newWork(("`New
+    engineering work is
+    identified`")):::start --> newWork1{"`What type of
+    new work?`"}
+    newWork1 -->|Feature or Investigation| newRequirement{"`Developer miss on **WIP** or **New Requirements**?`"}
+    newWork1 -->|Operation Support| bug{"`What type of
+    Operation Support?`"}
+
+subgraph New Requirements
+newRequirement -->|New Requirements|newRequirement1{"`Does this impact
+work/deliverables
+in active development?`"}
+newRequirement1 -->|No|newRequirement2["`PM to prioritize in upcoming sprint.
+Notify eng at LT sync.`"]:::stop
+newRequirement1 -->|Yes|newRequirement3["`PM to see graph: **Requirements Change for WIP PM**`"]:::warp
+newRequirement -->|Developer Miss|newRequirement4["`Tech lead discretion
+Notify team via slack`"]:::stop
+end
+
+subgraph Operation Support
+bug -->|"`Known On-call Issue
+(existing runbook)`"| oncallStop["`Add to current
+sprint as on-call work`"]:::stop
+bug -->|"`Novel On-call Issue or Outage`"|novelBug["`Notify **@titans-oncall**
+Notify **PM**`"]
+novelBug --> novelBug1[PM to identify Priority]
+novelBug1 --> novelBug2{Priority Level?}
+novelBug2 -->|P0 - P2| oncallStop
+novelBug2 -->|P3+|novelBug3["`PM to prioritize
+in upcoming sprint`"]:::stop
+end
+classDef start stroke: #0f0
+classDef stop stroke: #f00
+classDef warp stroke: #00f

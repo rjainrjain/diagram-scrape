@@ -1,0 +1,44 @@
+graph TD
+    A[API Root] --> B[Authentication]
+    A --> C[Forum]
+    A --> D[Users]
+    A --> E[Moderation]
+
+    B --> B1[POST /auth/register]
+    B --> B2[POST /auth/login]
+    B --> B3[POST /auth/logout]
+
+    C --> C1[Categories]
+    C --> C2[Subforums]
+    C --> C3[Threads]
+    C --> C4[Posts]
+
+    C1 --> C1A[GET /categories]
+    C1 --> C1B[GET /categories/:categoryId]
+
+    C2 --> C2A[GET /subforums/:subforumId]
+
+    C3 --> C3A[GET /threads/:threadId]
+    C3 --> C3B[POST /threads]
+    C3 --> C3C[PUT /threads/:threadId]
+    C3 --> C3D[DELETE /threads/:threadId]
+
+    C4 --> C4A[POST /posts]
+    C4 --> C4B[PUT /posts/:postId]
+    C4 --> C4C[DELETE /posts/:postId]
+
+    D --> D1[GET /users/:userId]
+    D --> D2[PUT /users/:userId]
+
+    E --> E1[POST /moderation/flag]
+    E --> E2[PUT /moderation/resolve/:flagId]
+
+    classDef get fill:#dfd,stroke:#333,stroke-width:2px;
+    classDef post fill:#fdf,stroke:#333,stroke-width:2px;
+    classDef put fill:#ddf,stroke:#333,stroke-width:2px;
+    classDef delete fill:#fdd,stroke:#333,stroke-width:2px;
+
+    class C1A,C1B,C2A,C3A,D1 get;
+    class B1,B2,B3,C3B,C4A,E1 post;
+    class C3C,C4B,D2,E2 put;
+    class C3D,C4C delete;

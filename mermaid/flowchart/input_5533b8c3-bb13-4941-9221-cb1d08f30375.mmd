@@ -1,0 +1,98 @@
+---
+title: Deposit system
+---
+
+flowchart LR;
+    %% Definitions
+    Start((Start))
+
+    InputPrefix[Define prefix url];
+    InputAmount[Define amount of products];
+    InputDeposit[Define amount of deposit];
+    InputProductInfo[Define on chain info];
+
+    GenerateHashes[Generate list of hashes <br>using candour hash generator];
+    ProduceLabels{Produce labels};
+    ProduceClothing[Receive clothing];
+    ActivateLabels{Activate smart contracts};
+    ReceiveLabels[Receive labels];
+    ProductActivationApplication[Product activation application <br>bulk activate products with app];
+    SewLabels{Sow labels into clothing};
+    ToCustomer[Product sold to customer];
+    SmartContract[(Product smart contract)];
+    CustomerAction[Ability to interact with label];
+    CustomerClaim[Ability to claim product];
+    EndOfLife(((EOL: Return Product)));
+    ProductReturnApplication[Product return application];
+    ProductArrivesAtBrand[ProductArrivesAtBrand];
+    ValidateReturn{Validate return};
+    CustomerWallet[(Customer Wallet)];
+    DepositWallet[(Deposit Wallet)];
+    ReturnForm{Fill in return form <br>and claim product if unclaimed}
+
+    %% Relations
+    Start --> InputAmount
+    InputAmount --> |input param|GenerateHashes;
+    InputPrefix --> |input param|GenerateHashes;
+    GenerateHashes --> ProduceLabels;
+    ProduceLabels -->ReceiveLabels;
+    ReceiveLabels --> SewLabels;
+    ProduceClothing --> SewLabels;
+    SewLabels --> ActivateLabels;    
+    ProductActivationApplication --> |prerequisite|ActivateLabels;
+    ActivateLabels --> |via retailer|ToCustomer;
+    InputDeposit --> |input param|ActivateLabels;
+    InputProductInfo --> |input param|ActivateLabels;
+    ActivateLabels --> SmartContract 
+    CustomerAction -...-> |optional|SmartContract;
+    CustomerClaim -...-> |optional|SmartContract;
+    ToCustomer --> EndOfLife;
+    ProductReturnApplication --> |prerequisite|ReturnForm;
+    ProductArrivesAtBrand --> ValidateReturn;
+    ActivateLabels --> |Deposit stored on wallet|DepositWallet;
+    DepositWallet --> |On validated return|CustomerWallet;
+    ValidateReturn --> CustomerWallet;
+    EndOfLife-->ReturnForm;
+    ReturnForm-->ProductArrivesAtBrand;
+
+    %% Styling
+    style ProductActivationApplication fill:green,color:white
+    style GenerateHashes fill:green,color:white
+    style ProductReturnApplication fill:green,color:white
+    style EndOfLife fill: white
+
+    %% Subgraphs
+    subgraph Candour.Digital
+        InputPrefix
+        GenerateHashes
+        ProductActivationApplication
+        ProductReturnApplication
+        DepositWallet
+        ActivateLabels
+        SmartContract
+    end
+
+    subgraph EE Labels
+        ProduceLabels
+    end
+
+    subgraph Brand
+        InputAmount
+        ProduceClothing
+        ReceiveLabels
+        SewLabels
+        InputDeposit
+        InputProductInfo
+        ProductArrivesAtBrand
+        ValidateReturn
+    end
+
+    subgraph Customer
+        EndOfLife
+        ToCustomer
+        CustomerAction
+        CustomerClaim
+        CustomerWallet
+        ReturnForm
+    end
+

@@ -1,0 +1,24 @@
+```mermaid
+sequenceDiagram
+    participant UserA as User A
+    participant UserB as User B
+    participant SDKA as SDK A
+    participant SDKB as SDK B
+    participant ETKS as Encryption transport key and salt
+
+    note right of UserA: App A
+    UserA->>SDKA: enableEncryption
+    SDKA->>SDKA: Audio & Video collection & encoding
+    SDKA->>SDKA: Built-in encryption
+    SDKA->>SDKA: Send encrypted media stream
+
+    note right of UserB: App B
+    UserB->>SDKB: enableEncryption
+    SDKB->>SDKB: Audio & Video collection & encoding
+    SDKB->>SDKB: Built-in encryption
+    SDKB->>SDKB: Send encrypted media stream
+
+    ETKS->>SDKA: Transport encryption mode, key and salt
+    ETKS->>SDKB: Transport encryption same mode, key and salt
+    SDKA->>SDKB: TCP/UDP encrypted transmission media stream
+```

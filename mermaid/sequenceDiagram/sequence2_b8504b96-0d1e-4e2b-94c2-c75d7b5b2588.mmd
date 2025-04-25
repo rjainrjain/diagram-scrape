@@ -1,0 +1,16 @@
+sequenceDiagram
+    participant InvestmentBank
+    participant FXMSSystem
+    note right of FXMSSystem: PNL Calculation
+    InvestmentBank->>FXMSSystem: Initiate Transaction
+    FXMSSystem->>FXMSSystem: Retrieve Transaction Details
+    FXMSSystem->>FXMSSystem: Fetch Exchange Rates
+    alt Exchange Rates Unavailable
+        FXMSSystem->>InvestmentBank: Notify to Retry/Input Rates
+    else Exchange Rates Available
+        FXMSSystem->>FXMSSystem: Calculate Transaction Amount
+        FXMSSystem->>FXMSSystem: Apply Transaction Type Logic
+        FXMSSystem->>FXMSSystem: Calculate PNL
+        FXMSSystem->>FXMSSystem: Update Transaction Records
+        FXMSSystem->>InvestmentBank: PNL Calculation Complete
+    end

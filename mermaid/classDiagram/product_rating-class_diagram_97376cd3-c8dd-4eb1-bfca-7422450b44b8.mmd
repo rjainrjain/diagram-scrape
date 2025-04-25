@@ -1,0 +1,93 @@
+%%{init: {'theme': 'base', 'themeVariables': {
+  'lineColor': '#a8201a',
+  'primaryColor': '#fae5c7',
+  'primaryBorderColor': '#0f8b8d'
+}}}%%
+classDiagram
+  direction LR
+  class RelatedParty{
+    URI href
+    String id
+    String name
+    String role
+    String @type
+    String @baseType
+    String @referredType
+    URI @schemaLocation
+  }
+  class UsageSpecificationRef{
+    URI href
+    String id
+    String name
+    String @type
+    String @baseType
+    String @referredType
+    URI @schemaLocation
+  }
+  class Usage{
+    URI href
+    String id
+    String usageType
+    Date usageDate
+    UsageStatusType status
+    String @type
+    String @baseType
+    URI @schemaLocation
+  }
+  class UsageCharacteristic{
+    String id
+    String name
+    String valueType
+    Any value
+    String @type
+    String @baseType
+    URI @schemaLocation
+  }
+  class CharacteristicRelationship{
+    URI href
+    String id
+    String relationshipType
+    String @type
+    String @baseType
+    URI @schemaLocation
+  }
+  class UsageStatusType{
+    <<Enumeration>>
+    received
+    rejected
+    recycled
+    guided
+    rated
+    rerated
+  }
+  class RatedProductUsage{
+    Money bucketValueConvertedInAmount
+    bool isBilled
+    bool isTaxExempted
+    String offerTariffType
+    String ratingAmountType
+    Date ratingDate
+    Money taxExcludedRatingAmount
+    Money taxIncludedRatingAmount
+    float taxRate
+    String usageRatingTag
+    String @type
+    String @baseType
+    URI @schemaLocation
+  }
+  class ProductRef{
+    URI href
+    String id
+    String name
+    String @type
+    String @baseType
+    String @referredType
+    URI @schemaLocation
+  }
+  RelatedParty "0..*" <--* Usage
+  UsageSpecificationRef "0..1" <--* Usage
+  Usage -- "1" UsageStatusType
+  Usage *--> "0..*" UsageCharacteristic
+  Usage *--> "0..*" RatedProductUsage
+  UsageCharacteristic *--> "0..*" CharacteristicRelationship
+  RatedProductUsage *--> "0..1" ProductRef

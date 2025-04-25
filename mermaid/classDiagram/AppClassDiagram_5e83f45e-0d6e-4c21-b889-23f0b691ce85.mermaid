@@ -1,0 +1,72 @@
+classDiagram
+    class Report{
+        -name : String
+        -population : int
+        -Connection con
+        +getName() String
+        +getPopulation() int
+        #getConnection() Connection
+        +setName(name) void
+        +setPopulation(population) void
+        +connect() void
+        +disconnect() void
+    }
+
+    class CountryReport{
+        -continet : String
+        -region : String
+        -code : String
+        -capital : String
+        +getContinet() String
+        +getRegion() String
+        +getCode() String
+        +getCapital() String
+        +setContinent(continent) void
+        +setRegion(region) void
+        +setCode(code) void
+        +setCapital(capital) void
+        +displayCountires(countries) void
+        +mapToCountry(rset) void
+        +getCountriesInWorld() ArrayList
+        +getCountriesInContinent(continent, N) ArrayList
+        +getCountryInRegion(region, N) ArrayList
+    }
+
+    class CityReport{
+        -country : String
+        -district : String
+        +getCountry() String
+        +getDistrict() String
+        +setCountry(country) void
+        +setDistrict(district) void
+        +displayCities(cities) void
+        +mapToCity(rset) void
+        +getCitiesInWorld(N) ArrayList
+        +getCitiesInContinent(continent, N) ArrayList
+        +getCitiesInRegion(region, N) ArrayList
+        +getCitiesInCountry(country, N) ArrayList
+        +getCitiesInDistrict(district, N) ArrayList
+        +getCapitalCitiesInWorld(N) ArrayList
+        +getCapitalCitiesInContinent(continent, N) ArrayList
+        +getCapitalCitiesInRegion(region, N) ArrayList
+    }
+
+    class PopulationReport{
+        -inCityPopulation : int
+        -notInCityPoupulation : int
+        +getInCityPopulation() int
+        +getNotInCityPopulation() int
+        +setInCityPopulation(inCityPopulation) void
+        +setNotInCityPopulation(notInCityPopulation) void
+        +mapToPopulation(rset) void
+        +getPopulationByContinent() ArrayList
+        +getPopulationByRegion() ArrayList
+        +getPopulationByCountry() ArrayList
+
+    }
+
+    Report <|-- CountryReport
+    Report <|-- CityReport
+    Report <|-- PopulationReport
+
+

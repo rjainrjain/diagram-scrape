@@ -1,0 +1,21 @@
+---
+title: relation
+---
+erDiagram
+    e1["entity1"] {
+        type attr "desc"
+    }
+    e2["entity2"] {
+        type attr
+        type attr
+    }
+    entity3 {
+        type attr
+        type attr
+        type attr
+    }
+    entity4
+    
+    e1 ||--o{ e2 : text
+    e2 |o--o{ entity3 : text
+    entity3 ||--o{ e1 : text

@@ -1,0 +1,13 @@
+sequenceDiagram
+    participant UpdatesQueue
+    participant UpdatesConsumer
+    participant DB
+    participant Logger
+    Note over UpdatesQueue,Logger: Async Updates Processing
+    UpdatesConsumer->>UpdatesQueue: Pull message from topic
+    UpdatesQueue->>UpdatesConsumer: Return next message
+    UpdatesConsumer->>UpdatesConsumer: If no new messages<br />sleep for N seconds
+    UpdatesConsumer->>DB: Insert new record to UPDATE_T
+    DB->>UpdatesConsumer: Return records added
+    UpdatesConsumer->>UpdatesQueue: If Successful Insert<br />commit message
+    UpdatesConsumer->>Logger: If Successful, Log successful update<br />If Failed, Log failure

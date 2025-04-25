@@ -1,0 +1,107 @@
+erDiagram
+
+Organizacion{
+    int id_Organizacion PK
+    varchar descripcion
+}
+Usuario{
+    int id_usuario PK
+    varchar nombre
+    varchar apellido
+    varchar dni
+    varchar telefono
+    varchar email
+}
+TipoUsuario{
+    int id_tipoUsuario PK
+    varchar nombre
+    varchar descripcion
+}
+Casa{
+    int id_casa PK
+    varchar nombre
+    varchar descripcion
+    int id_Organizacion FK
+}
+DetalleCasaUsuario{
+    int id_detalleCasaUsuario PK
+    varchar descripcion
+    int id_casa FK
+    int id_usuario FK
+}
+StockProducto{
+    int id_stockProducto PK
+    int id_producto FK
+    int cantidad
+}
+CategoriaProducto{
+    int id_categoriaProducto
+    varchar nombre
+    varchar descripcion
+}
+Producto{
+    int id_producto PK
+    varchar nombre
+    varchar descripcion
+}
+Pedido{
+    int id_pedido PK
+    date fecha
+    int id_casa FK
+}
+Oferta{
+    int id_oferta PK
+    date fecha
+    int id_usuario FK
+    int id_casa FK
+}
+DetallePedidoProducto{
+    int id_detallePedidoProducto PK
+    varchar descripcion
+    int cantidad
+    int id_pedido FK
+    int id_producto FK
+}
+DetalleOfertaProducto{
+    int id_detalleOfertaProducto PK
+    varchar descripcion
+    int cantidad
+    int id_oferta FK
+    int id_producto FK
+}
+
+Transporte{
+    int id_transporte PK
+    varchar marca
+    varchar modelo
+    varchar patente
+    int kilometraje
+    varchar estadoITV
+    datetime anio
+    int id_Organizacion FK
+}
+
+Organizacion ||--|{ Casa : "tiene"
+Organizacion ||--|{ Transporte : "tiene"
+Casa ||--|{ StockProducto : "tiene"
+
+TipoUsuario ||--|{ Usuario : "tiene"
+Usuario ||--|{ Pedido : "tiene"
+Usuario ||--|{ Oferta : "tiene"
+
+Casa ||--|{ Pedido : "tiene"
+Casa ||--|{ Oferta : "tiene"
+Casa ||--|{ StockProducto : "tiene"
+Casa ||--|{ StockProducto : "tiene"
+
+Casa ||--|{ DetalleCasaUsuario : "tiene"
+Usuario ||--|{ DetalleCasaUsuario : "tiene"
+
+Pedido ||--|{ DetallePedidoProducto : "tiene"
+Oferta ||--|{ DetalleOfertaProducto : "tiene"
+Producto ||--|{ DetallePedidoProducto : "tiene"
+Producto ||--|{ DetalleOfertaProducto : "tiene"
+
+CategoriaProducto ||--|{ Producto : "tiene"
+
+Producto ||--|{ StockProducto : "tiene"

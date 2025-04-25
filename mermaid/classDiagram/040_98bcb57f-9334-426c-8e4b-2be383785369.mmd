@@ -1,0 +1,33 @@
+classDiagram
+%%namespace Operation {
+  class PcOperator
+  class KeyboardInterface {
+    <<Interface>>
+  }
+  class PointerDeviceInterface {
+    <<Interface>>
+  }
+%%}
+%%namespace Connection {
+  class UsbPort
+  class UsbDeviceInterface {
+    <<Interface>>
+  }
+%%}
+%%namespace BuiltinDevice {
+  class BuiltinKeyboard
+  class BuiltinTrackpad
+%%}
+%%namespace ExternalDevice {
+  class UsbKeyboard
+  class UsbMouse
+%%}
+PcOperator --> KeyboardInterface
+PcOperator --> PointerDeviceInterface
+KeyboardInterface -- BuiltinKeyboard
+PointerDeviceInterface -- BuiltinTrackpad
+KeyboardInterface -- UsbKeyboard
+PointerDeviceInterface -- UsbMouse
+UsbPort --> UsbDeviceInterface
+UsbDeviceInterface -- UsbKeyboard
+UsbDeviceInterface -- UsbMouse

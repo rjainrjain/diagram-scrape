@@ -1,0 +1,12 @@
+sequenceDiagram
+    participant User
+    participant Browser
+    participant SPA
+    participant Server
+
+    User->>Browser: Interacts with SPA
+    Browser->>SPA: User input: Create new note
+    SPA->>Server: Send request to create a new note
+    Server-->>SPA: Confirmation: Note saved
+    SPA-->>Browser: Update UI with new note
+    Browser->>User: Display updated SPA with new note

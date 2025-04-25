@@ -1,0 +1,15 @@
+sequenceDiagram
+    User->>InputHandler: gesture
+    Note right of User: Gesture sources: Mouse, BCI, TouchSurface, SpaceNavigator, etc.
+    Note over InputHandler: Agent collection
+    opt pollFeed
+        InputHandler-->>Agent: gesture
+    end
+    Note over Agent: Node collection
+    %loop poll
+        Agent->>Node: event
+    %end
+    opt track
+        Node-->>Agent: node
+    end
+    Note over Agent,Node: inputNode = trackedNode != null ? trackedNode : defaultNode

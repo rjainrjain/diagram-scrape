@@ -1,0 +1,30 @@
+graph LR
+  style yc fill:#f8f5f2,stroke:#e6d9ce,stroke-width:2px
+  style pow fill:#f8f5f2,stroke:#e6d9ce,stroke-width:2px
+  style lp fill:#e6d9ce,stroke:#4d4d4d,stroke-width:2px
+  style b fill:#e6d9ce,stroke:#4d4d4d,stroke-width:2px
+  style other fill:#e6d9ce,stroke:#4d4d4d,stroke-width:2px
+  style g fill:#e6d9ce,stroke:#4d4d4d,stroke-width:2px
+  style h fill:#e6d9ce,stroke:#4d4d4d,stroke-width:2px
+  style page fill:#e6d9ce,stroke:#4d4d4d,stroke-width:2px
+  style pubhf fill:#e6d9ce,stroke:#4d4d4d,stroke-width:2px
+  style cllm fill:#e6d9ce,stroke:#4d4d4d,stroke-width:2px
+subgraph yc[Your Content]
+  lp("Landing<br/>Page")
+  b(Blogs)
+  other(Other)
+end
+subgraph pow[Pearls of Wisdom]
+  g(("Generate<br/>Instructions<br/>and Responses"))
+  h(("Human Experts<br/>Peer-Review"))
+end
+page["Your Website<br/>(for Crawlers)"]
+pubhf[("Public Dataset<br/>such as Hugging Face<br/>(for Trainers and Fine-Tuners,<br/>like OpenAI or Llama)")]
+cllm["Fine-Tune Your Own<br/>Chat Assistant<br/>(for your website visitors)"]
+lp-->g
+b-->g
+other-->g
+g==>h
+h-->page
+h-->pubhf
+h-->cllm

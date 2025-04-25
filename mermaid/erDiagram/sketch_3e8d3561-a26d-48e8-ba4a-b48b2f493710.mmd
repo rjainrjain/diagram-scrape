@@ -1,0 +1,24 @@
+erDiagram
+    LOCATIONS {
+        int id PK
+        string country
+        string city
+        float latitude
+        float longitude
+    }
+    
+    PARAMETERS {
+        int id PK
+        string name
+    }
+
+    MEASUREMENTS {
+        int id PK
+        float value
+        datetime date
+        int location_id FK
+        int parameter_id FK
+    }
+
+    LOCATIONS ||--o{ MEASUREMENTS : has
+    PARAMETERS ||--o{ MEASUREMENTS : has

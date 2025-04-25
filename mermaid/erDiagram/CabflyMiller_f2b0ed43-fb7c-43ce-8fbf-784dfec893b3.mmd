@@ -1,0 +1,106 @@
+erDiagram
+
+
+Vuelo{
+    int idvuelo PK
+    str nombreEmpresa
+    str destino
+    str horasalida
+    str horallegada
+    str caract
+    date fecha
+    int puertaembarque
+    int idpasajeros FK
+    int idasientos FK
+    int idestadoasiento FK
+}
+
+Pasajes{
+    int idpasaje PK
+    datetime fecha_hora_conf
+    int preciovuelo
+    int nrotarjeta
+    int idpasajeros FK
+    int idvuelo FK
+    int idasientos FK
+}
+
+
+Asiento{
+    int idasientos PK
+    str nombre
+    str descripcion
+
+}
+
+
+Estadoasiento{
+    int idestadoasiento PK
+    str nombre
+    str descripcion
+
+}
+
+
+Reserva{
+    int idreserva PK
+    str nombre
+    str apellido
+    int dni
+    int numtelefono
+    str correo
+    date fecha
+    date fechaemision
+    str venta
+    str tarjetaembarque 
+}
+
+
+Pasajeros{
+    int idpasajeros PK
+    str nombre
+    str descripcion
+    int idciudad FK
+}
+
+
+Ciudad{
+    int idciudad PK
+    str nombre
+    str descripcion
+    int idprovincia FK
+}
+
+
+Aeropuerto{
+    int idaeropuerto PK
+    str nombre
+    str descripcion
+    int idciudad FK
+}
+
+
+Aviones{
+    int idavion PK
+    str nombre
+    str descripcion
+}
+
+Provincia{
+    int idprovincia PK
+    str nombre
+    str descripcion
+
+}
+
+
+aeropuerto--|{vuelo:tiene
+pasajeros--|{reserva:tiene
+vuelo--|{reserva:tiene
+ciudad--|{aeropuerto:tiene
+ciudad--|{pasajeros:tiene
+vuelo--|{pasajes:tiene
+aviones--|{vuelo:tiene
+vuelo--|{asiento:tiene
+asiento--|{estadoasiento:tiene
+provincia--|{ciudad:tiene

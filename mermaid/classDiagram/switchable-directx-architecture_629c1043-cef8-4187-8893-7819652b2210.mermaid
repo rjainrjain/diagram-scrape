@@ -1,0 +1,35 @@
+classDiagram
+    class IRenderingAPI {
+        <<interface>>
+        +Initialize()
+        +CreateTexture()
+        +DrawMesh()
+        +Present()
+    }
+    class DirectX12API {
+        +Initialize()
+        +CreateTexture()
+        +DrawMesh()
+        +Present()
+    }
+    class DirectX11API {
+        +Initialize()
+        +CreateTexture()
+        +DrawMesh()
+        +Present()
+    }
+    class DirectX10API {
+        +Initialize()
+        +CreateTexture()
+        +DrawMesh()
+        +Present()
+    }
+    class RenderingSystem {
+        -currentAPI: IRenderingAPI
+        +SetAPI(api: IRenderingAPI)
+        +Render()
+    }
+    IRenderingAPI <|.. DirectX12API
+    IRenderingAPI <|.. DirectX11API
+    IRenderingAPI <|.. DirectX10API
+    RenderingSystem --> IRenderingAPI

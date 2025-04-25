@@ -1,0 +1,9 @@
+stateDiagram-v2
+    [*] --> ViewingCode
+    ViewingCode --> WatchingAnimation : select animation
+    WatchingAnimation --> AccessingResources : select resources
+    AccessingResources --> WritingCode : start writing
+    WritingCode --> SubmittingCode : submit code
+    SubmittingCode --> WaitingForEvaluation : wait for evaluation
+    WaitingForEvaluation --> ReceivingFeedback : receive feedback
+    ReceivingFeedback --> [*]

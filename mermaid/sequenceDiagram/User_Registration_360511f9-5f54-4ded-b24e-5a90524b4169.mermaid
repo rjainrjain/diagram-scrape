@@ -1,0 +1,12 @@
+sequenceDiagram
+    participant User
+    participant API
+    participant BusinessLogic
+    participant Database
+
+    User->>API: Add New User
+    API->>BusinessLogic: Validate and Create User
+    BusinessLogic->>Database: Save User Data
+    Database-->>BusinessLogic: Confirm Save
+    BusinessLogic-->>API: Send Success/Failure
+    API-->>User: Return Success New User

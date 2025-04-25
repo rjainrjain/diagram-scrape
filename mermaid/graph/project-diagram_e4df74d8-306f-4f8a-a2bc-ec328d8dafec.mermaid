@@ -1,0 +1,19 @@
+graph TB
+    A[OpenWeatherMap API] --> B[Backend Server]
+    B --> C[(PostgreSQL)]
+    B --> D{API Endpoints}
+    D --> E[Frontend]
+    
+    subgraph Backend Services
+        B --> F[Weather Service]
+        B --> G[Alert Service]
+        B --> H[Aggregation Service]
+    end
+    
+    subgraph Frontend Components
+        E --> I[Weather Dashboard]
+        I --> J[Current Weather]
+        I --> K[Temperature Trends]
+        I --> L[Alerts Panel]
+        I --> M[City Selector]
+    end

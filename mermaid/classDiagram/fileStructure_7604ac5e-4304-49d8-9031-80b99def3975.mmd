@@ -1,0 +1,29 @@
+classDiagram
+    class Note{
+        Ignore the methods, thats just due to formatting
+        Otherwise it leaves this box empty and it looks bad()
+    }
+    TorqueCalculatorDirectory <|-- projects
+    projects <|-- projectA
+    projects <|-- projectB
+    projects <|-- projectC
+    TorqueCalculatorDirectory : error.log
+    TorqueCalculatorDirectory : config.dat
+    TorqueCalculatorDirectory : torqueCalculator.exe()
+class projects{
+projects.dat
+projectDirectories()
+}
+
+class projectA{
+info.dat
+objects.dat()
+    }
+class projectB{
+info.dat
+objects.dat()
+    }
+class projectC{
+info.dat
+objects.dat()
+    }

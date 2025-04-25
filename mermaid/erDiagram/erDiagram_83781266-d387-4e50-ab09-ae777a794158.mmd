@@ -1,0 +1,62 @@
+erDiagram
+    
+    Paciente{
+        int DNI PK
+        str Nombre
+        str Apellido
+        varchar Domicilio
+        varchar Telefono
+        varchar Email
+    }
+
+    Medico{
+        int MP PK
+        str Nombre
+        str Apellido
+    }
+
+    Recepcionista{
+        int ID PK
+        str Nombre
+        str Apellido
+    }
+
+    Estudio{
+        int Codigo PK
+        str Nombre
+        int RangodeReferencia
+        int UnidaddeMedida
+    }
+
+    SolicitudAnálisis{
+        int Numero PK
+        date Fecha
+        str Estado
+    }
+
+    Receta{
+        int Numero PK
+        date Fecha
+        pdf Escaneo 
+    }
+
+    Muestra{
+        int ID PK
+        date Fecha
+        date Hora
+        str Extraccionista
+    }
+
+    Resultado{
+        int ID PK
+        str ValorHallado
+    }
+
+    Laboratorio{
+        int IDlaboratorio PK
+        str Nombre
+    }
+
+ 
+
+

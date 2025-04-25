@@ -1,0 +1,21 @@
+classDiagram
+namespace m2gui {
+  class Model
+  class FaultManager
+  class SignalError
+  class SignalLimitSwitch
+}
+
+Model *-- FaultManager
+FaultManager *-- SignalError : emit()
+FaultManager *-- SignalLimitSwitch : emit()
+
+TabDefault *-- Model
+TabDefault <|-- TabAlarmWarn
+TabDefault <|-- TabLimitSwitchStatus
+
+TabAlarmWarn *-- TabLimitSwitchStatus
+
+TabAlarmWarn --> SignalError : connect()
+
+TabLimitSwitchStatus--> SignalLimitSwitch : connect()

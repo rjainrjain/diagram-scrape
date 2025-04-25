@@ -1,0 +1,67 @@
+erDiagram
+    USER {
+        string id PK "UUID"
+        string login
+        string password
+        string name
+        string surname "NULL"
+        enum role "CLIENT|ADMIN|ROOT"
+        datetime createdAt
+        datetime updatedAt
+    }
+
+    CATEGORY {
+        string id PK "UUID"
+        string name
+    }
+
+    QUIZ {
+        string id PK "UUID"
+        string title
+        string description "NULL"
+        boolean published
+        datetime createdAt
+        datetime updatedAt
+        string userId FK "NULL"
+        string categoryId FK "NULL"
+    }
+
+    QUESTION {
+        string id PK "UUID"
+        string title "VARCHAR(2000)"
+        enum type "OBJECTIVE|DISCURSIVE"
+        string image "NULL"
+        string quizId FK "NULL"
+    }
+
+    ANSWER {
+        string id PK "UUID"
+        string text
+        boolean isCorrect
+        string questionId FK "NULL"
+    }
+
+    QUIZ_RESPONSE {
+        string id PK "UUID"
+        string userId FK
+        string quizId FK
+        datetime answeredAt
+    }
+
+    QUESTION_RESPONSE {
+        string id PK "UUID"
+        string quizResponseId FK
+        string questionId FK
+        string selectedAnswerId FK "NULL"
+        string discursiveAnswer "NULL"
+    }
+
+    USER ||--o{ QUIZ : "creates"
+    CATEGORY ||--o{ QUIZ : "contains"
+    QUIZ ||--o{ QUESTION : "has"
+    QUESTION ||--o{ ANSWER : "contains"
+    USER ||--o{ QUIZ_RESPONSE : "submits"
+    QUIZ ||--o{ QUIZ_RESPONSE : "receives"
+    QUIZ_RESPONSE ||--o{ QUESTION_RESPONSE : "contains"
+    QUESTION ||--o{ QUESTION_RESPONSE : "answers"
+    ANSWER ||--o{ QUESTION_RESPONSE : "selected for"

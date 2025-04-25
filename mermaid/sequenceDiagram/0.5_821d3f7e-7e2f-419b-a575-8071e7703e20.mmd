@@ -1,0 +1,12 @@
+sequenceDiagram
+    participant User as User
+    participant Browser as Browser
+    participant Server as Server
+    participant NotesArray as "Server's notes array"
+
+    User->>Browser: Open SPA App
+    Browser->>Server: HTTP GET /exampleapp/spa
+    Server-->>Browser: Responds with HTML, spa.js, main.css, main.js, data.json
+    Browser->>Server: HTTP GET data.json
+    Server-->>Browser: Responds with existing notes as JSON
+    Browser-->>User: Renders Notes page with existing notes

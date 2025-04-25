@@ -1,0 +1,77 @@
+# Projektziel und Anforderungskatalog #
+
+<h4 class="sphd"><span>Stand der Technik</span></h4>
+Diskret implementierte Regler sind in vielen Anwendungsbereichen zu finden. Durch leistungsfähigere Mikrocontroller und Signalprozessoren ist es einfacher geworden, _quasi-kontinuierliche_ Systeme zu entwerfen. Aufgrund ihrer Flexibilität und einfachen Erweiterbarkeit, werden digitale Regler zunehmend einer analogen Ausführungen vorgezogen.
+
+<h4 class="sphd"><span>Systemzweck</span></h4>
+Als übergeordnetes Projektziel soll ein optisches Ablenksystem (2-Achsen → XY-Koordinaten) für eine Laserquelle (Laserpointer, sichtbares Spektrum) auf Basis industriell gefertigter Spiegelgalvanometer geplant, simuliert, entworfen, aufgebaut und verifiziert werden. Die __Modellbildung__ und __Simulation__ des Gesamtsystems soll als __Schwerpunktthema__ betrachtet und entsprechend ausgearbeitet werden.
+
+<h4 class="sphd"><span>Systemfunktion im Detail</span></h4>
+Die detaillierte Beschreibung der Systemfunktionen wird untergliedert. Der Prototyp-Aufbau wird als __physisches System__ bezeichnet während im Abschnitt __Simulationsumgebung__ das Computermopdell des Gesamtsystems (MATLAB, Simulink, LTspice) näher beschrieben wird.
+
+<h4 class="sp"><span>Physisches System</span></h4><figure class="floatr topal" style="width:185px"><img src="./pics/camb_6860_large_mirrors_sml_dim.png" title="Cambridge Technologies Galvanometer Modell 6860"><figcaption>Cambridge Technologies Galvanometer Modell 6860</figcaption></figure> Die beiden <lkey>[Moving-magnet Galvanometer](#klassifizierung)</lkey> der Firma [Cambridge Technologies](http://www.cambridgetechnology.com), bilden das Herzstück des Laserscanner-Aufbaus. Durch die zeitlich versetzte Positionierung eines Laserstrahls entsprechend zweier Koordinaten-Punkte einer Ebene, entsteht eine sichtbare Linie, wenn das Anfahren der Punkte schnell genug erfolgt. <lkey>Ortsvektoren</lkey> im $\mathbb{R}^2$ eignen sich hervorragend zur Lokalisierung von Punkten in einer Ebene. Soll anhand zweier Koordinatenpaare eine Gerade $\,g\,$ durch die Punkten $\,A\,$ und $\,B\,$ abgeleitet und in Vektornotation $\vec{v}$ dargestellt werden, so gilt 
+
+<lmjx>$ \eqlbl{ g:\;\;\;\vec{v}=\overrightarrow{A B} = \begin{pmatrix}B_x\\\B_y\end{pmatrix} - \begin{pmatrix}A_x\\\A_y\end{pmatrix} = \begin{pmatrix}B_x-A_x\\\B_y-A_y\end{pmatrix} }{eqDirVect3} $</lmjx>
+
+Um einen Vektor $\vec s$ der Länge $\left| \vec s\right|$ anhand zweier Koordinatenpaare $P_0=(x_0\,|\,y_0)$ und $P_1=(x_1\,|\,y_1)$ an einer bestimmten Stelle zu beschreiben, bietet sich eine alternative Beschreibungsform für Geraden aus dem Teilgebiet der analytischen Geometrie an. In der Parameter- oder Punktrichtungsform wird ein Vektor $\vec s$ entlang einer Geraden $\,g\,$ beschrieben durch:
+
+$$ g:\;\;\;\vec{s}=\vec p + \lambda\cdot\vec v\; $$
+
+Durch die Linearkombination zweier XY-Tupel, dem Ortsvektor (resp. Stützvektor, Aufpunkt) $\;\vec p\;$ und dem Richtungsvektor $\;\vec v\;$, wird die Gerade $\,g\,$ eindeutig bezüglich eines Koordinaten&shy;ursprungs $\,0\,$ abgebildet. Aufgrund dieser Information lässt sich bereits eine Berechnungs&shy;vorschrift für die Implementierung auf dem Mikro&shy;controller formulieren. Um den Aufwand zur Erzeugung der notwendigen [Quelldaten](#quelldaten-generieren) gering zu halten, muss das System in der Lage sein, einfache <lkey>Vektorgrafiken</lkey> zu verarbeiten. 
+
+
+<div style="display: inline;">
+Die später eingesetzte <lkey>Laserquelle</lkey> soll für Dauerbetrieb ausgelegt sein. Die Halbleiter-Diode eines batteriebetriebenen Standard-Laserpointers, eignet sich meist nur für den Impulsbetrieb.<a href="./pics/galvoMirrorsXY_1.svg" target="_blank"><figure class="floatr" style="height: 185px;"><img style="display: inline-block;" src="./pics/galvoMirrorsXY_1.svg" title="Funktionsprinzip XY-Scanner" align="bottom" class="noborder"><figcaption>Funktionsprinzip XY-Scanner</figcaption></figure></a> Thermisch bedingt geht die wahrgenommene Intensität des Laserlichts bereits nach einigen Sekunden zurück. Selbst Handlaserpointer mit geregelter Ausgangsleistung, driften aufgrund der thermisch instabilen Monitordiode, sobald die Betriebstemperatur des Laserchips über die Auslegungsgrenze hinaus, ansteigt. Durch den Betrieb eines semiprofessionellen Lasermoduls (<a href="#jumptoSafety">Laserklasse 3B</a>, 532 nm (Grün), <a href="#jumptoSafety">max. 50mW</a>, 25€) bei ca. 10% Ausgangsleistung, soll eine Laserquelle mit 100% Einschaltdauer bereit gestellt werden.
+</div>
+
+<h4 class="sp"><span>Simulationsumgebung</span></h4>Bereits bei niedrigen Systemordnungen ist es von Vorteil, wenn Reglerparameter mittels Computermodell optimiert werden können. Um quantitative Aussagen bezüglich Stabilität und Robustheit nachweisen zu können, sind entsprechende Simulationen immer dann unerlässlich, wenn es sich um Systeme handelt die durch instabile Betriebszustände beschädigt oder zerstört werden können. 
+Der grundlegende Modellbildungs<u style="font-weight: bold">prozess</u> eines Gesamtsystems mit zeit-diskreter Regelung, unterscheidet sich nicht signifikant vom Modellbildungsprozess bei kontinuierlicher, sprich analoger Regelung. In der klassischen Regelungstechnik werden die Teilsysteme eines Regelkreises in lineare, __zeitinvariante__ Systeme überführt welche dann als LTI-Blöcke dargestellt werden können. 
+
+<boxed>Die Forderung nach Zeitinvarianz impliziert immer auch __Rückwirkungsfreiheit__ zwischen den Teilsystemen.</boxed> 
+
+Infolge dessen ist es gleichgültig, ob einer oder gar mehrere Blöcke in zeit-diskreter Form Formuliert werden - solange alle notwendigen LTI-Bedingungen erfüllt sind.
+
+Aus dem Modellzweck oder Kontext wird die notwendige [_Modellgranularität_](#modell) abgeleitet. Nach Nyquist ist, im Falle einer zeitdiskreten Regelung, ein Antialiasing Filter in den Signalpfad vor den ADC zu platzieren. Um aus den digital weiterverarbeiteten, gewichteten Impulsfolgen nach der DAC-Wandlung wieder ein analoges (d.h. zeit- und werte-kontinuierliches) Stellsignal zu erzeugen, werden _Rekonstruktionsfilter_ zur Entzerrung des Quantisierungsfehlers eingesetzt. Bei Simulationen bezüglich Systemdynamik oder zur Stabilitätsberechnung dürfen die zusätzlichen Filterpole nicht einfach ignoriert werden. Somit sind z. B. die Teilsysteme "Antialiasing-" und "Rekonstruktionsfilter" in das Computermodell des Gesamtsystems zu integrieren.
+Entsprechendes gilt auch für die Modellierung weiterer Teilsysteme wie z. B. Stellglied sowie Messumformer + Tiefpassfilterung. 
+
+<h4 class="sphd"><span>Design</span></h4>
+
+<h4 class="sphd"><span>Systemeinsatz</span></h4>
+
+<h4 class="sphd"><span>Systemanforderungen</span></h4>
+
+<div class="spaced" markdown=1>
+0. Bei den Regelstrecken handelt es sich um Spiegelgalvanometer der Firma Cambridge Technologies (Modell 6860). Diese sind im Sinne der _Baugruppen-Wahl_  als gegeben zu betrachten (vergl. _Bestandsbaugruppe_).
+1. Die Positionsregelung der Spiegelachsen soll diskret realisiert und nach erfolgreicher Simulation auf einem Mikrocontroller [_STM32F429i_][@STM32F429i] implementiert werden.
+2. Die Sollwerte der Aufpunkt-Koordinaten werden als dreiwertige Tupel [X-Pos, Y-Pos, Laser-Blanking] im Speicher des Mikrocontrollers abgelegt und müssen über eine PC-Schnittstelle aktualisiert werden können.
+3. Die Positionierung des Laserpunktes soll hinreichend "schnell" und "präzise" erfolgen so dass sich zumindest einfache geometrische Figuren auf einen weißen Hintergrund projizieren lassen.
+4. Das System soll auf ein Computermodell abgebildet werden so dass unterschiedliche Regelalgorithmen evaluiert werden können. Außerdem sollen Hardware-Anpassungen der Signalkonditionierung (primär Antialiasing-/Rekonstruktionsfilter) mit minimalem Aufwand in die Simulation des Gesamtsystems einzupflegen sein.
+5. Die Prototyp-Hardware soll bereits alle notwendigen Komponenten umfassen, die zur Messung weiterer Zustandsgrößen der Regelstrecke notwendig sind. Somit kann der Aufbau als Grundlage für spätere Tests einer Zustandsraum-Regelung (state space model) genutzt werden.
+6. Die Anforderung an den Fertigungsprozess der Prototyp-Hardware sollte entsprechend den Möglichkeiten vor Ort (HsKA: PCB-Fräse, manuelle Durchkontaktierung bei doppelseitigen Layouts) angepasst werden.
+</div>
+
+<h4 class="sphd"><span>Allgemeine Anforderungen</span></h4><a name="jumptoSafety"></a><h4 class="sp"><span>Sicherheit</span></h4><lkey>Personenschutz: </lkey>Ist beim Betrieb von Laser-Lichtquellen die Möglichkeit einer willkürlichen Positionierung des Laserstrahls gegeben, besteht grundsätzlich die Gefahr, irreversible Netzhaut-Schäden zu verursachen oder zu erleiden. Zertifizierte __Laserschutzbrillen__ sind kostenintensiv, unpraktisch und die Schutzwirkung beschränkt sich natürlich nur auf den/die Träger. Im Sinne einer konsequenten Arbeitsschutzmaßnahme, wäre eine räumliche Abschottung im Testbetrieb erforderlich.
+Kann die Positionierung des Laserstrahls jedoch durch entsprechende Schutzmaßnahmen auch bei instabilem Regler-Verhalten __und__ bei Soft- sowie Hardware-Fehlern auf einen festgelegten Bereich beschränkt werden, ist der aktive Personenschutz nicht mehr zwingend erforderlich.
+
+- zu keinem Zeitpunkt die Gefahr ist!
+    + Description of the "safe state guard" system
+    + exceptions and forced bias
+- Hardware-Komponenten vor Überlast geschützt sind! 
+
+<h4 class="sp"><span>Qualität</span></h4>
+Um die "Qualität" der erzeugten Abbildungen effektiv messen zu können, soll auf eine Testmöglichkeit für das [ILDA-Testpattern](http://www.laserfx.com/Backstage.LaserFX.com/Systems/Scanning3.html) implementiert werden. 
+
+
+
+</par>
+
+Zu Beginn des Kapitels [Modellbildungsprozess](#modellbildungsprozess) folgt eine erste Aufteilung des Projekts.
+
+
+<!-- wird $\vec v$ als  Richtungsvektor von $\vec{g}$.
+Zur mathematischen Beschreibung dieser (abschnittsweise definierten) Geraden, kann aus zwei aufeinander folgenden XY-Tupel eine Geradengleichung abgeleitet werden. Um 
+
+Aus der Koordinatenform einer Geradengleichung mit den Parametern  ${a}, {b}$ und ${c}$ ist ein Normalenvektor der Gerade direkt als $\vec n=(a,b)^{T}$ ablesbar und damit ein Richtungsvektor der Geraden analog zur Normalenform über   
+
+$$ {\vec {u}}={\begin{pmatrix}-b\\\a\end{pmatrix}} $$ ermitteln. Einen Stützvektor der Geraden erhält man, je nachdem ob $a$ oder $b$ ungleich null ist, durch Wahl von
+<center>$ {\vec {p}}={\begin{pmatrix}c/a\\\0\end{pmatrix}}\;\;\; $ oder $ \;\;\;{\vec {p}}={\begin{pmatrix}0\\\c/b\end{pmatrix}} $.</center> -->

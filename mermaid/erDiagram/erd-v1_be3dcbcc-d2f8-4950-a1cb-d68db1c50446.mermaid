@@ -1,0 +1,151 @@
+erDiagram
+    PRODUCTS {
+        int id PK
+        string name
+        string code
+        string description
+        string barcode
+        string primary_uom_code FK
+        decimal current_cost
+        decimal current_price
+        int quantity
+        string image_url
+        string category_code FK
+        datetime creation_date
+        string created_by
+        string last_update_by
+        datetime last_update_date
+    }
+
+    CATEGORIES {
+        int id PK
+        string name
+        string code
+        string description
+    }
+
+    UNIT_OF_MEASURES {
+        int id PK
+        string name
+        string code
+        string description
+    }
+
+    SALES {
+        int id PK
+        string sales_number
+        decimal total_amount
+        decimal discount
+        int customer_id FK
+        datetime creation_date
+        string created_by
+        string last_update_by
+        datetime last_update_date
+    }
+
+    SALE_LINES {
+        int id PK
+        int quantity
+        decimal unit_price
+        int sale_id FK
+        int product_id FK
+        datetime creation_date
+        string created_by
+        string last_update_by
+        datetime last_update_date
+    }
+
+    PO_HEADER {
+        int id PK
+        string po_number
+        string po_status
+        decimal po_discount
+        decimal total_amount
+        string notes
+        int supplier_id FK
+        datetime creation_date
+        string created_by
+        string last_update_by
+        datetime last_update_date
+    }
+
+    PO_LINES {
+        int id PK
+        int requested_quantity
+        int received_quantity
+        decimal unit_price
+        int po_header_id FK
+        int product_id FK
+        datetime creation_date
+        string created_by
+        string last_update_by
+        datetime last_update_date
+    }
+
+    PRODUCTS_RETURNS {
+        int id PK
+        int customer_id FK
+        int product_id FK
+        int quantity_returned
+        string reason
+        datetime creation_date
+        string created_by
+        string last_update_by
+        datetime last_update_date
+    }
+
+    CUSTOMERS {
+        int id PK
+        string name
+        string email
+        string phone
+        string address
+        datetime creation_date
+        string created_by
+        string last_update_by
+        datetime last_update_date
+    }
+
+    SUPPLIERS {
+        int id PK
+        string name
+        string contact_name
+        string contact_phone
+        string email
+        string address
+        datetime creation_date
+        string created_by
+        string last_update_by
+        datetime last_update_date
+    }
+
+    PRODUCTS_SUPPLIERS {
+        int product_id FK
+        int supplier_id FK
+    }
+
+    USER {
+        string username PK
+        string password
+        boolean enabled
+    }
+
+    AUTHORITY {
+        string username FK
+        string authority
+    }
+
+    CATEGORIES ||--o{ PRODUCTS: "has many"
+    UNIT_OF_MEASURES ||--o{ PRODUCTS: "measured in"
+    PRODUCTS ||--o{ SALE_LINES: "sold as"
+    SALES ||--o{ SALE_LINES: "contains"
+    CUSTOMERS ||--o{ SALES: "makes"
+    SUPPLIERS ||--o{ PRODUCTS: "supplies"
+    SUPPLIERS ||--o{ PO_HEADER: "receives orders from"
+    PO_HEADER ||--o{ PO_LINES: "includes"
+    PRODUCTS ||--o{ PO_LINES: "ordered in"
+    CUSTOMERS ||--o{ PRODUCTS_RETURNS: "returns products"
+    PRODUCTS ||--o{ PRODUCTS_RETURNS: "returned"
+    USER ||--o{ AUTHORITY: "has role"
+    PRODUCTS ||--o{ PRODUCTS_SUPPLIERS: ""
+    SUPPLIERS ||--o{ PRODUCTS_SUPPLIERS: ""

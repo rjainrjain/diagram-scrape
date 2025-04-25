@@ -1,0 +1,32 @@
+stateDiagram-v2
+
+    state "Daemon Loop" as loop {
+        state a <<choice>>
+        [*] --> action
+        action --> a
+
+        state "Execute event" as exec
+        note right of exec
+            status.events[i].executed = timestamp
+        end note
+
+        
+        a --> exec: node        
+        a --> exec: link
+        a --> [*]: end
+    }
+
+    state "Created" as c
+    note left of c
+        status.created = timestamp
+    end note
+
+    state "Finished" as done
+    note left of done
+        status.ended = timestamp
+    end note
+    
+    [*] --> c
+    c --> loop
+    loop --> done
+    done --> [*]

@@ -1,0 +1,245 @@
+classDiagram
+direction BT
+class AbsoluteUri {
+<<Interface>>
+   Query? query
+   HierarchicalPart hierarchicalPart
+   Scheme scheme
+   Authority? authority
+   Path path
+   Void? fragment
+}
+class Authority {
+<<Interface>>
+   Port? port
+   Host host
+   UserInfo? userInfo
+}
+class Fragment {
+<<Interface>>
+
+}
+class HierarchicalOrRelativePart {
+<<Interface>>
+   Path path
+   Authority? authority
+}
+class HierarchicalOrRelativePartWithAuthority {
+<<Interface>>
+   PathAbEmpty path
+   Authority authority
+}
+class HierarchicalPart {
+<<Interface>>
+   HierarchicalPartPath path
+   Authority? authority
+}
+class HierarchicalPartPath {
+<<Interface>>
+   Segment? firstSegment
+   HierarchicalPartPath path
+   List~Segment~ segments
+   Void? authority
+   Segment? secondSegment
+}
+class HierarchicalPartWithAuthority {
+<<Interface>>
+   PathAbEmpty path
+   Authority authority
+}
+class Host {
+<<Interface>>
+
+}
+class IpLiteral {
+<<Interface>>
+
+}
+class Ipv4Address {
+<<Interface>>
+
+}
+class ListNonEmpty~E~ {
+<<Interface>>
+
+}
+class Path {
+<<Interface>>
+   Segment? secondSegment
+   Segment? firstSegment
+   List~Segment~ segments
+}
+class PathAbEmpty {
+<<Interface>>
+   HierarchicalPartPath path
+   List~Segment~ segments
+   Void? authority
+   Segment? secondSegment
+   SegmentEmpty? firstSegment
+}
+class PathAbsolute {
+<<Interface>>
+   HierarchicalPartPath path
+   Void? authority
+   SegmentEmpty firstSegment
+   SegmentNonEmpty? secondSegment
+   ListNonEmpty~Segment~ segments
+}
+class PathEmpty {
+   Void? secondSegment
+   Void? firstSegment
+   List~Segment~ segments
+   PathEmpty path
+   Void? authority
+}
+class PathNoScheme {
+<<Interface>>
+   Void? authority
+   Segment? secondSegment
+   RelativePartPath path
+   SegmentNonEmptyNoColon firstSegment
+   ListNonEmpty~Segment~ segments
+}
+class PathRootless {
+<<Interface>>
+   SegmentNonEmpty firstSegment
+   HierarchicalPartPath path
+   Void? authority
+   Segment? secondSegment
+   ListNonEmpty~Segment~ segments
+}
+class Port {
+<<Interface>>
+
+}
+class Query {
+<<Interface>>
+
+}
+class RegisteredName {
+<<Interface>>
+
+}
+class RelativeAndHierarchicalPartPath {
+<<Interface>>
+   Segment? firstSegment
+   HierarchicalPartPath path
+   List~Segment~ segments
+   Void? authority
+   Segment? secondSegment
+}
+class RelativePart {
+<<Interface>>
+   RelativePartPath path
+   Authority? authority
+}
+class RelativePartPath {
+<<Interface>>
+   Segment? firstSegment
+   List~Segment~ segments
+   Void? authority
+   Segment? secondSegment
+   RelativePartPath path
+}
+class RelativePartWithAuthority {
+<<Interface>>
+   PathAbEmpty path
+   Authority authority
+}
+class RelativeRef {
+<<Interface>>
+   Query? query
+   Void? scheme
+   Authority? authority
+   RelativePart hierarchicalPart
+   Path path
+   Fragment? fragment
+}
+class Scheme {
+<<Interface>>
+
+}
+class Segment {
+<<Interface>>
+
+}
+class SegmentEmpty
+class SegmentNonEmpty {
+<<Interface>>
+
+}
+class SegmentNonEmptyNoColon {
+<<Interface>>
+
+}
+class Uri {
+<<Interface>>
+   Query? query
+   HierarchicalPart hierarchicalPart
+   Scheme scheme
+   Authority? authority
+   Path path
+   Fragment? fragment
+}
+class UriReference {
+<<Interface>>
+   Query? query
+   Scheme? scheme
+   Authority? authority
+   Path path
+   Fragment? fragment
+   HierarchicalOrRelativePart hierarchicalPart
+}
+class Url {
+<<Interface>>
+   Query? query
+   Scheme scheme
+   Authority? authority
+   Path path
+   Fragment? fragment
+   HierarchicalPartWithAuthority hierarchicalPart
+}
+class UrlReferenceWithAuthority {
+<<Interface>>
+   Query? query
+   HierarchicalOrRelativePartWithAuthority hierarchicalPart
+   Scheme? scheme
+   Authority? authority
+   Path path
+   Fragment? fragment
+}
+class UserInfo {
+<<Interface>>
+
+}
+
+AbsoluteUri  -->  Uri 
+HierarchicalOrRelativePartWithAuthority  -->  HierarchicalOrRelativePart 
+HierarchicalPart  -->  HierarchicalOrRelativePart 
+HierarchicalPartPath  -->  HierarchicalPart 
+HierarchicalPartPath  -->  Path 
+HierarchicalPartWithAuthority  -->  HierarchicalOrRelativePartWithAuthority 
+HierarchicalPartWithAuthority  -->  HierarchicalPart 
+IpLiteral  -->  Host 
+Ipv4Address  -->  Host 
+PathAbEmpty  -->  RelativeAndHierarchicalPartPath 
+PathAbsolute  -->  RelativeAndHierarchicalPartPath 
+PathEmpty  ..>  PathAbEmpty 
+PathNoScheme  -->  RelativePartPath 
+PathRootless  -->  HierarchicalPartPath 
+RegisteredName  -->  Host 
+RelativeAndHierarchicalPartPath  -->  HierarchicalPartPath 
+RelativeAndHierarchicalPartPath  -->  RelativePartPath 
+RelativePart  -->  HierarchicalOrRelativePart 
+RelativePartPath  -->  Path 
+RelativePartPath  -->  RelativePart 
+RelativePartWithAuthority  -->  HierarchicalOrRelativePartWithAuthority 
+RelativePartWithAuthority  -->  RelativePart 
+RelativeRef  -->  UriReference 
+SegmentEmpty  ..>  Segment 
+SegmentNonEmpty  -->  Segment 
+SegmentNonEmptyNoColon  -->  SegmentNonEmpty 
+Uri  -->  UriReference 
+Url  -->  Uri 
+Url  -->  UrlReferenceWithAuthority 
+UrlReferenceWithAuthority  -->  UriReference 

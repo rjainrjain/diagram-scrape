@@ -1,0 +1,283 @@
+%%{init:{'theme':'forest'}}%%
+
+erDiagram
+    series |o--o{ comic : "シリーズ名"
+    %% magazine 雑誌に載らないストーリー、掲載がない号もある 雑誌連載はWeb連載時には分割されている
+    magazine |o--o| story : "初出の掲載誌"
+    %% story Web掲載された単話、「単行本に未収録」もあり
+    story |o--|{ web_comic : "分割"
+    %% web_comic ストーリー以外のWeb連載に登場した絵
+    web_comic |o--o{ fragment : "その他の絵"
+    comic |o--|{ story : "収録された巻"
+    %% journey 第〇旅が前後編に分割されるケース 同じ場所が複数の旅に登場する場合あり
+    journey ||--|{ story : "前後編"
+    %% story その他雑多な絵に関連する単話
+    story |o--o{ fragment : "関連する絵"
+    story |o--o{ scene : ""
+    story }|--|{ venue : "ストーリー登場地点"
+    %% camera_center_place ストーリー登場地点を含む領域(四角形)の中心座標
+    place |o--|{ story : "領域"
+    %% story 単話に登場する地点をルートとして表現する
+    story }|--|{ route : "複数あり"
+    place ||--|{ step : "訪問"
+    route ||--|{ step : "順列あり"
+    venue ||--|{ place : ""
+    place |o--o{ fragment : ""
+    place |o--o{ scene : ""
+    step |o--o{ tweet : ""
+    step |o--o{ photo : ""
+    character }|--o{ fragment : ""
+    %% character 登場するキャラクター
+    character }|--o{ scene : "登場"
+    person |o--o{ tweet : ""
+    person |o--o{ photo : ""
+    %% user "認証情報とユーザー情報の紐付け"
+    user |o--o| person : ""
+    type_master |o--o{ character : ""
+    type_master |o--o{ fragment : ""
+    type_master |o--o{ journey : ""
+    type_master |o--o{ person : ""
+    type_master |o--o{ photo : ""
+    type_master |o--o{ route : ""
+    type_master |o--o{ scene : ""
+    type_master |o--o{ story : ""
+    type_master |o--o{ tweet : ""
+    type_master |o--o{ venue : ""
+
+
+%% ざつ旅 鈴ヶ森ちか短編集(仮)
+
+%% series 正シリーズと番外シリーズは、別々に登録する ※巻数が自然数の順列になる [リソース]
+series {
+    serial id PK
+    %% 正確な作品の名称
+    char title "作品名"
+    %% 略称や通称で代表的なもの
+    char short_title "略称"
+    %% 著者複数名の場合は、代表者をカンマ区切りで列挙する
+    char author "著者名"
+    %% 出版社 例：KADOKAWA
+    char publisher "出版社"
+    %% コミック・シリーズのレーベル名称 例：電撃コミックスNEXT
+    char label "レーベル"
+    %% 雑誌連載の誌名か、Web連載のレーベル名称
+    char magazine_title "連載誌"
+    %% 公式サイトや他のWebサイトから代表するものを1件
+    url site "代表(公式)サイト"
+    %% モデルにはあえてリレーションを定義せず (単方向リスト)
+    int rel_series_id "関係シリーズ"
+}
+
+%% comic 単行本 1巻、2巻、…。単巻のみの場合はseries=NULL [リソース]
+comic {
+    serial id PK
+    rel series FK
+    %% 第n巻 入力するのは数字のみ
+    int number "巻数"
+    %% 例：ざつ旅-That's Journey- 1。※巻数の表記は作品毎に呼び方のバリエーションがある
+    char title "各巻タイトル"
+    %% 特徴的な帯の文言
+    char obi "オビ"
+    %% 巻末の奥付にある、初版発行日
+    date issued "発行日"
+    date released "書店発売日"
+    %% 版元ドットコムの書誌情報DBより
+    url cover_image "書影url"
+    char isbn "ISBN13"
+    text memo "編集メモ"
+}
+
+%% web_comic Web連載 第1旅(1)、番外旅、一枚モノ、… [リソース]
+web_comic {
+    serial id PK
+    rel story FK
+    char title "各話の名前"
+    int part_number "分割の順列"
+    int pages "ページ数"
+    url cw_url "Comic Walkerリンク"
+    date cw_published "CW公開日"
+    url nico_url "ニコニコ静画リンク"
+    date nico_published "nico公開日"
+    text memo "編集メモ"
+}
+
+%% magazine 雑誌連載 マオウ [イベント]
+magazine {
+    serial id PK
+    %% 雑誌のタイトル 例：電撃マオウ 2020年1月号
+    char title "タイトル"
+    %% 書店等での発売日 ※タイトルの月の2か月前27日前後
+    date released "発売日"
+    %% 表紙や付録になった号、などを表すタグ
+    char tag_line "管理用タグ"
+    %% 例: https://dengekimaoh.jp/magazine/magazine-nnnnn.html
+    url site "雑誌リンク"
+    %% 例: https://dengekimaoh.jp/archives/008/202208/xxxxxxxx.jpg
+    url cover_image "雑誌表紙"
+    text memo "編集メモ"
+}
+
+%% type_master 分類型の項目の選択肢マスター [リソース]
+type_master {
+    serial id PK
+    char name "参照名"
+    char key "属性"
+    char value "値"
+}
+
+%% fragment その他媒体 表紙カラー、店舗特典、ポスター、別冊、雑誌付録。コミック収録と未収録がある [リソース]
+fragment {
+    serial id PK
+    rel story FK
+    rel web_comic FK
+    rel character FK
+    rel place FK
+    %% type_master fragment
+    rel type_master FK "分類"
+    char title "名前"
+    url url "参照URL/リンク"
+    text memo "編集メモ"
+}
+
+%% journey 第〇旅、番外旅 [イベント]
+journey {
+    serial id PK
+    %% type_master journey
+    rel type_master FK "分類"
+    %% 入力は数字のみ
+    int number "第〇旅"
+    char key "記号"
+    text memo "編集メモ"
+}
+
+%% story 単行本の単話 第〇旅前編、第〇旅後編。コミック未収録もある [イベント]
+story {
+    serial id PK
+    rel magazine FK
+    rel comic FK
+    rel journey FK
+    %% type_master story
+    rel type_master FK "分類"
+    char title "単話タイトル"
+    char subtitle "サブタイトル"
+    %% place story このストーリーに登場する主な地点をすべて包含するような範囲(四角形)の中心
+    rel camera_center_place FK "(領域設定用)"
+    int camera_zoom_level "(領域設定用)zoom"
+}
+
+%% route 経路 placeを組み合わせて経路とする [リソース]
+route {
+    serial id PK
+    rel story FK
+    %% type_master route
+    rel type_master FK "分類"
+    char name "名前"
+    text memo "編集メモ"
+}
+
+%% venue 目的地 会津、松島、那須、… [リソース]
+venue {
+    serial id PK
+    rel story FK
+    %% type_master venue
+    rel type_master FK "分類"
+    char name "名称"
+}
+
+%% place 場所 東京駅の顔出しパネル、登場店舗、宿泊場所、観光名所、施設、交通拠点 [リソース]
+place {
+    serial id PK
+    rel venue FK
+    char name "地点名"
+    char address "住所"
+    decimal latitude "緯度"
+    decimal longitude "経度"
+    decimal altitude "高度"
+    text memo "編集メモ"
+}
+
+%% step 訪問 routeに含まれる地点を訪れた日時 [イベント]
+step {
+    serial id PK
+    rel route FK
+    rel place FK
+    int number "順番"
+    datetime datetime "日時"
+    %% "zoom=14, pitch=60, bearing=0"
+}
+
+%% scene シーン 名シーン、ざつ旅ARのマーカー [イベント]
+scene {
+    serial id PK
+    rel story FK
+    rel place FK
+    rel character FK
+    %% type_master scene
+    rel type_master FK "分類"
+    %% コミック掲載ページ
+    int page "ページ"
+    text memo "編集メモ"
+}
+
+%% character キャラクター 主要5人、編集部、他 [リソース]
+character {
+    serial id PK
+    %% type_master character
+    rel type_master FK "分類"
+    char name "名前"
+    text description "紹介文"
+}
+
+%% photo flickr (google place photo api有料) [リソース]
+photo {
+    serial id PK
+    rel step FK
+    rel person FK
+    %% type_master photo
+    rel type_master FK "分類"
+    char title "タイトル"
+    url link "参照ページURL"
+    url image_src "画像URL"
+    %% 参照先固有の、撮影者を識別する情報
+    char username "撮影者"
+    int width "画像幅"
+    int height "画像高さ"
+}
+
+%% tweet Twitter 石坂さん、鈴ヶ森さん、読者等、無関係 [リソース]
+tweet {
+    serial id PK
+    rel person FK
+    rel step FK
+    %% type_master tweet
+    rel type_master FK "分類"
+    url url "固定URL"
+    %% 桁数が大きいため、JSON等では数値型で扱えないことに注意
+    char tweet_id "Tweet ID"
+    %% @username は変わる可能性があることに注意
+    char username "ツイ主の@username"
+    text description "内容"
+}
+
+%% person コンテンツの作者 ツイート/写真を撮影した人 [リソース]
+person {
+    serial id PK
+    rel user FK
+    %% type_master person
+    rel type_master FK "分類"
+    char name "名前"
+    text memo "編集メモ"
+}
+
+%% user ユーザー 利用者 [リソース]
+user {
+    serial id PK
+    char username
+    char last_name
+    char first_name
+    char email
+    datetime date_joined
+}
+
+%% role [リソース]
+%% permission 権限 [イベント]

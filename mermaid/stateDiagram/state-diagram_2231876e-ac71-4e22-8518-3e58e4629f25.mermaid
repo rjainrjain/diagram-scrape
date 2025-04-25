@@ -1,0 +1,16 @@
+<div class="mermaid">
+stateDiagram
+	[*] --> wip
+	wip --> decided
+	wip --> cancelled
+
+	decided --> cancelled
+	decided --> completed
+	decided --> superseded
+	
+	completed --> superseded
+	completed --> cancelled
+
+	superseded --> cancelled
+	cancelled --> [*]
+</div>

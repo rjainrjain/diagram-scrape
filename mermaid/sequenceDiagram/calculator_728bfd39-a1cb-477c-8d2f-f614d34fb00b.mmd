@@ -1,0 +1,7 @@
+sequenceDiagram
+    App->>Model: I had 28 chickens but 2 flew away. How many are there now?<br>You have access to a calculator tool
+    Model->>App: I want to call the calculate tool like this:<br>[ToolUseBlock(name='calculator',<br>input={'operand1': 28, 'operand2': 2,<br>'operation': 'subtract'}]
+    App->>Calculator Function: calculator('subtract', 28, 2)
+    Calculator Function->>App: returns 26
+    App->>Model: 26
+    Model->>App: Final answer: 26

@@ -1,0 +1,8 @@
+stateDiagram-v2
+[*] --> Cancelled : Cancel
+WaitingForPPS --> InReview : SendForReview
+InReview --> ReviewApproved : ReviewApprove
+InReview --> ReviewRejected : ReviewReject
+ReviewRejected --> Modifying : NotifyCustomerOfRejection
+Modifying --> InReview : SendForReview
+ReviewApproved --> CustomerNotified : NotifyCustomer

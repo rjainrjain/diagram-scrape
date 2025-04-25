@@ -1,0 +1,17 @@
+sequenceDiagram
+  participant a as Browser
+  participant b as Server
+  a->>b: HTTP GET https://studies.cs.helsinki.fi/exampleapp/spa
+  b->>a: Respond with a 200 code and send spa with type document
+  a->>b: Request a GET method for main.css 
+  b->>a: Respond with a 200 code and send css file with type text/css charset=UTF-8
+  a->>b: Request a GET method for spa.js 
+  b->>a: Respond with a 200 code and send javascript file with type application/javascript charset=UTF-8
+  a->>b: Request a GET method for logo.png 
+  b->>a: Respond with a 200 code and send image with type image/png
+  a->>b: Request a GET method for bochko.png file
+  b->>a: Respond with a 200 code and send image with type image/png
+  a->>b: Request a GET method for stars.png file
+  b->>a: Respond with a 200 code and send image with type image/png
+  a->>b: Request a GET method for data.json file
+  b->>a: Respond with a 200 code and send document with type application/json charset=utf-8

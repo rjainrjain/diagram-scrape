@@ -1,0 +1,75 @@
+flowchart
+    model{{FX Graph with ATen ops}}
+    early_rewrite[[Apply SHIR Intrinsics]]
+    mixed_model{{FX Graph with ATen + SHIR ops}}
+    aten_decomp[[ATen Decomposition]]
+    decomp_model{{FX Graph with Core ATen + prims + SHIR ops}}
+    partitioner[[Operator Partitioner]]
+    outer_graph{{Fallback Graph}}
+    final_graph{{Final Graph}}
+    inner_graph{{SHIR Supported Graph}}
+    opt_info[[Operator Info]]
+    isel[[Operator Selection]]
+    alloc_hint([Allocation hint])
+    enabled_passes([SHIR Rewrites])
+    lowered_ops([SHIR Expression])
+    apply_outer[[Insert driver logic]]
+    compilation_unit>Scala Code]
+    subgraph "Synthesis Cache"
+        shir_lib>SHIR Compiler Library]
+        check_cache{Cache lookup}
+        sbt[["Build and execute (sbt)"]]
+        vhdl>VHDL]
+        quartus[["Synthesis (Quartus)"]]
+        gbs>"Reconfiguration Bitstream (gbs)"]
+        mem_layout>Memory Layout]
+
+        check_cache ==> sbt
+        check_cache -.-> mem_layout & gbs
+    end
+    subgraph "FPGA Driver"
+        host_mem_alloc[[Memory Allocate]]
+        host_mem>Buffer]
+        host_mem_incopy[[Input Copy]]
+        host_mem_outcopy[[Output Copy]]
+        fpga_reconf[[FPGA Reconfigure]]
+        fpga_reset[[FPGA Reset]]
+        fpga_compute[[FPGA Compute]]
+    end
+
+    model --> early_rewrite
+    early_rewrite -.-> mixed_model
+    mixed_model --> aten_decomp
+    aten_decomp -.-> decomp_model
+    decomp_model --> partitioner
+    partitioner -.-> inner_graph
+    partitioner -.-> outer_graph
+    inner_graph --> isel
+    inner_graph --> opt_info
+    opt_info -.-> enabled_passes
+    opt_info -.-> alloc_hint
+    alloc_hint --> isel
+    isel -.-> lowered_ops
+    lowered_ops --> compilation_unit
+    enabled_passes --> compilation_unit
+    shir_lib --> sbt
+    sbt -.-> mem_layout
+    sbt -.-> vhdl
+    vhdl --> quartus
+    quartus -.-> gbs
+    compilation_unit --> check_cache
+    mem_layout --> host_mem_alloc
+    host_mem_alloc -.-> host_mem
+    gbs --> fpga_reconf
+    fpga_reconf --> fpga_reset
+    alloc_hint --> apply_outer
+    outer_graph --> apply_outer
+    apply_outer -.-> final_graph
+    Input --> final_graph
+    final_graph --> fpga_reset & fpga_compute
+    fpga_reset -.-> fpga_compute
+    host_mem --> host_mem_incopy
+    final_graph --> host_mem_incopy
+    host_mem_incopy -.-> fpga_compute
+    fpga_compute --> host_mem_outcopy -.-> Output
+

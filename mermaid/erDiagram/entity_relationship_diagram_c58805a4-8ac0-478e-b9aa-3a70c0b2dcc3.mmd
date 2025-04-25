@@ -1,0 +1,61 @@
+---
+title: FLYING SAUCERS TEA 
+---
+erDiagram
+    TEA {
+        SERIAL tea_id PK
+        VARCHAR(100) blend_name "required"
+        VARCHAR(1000) tasting_notes
+        DATE DATE_of_purchase
+        PRICE price
+        VARCHAR(128) origin
+        BOOLEAN caffeine "required"
+        TINYINT supplier_id FK
+        TINYINT variety_type FK
+        DECIMAL(3) brewing_temp_F
+        DECIMAL(3) brewing_temp_C
+        TINYINT brewing_time_min
+        TINYINT tsp_per_cup
+    }
+    RATING {
+    SERIAL rating_id PK
+    VARCHAR(1000) review_comments
+    TINYINT ranking "1-5"
+    TINYINT tea_id FK
+    TINYINT user_id FK
+    }
+    USER {
+        SERIAL user_id PK
+        VARCHAR(100) name "required"
+        VARCHAR(255) email "required"
+        VARCHAR(50) password "required"
+    }
+    COLLECTION {
+        SERIAL collection_id PK
+        VARCHAR(255) collection_name "required"
+        DATE DATE_created
+        TINYINT user_id FK
+    }
+    VARIETY {
+        VARCHAR(50) type PK
+        DECIMAL(3) standard_brewing_temp_F
+        DECIMAL(3) standard_brewing_temp_C
+        TINYINT standard_brewing_time
+        TINYINT standard_tsp_per_cup
+    }
+    SUPPLIER {
+        SERIAL supplier_id PK
+        VARCHAR(255) name UK "required"
+        VARCHAR(255) location 
+        VARCHAR(255) logo
+        VARCHAR(255) website
+    }
+    
+    USER ||--|{ COLLECTION : "creates"
+    RATING ||--o{ USER : "written by"
+    TEA ||--o{ RATING : "rated"
+    TEA ||--|{ COLLECTION : "contained in"
+    TEA ||--o{ VARIETY : "type of"
+    COLLECTION }o--o{ USER : "follows"
+    TEA ||--|{ SUPPLIER : "sold by"
+    USER ||--o{ SUPPLIER : "purchases from"

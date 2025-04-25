@@ -1,0 +1,14 @@
+sequenceDiagram
+  Note over AccountManager: Stake tokens
+  AccountManager ->> AccountStorage: [User] Initiate transfer
+  AccountStorage ->> PLGToken: [User] Send PLG to CS
+  AccountManager ->> CampShare: [User] Initiate stake and prepare transaction allocation
+  Note over CampShare: Allocate PreCS <br /> to user
+  AccountManager ->> CampShare: [User] Partial unstake of PreCS
+  Note over CampShare: Adjust PreCS <br /> balance
+  CampShare ->> PLGToken: Refund PLG to user
+  Note over AccountManager: Withdraw interest
+  AccountManager ->> CampShare: [CS holder] Initiate interest withdrawal
+  CampShare ->> Administrator: Calculate interest
+  Administrator ->> PLGToken: Send interest to CS Holder
+  Note over Administrator: Convert PreCS <br /> into CS

@@ -1,0 +1,34 @@
+sequenceDiagram
+    participant Bot as Bot
+    participant Database as Database
+    participant Scheduler as Scheduler
+    participant Transcription as Transcription
+    participant SpeechToText as SpeechToText
+    participant TextToSpeech as TextToSpeech
+    participant API as API
+    participant TwilioIntegration as TwilioIntegration
+    participant CeleryTasks as CeleryTasks
+    participant Models as Models
+    participant Utils as Utils
+
+    Bot->>Bot: receive_call()
+    Bot->>SpeechToText: convert_speech_to_text(speech)
+    SpeechToText->>Bot: processed_text
+    Bot->>Bot: process_speech(processed_text)
+    Bot->>Database: fetch_data(query)
+    Database->>Bot: appointment_data
+    Bot->>Bot: fetch_appointment_data()
+    Bot->>Bot: schedule_assistance()
+    Bot->>Bot: book_appointment(appointment_data)
+    Bot->>API: book_appointment(appointment_data)
+    API->>Bot: success
+    Bot->>Bot: handle_delayed_response()
+    Bot->>CeleryTasks: initiate_callback()
+    CeleryTasks->>Bot: success
+    Bot->>Bot: transcribe_conversation(conversation)
+    Bot->>Transcription: store_transcription(transcription)
+    Transcription->>Bot: success
+    Bot->>Bot: transfer_to_human()
+    Bot->>TwilioIntegration: initiate_call(phone_number)
+    TwilioIntegration->>Bot: success
+    Bot->>Bot: end_call()

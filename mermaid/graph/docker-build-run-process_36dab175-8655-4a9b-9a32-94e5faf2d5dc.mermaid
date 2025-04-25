@@ -1,0 +1,21 @@
+graph TD
+    A[Start] --> B[Dockerfile]
+    B --> C[Docker Build Command]
+    C --> D{Build Image}
+    D --> |Step 1| E[Use Python 3.9 slim as base]
+    E --> F[Set working directory to /app]
+    F --> G[Copy files to /app]
+    G --> H[Install dependencies from requirements.txt]
+    H --> I[Expose port 8501]
+    I --> J[Set environment variables]
+    J --> K[Define CMD to run Streamlit]
+    K --> L[Docker Image Created]
+    L --> M[Docker Run Command]
+    M --> N[Create and Start Container]
+    N --> O[Container Running]
+    O --> P[Access Streamlit App on localhost:8501]
+    P --> Q[End]
+
+    style B fill:#f9f,stroke:#333,stroke-width:2px
+    style L fill:#bbf,stroke:#333,stroke-width:2px
+    style O fill:#bfb,stroke:#333,stroke-width:2px

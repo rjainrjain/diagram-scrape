@@ -1,0 +1,17 @@
+sequenceDiagram
+    participant UpdatesQueue
+    participant DoCheckQueue
+    participant PartitionConsumer
+    participant DB
+    participant Logger
+    Note over UpdatesQueue,Logger: Async Checkboxes Checked Processing
+    PartitionConsumer->>DoCheckQueue: Get next DoCheck
+    DoCheckQueue->>PartitionConsumer: Return Queued<br />DoCheck(ClientUUID,CheckboxNbr)
+    PartitionConsumer->>Logger: Log message processing
+    PartitionConsumer->>DB: Updated Checked State (CheckboxNbr,ClientUUID)
+    DB->>DB: BEGIN TRANS<br />update CHECKBOX_T<br />If records update == 1 then<br />update CHECKBOX_HIST_T<br />END TRANS
+    DB->>PartitionConsumer: Return success/failure
+    PartitionConsumer->>DoCheckQueue: If Success: Commit Queued DoCheck<br />Else: If Failures < MAX_FAILS Commit and Resubmit to Queue<br />Else: Commit and Log Failure
+    PartitionConsumer->>Logger: Log processing result
+    PartitionConsumer->>UpdatesQueue: Submit CheckboxChecked(CheckboxNbr,Timestamp)
+    PartitionConsumer->>UpdatesQueue: Submit FrontEndCheckedComplete<br />(ClientUUID,CheckboxNbr,Timestamp,Result)

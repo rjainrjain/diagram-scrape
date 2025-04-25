@@ -1,0 +1,23 @@
+sequenceDiagram
+    participant client as Client
+    participant em as eventManager: EventManager
+    participant h as hotelier: Hotelier
+    participant f as florist: Florist
+    participant c as caterer: Caterer
+    participant m as musician: Musician
+
+    client->>em: arrange()
+    
+    em->>h: bookHotel()
+    h-->>em: Hotel is booked
+    
+    em->>f: setFlowerRequirements()
+    f-->>em: Carnations, Roses and Lilies are to be used
+    
+    em->>c: setCuisine()
+    c-->>em: Chinese & Continental Cuisine will be served
+    
+    em->>m: setMusicType()
+    m-->>em: Jazz and Classical will be played
+    
+    em-->>client: Good news, we are set

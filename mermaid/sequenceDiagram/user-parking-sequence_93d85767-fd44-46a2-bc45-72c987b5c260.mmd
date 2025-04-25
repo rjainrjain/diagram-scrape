@@ -1,0 +1,14 @@
+sequenceDiagram
+    User->>+PerfectParking: Parking near location GPS (Henry Street)?
+    PerfectParking->>+HenryStParkingLotMonitor: Parking avaiable?
+    PerfectParking->>+OconnellStreetgeParkingLotMonitor: Parking avaiable?
+    PerfectParking->>+BarringtonStreetPart1ParkingLotMonitor: Parking avaiable?
+    PerfectParking->>+MerchantsQuayParkingLotMonitor: Parking avaiable?
+    PerfectParking->>+StJohnsParkingLotMonitor: Parking avaiable?
+
+    HenryStParkingLotMonitor->>+PerfectParking: Yes, available 97%
+    OconnellStreetgeParkingLotMonitor->>+PerfectParking: Yes, available 87%
+    BarringtonStreetPart1ParkingLotMonitor->>+PerfectParking: Yes, available 65%
+    MerchantsQuayParkingLotMonitor->>+PerfectParking: No, available 45%
+    StJohnsParkingLotMonitor->>+PerfectParking: Yes, available 75%
+    PerfectParking->>+User: Yes, 3 parking lots available (HenrySt, StJohns, MerchantsQuay, OconnellStreet, BarringtonStreet)

@@ -1,0 +1,16 @@
+sequenceDiagram
+    User->>Scene: gesture
+    Note right of User: Gesture sources: Mouse, BCI, TouchSurface, SpaceNavigator, etc.
+    Note over Scene: Agent collection
+    opt handleFeed
+        Scene-->>Agent: gesture
+    end
+    opt enqueue
+        Agent-->>Scene: < inputNode, event >
+    end
+    loop dequeue
+      Scene->>Node: event
+    end
+    Note over Node: interact(event)
+
+    %%Note over Scene: Agent collection

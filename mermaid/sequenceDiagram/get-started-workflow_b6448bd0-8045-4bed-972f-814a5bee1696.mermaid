@@ -1,0 +1,23 @@
+```mermaid
+sequenceDiagram
+    participant User1 as User
+    participant App as Your app
+    participant SDK as Sign to SDK
+    participant Agora as Agora
+    participant User2 as User
+
+    App->>SDK: Open app
+    App->>SDK: Create a signalingEngine instance
+    App->>SDK: Add event listeners
+    App->>SDK: Set the authentication token
+    SDK->>Agora: Log in to Signaling
+    App->>SDK: Subscribe to a channel
+    SDK->>Agora: signalingEngine.subscribe
+    App->>SDK: Publish message
+    SDK->>Agora: signalingEngine.publish
+    Agora->>SDK: Listen for message events
+    SDK->>App: message
+    App->>App: Receive message
+    App->>SDK: Log out
+    SDK->>Agora: Log out of Signaling
+```

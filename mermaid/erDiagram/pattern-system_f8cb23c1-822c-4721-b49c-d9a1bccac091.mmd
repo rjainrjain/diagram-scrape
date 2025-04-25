@@ -1,0 +1,15 @@
+erDiagram
+    PATTERN-LIBRARY |o--o{ PATTERN-DEFINITION : lists
+    PATTERN-DEFINITION |o--o{ PATTERM-IMPLEMENTATION : references
+    PATTERM-IMPLEMENTATION |o--o| TEMPLATE : instructs
+    TEMPLATE-SCHEMA |o--o| TEMPLATE : structured
+    TEMPLATE-RULES |o--o| TEMPLATE :  defined-by
+    ARCHETYPE |o--o{ TEMPLATE-SCHEMA : defines
+    UNIT }o--o| TEMPLATE : made-of
+    COMPONENT }o--o{ TEMPLATE : made-of
+    COMPONENT }o--o{ UNIT : made-of
+
+    PORTFOLIO ||--|| DOCDESIGN : contains
+    PORTFOLIO  ||--|| MODULEDESIGN : contains
+    DOCDESIGN |o--|{ TEMPLATE : expresses
+    MODULEDESIGN |o--|{ TEMPLATE : expresses

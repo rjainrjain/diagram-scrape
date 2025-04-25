@@ -1,0 +1,45 @@
+
+classDiagram
+    class Application {
+        -config Configuration
+        +run() void
+    }
+    class Configuration {
+        -database_uri str
+        -secret_key str
+        +load_config() dict
+    }
+    class Event {
+        -id int
+        -name str
+        -date datetime
+        -location str
+        +get_events(query: dict) list
+    }
+    class Ticket {
+        -id int
+        -event_id int
+        -seat_number str
+        -price float
+        +book_ticket(user_id: int, event_id: int, seat_number: str) bool
+    }
+    class User {
+        -id int
+        -email str
+        -password str
+        +login(email: str, password: str) bool
+        +register(email: str, password: str) bool
+    }
+    class Payment {
+        -user_id int
+        -amount float
+        -method str
+        +process_payment() bool
+    }
+    class EmailService {
+        +send_email(recipient: str, subject: str, body: str) bool
+    }
+    Application --> Configuration
+    Ticket --> Event
+    User --> Ticket
+    Payment --> User

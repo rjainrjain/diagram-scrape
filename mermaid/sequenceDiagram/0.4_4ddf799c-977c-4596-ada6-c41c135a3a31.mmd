@@ -1,0 +1,13 @@
+sequenceDiagram
+    participant browser
+    participant server
+
+    Note right of browser: user submits form
+    browser->>server: POST https://fullstack-exampleapp.herokuapp.com/new_note
+    activate server
+    Note left of server: server stores note
+    server-->>browser: redirect to /notes
+    deactivate server
+    browser->>server: GET /notes
+    activate server
+    server-->>browser: notes page

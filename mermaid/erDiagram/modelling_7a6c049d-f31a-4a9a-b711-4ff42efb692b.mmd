@@ -1,0 +1,77 @@
+erDiagram
+    m[Movies] {
+        int id PK
+        string title
+        string description
+        int duration
+        string director
+        int ageRestriction
+    }
+    mg[MoviesGenres] {
+        int movieId FK
+        int genreId FK
+    }
+    g[Genres] {
+        int id PK
+        string genreName
+    }
+    t[Theathers] {
+        int id PK
+        string name
+        string address
+    }
+    r[Rooms] {
+        int id PK
+        int theaterId FK
+        int capacity
+        int rows
+        int columns
+    }
+    s[Seats] {
+        int id PK
+        int roomId FK
+        string row
+        int column
+    }
+    sc[Screening] {
+        int id PK
+        int movieId FK
+        int roomId FK
+        date schedule
+        double price
+    }
+    rs[Reservation] {
+        int id PK
+        uuid userId FK
+        int screeningId FK "theater,room, movie"
+        bool confirmed
+        DateTime reservedUntil
+    }
+    usr[User] {
+        uuid id PK
+        string name
+        date birthday
+        string password
+    }
+    sr[SeatReservation] {
+        int id PK
+        id reservationId FK
+        int seatId FK
+    }
+
+    m 1 to many(1) mg: has
+    g many(1) to 1 mg: part_of
+    t 1 to many(1) r: contains
+    r 1 to many(1) s: contains
+    sc 1 to 1 m: displays
+    sc many(1) to 1 r: on
+    usr 1 to 1+ rs: does
+    rs 1 to many(1) sr: contains
+    sr 1 to 1+ sc: has
+    sr 1 to 1 s: reserves
+    
+    
+    
+    
+    
+    

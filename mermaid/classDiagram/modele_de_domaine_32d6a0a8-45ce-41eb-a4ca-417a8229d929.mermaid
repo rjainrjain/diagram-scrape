@@ -1,0 +1,84 @@
+classDiagram
+    class Personne {
+        nom
+        prénom
+    }
+    class Contact {
+        mail
+        numéro de téléphone
+    }
+    class Login {
+        email
+        mot de passe
+    }
+
+    class Eleve["Elève"]
+    class Intervenant {
+        nombre d'interventions
+        est en intervention?
+    }
+    class IntervenantAutre {
+        activité
+    }
+    class IntervenantEtudiant {
+        université
+        spécialité
+    }
+    class IntervenantEnseignant {
+        type d'établissement
+    }
+
+    class Matiere["Matière"] {
+        nom
+    }
+
+    class Seance["Séance de soutient"] {
+        lien visio
+        description
+        dateheure de début
+        dateheure de fin
+    }
+    class Bilan {
+        contenu
+    }
+
+    class NiveauCompetence["Niveau de compétence"] {
+        valeur
+    }
+    class NiveauComprehension["Niveau de compréhension"]
+    class Etablissement {
+        nom
+        IPS
+        adresse
+        code
+    }
+    class Status {
+        en attente
+        en cours
+        terminé
+    }
+    <<Enumeration>> Status
+
+    %% Composition
+    Personne "1" *-- "1" Contact
+    Seance "1" *-- "1" Bilan: Résume
+    Personne "1" *-- "1" Login
+    Seance *-- Status
+
+    %% Agregation
+    Seance "N" o-- "1" NiveauComprehension: Décrit
+
+    %% Liens
+    Eleve "1" -- "1" Etablissement: Etudie à
+    Matiere "1" -- "0..n" Seance: Traite de
+    Intervenant "n" -- "n" NiveauCompetence: A des
+    Eleve "n" -- "1" NiveauCompetence: A un
+    Intervenant "1" -- "0..n" Seance: Anime
+    Eleve "1" -- "0..n" Seance: Participe à
+
+    %% héritage
+    Intervenant --> Personne
+    Eleve --> Personne
+    IntervenantAutre --> Intervenant
+    IntervenantEtudiant --> Intervenant
+    IntervenantEnseignant --> Intervenant

@@ -1,0 +1,10 @@
+sequenceDiagram
+    participant selain
+    participant palvelin
+
+    note right of selain: Luodaan uusi muistiinpano single page-versiossa:
+    note right of selain: spa.js estää lomakkeen normaalin lähettämisen palvelimelle, kaikki tapahtuu selaimessa
+    selain-->>selain: spa.js käsittelee uuden muistiinpanon, joka sisältää tiedot "content" ja "date"
+    note right of selain: uusi muistiinpano luodaan ja lisätään listaan "notes"
+    note right of selain: (VAIN) muistiinpanot renderöidään uudelleen selaimessa
+    selain->>palvelin: HTTP POST-pyyntö (new_note_spa) palvelimelle sisältäen uuden muistiinpanon JSON-muodossa

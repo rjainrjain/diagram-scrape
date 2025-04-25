@@ -1,0 +1,21 @@
+sequenceDiagram
+    participant App as &#128187;
+    participant SDK as &#9938;
+    participant Agora_SD_RTN as &#9729;
+    
+    App->>SDK: Create and initialize the engine
+    
+    rect rgb(230, 230, 230)
+    note right of App: Custom video capture
+    App->>SDK: Create a custom video track
+    App->>SDK: Join channel(s)
+    App->>SDK: Push video frames to SDK using the custom video track
+    App->>SDK: Destroy the custom video track
+    App->>SDK: Leave channel(s)
+    App->>SDK: Destroy the engine
+    end
+    
+    SDK->>Agora_SD_RTN: Request to join channel(s)
+    Agora_SD_RTN-->>SDK: --
+    SDK->>Agora_SD_RTN: Request to leave channel(s)
+    Agora_SD_RTN-->>SDK: --

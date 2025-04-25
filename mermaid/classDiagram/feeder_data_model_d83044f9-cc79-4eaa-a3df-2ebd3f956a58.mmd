@@ -1,0 +1,13 @@
+---
+title: Feeder Data Model
+---
+classDiagram
+   note "This is the first draft of the data Model"
+   Stream -- Item: has
+   Stream -- RecommendationStyle: has
+   Stream -- RecommendationRule: has
+   Stream o-- Session
+   User o-- Session: has
+   UsageEvent --o Stream: belongs to
+   UsageEvent --o Session: belongs to
+

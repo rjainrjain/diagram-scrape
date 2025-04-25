@@ -1,0 +1,23 @@
+stateDiagram-v2
+  direction LR
+
+  %% s_start state
+  [*] --> s_start
+  s_start --> s_done: c_eos
+  s_start --> s_start: c_line_break
+  s_start --> s_start: c_ws
+  s_start --> s_key: c_keyval_key_first
+  s_start --> s_done: default
+
+  %% s_key state
+  s_key --> s_key: c_keyval_key
+  s_key --> s_value: c_key_value_delimiter
+  s_key --> s_done: c_eos
+
+  %% s_value state
+  s_value --> s_start: c_line_break
+  s_value --> s_done: c_eos
+  s_value --> s_value: default
+
+  %% s_done state
+  s_done --> [*]

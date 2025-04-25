@@ -1,0 +1,85 @@
+classDiagram
+    class App {
+        -commandRegistry: CommandRegistry
+        +main(String[] args): void
+        +exec(String[] args): int
+        +initializeApplication(): void
+    }
+    class CommandRegistry {
+        -commandConstructors: Map
+        +registerCommand(String, Function): void
+        +getCommand(String, String[]): Command
+    }
+    class Command {
+        <<interface>>
+        +execute(): int
+    }
+    class InsertCommand {
+        -args: String[]
+        +execute(): int
+    }
+    class ListCommand {
+        -args: String[]
+        +execute(): int
+    }
+    class TodoListManager {
+        -commandRegistry: CommandRegistry
+        +handleCommand(String[] args): int
+    }
+    class FileFormatManager {
+        <<interface>>
+        +insertTodo(Path, Todo): void
+        +listTodos(Path): List
+    }
+    class CsvManager {
+        +insertTodo(Path, Todo): void
+        +listTodos(Path): List
+    }
+    class JsonManager {
+        +insertTodo(Path, Todo): void
+        +listTodos(Path): List
+    }
+    class FileFormatManagerFactory {
+        -registry: Map
+        +registerFormatManager(String, Class): void
+        +getManager(String): FileFormatManager
+    }
+    class FileManager {
+        +readFileContent(Path): String
+        +writeFileContent(Path, String): void
+    }
+    class LogManager {
+        -logFilePath: Path
+        -dtf: DateTimeFormatter
+        +log(String): void
+    }
+    class ErreurManager {
+        +printError(String): void
+    }
+    class Todo {
+        -description: String
+        -author: String
+        -color: String
+    }
+
+    App --> CommandRegistry : uses
+    CommandRegistry --> Command : creates
+    Command <|-- InsertCommand : implements
+    Command <|-- ListCommand : implements
+    InsertCommand ..> FileFormatManagerFactory : uses
+    ListCommand ..> FileFormatManagerFactory : uses
+    FileFormatManagerFactory ..> CsvManager : creates
+    FileFormatManagerFactory ..> JsonManager : creates
+    CsvManager ..|> FileFormatManager : implements
+    JsonManager ..|> FileFormatManager : implements
+    FileFormatManager ..> Todo : uses
+    InsertCommand ..> Todo : creates
+    TodoListManager --> CommandRegistry : uses
+    CsvManager --> FileManager : uses
+    JsonManager --> FileManager : uses
+    FileManager --> LogManager : used by
+    LogManager ..> FileManager : uses
+    App --> ErreurManager : uses
+    InsertCommand --> ErreurManager : uses
+    ListCommand --> ErreurManager : uses
+    TodoListManager --> ErreurManager : uses

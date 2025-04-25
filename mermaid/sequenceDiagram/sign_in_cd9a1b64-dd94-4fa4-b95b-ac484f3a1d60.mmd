@@ -1,0 +1,12 @@
+sequenceDiagram
+participant Client
+participant ClientHandler
+Client->>ClientHandler: SIGN_IN (mail, name, password)
+alt success
+    opt Send domain list
+        ClientHandler->>Client: DOMAINS_LIST_OK (domains)
+    end
+    ClientHandler->>Client: SIGN_IN_OK (mail, name)
+else failure
+    ClientHandler->>Client: SIGN_IN_KO (message)
+end

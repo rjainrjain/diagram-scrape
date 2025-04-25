@@ -1,0 +1,19 @@
+sequenceDiagram
+    participant U as User
+    participant F as Frontend (SearchPatients)
+    participant B as Backend (PatientController)
+    participant DB as MongoDB
+
+    U->>F: Enter search query
+    F->>B: Send search request
+    B->>DB: Query database
+    DB-->>B: Return matching patients
+    B-->>F: Send patient list
+    F->>U: Display search results
+
+    U->>F: Click on a patient
+    F->>B: Request patient details
+    B->>DB: Fetch patient data
+    DB-->>B: Return patient details
+    B-->>F: Send patient details
+    F->>U: Display patient information

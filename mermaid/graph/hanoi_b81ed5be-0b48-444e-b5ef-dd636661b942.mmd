@@ -1,0 +1,32 @@
+graph TD
+    A["main 4, A, C, B"] -->|1| A1["move 4, A, C, B"]
+    
+    A1 -->|2| B1["move 3, A, B, C"]
+    
+    B1 -->|3| C1["move 2, A, C, B"]
+    
+    C1 -->|4| D1["move 1, A, B, C"]
+    D1 -->|5| E1["print Move disk 1 from A to C"]
+    
+    C1 -->|6| D2["print Move disk 2 from A to B"]
+    
+    B1 -->|7| G1["print Move disk 3 from A to C"]
+    
+    B1 -->|8| H1["move 2, B, C, A"]
+    
+    H1 -->|9| I1["move 1, B, A, C"]
+    I1 -->|10| J1["print Move disk 1 from B to A"]
+    
+    H1 -->|11| K1["print Move disk 2 from B to C"]
+    
+    A1 -->|12| L1["print Move disk 4 from A to C"]
+
+    A1 -->|13| M1["move 3, B, C, A"]
+    
+    M1 -->|14| N1["move 2, B, A, C"]
+    N1 -->|15| O1["move 1, B, C, A"]
+    O1 -->|16| P1["print Move disk 1 from B to C"]
+    
+    N1 -->|17| Q1["print Move disk 2 from B to A"]
+    
+    M1 -->|18| R1["print Move disk 3 from B to C"]

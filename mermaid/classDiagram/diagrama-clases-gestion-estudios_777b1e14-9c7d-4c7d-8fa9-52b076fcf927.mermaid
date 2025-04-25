@@ -1,0 +1,57 @@
+classDiagram
+    class Estudio {
+        -id: UUID
+        -paciente: Paciente
+        -tipoEstudio: TipoEstudio
+        -fechaRealizacion: DateTime
+        -estado: EstadoEstudio
+        -imagenUrl: String
+        -resultado: ResultadoEstudio
+        -medicoSolicitante: Usuario
+        -tecnicoRealizador: Usuario
+        +crearEstudio()
+        +actualizarEstado()
+        +asignarTecnico()
+        +registrarResultado()
+    }
+
+    class Paciente {
+        -id: UUID
+        -nombre: String
+        -apellido: String
+        -fechaNacimiento: Date
+        -dni: String
+        +obtenerHistorialEstudios()
+    }
+
+    class Usuario {
+        -id: UUID
+        -nombre: String
+        -apellido: String
+        -email: String
+        -rol: RolUsuario
+        +autenticar()
+        +obtenerPermisos()
+    }
+
+    class ResultadoEstudio {
+        -id: UUID
+        -estudio: Estudio
+        -descripcion: String
+        -anomaliasDetectadas: List<Anomalia>
+        -fechaResultado: DateTime
+        +generarInforme()
+    }
+
+    class Anomalia {
+        -id: UUID
+        -tipo: TipoAnomalia
+        -descripcion: String
+        -probabilidad: Float
+    }
+
+    Estudio "1" -- "1" Paciente
+    Estudio "1" -- "1..*" ResultadoEstudio
+    Estudio "1" -- "1" Usuario : medicoSolicitante
+    Estudio "1" -- "0..1" Usuario : tecnicoRealizador
+    ResultadoEstudio "1" -- "0..*" Anomalia

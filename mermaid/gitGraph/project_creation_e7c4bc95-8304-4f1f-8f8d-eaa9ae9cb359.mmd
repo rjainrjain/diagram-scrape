@@ -1,0 +1,26 @@
+%%{init: { 
+'themeVariables': {
+    'commitLabelFontSize': '16px'
+  }}}%%
+gitGraph TB:
+  commit id: "create Project"
+  commit id: "create Track"
+  commit id: "create DataSet"
+
+  branch train_ml-element
+  commit id: "upload data and configure"
+  commit id: "train element in background"
+  commit id: "train"
+  commit id: "train.."
+  commit id: "train..."
+  checkout main
+  merge train_ml-element
+
+  commit id: "add ML Configuration to Track"
+
+  branch train_tsa-element
+  commit id: "select data and configure"
+  checkout main
+  merge train_tsa-element
+
+  commit id: "send"

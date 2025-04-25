@@ -1,0 +1,50 @@
+erDiagram
+    Users ||--o{ Friends : has
+    Users ||--o{ PendingRequests : has
+    Users ||--o{ Travels : creates
+    Travels ||--o{ Posts : has
+
+    Users {
+        int id PK
+        string username "not null, unique"
+        string name "not null"
+        string profileImage "not null"
+        string password "not null"
+    }
+
+    Friends {
+        int userId FK
+        int friendsUserId FK
+    }
+
+    PendingRequests {
+        int userId FK
+        int pendingUserId FK
+    }
+
+    Travels {
+        int id PK
+        int userId FK
+        string originCity "not null"
+        string originCountry "not null"
+        float originLatitude "not null"
+        float originLongitude "not null"
+        string destinyCity "not null"
+        string destinyCountry "not null"
+        float destinyLatitude "not null"
+        float destinyLongitude "not null"
+        int distanceInMeters "not null"
+        string modal "not null"
+        date date "not null"
+        string travelImage "not null"
+        string description
+    }
+
+    Posts {
+        int id PK
+        int userId FK
+        int travelId FK
+        string title "not null"
+        string postText "not null"
+        date postDate "not null"
+    }

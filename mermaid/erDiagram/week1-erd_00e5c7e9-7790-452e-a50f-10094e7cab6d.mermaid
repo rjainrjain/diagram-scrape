@@ -1,0 +1,22 @@
+```mermaid
+erDiagram
+    SALES {
+        varchar customer_id "Customer ID"
+        date order_date "Order date"
+        integer product_id "Product ID"
+    }
+
+    MENU {
+        integer product_id PK "Unique product ID"
+        varchar product_name "Name of the product"
+        integer price "Price of the product"
+    }
+
+    MEMBERS {
+        varchar customer_id PK "Customer ID"
+        date join_date "Membership join date"
+    }
+
+    SALES ||--|| MENU : "contains"
+    SALES }|--|| MEMBERS : "places"
+```

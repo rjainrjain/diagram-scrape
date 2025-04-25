@@ -1,0 +1,33 @@
+```mermaid
+flowchart TB
+    subgraph clientA [Client A]
+        direction TB
+        subgraph appA ["App A"]
+            customAppA[("Customized Encryption")]
+        end
+        subgraph sdkA ["SDK A"]
+            builtinEncA[("Built-in encryption")]
+            encoding[("Audio / Video & encoding")]
+        end
+    end
+
+    subgraph clientB [Client B]
+        direction TB
+        subgraph appB ["App B"]
+            customAppB[("Customized Encryption")]
+        end
+        subgraph sdkB ["SDK B"]
+            builtinEncB[("Built-in encryption")]
+            decoding[("Audio/Video decoding and rendering")]
+        end
+    end
+
+    cloud[("Agora SD-RTN&trade; Encrypted data transmission")]
+
+    encoding --> builtinEncA --> encDataA[("Encrypted data")]
+    encDataA --> cloud
+    cloud --> encDataB[("Encrypted data")]
+    encDataB --> builtinEncB --> decoding
+
+    linkStyle 0,1,2,4,5 stroke:#000,stroke-width:2px;
+```

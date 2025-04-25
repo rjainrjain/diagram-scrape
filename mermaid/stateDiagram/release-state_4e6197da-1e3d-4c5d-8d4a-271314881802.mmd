@@ -1,0 +1,29 @@
+%%{wrap}%%
+%%{init: {'theme':'base'}}%%
+stateDiagram-v2
+
+		state "Schema" as Schema
+		Schema: Updating the schema creates a Release Candidate
+		
+		state "Schema Tools" as schemaTools
+		schemaTools: Update schema tools if necessary
+		state "You have a Release Candidate" as RC
+    state "No need to release updated tools" as NoRCTools
+
+    state "Have one of the following packages been updated?" as updated
+  	updated: certificate-model, certificate-summary, extract-emails,
+		updated: generate-html, generate-pdf, types, utils, validate
+
+    state "Schema release" as SchemaRelease
+    state "Schema-tools release" as ToolsRelease
+		
+    [*] --> Schema
+    Schema --> schemaTools
+    Schema --> SchemaRelease
+    schemaTools --> updated
+    updated --> NoRCTools: no
+    updated --> RC: yes
+    RC --> ToolsRelease
+    SchemaRelease --> [*]
+    NoRCTools --> [*]
+    ToolsRelease --> [*]

@@ -1,0 +1,125 @@
+erDiagram
+    users {
+        int id PK
+        string google_user_id
+        string username
+        string email
+        string profile_picture
+        timestamp created_at
+        timestamp updated_at
+    }
+    books {
+        int id PK
+        string title
+        string author
+        string genre
+        date published_date
+        text description
+        string cover_image
+    }
+
+    book_reviews {
+        int id PK
+        int user_id FK
+        int book_id FK
+        int rating
+        text review
+        datetime created_at
+    }
+
+    reading_list {
+        int id PK
+        int user_id FK
+        int book_id FK
+        string status
+        date started_reading_at
+        date finished_reading_at
+        datetime created_at
+    }
+
+    mood_entries {
+        int id PK
+        int user_id FK
+        string mood
+        int stress_level
+        text notes
+        datetime created_at
+    }
+
+    recommendations {
+        int id PK
+        int user_id FK
+        int book_id FK
+        text reason
+        datetime created_at
+    }
+
+    comments {
+        int id PK
+        int user_id FK
+        int book_id FK
+        text comment
+        datetime created_at
+    }
+
+    book_clubs {
+        int id PK
+        string name
+        text description
+        int creator_id FK
+        datetime created_at
+    }
+
+    club_memberships {
+        int id PK
+        int club_id FK
+        int user_id FK
+        datetime joined_at
+    }
+
+    club_discussions {
+        int id PK
+        int club_id FK
+        int user_id FK
+        text discussion
+        datetime created_at
+    }
+
+    notifications {
+        int id PK
+        int user_id FK
+        string type
+        text message
+        bool read
+        datetime created_at
+    }
+
+    counseling_sessions {
+        int id PK
+        int user_id FK
+        int counselor_id FK
+        datetime scheduled_at
+        int duration
+        text notes
+        datetime created_at
+    }
+
+    users ||--o{ book_reviews : "has"
+    users ||--o{ reading_list : "has"
+    users ||--o{ mood_entries : "logs"
+    users ||--o{ recommendations : "receives"
+    users ||--o{ comments : "posts"
+    users ||--o{ book_clubs : "creates"
+    users ||--o{ club_memberships : "joins"
+    users ||--o{ club_discussions : "participates in"
+    users ||--o{ notifications : "receives"
+    users ||--o{ counseling_sessions : "books"
+    users ||--o{ counseling_sessions : "conducts"
+
+    books ||--o{ book_reviews : "receives"
+    books ||--o{ reading_list : "is listed in"
+    books ||--o{ recommendations : "is recommended in"
+    books ||--o{ comments : "is commented on"
+
+    book_clubs ||--o{ club_memberships : "has"
+    book_clubs ||--o{ club_discussions : "hosts"

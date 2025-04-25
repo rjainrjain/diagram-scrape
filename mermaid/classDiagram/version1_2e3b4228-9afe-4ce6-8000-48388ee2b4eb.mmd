@@ -1,0 +1,206 @@
+classDiagram
+	class BaseEntity {
+		datetime insertDateTime
+		datetime updateDateTime
+		string createdBy
+		string updatedBy
+		boolean isActive
+	}
+
+	class Asset {
+		String id [required]
+		String title [required]
+		Skill[] skills [default: empty]
+		Asset[] relatedAssets [optional]
+	}
+
+	Asset <|-- Project
+	Asset <|-- Job
+	Asset <|-- Blog
+	Asset <|-- Module
+	Asset <|-- Testimonial
+
+	class Project {
+		String version [optional]
+		ProjectStatus status [required]
+		Boolean isFeatured [default: false]
+		Date startDate [required]
+		Date endDate [optional]
+		String shortDescription [required]
+		ContentElement[] longDescriptionElements [required]
+		String[] challenges [required]
+		String[] outcomes [required]
+		ObjectStoreReference coverImage [optional]
+		String category [optional]
+		String githubUrl [optional]
+		String deploymentUrl [optional]
+	}
+
+	class Job {
+		Company company [required]
+		Date startDate [required]
+		Date endDate [optional]
+		String[] responsibilities [required]
+		String[] achievements [optional]
+		String shortDescription [required]
+		ContentElement[] longDescriptionElements [optional]
+		ObjectStoreReference supportingDocumentation [optional]
+	}
+
+	class Module {
+		String code [optional]
+		String shortDescription [optional]
+		Date startDate [optional]
+		Date endDate [optional]
+		String grade [optional]
+	}
+
+	class Blog {
+		String slug [required]
+		String[] tags [default: empty]
+		String shortDescription [required]
+		ContentElement[] content [required]
+		ObjectStoreReference coverImage [optional]
+		Boolean isDraft [default: true]
+		Boolean isFeatured [default: false]
+	}
+
+	class Education {
+		Company institution [required]
+		String degree [required]
+		String fieldOfStudy [required]
+		String shortDescription [optional]
+		Date startDate [required]
+		Date endDate [optional]
+		String grade [optional]
+		String[] achievements [optional]
+		ObjectStoreReference certificate [optional]
+		Module[] modules [optional]
+	}
+
+	class Skill {
+		String id [required]
+		String name [required]
+		SkillCategory category [optional]
+		int proficiency [optional] [default: null] [between: 0, 10]
+		String description [optional]
+	}
+
+	class SkillCategory {
+		[ENUM]
+		SOFT_SKILL,
+		TECHNOLOGY,
+		TOOL;
+
+		String description [optional]
+	}
+
+	class ProjectStatus {
+		[ENUM]
+		PLANNING,
+		DESIGNING,
+		DEVELOPING,
+		RELEASED,
+		UPDATING;
+	}
+
+	class Testimonial {
+		TestimonialAuthor author [required]
+		String[] content [required]
+		Date date [optional]
+	}
+
+	class TestimonialAuthor {
+		String name [required]
+		ObjectStoreReference picture [optional]
+		String[] contactInformation [default: empty]
+	}
+
+	class TestimonialOfCompanyWorkingAuthor {
+		Company company [required]
+		String role [requierd]
+	}
+
+	class Company {
+		String name [required]
+		ObjectStoreReference companyLogo [optional]
+		String location [optional]
+		String industry [optional]
+		CompanyType[] types [optional]
+	}
+
+	class CompanyType {
+		[ENUM]
+		EMPLOYER,
+		EDUCATIONAL_INSTITUTION,
+		CLIENT,
+		PARTNER,
+		STARTUP,
+		CORPORATION,
+		NON_PROFIT,
+		GOVERNMENT,
+		RESEARCH_INSTITUTE,
+		FREELANCE_PROJECT,
+		OPEN_SOURCE_ORGANIZATION,
+		TECHNOLOGY_VENDOR,
+		CONSULTING_FIRM,
+		AGENCY;
+	}
+
+	class ContentElement {
+		String type [required]
+	}
+
+	class HTMLElement {
+		String html [required]
+	}
+
+	class ImageElement {
+		ObjectStoreReference source [required]
+	}
+
+	class ObjectStoreReference {
+		String objectStoreUrn [required]
+	}
+
+	BaseEntity <|-- Asset : extends
+	BaseEntity <|-- Company : extends
+	BaseEntity <|-- Testimonial : extends
+	BaseEntity <|-- Skill : extends
+	BaseEntity <|-- Education : extends
+
+	Project "1" -- "0..*" Skill : requires
+	Project "1" -- "0..*" Testimonial : has
+	Project "1" -- "0..*" ContentElement : contains
+	Project "1" -- "0..1" ObjectStoreReference : has coverImage
+	Project "1" -- "1" ProjectStatus : has
+
+	TestimonialOfCompanyWorkingAuthor "1" -- "1" Company : works at
+	Job "1" -- "1" Company : works at
+	Job "1" -- "0..*" Skill : requires
+	Job "1" -- "0..*" Testimonial : has
+	Job "1" -- "0..*" ContentElement : contains
+	Job "1" -- "0..*" Project : relates to
+
+	Blog "1" -- "0..*" Skill : discusses
+	Blog "1" -- "0..*" ContentElement : contains
+	Blog "1" -- "0..1" ObjectStoreReference : has coverImage
+	Blog "0..*" -- "0..*" Project : relates to
+	Blog "0..*" -- "0..*" Job : relates to
+
+	ContentElement <|-- HTMLElement
+	ContentElement <|-- ImageElement
+	TestimonialAuthor <|-- TestimonialOfCompanyWorkingAuthor
+
+	Education "1" -- "1" Company : studied at
+	Education "1" -- "0..*" Module : contains
+
+	Module "1" -- "0..*" Skill : teaches
+	Module "1" -- "0..*" Testimonial : has
+	Module "0..*" -- "0..*" Project : relates to
+
+	Skill "1" -- "0..1" SkillCategory : consists of
+
+	Testimonial "1" -- "1" TestimonialAuthor : written by
+
+	Company "1" -- "0..*" CompanyType : has

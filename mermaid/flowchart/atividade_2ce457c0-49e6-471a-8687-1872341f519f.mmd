@@ -1,0 +1,19 @@
+flowchart TD
+    acessarSite[Acessar site FleetMaster] --> home[Home]
+    home --> autenticado{Autenticado}
+    autenticado --> sim[Sim]
+    autenticado --> nao[Não]
+
+    nao --> cadastro[Autenticar]
+    cadastro --> fazerCadastro[Fazer cadastro]
+
+    sim --> ferramentasGerenciamento{Ferramentas de Gerenciamento}
+    ferramentasGerenciamento --> cadastrarVei[Cadastrar Veiculo]
+    ferramentasGerenciamento --> cadastrarMot[Cadastrar Motorista]
+    ferramentasGerenciamento --> manutencao[Manutenção veículos]
+    ferramentasGerenciamento --> localizacao[Localização Maps]
+
+    cadastrarVei --> fim[Fim]
+    cadastrarMot --> fim[Fim]
+    manutencao --> fim[Fim]
+    localizacao --> fim[Fim]

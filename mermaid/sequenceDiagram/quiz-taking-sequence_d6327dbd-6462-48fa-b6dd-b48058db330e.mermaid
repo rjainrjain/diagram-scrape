@@ -1,0 +1,41 @@
+sequenceDiagram
+    actor User
+    participant Browser
+    participant Server
+    participant Database
+
+    User->>Browser: Select a quiz
+    Browser->>Server: GET /quiz/<quiz_id>/
+    Server->>Database: Fetch quiz details
+    Database-->>Server: Return quiz data
+    Server-->>Browser: Render quiz detail page
+    Browser-->>User: Display quiz information
+
+    User->>Browser: Click "Take Quiz"
+    Browser->>Server: GET /take/<quiz_id>/
+    Server->>Database: Fetch quiz questions
+    Database-->>Server: Return questions data
+    Server-->>Browser: Render quiz-taking page
+    Browser-->>User: Display quiz questions
+
+    loop For each question
+        User->>Browser: Select answer
+        Browser-->>User: Highlight selected answer
+    end
+
+    User->>Browser: Submit quiz
+    Browser->>Server: POST /results/<quiz_id>/
+    Server->>Database: Create QuizAttempt
+    Server->>Database: Create UserAnswers
+    Database-->>Server: Confirm data saved
+    Server->>Database: Calculate score
+    Database-->>Server: Return final score
+    Server-->>Browser: Render results page
+    Browser-->>User: Display quiz results
+
+    User->>Browser: View detailed answers
+    Browser->>Server: GET /results/<quiz_id>/
+    Server->>Database: Fetch detailed results
+    Database-->>Server: Return detailed data
+    Server-->>Browser: Render detailed results page
+    Browser-->>User: Display detailed answers and explanations

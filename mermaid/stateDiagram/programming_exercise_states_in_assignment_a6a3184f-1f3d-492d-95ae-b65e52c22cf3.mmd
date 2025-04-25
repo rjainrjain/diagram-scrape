@@ -1,0 +1,44 @@
+%%! spec: 01/11/2022
+
+stateDiagram-v2
+    direction LR
+
+    state submission_made <<choice>>
+
+    exercise_unsubmitted: Unsubmitted
+    exercise_submitted: Submitted
+
+    exercise_not_started: Not started
+    exercise_started: Started
+    exercise_correct: Correct
+    exercise_partially_correct: Partially correct
+    exercise_incorrect: Incorrect
+    exercise_reviewed: Reviewed
+
+    state exercise_unsubmitted {
+        [*] --> exercise_not_started: exercise is added in the assignment
+        exercise_not_started --> exercise_started: student wrote some code
+
+        exercise_started --> exercise_started: student wrote some code
+        exercise_started --> submission_made: student made a submission
+    }
+
+    state exercise_submitted {
+        submission_made --> exercise_incorrect: correctness = 0
+        exercise_incorrect --> submission_made: student made a submission
+        exercise_incorrect --> exercise_reviewed: staff made a review
+        exercise_incorrect --> [*]
+
+        submission_made --> exercise_partially_correct: 0 < correctness < 1
+        exercise_partially_correct --> exercise_partially_correct: student made a submission with 0 < correctness < 1
+        exercise_partially_correct --> exercise_correct: student made a submission with correctness = 1
+        exercise_partially_correct --> exercise_reviewed: staff made a review
+        exercise_partially_correct --> [*]
+
+        submission_made --> exercise_correct: correctness = 1
+        exercise_correct --> exercise_correct: student made a submission
+        exercise_correct --> exercise_reviewed: staff made a review
+        exercise_correct --> [*]
+
+        exercise_reviewed --> [*]
+    }

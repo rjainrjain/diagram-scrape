@@ -1,0 +1,17 @@
+
+sequenceDiagram
+    participant M as Main
+    participant PAEE as PortfolioAIEngineer
+    M->>PAEE: __init__()
+    PAEE->>Introduction: __init__(description)
+    PAEE->>Projects: add_project(name, description, image) (multiple)
+    PAEE->>Contact: __init__(linkedin_profile)
+    M->>PAEE: show_introduction()
+    PAEE-->>Introduction: description
+    Introduction-->>M: return description
+    M->>PAEE: show_projects()
+    PAEE-->>Projects: get_projects() (multiple)
+    Projects-->>M: return projects
+    M->>PAEE: show_contact()
+    PAEE-->>Contact: linkedin_profile
+    Contact-->>M: return linkedin_profile

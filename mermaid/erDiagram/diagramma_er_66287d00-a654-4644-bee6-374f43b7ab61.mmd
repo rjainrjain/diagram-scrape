@@ -1,0 +1,108 @@
+erDiagram
+ AnnoScolastico {
+  INTEGER annoScolasticoId PK
+  TEXT testo
+  TEXT inizio
+  TEXT fine
+ }
+
+ Classe {
+  INTEGER classeId PK
+  INTEGER annoScolasticoId FK
+  INTEGER anno
+  TEXT sezione
+  TEXT indirizzo
+  TEXT articolazione
+  INTEGER maxGiustificazioni
+ }
+
+ Studente {
+  INTEGER studenteId PK
+  TEXT nome
+  TEXT cognome
+  TEXT sesso
+  TEXT email
+ }
+
+ Registro {
+  INTEGER studenteId PK
+  INTEGER classeId PK
+ }
+
+ Argomento {
+  INTEGER argomentoId PK
+  TEXT argomento
+ }
+
+ Programmazione {
+  INTEGER classeId PK
+  INTEGER argomentoId PK
+ }
+
+ Quesito {
+  INTEGER quesitoId PK
+  INTEGER argomentoId FK
+  TEXT quesito
+ }
+
+ Assenza {
+  INTEGER studenteId PK
+  TEXT data PK
+ }
+
+ Giustificazione {
+  INTEGER studenteId PK
+  TEXT data PK
+  INTEGER immotivata
+ }
+
+ Interrogazione {
+  INTEGER interrogazioneId PK
+  INTEGER studenteId FK
+  INTEGER argomentoId FK
+  TEXT data
+  REAL voto
+  TEXT descrizione
+ }
+
+ Indicatore {
+  INTEGER indicatoreId PK
+  TEXT indicatore
+  TEXT descrizione
+  REAL peso
+ }
+
+ Descrittore {
+  INTEGER descrittoreId PK
+  INTEGER indicatoreId FK
+  TEXT descrittore
+  TEXT descrizione
+  INTEGER livello
+ }
+
+ Verbale {
+  INTEGER interrogazioneId PK
+  INTEGER quesitoId PK
+ }
+
+ Valutazione {
+  INTEGER interrogazioneId PK
+  INTEGER descrittoreId PK
+ }
+
+ Classe }o--|| AnnoScolastico : annoScolasticoId
+ Registro }o--|| Classe : classeId
+ Registro }o--|| Studente : studenteId
+ Programmazione }o--|| Argomento : argomentoId
+ Programmazione }o--|| Classe : classeId
+ Quesito }o--|| Argomento : argomentoId
+ Assenza }o--|| Studente : studenteId
+ Giustificazione }o--|| Studente : studenteId
+ Interrogazione }o--|| Argomento : argomentoId
+ Interrogazione }o--|| Studente : studenteId
+ Descrittore }o--|| Indicatore : indicatoreId
+ Verbale }o--|| Quesito : quesitoId
+ Verbale }o--|| Interrogazione : interrogazioneId
+ Valutazione }o--|| Descrittore : descrittoreId
+ Valutazione }o--|| Interrogazione : interrogazioneId
+

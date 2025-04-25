@@ -1,0 +1,23 @@
+sequenceDiagram
+    participant S as Service
+    participant QM as QueueManager
+    participant P as Publisher
+    participant MQ as Message Queue
+    participant C as Consumer
+    participant H as MessageHandler
+
+    S->>QM: get_publisher(queue_name)
+    QM->>P: create_publisher()
+    P-->>QM: Publisher Instance
+    QM-->>S: Publisher Instance
+    S->>P: publish_message(message)
+    P->>MQ: Send Message
+    MQ-->>P: Confirmation
+    P-->>S: Success
+
+    C->>MQ: Poll for Messages
+    MQ-->>C: New Message
+    C->>H: process_message(message)
+    H->>H: Handle Message
+    H-->>C: Processing Result
+    C->>MQ: Acknowledge Message

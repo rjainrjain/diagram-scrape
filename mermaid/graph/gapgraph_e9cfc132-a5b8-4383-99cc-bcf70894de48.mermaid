@@ -1,0 +1,40 @@
+graph LR
+subgraph PréparationAnalyse
+    A[Sujet de recherche] 
+end
+
+subgraph AgentGap
+C{Modèle de langage} 
+end
+
+subgraph AgentRevue
+O{Modèle de langage} 
+end
+
+AgentRevue --> AgentGap
+
+subgraph Métaprompt
+    D[Métaprompt avec exemples] --> E
+    E[Génération d'une instruction adaptée] --> F
+    F[Extraction de l'instruction générée]  
+end
+
+Métaprompt --> AgentGap
+PréparationAnalyse --> AgentGap
+
+subgraph AnalyseLacunes
+G[Résumé des principaux<br>thèmes et résultats] 
+H[Identification des lacunes,<br>questions non résolues<br>et domaines sous-explorés]
+I[Suggestions d'opportunités<br>et directions de<br>recherche future] 
+J[Discussion de la<br>pertinence et de l'impact<br>pour le domaine]
+end
+
+G --> K[Texte extrant]
+H --> K 
+I --> K
+J --> K
+
+AgentGap --> G
+AgentGap --> H
+AgentGap --> I
+AgentGap --> J

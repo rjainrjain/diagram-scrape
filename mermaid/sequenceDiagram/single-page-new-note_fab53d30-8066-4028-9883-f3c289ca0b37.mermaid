@@ -1,0 +1,11 @@
+sequenceDiagram
+    participant browser
+    participant server
+
+   browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+   activate server
+       Note left of server: The server stores the new note
+
+   server-->>browser: [{"message":"note created"}]
+   deactivate server
+    Note right of browser: The browser inserts the new note into the DOM to be rendered

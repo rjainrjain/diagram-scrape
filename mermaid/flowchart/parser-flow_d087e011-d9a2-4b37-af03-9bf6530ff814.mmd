@@ -1,0 +1,11 @@
+---
+title: Parser Flow [2.26.23]
+---
+
+flowchart TB
+    id1(1. Read object - lexical analysis ) -->
+    id2[2. Parse object - semantic parsing] -->
+    id4[3. Model object - synatical assignment] -->
+    id5[4. Validate object - synatical analysis] -->
+    id6(((5. Final)))
+    id5 --> id2

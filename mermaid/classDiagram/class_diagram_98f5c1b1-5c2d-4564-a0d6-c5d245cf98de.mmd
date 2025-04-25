@@ -1,0 +1,260 @@
+%%{init: { class: { useMaxWidth: false }}}%%
+classDiagram
+    direction LR
+
+    class Category {
+        +Integer category_id
+        +Integer race_id
+        +Integer event_category_id
+        +Enum status
+        +Interval time_offset
+        +SmallInteger vacancies_before
+        +SmallInteger vacancies_after
+        +SmallInteger starter_limit
+    }
+    Category "*" -- "" Race : race / categories
+    Category --> "" EventCategory : event_category
+    Category "" -- "*" CategoryCourseAssignment : courses / category
+    Category "" -- "*" Start : starts / category
+
+    class CategoryCourseAssignment {
+        +Integer category_id
+        +SmallInteger leg
+        +Integer course_id
+    }
+    CategoryCourseAssignment "*" -- "" Course : course / categories
+
+    class Competitor {
+        +Integer competitor_id
+        +Integer entry_id
+        +SmallInteger entry_sequence
+        +SmallInteger leg_number
+        +SmallInteger leg_order
+        +Integer person_id
+        +Integer organisation_id
+    }
+    Competitor "*" -- "" Entry : entry / competitors
+    Competitor --> "" Person : person
+    Competitor --> "0..1" Organisation : organisation
+    Competitor --> "*" ControlCard : control_cards
+    Competitor "" -- "*" CompetitorStart : starts / competitor
+    Competitor "" -- "*" CompetitorXID : external_ids / competitor
+
+    class CompetitorResult {
+        +Integer competitor_result_id
+        +DateTime start_time
+        +DateTime finish_time
+        +Interval time_adjustment
+        +Interval time
+        +Enum status
+    }
+    CompetitorResult "" -- "" CompetitorStart : competitor_start / competitor_result
+
+    class CompetitorStart {
+        +Integer competitor_start_id
+        +Integer start_id
+        +Integer competitor_id
+        +Interval time_offset
+        +Integer control_card_id
+    }
+    CompetitorStart "*" -- "" Start : start / competitor_starts
+    CompetitorStart --> "0..1" ControlCard : control_card
+
+    class CompetitorXID {
+        +String issuer
+        +String external_id
+        +Integer competitor_id
+    }
+
+    class Control {
+        +Integer control_id
+        +Integer race_id
+        +String label
+    }
+    Control "*" -- "" Race : race / controls
+
+    class ControlCard {
+        +Integer control_card_id
+        +Enum system
+        +String label
+    }
+
+    class Country {
+        +Integer country_id
+        +String name
+        +String iso_alpha_2
+        +String iso_alpha_3
+        +String ioc_code
+    }
+
+    class Course {
+        +Integer course_id
+        +Integer race_id
+        +String name
+        +Float length
+        +Float climb
+    }
+    Course "*" -- "" Race : race / courses
+    Course "" -- "*" CourseControl : controls / course
+
+    class CourseControl {
+        +Integer course_control_id
+        +Integer course_id
+        +Integer control_id
+        +Float leg_length
+        +Float leg_climb
+        +Enum type
+        +Float score
+        +Integer order
+        +Integer after_course_control_id
+        +Integer before_course_control_id
+    }
+    CourseControl --> "" Control : control
+    CourseControl --> "0..1" CourseControl : after
+    CourseControl --> "0..1" CourseControl : before
+
+    class Entry {
+        +Integer entry_id
+        +Integer event_id
+        +Integer number
+        +String name
+        +Integer organisation_id
+    }
+    Entry "*" -- "" Event : event / entries
+    Entry --> "0..1" Organisation : organisation
+    Entry "" -- "*" EntryCategoryRequest : category_requests / entry
+    Entry --> "*" StartTimeAllocationRequest : start_time_allocation_requests
+    Entry "" -- "*" Start : starts / entry
+    Entry "" -- "*" EntryXID : external_ids / entry
+
+    class EntryCategoryRequest {
+        +Integer entry_id
+        +SmallInteger preference
+        +Integer event_category_id
+    }
+    EntryCategoryRequest "*" -- "" EventCategory : event_category / entry_requests
+
+    class EntryXID {
+        +String issuer
+        +String external_id
+        +Integer entry_id
+    }
+
+    class Event {
+        +Integer event_id
+        +String name
+        +DateTime start_time
+        +DateTime end_time
+        +Enum form
+    }
+    Event "" -- "*" Race : races / event
+    Event "0..1" -- "*" EventCategory : event_categories / event
+    Event "" -- "*" EventXID : external_ids / event
+
+    class EventCategory {
+        +Integer event_category_id
+        +Integer event_id
+        +String name
+        +String short_name
+        +Enum status
+        +SmallInteger min_age
+        +SmallInteger max_age
+        +Enum sex
+        +SmallInteger min_number_of_team_members
+        +SmallInteger max_number_of_team_members
+        +SmallInteger min_team_age
+        +SmallInteger max_team_age
+        +SmallInteger starter_limit
+    }
+    EventCategory "" -- "*" Leg : legs / event_category
+    EventCategory "" -- "*" EventCategoryXID : external_ids / event_category
+
+    class EventCategoryXID {
+        +String issuer
+        +String external_id
+        +Integer event_category_id
+    }
+
+    class EventXID {
+        +String issuer
+        +String external_id
+        +Integer event_id
+    }
+
+    class Leg {
+        +Integer leg_id
+        +Integer event_category_id
+        +SmallInteger leg_number
+        +SmallInteger min_number_of_competitors
+        +SmallInteger max_number_of_competitors
+    }
+
+    class Organisation {
+        +Integer organisation_id
+        +String name
+        +String short_name
+        +Integer country_id
+        +Enum type
+    }
+    Organisation --> "0..1" Country : country
+    Organisation "" -- "*" OrganisationXID : external_ids / organisation
+
+    class OrganisationXID {
+        +String issuer
+        +String external_id
+        +Integer organisation_id
+    }
+
+    class Person {
+        +Integer person_id
+        +String title
+        +String family_name
+        +String given_name
+        +Date birth_date
+        +Integer country_id
+        +Enum sex
+    }
+    Person --> "0..1" Country : country
+    Person "" -- "*" PersonXID : external_ids / person
+
+    class PersonXID {
+        +String issuer
+        +String external_id
+        +Integer person_id
+    }
+
+    class Race {
+        +Integer race_id
+        +Integer event_id
+        +TIMESTAMP first_start
+    }
+
+    class Result {
+        +Integer result_id
+        +DateTime start_time
+        +DateTime finish_time
+        +Interval time_adjustment
+        +Interval time
+        +Enum status
+        +Integer position
+    }
+    Result "" -- "" Start : start / result
+
+    class Start {
+        +Integer start_id
+        +Integer category_id
+        +Integer entry_id
+        +Boolean competitive
+        +Interval time_offset
+    }
+
+    class StartTimeAllocationRequest {
+        +Integer start_time_allocation_request_id
+        +Integer entry_id
+        +Enum type
+        +Integer organisation_id
+        +Integer person_id
+    }
+    StartTimeAllocationRequest "*" -- "" Entry : entry / start_time_allocation_requests
+    StartTimeAllocationRequest --> "0..1" Organisation : organisation
+    StartTimeAllocationRequest --> "0..1" Person : person

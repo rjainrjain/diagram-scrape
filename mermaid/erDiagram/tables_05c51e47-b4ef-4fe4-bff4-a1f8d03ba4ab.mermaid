@@ -1,0 +1,61 @@
+---
+title: IFA Tables
+---
+erDiagram
+    EVENT many--one VENUE : "takes place at"
+    COMPETITOR one or zero--one USER :  ""
+    ORGANISER  one or zero--one USER :  ""
+
+    ORGANISER {
+        int id PK
+        int user_id FK "user"
+    }
+
+    USER {
+        int id PK
+        text email UK
+        text family_name
+        text given_names
+        text password
+    }
+
+    COMPETITOR {
+        int id PK
+        int user_id FK "user"
+        text nationality
+        date date_of_birth
+        text emergency_contact
+    }
+
+    VENUE {
+        int id PK
+        text name
+        text address
+        text contact_email
+    }
+
+    EVENT {
+        int id PK
+        int venue_id FK "venue"
+        text name
+        text description
+        text country
+        int stars "1 to 4"
+        date start_date
+        date end_date
+        text contact_email
+    }
+
+    EVENT_ENTRY many--one EVENT : "entered in"
+    EVENT_ENTRY many--one COMPETITOR : "entrant"
+    EVENT_ENTRY {
+        int competitor_id FK "compound key"
+        int event_id FK "compound key"
+    }
+
+    EVENT_ORGANISER many--one EVENT : "organised by"
+    EVENT_ORGANISER many--one ORGANISER : "organises"
+    EVENT_ORGANISER {
+        int event_id FK "compound key"
+        int organiser_id FK "compound"
+    }

@@ -1,0 +1,22 @@
+classDiagram
+    class SortingAlgorithm {
+        <<interface>>
+        +sort(array: int[]): void
+        +compare(a: int, b: int): boolean
+        +swap(array: int[], i: int, j: int): void
+    }
+    class InsertionSort {
+        -findInsertionPoint(array: int[], start: int, key: int): int
+        +sort(array: int[]): void
+    }
+    class SelectionSort {
+        -findMinimum(array: int[], start: int): int
+        +sort(array: int[]): void
+    }
+    class SortAnalyzer {
+        +measureTime(algorithm: SortingAlgorithm, array: int[]): long
+        +compareAlgorithms(algorithms: List<SortingAlgorithm>, array: int[]): void
+    }
+    SortingAlgorithm <|-- InsertionSort
+    SortingAlgorithm <|-- SelectionSort
+    SortAnalyzer --> SortingAlgorithm

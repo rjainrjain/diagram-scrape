@@ -1,0 +1,18 @@
+```mermaid
+sequenceDiagram
+    participant Sender
+    participant Subscriber
+    participant Client_A as Client A
+    participant Client_B as Client B
+    participant Client_C as Client C
+
+    note right of Sender: Sender
+    
+    note right of Subscriber: Subscriber
+
+    Client_A ->> Client_B: Audio & Video track
+    Client_B ->> Client_C: Audio & Video track
+    Client_A ->> Client_C: Screen Sharing Track
+
+    note left of Client_B: Note: To avoid additional costs, do not subscribe to a local screen sharing track.
+```

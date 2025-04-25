@@ -1,0 +1,15 @@
+sequenceDiagram
+actor A as Application
+participant C as circle: Circle
+
+create participant V as visitor: XMLExportVisitor
+A->>V: <<create>>
+
+A ->> C : 1. accept(visitor)
+C ->>+ V : 2. visitCircle(circle)
+V ->>+ C : 3. necessary data access
+C -->>- V : return data
+V -->>- A : 4. return formatted result
+
+
+

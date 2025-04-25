@@ -1,0 +1,10 @@
+graph TD
+    A[Qualtrics Survey Platform] -->|Survey Data| B[Qualtrics Plugin]
+    B -->|Hashed Data| C[Web Server]
+    C -->|Process Data| D[Smart Contract Executor]
+    D -->|Execute Contract| E[Cardano Blockchain]
+    F[User Interface] -->|Interact| C
+    F -->|View Results| C
+    G[Researcher] -->|Create Survey| A
+    G -->|Verify Data| F
+    H[Survey Participant] -->|Respond| A

@@ -1,0 +1,20 @@
+erDiagram
+  Appartement {
+    TYPE num_appart PK
+    TYPE nb_pieces
+  }
+  Etage {
+    TYPE num_etage PK
+    TYPE nb_appartements
+  }
+  Immeuble {
+    TYPE num_immeuble PK
+    TYPE nb_etages
+  }
+  Rue {
+    TYPE code_rue PK
+    TYPE nom_rue
+  }
+  Etage ||..o{ Appartement: Composer
+  Immeuble ||..|{ Etage: Appartenir
+  Rue ||..o{ Immeuble: Se_situer

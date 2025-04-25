@@ -1,0 +1,24 @@
+graph TD
+    A[Data Source] --> |Raw Data| B[Data Ingestion Service]
+    B --> |Publish| C{ZeroMQ PUB/SUB}
+    C --> |Subscribe| D[Data Preprocessing Service]
+    D --> |Publish| C
+    C --> |Subscribe| E[Strategy Engine Service]
+    E --> |Publish| C
+    C --> |Subscribe| F[Execution Engine Service]
+    F --> |Publish| C
+    C --> |Subscribe| G[Performance Analysis Service]
+    G --> |Publish| C
+    C --> |Subscribe| H[Reporting Service]
+    
+    I[Configuration Service] --> |Publish| C
+    
+    J[Historical Data Store] <--> |Read/Write| D
+    J <--> |Read/Write| F
+    
+    K[Risk Management Service] --> |Publish| C
+    C --> |Subscribe| K
+    
+    L[Optimization Engine Service] <--> |Publish/Subscribe| C
+    
+    M[Event Logger Service] --> |Subscribe| C

@@ -1,0 +1,12 @@
+classDiagram
+    class SNMPTrapRelay {
+        -logger
+        -flask_host
+        -flask_port
+        -url
+        -timeout
+        -session
+        -HEADERS
+        +__init__(logger)
+        +relay_SNMP_trap(trap_dict)
+    }

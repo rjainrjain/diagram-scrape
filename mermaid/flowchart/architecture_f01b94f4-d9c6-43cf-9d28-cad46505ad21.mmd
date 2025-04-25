@@ -1,0 +1,47 @@
+flowchart LR
+
+  U["fa:fa-user User"]
+  AG["Konflux 
+  API Gateway"]
+  WA["Workspaces API"]
+  MC["Member Clusters"]
+
+  subgraph KS["KubeSaw"]
+    direction TB
+    RS["Registration Service"]
+    P["Proxy"]
+  end
+
+  subgraph WO["Workspaces Operator"]
+    direction TB
+    W["Workspace"]
+  end
+
+  subgraph HostCluster
+    direction TB
+    subgraph KubeSaw
+      direction TB
+      US["User Signup"]
+      MUR["Master User Record"]
+      SB["Space Binding"]
+      S["Space"]
+    end
+  end
+
+
+  U --> AG
+  AG -- "/api/k8s/registration/api/v1/signup" --> RS
+  AG -- "/api/k8s/workspaces.konflux-ci.dev/workspaces" --> WA
+  AG -- "/apis/k8s/[workspaces/:name]/apis/*" --> P
+
+  RS --> US
+  WO --> S
+  WO --> SB
+  WO -. "watches" .-> US
+
+  WA --> W
+
+  P --> MC
+  KubeSaw --> MC
+  
+%%{init: {'flowchart': {'curve': 'linear'}}}%%

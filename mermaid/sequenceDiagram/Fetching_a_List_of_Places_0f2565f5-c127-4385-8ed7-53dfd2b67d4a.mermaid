@@ -1,0 +1,12 @@
+sequenceDiagram
+    participant User
+    participant API
+    participant BusinessLogic
+    participant Persistence
+
+    User->>API: Call List Of Place(based on criteria)
+    API->>BusinessLogic: Validate List of Places
+    BusinessLogic->>Persistence: Query places from Database
+    Persistence-->>BusinessLogic: Return List of Places
+    BusinessLogic-->>API: Send List of Places
+    API-->>User: Return List of Places

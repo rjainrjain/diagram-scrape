@@ -1,0 +1,63 @@
+classDiagram
+    class User {
+        + userId: String
+        + userType: Enum('POS', 'Admin')
+        + firstName: String
+        + middleName: String
+        + lastName: String
+    }
+
+    class Event {
+        + eventId: String
+        + eventName: String
+        + eventDate: Date
+        + location: String
+        + creatorId: String
+    }
+
+    class Fighter {
+        + fighterId: String
+        + name: String
+        + weight: Double
+        + breed: String
+        + trainer: String
+    }
+
+    class Fight {
+        + fightId: String
+        + eventId: String
+        + meronId: String
+        + walaId: String
+        + startTime: DateTime
+        + isLocked: Boolean
+        + winner: Enum('Meron', 'Wala', 'Draw')
+    }
+
+    class Bet {
+        + betId: String
+        + betAmount: Double
+        + betDetails: String
+        + transactionId: String
+        + qrToken: String
+        + posId: String
+        + fightId: String
+        + betOn: Enum('Meron', 'Wala')
+    }
+
+    class Prize {
+        + prizeId: String
+        + betId: String
+        + prizeAmount: Double
+        + isClaimed: Boolean
+    }
+
+    User "1" --o "0..*" Event : creates
+    Event "1" --o "0..*" Fight : includes
+    Fight "1" --o "0..*" Bet : contains
+    Fight "1" --|> Fighter : hasMeron
+    Fight "1" --|> Fighter : hasWala
+    Bet "1" --|> Prize : associatedWith
+    User "1" --o "0..*" Bet : places
+
+
+' VIEW IN https://mermaid.live/

@@ -1,0 +1,34 @@
+classDiagram
+            
+    class Controller{
+    }
+
+    Grid "1" o-- Difficulty
+    class Difficulty{
+        <<Enumeration>>
+        EASY
+        MEDIUM
+        HARD
+        VERY_HARD
+        INSANE
+        INHUMAN
+    }
+
+    Controller "*" o-- Grid
+    class Grid{
+    }
+
+    Grid "1" o-- Leaderboard
+    class Leaderboard{
+    }
+
+    Grid "1" o-- History
+    class History{
+    }
+
+    Leaderboard "*" o-- Score
+    class Score{
+      +int value
+      +int rank
+      +String name
+    }

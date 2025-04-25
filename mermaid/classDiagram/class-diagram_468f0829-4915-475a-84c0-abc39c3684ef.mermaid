@@ -1,0 +1,199 @@
+classDiagram
+    %% Model Classes
+    class User {
+        -String userId
+        -String name
+        -UserRole role
+        -String password
+        +User(String userId, String name, UserRole role)
+        +String getUserId()
+        +String getName()
+        +UserRole getRole()
+    }
+
+    class Patient {
+        -LocalDate dateOfBirth
+        -String gender
+        -String contactInfo
+        -String bloodType
+        -MedicalRecord medicalRecord
+        +Patient(String userId, String name, LocalDate dob, String gender)
+        +MedicalRecord getMedicalRecord()
+        +String getContactInfo()
+        +void setContactInfo(String contactInfo)
+    }
+
+    class Doctor {
+        -String specialization
+        -Map~LocalDate, List~LocalTime~~ schedule
+        +Doctor(String userId, String name, String specialization)
+        +String getSpecialization()
+        +Map~LocalDate, List~LocalTime~~ getSchedule()
+        +void setSchedule(Map~LocalDate, List~LocalTime~~ schedule)
+    }
+
+    class Appointment {
+        -String appointmentId
+        -Patient patient
+        -Doctor doctor
+        -LocalDateTime dateTime
+        -AppointmentStatus status
+        -AppointmentOutcomeRecord outcomeRecord
+        +String getAppointmentId()
+        +AppointmentStatus getStatus()
+        +void setStatus(AppointmentStatus status)
+    }
+
+    class Medication {
+        -String name
+        -String description
+        -int lowStockThreshold
+        -double price
+        +String getName()
+        +double getPrice()
+        +int getLowStockThreshold()
+    }
+
+    class Inventory {
+        -Map~Medication, Integer~ medicationStock
+        +void addMedication(Medication medication, int initialStock)
+        +void updateStock(Medication medication, int quantity)
+        +int getStockLevel(Medication medication)
+        +boolean isLowStock(Medication medication)
+        +List~Medication~ getLowStockMedications()
+        +void removeMedication(Medication medication)
+        +Map~Medication, Integer~ getAllMedicationStock()
+    }
+
+    %% Controller Classes
+    class UserController {
+        -UserDAO userDAO
+        +boolean login(String userId, String password)
+        +void changePassword(String userId, String newPassword)
+        +User getUserById(String userId)
+    }
+
+    class PatientController {
+        -PatientDAO patientDAO
+        -MedicalRecordDAO medicalRecordDAO
+        +void updatePersonalInfo(String patientId, Map~String, String~ newInfo)
+        +MedicalRecord getMedicalRecord(String patientId)
+        +List~Appointment~ getScheduledAppointments(String patientId)
+    }
+
+    class DoctorController {
+        -DoctorDAO doctorDAO
+        -AppointmentDAO appointmentDAO
+        +void setAvailability(String doctorId, LocalDate date, List~LocalTime~ slots)
+        +void updatePatientRecord(String patientId, String diagnosis)
+        +List~Appointment~ getUpcomingAppointments(String doctorId)
+    }
+
+    class AppointmentController {
+        -AppointmentDAO appointmentDAO
+        +void scheduleAppointment(String patientId, String doctorId, LocalDateTime dateTime)
+        +void cancelAppointment(String appointmentId)
+        +void updateAppointmentStatus(String appointmentId, AppointmentStatus status)
+    }
+
+    class PharmacyController {
+        -InventoryDAO inventoryDAO
+        -PrescriptionDAO prescriptionDAO
+        +void updatePrescriptionStatus(String prescriptionId, PrescriptionStatus status)
+        +void submitReplenishmentRequest(String medicationId, int quantity)
+        +List~Medication~ getLowStockMedications()
+    }
+
+    class AdminController {
+        -UserDAO userDAO
+        -InventoryDAO inventoryDAO
+        +void addStaffMember(User staff)
+        +void removeStaffMember(String staffId)
+        +void approveReplenishmentRequest(String requestId)
+    }
+
+    %% View Classes
+    class MainMenuView {
+        +void displayLoginMenu()
+        +void displayMainMenu(UserRole role)
+        +void showError(String message)
+    }
+
+    class PatientView {
+        +void displayMedicalRecord(MedicalRecord record)
+        +void displayAppointments(List~Appointment~ appointments)
+        +void showAppointmentBookingForm()
+    }
+
+    class DoctorView {
+        +void displaySchedule(Map~LocalDate, List~LocalTime~~ schedule)
+        +void displayPatientList(List~Patient~ patients)
+        +void showPatientRecordForm()
+    }
+
+    class PharmacistView {
+        +void displayInventory(List~Medication~ medications)
+        +void displayPrescriptions(List~Prescription~ prescriptions)
+        +void showReplenishmentForm()
+    }
+
+    class AdminView {
+        +void displayStaffList(List~User~ staff)
+        +void displayInventoryReport(Report report)
+        +void showStaffManagementForm()
+    }
+
+    %% Data Access Objects
+    class UserDAO {
+        +User findById(String userId)
+        +void save(User user)
+        +void delete(String userId)
+        +List~User~ findAll()
+    }
+
+    class AppointmentDAO {
+        +Appointment findById(String appointmentId)
+        +void save(Appointment appointment)
+        +List~Appointment~ findByPatient(String patientId)
+        +List~Appointment~ findByDoctor(String doctorId)
+    }
+
+    class InventoryDAO {
+        +void updateStock(String medicationId, int quantity)
+        +List~Medication~ findLowStock()
+        +Medication findById(String medicationId)
+    }
+
+    %% Relationships
+    User <|-- Patient
+    User <|-- Doctor
+    User <|-- Pharmacist
+    User <|-- Administrator
+
+    %% Controller-Model relationships
+    UserController --> UserDAO
+    PatientController --> PatientDAO
+    DoctorController --> DoctorDAO
+    AppointmentController --> AppointmentDAO
+    PharmacyController --> InventoryDAO
+    AdminController --> UserDAO
+    AdminController --> InventoryDAO
+
+    %% Controller-View relationships
+    MainMenuView --> UserController
+    PatientView --> PatientController
+    DoctorView --> DoctorController
+    PharmacistView --> PharmacyController
+    AdminView --> AdminController
+
+    %% Model relationships
+    Patient "1" -- "1" MedicalRecord
+    Appointment "1" -- "1" Patient
+    Appointment "1" -- "1" Doctor
+    Inventory "1" -- "*" Medication
+    InventoryDAO --> Inventory
+
+    %% Enums
+    AppointmentStatus -- Appointment
+    PrescriptionStatus -- Prescription
+    UserRole -- User

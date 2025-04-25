@@ -1,0 +1,140 @@
+classDiagram
+  direction LR
+
+  class Controller {
+    +responseSuccess() JsonResponse
+    +responseFailed() JsonResponse
+  }
+
+  class AuthController {
+    +register(request) JsonResponse
+    +login() JsonResponse
+    +me() JsonResponse
+    +logout() JsonResponse
+    +refresh() JsonResponse
+    #respondWithTokenAndUser(token, user) array
+  }
+
+  class CategoryController {
+    +index(request) JsonResponse
+    +paginated(request) JsonResponse
+    +store(request) JsonResponse
+    +show(request, slug) JsonResponse
+    +update(request, slug) JsonResponse
+    +destroy(slug) JsonResponse
+  }
+
+  class DashboardController {
+    +store_sales(request) JsonResponse
+    +store_sales_summary(request) JsonResponse
+    +store_order_summary(request) JsonResponse
+    +store_rating_summary(request) JsonResponse
+    +store_order_status_count(request) JsonResponse
+    +store_order_top_province(request) JsonResponse
+    +store_order_top_customers(request) JsonResponse
+    +store_order_top_methods(request) JsonResponse
+    +store_order_top_products(request) JsonResponse
+    +admin_stores_count(request) JsonResponse
+    +admin_products_count(request) JsonResponse
+    +admin_users_count(request) JsonResponse
+    +admin_categories_count(request) JsonResponse
+    +admin_order_top_products(request) JsonResponse
+    +admin_order_top_stores(request) JsonResponse
+    +admin_review_top_products(request) JsonResponse
+    +admin_review_top_stores(request) JsonResponse
+  }
+
+  class NotificationController {
+    +index(request) JsonResponse
+    +count(request) JsonResponse
+    +mark_read(request) JsonResponse
+  }
+
+  class OrderController {
+    +user_transactions(request) JsonResponse
+    +paginated_user_transactions(request) JsonResponse
+    +user_orders(request) JsonResponse
+    +paginated_user_orders(request) JsonResponse
+    +show_store_order(request, order_number) JsonResponse
+    +store_orders(request) JsonResponse
+    +paginated_store_orders(request) JsonResponse
+    +get_token(request) JsonResponse
+    +update_transaction_by_token(UpdateTransactionRequestJsonResponse
+    +notification() JsonResponse
+    +accept_order(request) JsonResponse
+    +ship_order(request) JsonResponse
+    +delivered_order(request) JsonResponse
+    +cancel_order(request) JsonResponse
+    +user_complete_order(request) JsonResponse
+    +user_cancel_order(request) JsonResponse
+  }
+
+  class ProductController {
+    +index(request) JsonResponse
+    +paginated(request) JsonResponse
+    +paginated_recomendation(request) JsonResponse
+    +store_products(request, store_slug) JsonResponse
+    +paginated_store_products(request, store_slug) JsonResponse
+    +category_products(request, category_slug) JsonResponse
+    +paginated_category_products(request, category_slug) JsonResponse
+    +store(request, store_slug) JsonResponse
+    +update(request, store_slug, product_slug) JsonResponse
+    +store_images(request, store_slug, product_slug) JsonResponse
+    +destroy_image(request, store_slug, product_slug) JsonResponse
+    +show(request, store_slug, product_slug) JsonResponse
+    +paginated_product_reviews(request, store_slug, product_slug) JsonResponse
+    +destroy(store_slug, product_slug) JsonResponse
+    +upload_create_image(productId, image, isMainImage) data
+  }
+
+  class ReviewController {
+    +user_reviews(request) JsonResponse
+    +paginated_user_reviews(request) JsonResponse
+    +create(request) JsonResponse
+  }
+
+  class StoreBannerController {
+    +index(request, slug) JsonResponse
+    +store(request, slug) JsonResponse
+    +update(request, slug, id) JsonResponse
+    +destroy(slug, id) JsonResponse
+  }
+
+  class StoreCategoryController {
+    +index(request, slug) JsonResponse
+    +store(request, slug) JsonResponse
+    +show(storeCategory) JsonResponse
+    +update(request, slug, id) JsonResponse
+    +destroy(slug, id) JsonResponse
+  }
+
+  class StoreController {
+    +mystore(request) JsonResponse
+    +index(request) JsonResponse
+    +paginated(request) JsonResponse
+    +store(request) JsonResponse
+    +show(request, slug) JsonResponse
+    +update(request, slug) JsonResponse
+    +update_store_status(request, slug) JsonResponse
+    +destroy(slug) JsonResponse
+  }
+
+  class VariantTypeController {
+    +index(request) JsonResponse
+    +paginated(request) JsonResponse
+    +store(request) JsonResponse
+    +update(request, id) JsonResponse
+    +destroy(id) JsonResponse
+  }
+
+  Controller<|--AuthController
+  Controller<|--CategoryController
+  Controller<|--DashboardController
+  Controller<|--NotificationController
+  Controller<|--OrderController
+  Controller<|--ProductController
+  Controller<|--ReviewController
+  Controller<|--StoreBannerController
+  Controller<|--StoreCategoryController
+  Controller<|--StoreController
+  Controller<|--VariantTypeController

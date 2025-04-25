@@ -1,0 +1,29 @@
+classDiagram
+    class User{
+        +int id
+        +str email
+        +str password
+        +str first_name
+        +str last_name
+        +str phone_number
+        +datetime created_at
+        +datetime updated_at
+        +bool is_active
+        +bool is_superuser
+    }
+    class Wallet{
+        +int id
+        +int user_id
+        +float balance
+        +datetime created_at
+        +datetime updated_at
+    }
+    class Transaction{
+        +int id
+        +int sender_wallet_id
+        +int receiver_wallet_id
+        +float amount
+        +datetime created_at
+    }
+    User "1" -- "1" Wallet: has
+    Wallet "1" -- "*" Transaction: has

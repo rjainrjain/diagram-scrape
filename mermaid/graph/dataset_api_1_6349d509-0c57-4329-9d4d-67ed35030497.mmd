@@ -1,0 +1,9 @@
+graph LR
+    A(DataFrame) --> C(Structured APIs)
+    B(Dataset) --> C
+    C --> D(Untyped APIs)
+    C --> E(Typed APIs)
+    D --> F("DataFrame = Dataset[Row]")
+    D --> G(Alias in Scala)
+    E --> H("Dataset[T]")
+    E --> I(In Scala & Java)

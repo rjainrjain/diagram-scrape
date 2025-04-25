@@ -1,0 +1,105 @@
+flowchart LR
+          Platform:AIplatform[<b>Platform</b><br/>Google AI Platform]
+          Application:CloudML[<b>Application</b><br/>Google Cloud ML Engine]
+          PlatformType:MachineLearning[<b>PlatformType</b><br/>Machine Learning]
+          ApplicationType:MachineLearningPlatform[<b>ApplicationType</b><br/>Machine Learning Platform]
+          Platform:AIplatform-->|application| Application:CloudML
+          Platform:AIplatform-->|type| PlatformType:MachineLearning
+          Application:CloudML-->|type| ApplicationType:MachineLearningPlatform
+          
+          Application:CloudVision[<b>Application</b><br/>Google Cloud Vision]
+          ApplicationType:ComputerVision[<b>ApplicationType</b><br/>Computer Vision]
+          Platform:AIplatform-->|application| Application:CloudVision
+          Application:CloudVision-->|type| ApplicationType:ComputerVision
+          Application:TensorFlow[<b>Application</b><br/>TensorFlow]
+          Module:Keras[<b>Module</b><br/>TensorFlow Keras]
+          Platform:AIplatform-->|application| Application:TensorFlow
+          Application:TensorFlow-->|module| Module:Keras
+          ApplicationType:MachineLearning[<b>ApplicationType</b><br/>Machine Learning]
+          Application:TensorFlow-->|type| ApplicationType:MachineLearning
+          Vendor:Google[<b>Vendor</b><br/>Google]
+          Person:JohnSmith[<b>Person</b><br/>John Smith]
+          Platform:AIplatform-->|vendor| Vendor:Google
+          Vendor:Google-->|executive| Person:JohnSmith
+          coreaa:VendorType#SoftwareCompany[<b>VendorType</b><br/>Software Company]
+          Vendor:Google-->|type| coreaa:VendorType#SoftwareCompany
+          coreaa:VendorType#MachineLearningPlatform[<b>VendorType</b><br/>Machine Learning Platform]
+          Vendor:Google-->|type| coreaa:VendorType#MachineLearningPlatform
+          coreaa:VendorType#CloudProvider[<b>VendorType</b><br/>Cloud Provider]
+          Vendor:Google-->|type| coreaa:VendorType#CloudProvider
+Platform:CloudBased[<b>Platform</b><br/>Amazon Cloud Based Platform]
+          Application:EC2[<b>Application</b><br/>Amazon EC2]
+          PlatformType:CloudBased[<b>PlatformType</b><br/>Cloud Based]
+          ApplicationType:CloudCompute[<b>ApplicationType</b><br/>Cloud Compute]
+          Platform:CloudBased-->|application| Application:EC2
+          Platform:CloudBased-->|type| PlatformType:CloudBased
+          Application:EC2-->|type| ApplicationType:CloudCompute
+          Module:Instances[<b>Module</b><br/>Amazon EC2 Instances]
+          Application:EC2-->|module| Module:Instances
+          Application:RDS[<b>Application</b><br/>Amazon RDS]
+          Module:DBInstances[<b>Module</b><br/>Amazon RDS DB Instances]
+          Platform:CloudBased-->|application| Application:RDS
+          Application:RDS-->|module| Module:DBInstances
+          ApplicationType:DatabaseService[<b>ApplicationType</b><br/>Database Service]
+          Application:RDS-->|type| ApplicationType:DatabaseService
+          Application:S3[<b>Application</b><br/>Amazon S3]
+          ApplicationType:CloudStorage[<b>ApplicationType</b><br/>Cloud Storage]
+          Platform:CloudBased-->|application| Application:S3
+          Application:S3-->|type| ApplicationType:CloudStorage
+          Module:Buckets[<b>Module</b><br/>Amazon S3 Buckets]
+          Application:S3-->|module| Module:Buckets
+          Vendor:Amazon[<b>Vendor</b><br/>Amazon]
+          coreaa:VendorType#ECommerceCompany[<b>VendorType</b><br/>E-Commerce Company]
+          Platform:CloudBased-->|vendor| Vendor:Amazon
+          Vendor:Amazon-->|type| coreaa:VendorType#ECommerceCompany
+          Vendor:Amazon-->|type| coreaa:VendorType#MachineLearningPlatform
+          Vendor:Amazon-->|type| coreaa:VendorType#CloudProvider
+          Person:BobJohnson[<b>Person</b><br/>Bob Johnson]
+          Vendor:Amazon-->|executive| Person:BobJohnson
+Platform:DevOps[<b>Platform</b><br/>Microsoft DevOps Platform]
+          Application:AzureDevOps[<b>Application</b><br/>Azure DevOps]
+          ApplicationType:DevOps[<b>ApplicationType</b><br/>DevOps]
+          Platform:DevOps-->|application| Application:AzureDevOps
+          Platform:DevOps-->|type| PlatformType:CloudBased
+          Application:AzureDevOps-->|type| ApplicationType:DevOps
+          Module:Boards[<b>Module</b><br/>Azure Boards]
+          Application:AzureDevOps-->|module| Module:Boards
+          Module:TestPlans[<b>Module</b><br/>Azure Test Plans]
+          Application:AzureDevOps-->|module| Module:TestPlans
+          Module:Repos[<b>Module</b><br/>Azure Repos]
+          Application:AzureDevOps-->|module| Module:Repos
+          Module:Pipelines[<b>Module</b><br/>Azure Pipelines]
+          Application:AzureDevOps-->|module| Module:Pipelines
+          Module:Artifacts[<b>Module</b><br/>Azure Artifacts]
+          Application:AzureDevOps-->|module| Module:Artifacts
+          Application:AzurePipelines[<b>Application</b><br/>Azure Pipelines]
+          Module:ReleasePipelines[<b>Module</b><br/>Azure Release Pipelines]
+          Platform:DevOps-->|application| Application:AzurePipelines
+          Application:AzurePipelines-->|module| Module:ReleasePipelines
+          Module:BuildPipelines[<b>Module</b><br/>Azure Build Pipelines]
+          Application:AzurePipelines-->|module| Module:BuildPipelines
+          ApplicationType:ContinuousDelivery[<b>ApplicationType</b><br/>Continuous Delivery]
+          Application:AzurePipelines-->|type| ApplicationType:ContinuousDelivery
+          Module:LibraryManagement[<b>Module</b><br/>Azure Library Management]
+          Application:AzurePipelines-->|module| Module:LibraryManagement
+          Application:GitHubActions[<b>Application</b><br/>GitHub Actions]
+          Module:Actions[<b>Module</b><br/>GitHub Actions]
+          Platform:DevOps-->|application| Application:GitHubActions
+          Application:GitHubActions-->|module| Module:Actions
+          Module:Secrets[<b>Module</b><br/>GitHub Secrets]
+          Application:GitHubActions-->|module| Module:Secrets
+          Module:Workflows[<b>Module</b><br/>GitHub Workflows]
+          Application:GitHubActions-->|module| Module:Workflows
+          ApplicationType:ContinuousIntegration[<b>ApplicationType</b><br/>Continuous Integration]
+          Application:GitHubActions-->|type| ApplicationType:ContinuousIntegration
+          Vendor:Microsoft[<b>Vendor</b><br/>Microsoft]
+          Person:JaneDoe[<b>Person</b><br/>Jane Doe]
+          Platform:DevOps-->|vendor| Vendor:Microsoft
+          Vendor:Microsoft-->|executive| Person:JaneDoe
+          Vendor:Microsoft-->|type| coreaa:VendorType#MachineLearningPlatform
+          Vendor:Microsoft-->|type| coreaa:VendorType#CloudProvider
+          Vendor:Microsoft-->|type| coreaa:VendorType#SoftwareCompany
+Platform:Epic[<b>Platform</b><br/>Epic]
+          Application:Jira[<b>Application</b><br/>Jira]
+          PlatformType:ProjectManagement[<b>PlatformType</b><br/>Project Management]
+          Module:JiraModule[<b>Module</b><br/>JiraModule]

@@ -1,0 +1,22 @@
+classDiagram
+    class Balancer {
+        <<service>>
+        HashMap rooms_to_monoliths
+
+        handleGossip(Gossip g)
+    }
+
+    class Monolith {
+        <<service>>
+        Vec<Room> rooms
+
+        sendGossip()
+    }
+
+    class Gossip {
+        Vec~String~ rooms
+    }
+
+    Monolith --> Gossip : sends
+    Balancer --> Gossip : receives
+    Monolith --> Balancer : gossips to

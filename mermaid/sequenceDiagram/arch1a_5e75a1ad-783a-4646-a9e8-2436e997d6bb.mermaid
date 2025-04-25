@@ -1,0 +1,11 @@
+sequenceDiagram
+    User->>Agent: gesture
+    Note right of User: Gesture sources: Mouse, BCI, TouchSurface, SpaceNavigator, etc.
+    Note over Agent: Node collection
+    %loop update
+        Agent->>Node: event
+    %end
+    opt track
+        Node-->>Agent: node
+    end
+    Note over Agent,Node: inputNode = trackedNode != null ? trackedNode : defaultNode

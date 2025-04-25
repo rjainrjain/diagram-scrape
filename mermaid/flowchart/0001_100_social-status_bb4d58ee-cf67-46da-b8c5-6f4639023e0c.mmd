@@ -1,0 +1,53 @@
+flowchart TD
+classDef Literal fill:#ffffff,stroke:#000000,color:;
+classDef Literal_URI fill:#ffffff,stroke:#000000,color:;
+classDef crm_E1_CRM_Entity fill:#ffffff,stroke:#000000,color:;
+classDef crm_E1_CRM_Entity_URI fill:#ffffff,stroke:#000000,color:;
+classDef crm_E2_Temporal_Entity fill:#82c3ec,stroke:#000000,color:;
+classDef crm_E2_Temporal_Entity_URI fill:#d2e9f9,stroke:#000000,color:;
+classDef crm_E55_Type fill:#fab565,stroke:#000000,color:;
+classDef crm_E55_Type_URI fill:#fde7ce,stroke:#000000,color:;
+classDef crm_E52_Time-Span fill:#86bcc8,stroke:#000000,color:;
+classDef crm_E52_Time-Span_URI fill:#dcebef,stroke:#000000,color:;
+classDef crm_E41_Appellation fill:#fef3ba,stroke:#000000,color:;
+classDef crm_E41_Appellation_URI fill:#fffae6,stroke:#000000,color:;
+classDef crm_E53_Place fill:#94cc7d,stroke:#000000,color:;
+classDef crm_E53_Place_URI fill:#e1f1da,stroke:#000000,color:;
+classDef crm_E77_Persistent_Item fill:#ffffff,stroke:#000000,color:;
+classDef crm_E77_Persistent_Item_URI fill:#ffffff,stroke:#000000,color:;
+classDef crm_E28_Conceptual_Object fill:#fddc34,stroke:#000000,color:;
+classDef crm_E28_Conceptual_Object_URI fill:#fef6cd,stroke:#000000,color:;
+classDef crm_E18_Physical_Thing fill:#e1ba9c,stroke:#000000,color:;
+classDef crm_E18_Physical_Thing_URI fill:#f3e5d8,stroke:#000000,color:;
+classDef crm_E39_Actor fill:#ffbdca,stroke:#000000,color:;
+classDef crm_E39_Actor_URI fill:#ffe6eb,stroke:#000000,color:;
+classDef crm_PC0_Typed_CRM_Property fill:#cc80ff,stroke:#000000,color:;
+classDef crm_PC0_Typed_CRM_Property_URI fill:#ebccff,stroke:#000000,color:;
+classDef Multi fill:#cccccc,stroke:#000000,color:;
+classDef Multi_URI fill:#cccccc,stroke:#000000,color:;
+0(["vocab:100172"]) -->|rdfs:label| 1(["''Companion of the Order of Canada''@en"]):::Literal
+2(["-"]) -->|crm:P82a_begin_of_the_begin| 3(["''1990-01-01T00:00:00''^^xsd:dateTime"]):::Literal
+4(["actor:0001_103"]):::crm_E39_Actor_URI -->|rdf:type| 5["crm:E21_Person"]:::crm_E39_Actor
+6(["vocab:100152"]):::crm_E55_Type_URI -->|rdf:type| 7["crm:E55_Type"]:::crm_E55_Type
+0(["vocab:100172"]):::crm_E55_Type_URI -->|rdf:type| 8["crm:E55_Type"]:::crm_E55_Type
+9(["-"]) -->|crm:P14_carried_out_by| 4(["actor:0001_103"])
+10(["vocab:3003"]):::crm_E53_Place_URI -->|rdf:type| 11["crm:E53_Place"]:::crm_E53_Place
+12(["-"]):::crm_E2_Temporal_Entity_URI -->|rdf:type| 13["crm:E5_Event"]:::crm_E2_Temporal_Entity
+12(["-"]) -->|crm:P2_has_type| 0(["vocab:100172"])
+14(["actor:0001_100"]):::crm_E39_Actor_URI -->|rdf:type| 15["crm:E21_Person"]:::crm_E39_Actor
+12(["-"]) -->|crm:P7_took_place_at| 10(["vocab:3003"])
+0(["vocab:100172"]) -->|crm:P2_has_type| 6(["vocab:100152"])
+14(["actor:0001_100"]) -->|rdfs:label| 16(["''Yousuf Karsh (1908-2002)''@en"]):::Literal
+6(["vocab:100152"]) -->|rdfs:label| 17(["''Social Status''@en"]):::Literal
+9(["-"]) -->|crm:P140_assigned_attribute_to| 14(["actor:0001_100"])
+0(["vocab:100172"]) -->|rdfs:label| 18(["''Compagnon de l'Ordre du Canada''@fr"]):::Literal
+4(["actor:0001_103"]) -->|rdfs:label| 19(["''Elizabeth II''@en"]):::Literal
+10(["vocab:3003"]) -->|rdfs:label| 20(["''Ottawa, CA-ON''@en"]):::Literal
+10(["vocab:3003"]) -->|rdfs:label| 21(["''Ottawa, CA-ON''@fr"]):::Literal
+12(["-"]) -->|crmsci:O13i_is_triggered_by| 9(["-"])
+9(["-"]):::crm_E2_Temporal_Entity_URI -->|rdf:type| 22["crm:E13_Attribute_Assignment"]:::crm_E2_Temporal_Entity
+14(["actor:0001_100"]) -->|crm:P11i_participated_in| 12(["-"])
+9(["-"]) -->|crm:P141_assigned| 12(["-"])
+12(["-"]) -->|crm:P4_has_time-span| 2(["-"])
+6(["vocab:100152"]) -->|rdfs:label| 23(["''Statut social''@fr"]):::Literal
+2(["-"]):::crm_E52_Time-Span_URI -->|rdf:type| 24["crm:E52_Time-Span"]:::crm_E52_Time-Span

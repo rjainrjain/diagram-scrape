@@ -1,0 +1,10 @@
+graph TD
+A[Start] --> B[Validate Token]
+B -->|Valid| C[Get URL]
+B -->|Invalid| X[Return Error]
+C -->|URL Exists| D[Create Comment]
+C -->|URL Not Exists| E[Create URL]
+D --> F[Return Comment]
+E --> F
+F --> G[End]
+X --> G

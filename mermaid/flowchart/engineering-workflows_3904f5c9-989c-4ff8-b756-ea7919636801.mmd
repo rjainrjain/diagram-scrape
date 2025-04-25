@@ -1,0 +1,37 @@
+flowchart TD
+    A[Project Design Basis] --> B@{shape: docs, label: "CTRs"}
+    B --> D1[/Pipe wall thickness/]
+    D1 -->|define loadcases| F1[fa:fa-user fa:fa-laptop set parameters]    
+    F1 --> G1[fa:fa-user fa:fa-laptop  run analyses]
+    G1 --> H1[fa:fa-user fa:fa-laptop  extract results]
+    H1 --> |OK?| K1@{ shape: cross-circ, label: "Check" }
+    K1 --> |not OK| L1[fa:fa-user fa:fa-laptop  re-run]
+    L1 -.-> |modify| F1
+    K1 --> |acceptable| Q1[fa:fa-user fa:fa-laptop  compile report Word]
+    Q1 --> R1[fa:fa-user fa:fa-laptop  review QA]
+    R1 -.-> |comments| Q1
+    R1 --> S1@{ shape: stadium, label: "issue report" }
+    B --> D2[/Stability/]
+    D2 -->|define loadcases| F2[fa:fa-user fa:fa-laptop set parameters]    
+    F2 --> G2[fa:fa-user fa:fa-laptop  run analyses]
+    G2 --> H2[fa:fa-user fa:fa-laptop  extract results]
+    H2 --> |OK?| K2@{ shape: cross-circ, label: "Check" }
+    K2 --> |not OK| L2[fa:fa-user fa:fa-laptop  re-run]
+    L2 -.-> |modify| F2
+    K2 --> |acceptable| Q2[fa:fa-user fa:fa-laptop  compile report Word]
+    Q2 --> R2[fa:fa-user fa:fa-laptop  review QA]
+    R2 -.-> |comments| Q2
+    R2 --> S2@{ shape: stadium, label: "issue report" }
+    B --> D3[/Freespans/]
+    D3 -->|define loadcases| F3[fa:fa-user fa:fa-laptop set parameters]    
+    F3 --> G3[fa:fa-user fa:fa-laptop  run analyses]
+    G3 --> H3[fa:fa-user fa:fa-laptop  extract results]
+    H3 --> |OK?| K3@{ shape: cross-circ, label: "Check" }
+    K3 --> |not OK| L3[fa:fa-user fa:fa-laptop  re-run]
+    L3 -.-> |modify| F3
+    K3 --> |acceptable| Q3[fa:fa-user fa:fa-laptop  compile report Word]
+    Q3 --> R3[fa:fa-user fa:fa-laptop  review QA]
+    R3 -.-> |comments| Q3
+    R3 --> S3@{ shape: stadium, label: "issue report" }
+    B --> D4[/fa:fa-ellipsis/] 
+    

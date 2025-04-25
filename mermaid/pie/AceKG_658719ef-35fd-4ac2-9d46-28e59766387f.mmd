@@ -1,0 +1,171 @@
+# AceKG: A Large-scale Knowledge Graph
+
+for Academic Data Mining
+
+ Ruijie Wang, Yuchen Yan, Jialu Wang, Yuting Jia, Ye Zhang, Weinan Zhang, Xinbing Wang
+
+Shanghai Jiao Tong University, Shanghai, China
+
+{wjerry5,wnzhang,xwang8}@sjtu.edu.cn
+
+###### Abstract.
+
+Most existing knowledge graphs (KGs) in academic domains suffer from problems of insufficient multi-relational information, name ambiguity and improper data format for large-scale machine processing. In this paper, we present AceKG, a new large-scale KG in academic domain. AceKG not only provides clean academic information, but also offers a large-scale benchmark dataset for researchers to conduct challenging data mining projects including link prediction, community detection and scholar classification. Specifically, AceKG describes 3.13 billion triples of academic facts based on a consistent ontology, including necessary properties of papers, authors, fields of study, venues and institutes, as well as the relations among them. To enrich the proposed knowledge graph, we also perform entity alignment with existing databases and rule-based inference. Based on AceKG, we conduct experiments of three typical academic data mining tasks and evaluate several state-of-the-art knowledge embedding and network representation learning approaches on the benchmark datasets built from AceKG. Finally, we discuss promising research directions that benefit from AceKG.
+
+Knowledge Graph, Benchmarking, Data Mining +
+Footnote †: journal: Accepted in 2018
+
+### Ontology
+
+All objects (_e.g._, papers, institutes, authors) are represented as entities in the AceKG. Two entities can stand in a relation. Commonly used attributes of each entities including numbers, dates, strings and other literals are represented as well. Similar entities are grouped into classes. In total, AceKG defines 5 classes of academic entities: Papers, Authors, Fields of study, Venues and Institutes. And the facts including the frequently used properties of each entities and the relations between the entities are described as triples in the knowledge graph. The ontology of AceKG is shown in Figure 1.
+
+To deal with synonymy and ambiguity, each entity in defined classes are allocated with a URI. For example, ace:7F7A3A69 and ace:7F20B05766 are two scholars having the same name: Jiawei Han, one of whom is the influential data mining scientist. Compared with the datasets which use entity names to represent entities directly, AceKG can avoid mistakes caused by synonymy and ambiguity.
+
+The statistics of AceKG are shown in Table 1. All the facts are represented as _subject-predicate-object_ triples (SPO triples). And we release the Turtle format AceKG online. It can be queried by Apache Jena framework3 with SPARQL easily.
+
+Footnote 3: [https://jena.apache.org](https://jena.apache.org)
+
+### Entity alignment
+
+In order to make AceKG more connected and comprehensive, we map a large part of papers in computer science of AceKG to the papers stored in IEEE, ACM and DBLP databases. All the latest papers in those three databases have been aligned with AceKG. Some mapping statistics are shown in Table 2. The knowledge graph is updated with the latest academic information periodically.
+
+### Inference
+
+Rule-based inference on knowledge graph is a typical but critical way to enrich the knowledge graph. The selected inference rules that we design are shown in Figure 2. With those inference rules, we can define the new relations on AceKG, which provides more comprehensive ground truth.
+
+## 3. Knowledge embedding
+
+In this section, we will evaluate several state-of-the-art approaches for knowledge embedding using AceKG.
+
+### Task Definition
+
+Given a set \(S\) of triples \((h,r,t)\) composed of two entities \(h,t\in E\) and a relation \(r\in R\), knowledge embedding maps each entity to a \(k\)-dimensional vector in the embedding space, and defines a scoring function to evaluate the plausibility of the triple \((h,r,t)\) in the knowledge graph. We study and evaluate related methods on link prediction problem defined in (Bang et al., 2017): given one of the entities and the relation in a latent triple, the task is to predict the other missed entity. The commonly used benchmark datasets are FB15K and WN18, which are extracted from Freebase (Bang et al., 2017) and WordNet (Bang et al., 2017). We construct a new benchmark dataset (denoted as AK18K in the rest of this section) extracted from AceKG for knowledge embedding. We will show how it differs from FB15K and WN18 in Section 3.2. We compare the following algorithms in our experiments: TransE (Bang et al., 2017), TransH (Bang et al., 2017), DistMult (Dong et al., 2017), CompIEx (Dong et al., 2017), HoIE (Dong et al., 2017).
+
+### Experimental Setup
+
+To extract AK18K from AceKG, we first select 68 critical international venues (conferences and journals) and influential papers published on them. Then we add the triples of authors, fields and institutes. Finally, the train/valid/test datasets are divided randomly.
+
+Table 3 shows the statistics of the WN18, FB15K and AK18K. AK18K is sparser than FB15K but denser than WN18 (indicated by the value of \(\#Trip/\#E\)), and it provides only 7 types of relations. We will evaluate the models' scalability on the knowledge graph which
+
+\begin{table}
+\begin{tabular}{|c|c|c c|} \hline Class & Number & Class & Number \\ \hline Paper & 61,704,089 & Institute & 19,843 \\ Author & 52,498,428 & Field & 50,233 \\ Journal & 21,744 & Conference & 1,278 \\ \hline Total Entities & 114,295,615 & Total Relations & 3,127,145,831 \\ \hline \end{tabular}
+\end{table}
+Table 1. Triple statistics of AceKG.
+
+\begin{table}
+\begin{tabular}{|c|c c c|} \hline Database & IEEE & ACM & DBLP \\ \hline Mapping Number & 2,332,358 & 1,912,535 & 2,274,773 \\ \hline \end{tabular}
+\end{table}
+Table 2. Statistics of node mapping.
+
+Figure 1. An overview of AceKG Ontology.
+
+Figure 2. Example of rule-based inference. The dotted arrows are inferred predicates.
+
+has simple relation structure but tremendous amount of entities. The code we used is based on the OpenKE (Deng et al., 2017), an open-source framework for knowledge embedding.
+
+### Evaluation Results
+
+We show the link prediction results based on knowledge embedding in Table 4. The reported results are produced with the best set of hyper-parameters after the grid searches reported in the papers. The compared state-of-the-art models can be divided into two categories: (i) translational models (TransE, TransH); (ii) compositional models (DistMult, HoIE, ComplEx). TransE outperforms all counterparts on Hits@10 as 89.2%. Although 94.4% of relations in our knowledge graph are many-to-many, which works for TransH, TransE shows its advantages on modeling sparse and simple knowledge graph, while TransH fails to achieve better results. The reason may be the number of relationship types is only 7, which is small. According to (Kang et al., 2018), TransH should work better than TransE on many-to-many triples On the other hand, HoIE and ComplEx achieve the most significant performances on the other metrics, especially on Hits@1 (83.8% and 75.4%) and on filtered MRR (0.482 and 0.440), which confirms their advantages on modeling antisymmetric relations because all of our relations are antisymmetric, such as field_is_part_of and paper_is_written_by.
+
+Compared with the experiment results on FB15K and WN18 reported in (Kang et al., 2018), performances evaluated using AK18K are noticeably different. First, results on AK18K are lower than those on WN18 but higher than those on FB15K. It is caused by the limited relation types and large amount of potential entities per relation. Some relation such as paper_is_in_field can have thousands of possible objects per triple, limiting the prediction performance. Second, the performance gap between two model categories grows more pronounced as the knowledge graph becomes more complicated, which indicates the translational models with simple assumptions may not model the complicated graph well.
+
+## 4. Network Representation Learning
+
+In this section, we will evaluate several state-of-the-art approaches for network representation learning (NRL) on AceKG.
+
+### Task Definition
+
+Given a network \(G=(V,E,A)\), where \(V\) denotes the vertex set, \(E\) denotes the network topology structure and \(A\) preserves node attributions, the task of NRL is to learn a mapping function \(f:v\mapsto r_{v}\in R_{d}\), where \(r_{v}\) is the learned representation of vertex \(v\) and \(d\) is the dimension of \(v_{r}\). We study and evaluate related methods including DeepWalk (Kang et al., 2018), PTE (Kang et al., 2018), LINE (Kang et al., 2018) and metapath2vec (Kang et al., 2018) on two tasks: scholar classification and scholar clustering.
+
+### Experimental Setup
+
+Based on AceKG, we first select 5 fields of study (FOS)4 and 5 main subfields of each. Then we extract all scholars, papers and venues in those fields of study respectively to construct 5 heterogeneous collaboration networks. We also construct 2 larger academic knowledge graph: (i) we integrate 5 networks above into one graph which contains all the information of 5 fields of study; (ii) we match the 8 categories of venues in Google Scholar5 to those in AceKG. 151 of 160 venues (8 categories \(\times\) 20 per category) are successfully matched. Then we select all the related papers and scholars to construct one large heterogeneous collaboration networks. The statistics of these networks are shown in Table 5. Moreover, the category of scholars are labeled with the following approach:
+
+Footnote 4: 5 fields of study: Biology, Computer science, Economics, Medicine and Physics.
+
+Footnote 6: [https://scholar.google.com/citations/view_op-top_venues&hli=en&rq=eng](https://scholar.google.com/citations/view_op-top_venues&hli=en&rq=eng)
+
+1. To label the papers, we adopt the field of study information and Google scholar category directly as the label of papers in 6 FOS networks and 1 Google scholar network respectively.
+2. As for the label of the scholars, it is determined by the majority of his/her publications 'labels. When some labels have equal quantity of papers, they are chosen randomly.
+
+### Evaluation Results
+
+#### 4.3.1. Classification
+
+We adopt logistic regression to conduct scholar classification tasks. Note that in this task 5-fold cross validation are adopted. Table 6 shows the classification results evaluated by MicroF1 and MacroF-1. metapath2vec learns heterogeneous node embeddings significantly better than other methods. We attribute it to the modified heterogeneous sampling and skip-gram algorithm. However, DeepWalk and LINE also achieve comparable performance, showing their scalability on heterogeneous networks. Another reason for the comparable performance is that our edge types and node types are limited, thus algorithms on homogeneous information network can also learn a comprehensive network representation.
+
+It should be noted that there is significant performance gap between FOS-labeled datasets and the Google-labeled dataset, which is because of the different distributions of papers and scholars. Papers collected in the Google-labeled dataset are published in Topvenues and consequently few scholars could be active in multiple
+
+\begin{table}
+\begin{tabular}{l c c c c} \hline \hline \multicolumn{5}{c}{MRR} & \multicolumn{3}{c}{Hits at} \\ \cline{2-5} Model & Raw & Filter & 1 & 3 & 10 \\ \hline TransE & 0.358 & 0.719 & 62.7 & 82.5 & **89.2** \\ TransH & 0.315 & 0.701 & 61.0 & 77.2 & 84.6 \\ DistMult & 0.432 & 0.749 & 68.7 & 79.5 & 86.1 \\ HoIE & **0.482** & **0.864** & **83.8** & **87.1** & 88.2 \\ ComplEx & 0.440 & 0.817 & 75.4 & 85.8 & 89.0 \\ \hline \hline \end{tabular}
+\end{table}
+Table 4. Results of link prediction task on AK18K.
+
+\begin{table}
+\begin{tabular}{l c c c c} \hline \hline Dataset & \#R & \#E & \#Trip. (Train/ Valid/ Test) \\ \hline WN18 & 18 & 40,943 & 141,442 & 5,000 & 5,000 \\ FB15K & 1,345 & 14,951 & 483,142 & 50,000 & 59,071 \\ AK18K & 7 & 18,464 & 130,265 & 7,429 & 7,336 \\ \hline \hline \end{tabular}
+\end{table}
+Table 3. Datasets used in knowledge embedding.
+
+\begin{table}
+\begin{tabular}{c|c c c c} \hline \hline Dataset & \#Paper & \#Author & \#Venue & \#Edge \\ \hline FOS\_Biology & 1,211,664 & 2,169,820 & 13,511 & 5,544,376 \\ FOS\_CS & 452,970 & 738,253 & 10,726 & 1,658,917 \\ FOS\_Economics & 412,621 & 597,121 & 8,269 & 1,163,700 \\ FOS\_Medicine & 182,002 & 491,447 & 7,251 & 819,312 \\ FOS\_Physics & 449,844 & 596,117 & 5,465 & 1,602,723 \\ \hline FOS\_5Fields & 2,578,185 & 3,868,419 & 18,533 & 10,160,137 \\ Google & 600,391 & 635,585 & 151 & 2,373,109 \\ \hline \hline \end{tabular}
+\end{table}
+Table 5. Datasets used in network representation learning.
+
+categories, while there are more cross-field papers and scholars in FOS-labeled datasets.
+
+Moreover, the performance indicates the level of interdiscipline in these fields. For example, the highest Micro-F1 shows that the sub-fields of Biology are the most independent, while the lowest Micro-F1 means that the sub-fields of CS cross mostly. Finally, the dramatical decline from Micro-F1 to Macro-F1, especially in Economy, indicates the imbalance of sub-fields in some FOS.
+
+#### 4.3.2. Clustering
+
+Based on the same node representation in scholar classification task, we further conduct scholar clustering experiment with k-means algorithm to evaluate the models' performance. All clustering experiments are conducted 10 times and the average performance reported.
+
+Table 7 shows the clustering results evaluated by normalized mutual information (NMI). Overall, metapath2vec outperforms all the other models, indicating the modified heterogeneous sampling and skip-gram algorithm can preserve the information of the knowledge graph better. Another interesting result is the performance gap between FOS-labeled dataset and Google-labeled dataset, which indicates the hypothesis we proposed in Section 4.3.1.
+
+## 5. Future Directions
+
+There are other research topics which can leverage AceKG.
+
+**Collaboration prediction.** To predict a researcher's future collaboration behavior is interesting, in which previous collaborators, citation relations and other side information have been considered. However, all these factors can be thought as obvious features, while some other hidden features can be ignored. Given this situation, one may perform the task based on the NRL results, which can represent the features of a researcher better and may provide some help to collaboration prediction task.
+
+**Finding rising star.** Finding academic rising star is important in academic mining, and researchers have raised various algorithms for this based on publication increasing rate, mentoring relations and some other factors. In order to make the classification better, we can firstly embed the AceKG to uncover the hidden features of rising star and then apply some clustering algorithms on the embedding results.
+
+## 6. Conclusion
+
+In this paper we propose AceKG, a large-scale knowledge graph in academic domain, which consists of 3.13 billion triples of academic facts based on a consistent ontology, including commonly used properties of papers, authors, fields of study, venues, institutes and relations among them. Based on AceKG, we design three experimental evaluations and further compare several state-of-the-art approaches on AceKG. Besides, we propose several potential topics that can benefit from it. We will keep maintaining and updating the coverage of AceKG for wider usage in these directions.
+
+## 7. Acknowledgements
+
+The work is supported by National Key R&D Program of China 2018YFB1004703 and NSFC 61532012, 61702327.
+
+## References
+
+* (1)
+* Bollacker et al. (2008) Kurt Bollacker, Colin Evans, Praveen Paritosh, Tim Sturge, and Jamie Taylor. 2008. Freebase: A Collaboratively Created Graph Database for Structuring Human Knowledge. In _SIGMOD_.
+* Bordes et al. (2013) Antonio Bordes, Nicolas Usunier, Alberto Garcia-Duran, Jason Weston, and Oksana Yakhnenko. 2013. Translating Embeddings for Modeling Multi-relational Data. In _NIPS_.
+* Sa et al. (2016) Christophe De Sa, Alex Ratner, Christopher Bi, Jaeho Shin, et al. 2016. DeepDive: Declarative Knowledge Base Constructions. In _ACM SIGMOD Record_.
+* Dong et al. (2017) Yuos Dong, Miheesh V. Chavas, and Ananthan Swami. 2017. Melapath2Vec: Scalable Representation Learning for Heterogeneous Networks. In _KDD_.
+* Han et al. (2014) Xia Han, Yassian Lai, Ruong Xie, Zhiyuan Liu, and Maosong Sun. 2014. OpenEx: [http://openx.fis.tumlp.org](http://openx.fis.tumlp.org).
+* Haffari et al. (2013) Johannes Hoffari, Fabian M. Suchanek, Hans Berberich, and Gerhard Weikum. 2013. YAGO2: A spatially and temporally enhanced knowledge base from Wikipedia. _Artificial Intelligence_ 2013, 2013-261.
+* A Large-scale, Multilingual Knowledge Base Extracted from Wikipedia. _Semantic Web Journal_ 6, 2 (2015), 167-195.
+* Miller (1995) George A. Miller. 1995. WordNet: A Lexical Database for English. _Commun. ACM_ 38, 11 (Nov. 1995), 39-41.
+* Michel et al. (2015) Mavimilian Michel, A. Hruschka, P. Talukdar, et al. 2015. Never-Ending Learning. In _AAAI_.
+* Nickel et al. (2016) Maximilian Nickel, Lorenzo Rosasco, and Tomaso Poggio. 2016. Holographic Embeddings of Knowledge Graphs. In _AAAI_.
+* Penzor et al. (2014) Bryan Penzor, Rami Al-Hoti, and Steven Skiena. 2014. DeepWalk: Online Learning of Social Representations. In _KDD_. ACM.
+* Singhal (1996) Amit Singhal. 1996. Computer science bibliography. [https://dbjan.uni-trierde](https://dbjan.uni-trierde)
+* Shina et al. (2015) Amish Shina, Zhihong Shen, Yang Song, Hao Ma, et al. 2015. An Overview of Microsoft Academic Service (MAS) and Applications. In _WWW '15 Companion_.
+* Tang et al. (2015) Jian Tang, Meng Qu, and Qiaoshua He. 2015. PTEr: Predictive Text Embedding Through Large-scale Heterogeneous Text Networks. In _KDD_. ACM.
+* Tang et al. (2015) Jian Tang, Meng Qu, Minghe Wang, Ming Zhang, Jun Yan, and Qiaoshua Mei. 2015. LINE: Large-scale Information Network Embedding. In _WWW_.
+* Tang et al. (2016) Jie Tang, Jing Zhang, Limin Yao, Juanxi Li, Li Zhang, and Zhong Su. 2016. Antresnet: Extraction and Mining of Academic Social Networks. In _SIGKDD_.
+* Touillon et al. (2017) Theo Touillon, Christopher R. Dance, Eric Grisauer, Johannes Welbl, Sebastian Reed, and Guillaume Bouchard. 2017. Knowledge Graph Completion via Complex Tensor Factorization. _J. Mach. Learn. Res_ 18, 1 (Jan. 2017).
+* Wang et al. (2014) Zhen Wang, Jianwen Zhang, Jianlin Feng, and Zheng Chen. 2014. Knowledge Graph Embedding by Translating on Hyperplanes. In _AAAI_.
+* Yang et al. (2015) Bishan Yang, Wen Lu, Xinqiong He, and et al. 2015. Embedding Entities and Relations for Learning and Inference in Knowledge Bases.. In _ICLR_.
+
+\begin{table}
+\begin{tabular}{c|c c c c c c c c} \hline Metric & Method & FOS\_BI & FOS\_CS & FOS\_EC & FOS\_ME & FOS\_PH & FOS\_5F & Google \\ \hline \multirow{4}{*}{Micro-F1} & DeepWalk & 0.792 & 0.545 & 0.692 & 0.663 & 0.774 & 0.731 & 0.948 \\  & LINE(1st+2nd) & 0.722 & 0.633 & 0.717 & 0.701 & 0.779 & 0.755 & 0.955 \\  & PTE & 0.759 & 0.574 & 0.654 & 0.694 & 0.723 & 0.664 & 0.966 \\  & metapath2vec & 0.828 & 0.678 & 0.753 & 0.770 & 0.794 & 0.831 & 0.971 \\ \hline \multirow{4}{*}{Macro-F1} & DeepWalk & 0.547 & 0.454 & 0.277 & 0.496 & 0.592 & 0.589 & 0.942 \\  & LINE(1st+2nd) & 0.445 & 0.542 & 0.385 & 0.577 & 0.640 & 0.655 & 0.949 \\ \cline{1-1}  & PTE & 0.495 & 0.454 & 0.276 & 0.555 & 0.571 & 0.528 & 0.961 \\ \cline{1-1}  & metapath2vec & 0.637 & 0.570 & 0.485 & 0.659 & 0.635 & 0.682 & 0.968 \\ \hline \end{tabular}
+\end{table}
+Table 6. Results of scholar classification.
+
+\begin{table}
+\begin{tabular}{l|c c} \hline Model & FOS-labeled & Google-labeled \\ \hline DeepWalk & 0.277 & 0.394 \\ LINE(1st+2nd) & 0.305 & 0.459 \\ PTE & 0.153 & 0.602 \\ metapath2vec & 0.427 & 0.836 \\ \hline \end{tabular}
+\end{table}
+Table 7. Results of scholar clustering.

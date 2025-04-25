@@ -1,0 +1,16 @@
+erDiagram
+  creator ||--o{ short_codes: "creates"
+  short_codes {
+    id id PK
+    short_code string
+    url string
+    created_at date
+    updated_at date
+    creator object FK
+    expires_at date
+  }
+  creator {
+    id int PK
+    email string
+    created_at date
+ }

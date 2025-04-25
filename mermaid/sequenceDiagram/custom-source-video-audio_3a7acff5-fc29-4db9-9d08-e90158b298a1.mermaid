@@ -1,0 +1,30 @@
+```mermaid
+sequenceDiagram
+    participant User
+    participant Your_app as Your app
+    box "Your app"
+    participant Video_SDK as Video SDK
+    end
+    participant Agora
+
+    User ->>+ Your_app: Open App
+    Your_app ->>+ Video_SDK: Create an instance of the Video SDK engine
+    Video_SDK ->>- Your_app: Engine instance created
+    Your_app ->>+ Video_SDK: Enable audio and video in the engine
+    Video_SDK ->>- Your_app: Audio and video enabled
+    Your_app ->>+ Video_SDK: Setup external source
+    Video_SDK ->> Video_SDK: Check the external source for compatibility
+    Video_SDK ->>- Your_app: External source set
+    Your_app ->>+ Video_SDK: Join
+    Video_SDK ->>+ Agora: Retrieve authentication token to join a channel
+    Agora -->>- Video_SDK: Token retrieved
+    Video_SDK ->>+ Agora: Join the channel
+    Agora -->>- Video_SDK: Joined channel
+    Your_app ->>+ Video_SDK: Process data
+    Video_SDK ->>- Your_app: Data processed
+    Your_app ->>+ Video_SDK: Stream data
+    Video_SDK ->>- Your_app: Data streamed
+    User ->>+ Your_app: Leave the channel
+    Your_app ->>+ Video_SDK: Leave channel
+    Video_SDK --> User: Channel left
+```

@@ -1,0 +1,12 @@
+graph LR
+    WC["Cliente Web<br/>- Interface Web<br/>- JavaScript/React"]
+    MC["Cliente Mobile<br/>- App iOS/Android<br/>- React Native"]
+    DC["Cliente Desktop<br/>- Windows/Mac<br/>- Electron"]
+    
+    MS["Mail Server<br/>- SMTP<br/>- IMAP/POP3<br/>- Filtro Spam"]
+    ST["Storage<br/>- Emails<br/>- Anexos<br/>- Contatos"]
+    
+    WC --> MS
+    MC --> MS
+    DC --> MS
+    MS --> ST

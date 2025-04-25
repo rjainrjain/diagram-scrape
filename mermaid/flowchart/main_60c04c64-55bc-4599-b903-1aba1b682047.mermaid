@@ -1,0 +1,36 @@
+flowchart TD
+    A[Start] --> B[Parse command-line flags]
+    B --> C[Initialize logger]
+    C --> D[Load configuration]
+    D --> E[Create DeviceManager]
+    E --> F[Get device list]
+    F --> G{Devices found?}
+    G -->|No| H[Fatal: No devices processed]
+    G -->|Yes| I[Parse versions for each device]
+    I --> J[Split devices into affected and unaffected]
+    J --> K[Print unaffected device list]
+    K --> L[Print starting firewall connections]
+    L --> M{Report-only mode?}
+    M -->|Yes| N[Set 'Skipped' message for unaffected devices]
+    M -->|No| O[Create channels and WaitGroup]
+    O --> P[Start goroutines for each unaffected device]
+    P --> Q[Register WildFire concurrently]
+    Q --> R[Wait for all goroutines to finish]
+    R --> S[Process results and update unaffected devices]
+    N --> T[Generate PDF report]
+    S --> T
+    T --> U[Print results]
+    U --> V[End]
+
+    subgraph "Error Handling"
+        D -->|Error| W[Fatal: Failed to load configuration]
+        F -->|Error| X[Fatal: Failed to get device list]
+        I -->|Error| Y[Fatal: Failed to parse version]
+        J -->|Error| Z[Fatal: Failed to split devices]
+    end
+
+    subgraph "Concurrent WildFire Registration"
+        Q --> AA{Registration successful?}
+        AA -->|Yes| AB[Add success message to results]
+        AA -->|No| AC[Add failure message to results]
+    end

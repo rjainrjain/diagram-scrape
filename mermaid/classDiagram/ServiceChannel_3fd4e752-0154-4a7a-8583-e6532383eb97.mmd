@@ -1,0 +1,22 @@
+classDiagram
+  ServiceChannel -- Service
+  ServiceChannel -- ContactPoint
+  ServiceChannel -- PostalAddress
+  ServiceChannel -- Language
+  ServiceChannel -- Duration
+  ServiceChannel -- Place
+
+
+class ServiceChannel {
+
+  Service providesService
+  ContactPoint serviceSmsNumber
+  PostalAddress servicePostalAddress
+  string serviceUrl
+  ContactPoint servicePhone
+  string availableLanguage
+  Language availableLanguage
+  Duration processingTime
+  Place serviceLocation
+
+ }

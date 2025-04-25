@@ -1,0 +1,24 @@
+graph LR;
+    subgraph Server
+    	A([socket]) --> B([bind])
+		B --> C([listen])
+		C --> D([accept])
+		D --> E([recv])
+		E --> F([send])
+		F --> G([recv])
+		G --> H([close])
+    end
+
+    subgraph Client
+		I([socket]) --> J([connect])
+		J --> K([send])
+		K --> L([recv])
+		L --> M([close])
+    end
+
+    J <--> |Establishing connection, three-way handshake|D
+    K --> |Client sending data, server receiving data|E
+    F --> E
+    F --> |Server sending data, client reeiving data|L
+    L --> K
+    M --> |Client sending close message|G

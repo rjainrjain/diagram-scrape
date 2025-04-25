@@ -1,0 +1,12 @@
+
+sequenceDiagram
+    participant browser
+    participant server
+
+    browser->>server:HTTP POST /new_notes_spa  
+
+    note over browser: send json
+
+    server->>browser:status code 201
+
+    note over server:says OK

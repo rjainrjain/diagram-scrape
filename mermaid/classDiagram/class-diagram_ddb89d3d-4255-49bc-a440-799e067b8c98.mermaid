@@ -1,0 +1,60 @@
+classDiagram
+    class App{
+        +create_app()
+        +home()
+        +evaluate()
+        +improve_story()
+        +market()
+        +result()
+        +download_pdf()
+    }
+    class BaseAgent{
+        +process()
+        +update_context()
+        +get_context()
+        +generate_text()
+        +format_prompt()
+    }
+    class StoryWriter{
+        +process()
+        +improve_story()
+        +get_story()
+    }
+    class Evaluator{
+        +process()
+        +get_score()
+        +get_feedback()
+    }
+    class MarketingExpert{
+        +process()
+        +get_personas()
+        +get_target_audience()
+    }
+    class SocialMediaTeam{
+        +process()
+        +get_content()
+    }
+    class MarketingTeam{
+        +process()
+        +get_concept()
+    }
+    class AIModel{
+        +generate()
+    }
+    class OutputGenerator{
+        +add_content()
+        +generate_output()
+        +generate_pdf()
+    }
+    App --> StoryWriter
+    App --> Evaluator
+    App --> MarketingExpert
+    App --> SocialMediaTeam
+    App --> MarketingTeam
+    App --> OutputGenerator
+    BaseAgent <|-- StoryWriter
+    BaseAgent <|-- Evaluator
+    BaseAgent <|-- MarketingExpert
+    BaseAgent <|-- SocialMediaTeam
+    BaseAgent <|-- MarketingTeam
+    BaseAgent --> AIModel

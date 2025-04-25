@@ -1,0 +1,48 @@
+classDiagram
+
+    BaseModel: + UUID4 id
+    BaseModel: + datetime created_at
+    BaseModel: + datetime updated_at
+    BaseModel: + create()
+    BaseModel: + update()
+    BaseModel: + delete()
+
+    Place: + UUID4 owner_id
+    Place: + String title
+    Place: + String description
+    Place: + float price
+    Place: + float latitude
+    Place: + float longitude
+    Place: + List amenities
+    Place: + list_places()
+
+    User: + String first_name
+    User: + String last_name
+    User: + String email
+    User: + String password
+    User: + bool isAdmin
+
+    Review: + UUID4 place_id
+    Review: + UUID4 user_id
+    Review: + int rate
+    Review: + String comment
+    Review: + list_reviews_by_place(place_id)
+
+    Amenity: + String name
+    Amenity: + String description
+    Amenity: + list_amenities()
+
+    PlaceAmenity: + UUID4 place_id
+    PlaceAmenity: + UUID4 amenity_id
+
+    BaseModel <|-- User
+    BaseModel <|-- Place
+    BaseModel <|-- Amenity
+    BaseModel <|-- Review
+    User "1" *-- "0..*" Place : creates
+    User "1" *-- "0..*" Review : writes
+    Place "1" *-- "0..*" Review : receives
+    Place "1" --> "0..*" PlaceAmenity : has
+    Amenity "1" --> "0..*" PlaceAmenity : is part of
+
+   

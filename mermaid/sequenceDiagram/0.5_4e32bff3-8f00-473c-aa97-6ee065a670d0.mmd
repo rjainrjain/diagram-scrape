@@ -1,0 +1,9 @@
+sequenceDiagram
+    participant browser
+    participant server
+
+    browser->>server: GET html page
+    activate server
+    server-->>browser: sends html page
+    deactivate server
+    Note right of browser: browser does not need to request additional pages while in the SPA

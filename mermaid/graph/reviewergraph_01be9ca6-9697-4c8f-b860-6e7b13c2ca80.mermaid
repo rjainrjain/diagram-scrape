@@ -1,0 +1,35 @@
+graph LR
+subgraph PréparationRevue
+    A[Sujet de recherche] 
+end
+
+subgraph AgentRevue
+C{Modèle de langage} 
+D[API Clarivate] --> C
+end
+
+subgraph Métaprompt
+    E[Métaprompt avec exemples] --> F
+    F[Génération d'une instruction adaptée] --> G
+    G[Extraction de l'instruction générée]  
+end
+
+Métaprompt --> AgentRevue
+PréparationRevue --> D
+
+subgraph RevueLittérature
+H[Introduction énonçant<br>le sujet et la portée]
+I[Sous-sections thématiques<br>résumant les points<br>principaux des articles] 
+J[Conclusion résumant<br>l'état actuel de la recherche]
+K[Suggestions de futures<br>directions de recherche]
+end
+
+H --> L[Texte extrant]
+I --> L
+J --> L
+K --> L
+
+AgentRevue --> H
+AgentRevue --> I
+AgentRevue --> J 
+AgentRevue --> K

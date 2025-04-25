@@ -1,0 +1,12 @@
+sequenceDiagram
+    participant User
+    participant API
+    participant BusinessLogic
+    participant Persistence
+
+    User->>API: Create Place
+    API->>BusinessLogic: Validate and Create Place
+    BusinessLogic->>Persistence: Save Place to DB
+    Persistence-->>BusinessLogic: Confirm Save
+    BusinessLogic-->>API: Send Confirmation
+    API-->>User: Return Success Response

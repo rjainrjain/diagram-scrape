@@ -1,0 +1,34 @@
+sequenceDiagram
+    participant client
+    participant server
+
+   
+
+
+
+
+    client->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.css
+
+    activate server
+    server-->>client: 304 no need to refresh css
+    deactivate server
+
+    client->>server: GET https://studies.cs.helsinki.fi/exampleapp/spa.js
+
+
+
+    activate server
+    server-->>client: 304 Not Modified
+    deactivate server
+
+
+
+    client->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+
+
+    activate server
+    server-->>client: 200 OK
+
+    deactivate server
+
+    Note right of client: Everything is charged at the beginning and data are updated from your server, css is updated from client side.

@@ -1,0 +1,14 @@
+flowchart LR
+    subgraph audio_module ["audio module"]
+        direction TB
+        A[Enable local audio collection] --> B[Audio pre-processing]
+        B --> C[Audio Encoding]
+    end
+    subgraph network_module ["network module"]
+        direction TB
+        G[Join channel]
+    end
+    C -- " " --> G
+    C -- " " --> D[Audio Decoding]
+    D --> E[Audio post-processing]
+    E --> F[Set up playback device newline or audio]

@@ -1,0 +1,14 @@
+stateDiagram-v2
+    Connect: User connects to OTT
+    CreateRoom: User creates a Room
+    JoinRoom: User joins the Room
+    UseOTT: User uses OTT to watch videos
+
+
+    [*] --> Connect
+    Connect --> CreateRoom
+    Connect --> JoinRoom
+    CreateRoom --> JoinRoom
+
+    JoinRoom --> UseOTT
+    UseOTT -->[*]

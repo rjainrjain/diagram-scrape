@@ -1,0 +1,105 @@
+classDiagram
+  direction TB
+  C ..> UC
+  C ..> SC
+  class C["Resource Collection"] {
+    "Super type of all containers"
+    + one-file-one-resource
+    + Client Control
+  }
+
+  UC --> UC
+  UC --> SC
+  class UC["Unstructured Collection"] {
+    "Can link to any where.
+    Default LDP"
+  }
+
+  SC --> GC
+  class GC["Grouped Collections"] {
+    "Groups data in different containers"
+    + Group strategy
+  }
+
+  GC "0..n" --o "1" GS
+  class GS["Group Strategy"] {
+    + sparql-map
+    + URI templates with variables:
+    _id, and the variables in the shape description
+    + URI template and regex
+  }
+
+  SC ..> CC
+  SC ..> DC
+  SC "0..n" --o "1" GS
+  DF "0..n" --o "1" SC 
+  class SC["Structured Collection"] {
+    "Any container that is a tree and not a graph"
+    + Group strategy
+    + Retention Policy
+    + Update Conditions
+  }
+ 
+  class CC["Canonical Collection"] {
+    "Stores data matching the shape"
+    + Store Conditions
+  }
+
+  class DC["Derived Collection"] {
+    "Contains data from one or more Canonical containers"
+    + Derivations
+  }
+
+  CC "0..n" --o "1..n" StoreCond
+  class StoreCond["Store Condition"] {
+    + Update Condition
+    ---
+    + state-required
+    + always-stored
+    + prefer-other
+    + prefer-most-specifc
+    + only-stored-when-not-redunant
+    + never
+  }
+
+  UCond "0..n" --o "1..n" RD
+  DF "0..n" --o "1" RD
+  class RD["Resource Description"] {
+    + SHACL description
+    + ShEx description
+  }
+
+  DC "0..n" --o "1..n" DF
+  class DF["Derived From"] {
+    + Resource Description
+    + Filter
+    + Source
+  }
+
+  SC "0..n" --o "0..n" RP
+  class RP["Retention Policy"] {
+    + duration ago 
+  }
+
+  StoreCond "0..n" --o "1" UCond
+  class UCond["Update Condition"] {
+    + Resource descriptions
+    ---
+    + Always keep & widen index
+    + Prefer static
+    + Move to best matched
+    + Disallow
+    + Removal Only
+    + State Dependent
+  }
+
+  C "0..n" --o "1" CControl
+  class CControl["Client Control"] {
+    "From least to most restricted,
+    can only become more restricted":
+    + Free Client
+    + Additional Allowed
+    + Allow when not preffered
+    + Allow when not claimed
+    + No control
+  }

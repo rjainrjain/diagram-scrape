@@ -1,0 +1,19 @@
+erDiagram
+  Voilier {
+    TYPE voilier PK
+  }
+  Disponibilite {
+  }
+  Semaine {
+    TYPE semaine PK
+    TYPE date_debut
+  }
+  Reservation {
+    TYPE id_resa PK
+    TYPE num_resa
+    TYPE arrhes
+    TYPE date_reservation
+  }
+  Disponibilite }|..|| Voilier: DF
+  Disponibilite }|..|| Semaine: DF
+  Reservation |o--|| Disponibilite: DF

@@ -1,0 +1,26 @@
+---
+title: Product schema
+---
+
+erDiagram
+    Product {
+        Long id
+        string Name
+        double price
+    }
+    Order {
+        Status status
+    }
+    Item {
+     String name
+     String color
+     float price
+     int size
+     int quantity
+    }
+    Payment {
+     String card_number
+     int cvc
+     String expiry_date
+     Item item
+    }

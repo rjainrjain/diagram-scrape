@@ -1,0 +1,50 @@
+---
+title: 'Makefile'
+---
+%%{
+  init: {
+    "fontFamily": "monospace",
+    "logLevel": "info",
+    "flowchart": {
+    }
+  }
+}%%
+graph TD
+  %% BEGIN flowchart
+  plan["plan"] -. chain .-> docsplan["docs-plan"]
+  normalize["normalize"] -. chain .-> toxnormalize["tox-normalize"]
+  docs["docs"] -. chain .-> docsapply["docs-apply"]
+  toxnormalize["tox-normalize"] -. chain .-> tox["tox-%"]
+  staticanalysis["static-analysis"] -. chain .-> toxstaticanalysis["tox-static-analysis"]
+  testintegrations["test-integrations"] -. chain .-> itest["itest"]
+  toxstest["tox-stest"] -. chain .-> tox["tox-%"]
+  smoketest["smoke-test"] -. chain .-> stest["stest"]
+  stest["stest"] -. chain .-> toxstest["tox-stest"]
+  build["build"] ----> clean["clean"]
+  itest["itest"] -. chain .-> toxitest["tox-itest"]
+  test["test"] ----> testunits["test-units"]
+  test["test"] ----> testintegrations["test-integrations"]
+  test["test"] ----> smoketest["smoke-test"]
+  toxitest["tox-itest"] -. chain .-> tox["tox-%"]
+  testunits["test-units"] -. chain .-> utest["utest"]
+  apply["apply"] -. chain .-> docsapply["docs-apply"]
+  toxutest["tox-utest"] -. chain .-> tox["tox-%"]
+  utest["utest"] -. chain .-> toxutest["tox-utest"]
+  release["release"] ----> clean["clean"]
+  release["release"] ----> normalize["normalize"]
+  release["release"] ----> staticanalysis["static-analysis"]
+  release["release"] ----> test["test"]
+  release["release"] ----> pypirelease["pypi-release"]
+  toxstaticanalysis["tox-static-analysis"] -. chain .-> tox["tox-%"]
+  subgraph core
+    plan["plan"]
+    normalize["normalize"]
+    docs["docs"]
+    staticanalysis["static-analysis"]
+    clean["clean"]
+    build["build"]
+    test["test"]
+    apply["apply"]
+    release["release"]
+  end
+  %% END flowchart

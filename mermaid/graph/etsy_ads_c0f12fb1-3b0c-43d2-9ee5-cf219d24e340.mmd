@@ -1,0 +1,51 @@
+graph TD
+    User[User] -->|Browse/Interact| WebApp[Etsy Web/Mobile App]
+    WebApp -->|Log Events| kinesis:streams[Kinesis Data Streams]
+    
+    kinesis:streams -->|Process Events| kinesis:firehose[Kinesis Data Firehose]
+    kinesis:streams -->|Real-time Processing| kinesis:analytics[Kinesis Data Analytics]
+    
+    kinesis:firehose -->|Store Raw Data| s3:datalake[S3 Data Lake]
+    kinesis:analytics -->|Update User Profiles| dynamodb:profiles[DynamoDB]
+    
+    s3:datalake -->|Batch Processing| emr:cluster[EMR]
+    emr:cluster -->|Train Models| sagemaker:training[SageMaker]
+    
+    WebApp -->|Ad Request| elb:adserver[Application Load Balancer]
+    elb:adserver -->|Route Request| AdServer[Ad Serving Engine]
+    
+    AdServer -->|Get User Profile| dynamodb:profiles
+    AdServer -->|Get Ad Candidates| elasticache:ads[ElastiCache]
+    AdServer -->|Rank Ads| sagemaker:inference[SageMaker]
+    
+    sagemaker:training -->|Deploy Models| AdServer
+    
+    AdServer -->|Serve Ad| WebApp
+    AdServer -->|Log Impression/Click| kinesis:streams
+    
+    cloudwatch:monitoring[CloudWatch] -->|Monitor| AdServer
+    cloudwatch:monitoring -->|Monitor| kinesis:streams
+    cloudwatch:monitoring -->|Monitor| sagemaker:training
+    
+    quicksight:analytics[QuickSight] -->|Visualize| s3:datalake
+    quicksight:analytics -->|Visualize| dynamodb:profiles
+    
+    subgraph "Real-time Processing"
+        kinesis:streams
+        kinesis:firehose
+        kinesis:analytics
+    end
+    
+    subgraph "Machine Learning Pipeline"
+        emr:cluster
+        sagemaker:training
+    end
+    
+    subgraph "Ad Serving"
+        elb:adserver
+        AdServer
+        elasticache:ads
+    end
+
+    classDef aws fill:#FF9900,stroke:#232F3E,stroke-width:2px,color:#232F3E;
+    class kinesis:streams,kinesis:firehose,kinesis:analytics,s3:datalake,dynamodb:profiles,emr:cluster,sagemaker:training,sagemaker:inference,elb:adserver,elasticache:ads,cloudwatch:monitoring,quicksight:analytics aws;

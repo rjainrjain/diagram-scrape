@@ -1,0 +1,126 @@
+classDiagram
+    App *-- ErrorBoundary
+    App *-- AppLayout
+    App *-- QueryClientProvider
+    App *-- Router
+    
+    AppLayout *-- Dashboard
+    AppLayout *-- Login
+    AppLayout *-- Register
+    AppLayout *-- HealthCheck
+    
+    Dashboard *-- MetricChart
+    
+    class App {
+        +render()
+    }
+    
+    class ErrorBoundary {
+        +handleError(error, info)
+        +render()
+    }
+    
+    class AppLayout {
+        -isLoggedIn: boolean
+        -logout(): void
+        +render()
+    }
+    
+    class Dashboard {
+        -metrics: any[]
+        -loading: boolean
+        -error: Error
+        +render()
+    }
+    
+    class MetricChart {
+        +title: string
+        +data: any[]
+        +dataKey: string
+        +color: string
+        +render()
+    }
+    
+    class Login {
+        -error: string
+        -isLoading: boolean
+        +onSubmit(data)
+        +render()
+    }
+    
+    class Register {
+        -error: string
+        -success: boolean
+        +onSubmit(data)
+        +render()
+    }
+    
+    class HealthCheck {
+        -status: any
+        -isLoading: boolean
+        -error: Error
+        +render()
+    }
+    
+    class QueryClientProvider {
+        +queryClient: QueryClient
+    }
+    
+    class Router {
+        +routes: Route[]
+    }
+    
+    %% Hooks
+    class useAuth {
+        +isLoggedIn: boolean
+        +login(email, password): Promise
+        +logout(): void
+        +register(email, password): Promise
+    }
+    
+    class useMetricsData {
+        +metrics: any[]
+        +loading: boolean
+        +error: Error
+    }
+    
+    class useHealthCheck {
+        +status: any
+        +isLoading: boolean
+        +error: Error
+    }
+    
+    %% Services
+    class AuthenticationService {
+        +login(email, password): Promise
+        +register(email, password): Promise
+        +logout(): void
+        +getCurrentUser(): Promise
+        +isLoggedIn(): boolean
+    }
+    
+    class ApiService {
+        +get(url, params): Promise
+        +post(url, data): Promise
+        +put(url, data): Promise
+        +delete(url): Promise
+    }
+    
+    class TokenManager {
+        +getAccessToken(): string
+        +getRefreshToken(): string
+        +refreshToken(): Promise
+        +setTokens(accessToken, refreshToken): void
+        +clearTokens(): void
+        +hasValidAccessToken(): boolean
+    }
+    
+    Dashboard --> useMetricsData
+    Login --> useAuth
+    Register --> useAuth
+    HealthCheck --> useHealthCheck
+    useAuth --> AuthenticationService
+    AuthenticationService --> ApiService
+    AuthenticationService --> TokenManager
+    useMetricsData --> ApiService
+    useHealthCheck --> ApiService

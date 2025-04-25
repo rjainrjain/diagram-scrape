@@ -1,0 +1,46 @@
+graph TD 
+
+    Chatbot[<b>General Purpose Chatbot UI</b><br>provides an interactive frontend on port 3000]
+    
+    subgraph Rasa[Rasa Chatbot framework]
+        direction TB
+        RasaBackend[<b>Rasa chatbot backend</b><br>provides NLU and stories]
+        RasaCustomAction[<b>Rasa Custom Action</b><br>provides a custom implementation for handing specific questions to the question answering functionality]
+    end
+
+    subgraph Qanary[Qanary question answering framework]
+        direction TB
+        QanarySystem[<b>Qanary System</b><br>orchestrates the connected Qanary components as demanded by the Rasa custom action]
+        AutomationServiceComponent["<b>AutomationServiceComponent<br>(Qanary component)</b><br>identifies names of persons in<br> a given question using a <br> pre-trained model"]
+        BirthDataQueryBuilderWikidata["<b>BirthDataQueryBuilderWikidata<br>(Qanary component)</b><br>using the identified names,<br> it creates a SPARQL query that can<br> be used to fetch the requested<br> data from Wikidata"]
+        SparqlExecuterComponent["<b>SparqlExecuterComponent<br>(Qanary component)</b><br>executes the previously<br> computed SPARQL query on<br> Wikidata to fetch the<br> requested data"]
+    end
+
+    QanaryTriplestore["<b>Qanary Triplestore</b><br>stores all information for a question in a specific graph<br>(i.e., a global QA process memory) <br>here: a demo service of the WSE research group is used (a Stardog triplestore)"]
+
+    Wikidata["<b>Wikidata knowledge graph</b><br><a href='https://query.wikidata.org/'>public SPARQL endpoint<br>for querying RDF data</a>"]
+
+    MLflow["<b>MLflow</b><br>logging of the training and usage<br> of the AutomationServiceComponent <br>(available on port 5000)"]
+    AutomationServiceComponent-->|<span>logs results</span>|MLflow
+
+    Chatbot -->|<span>calls RESTful endpoint at port 5005</span>| RasaBackend
+    RasaBackend -->|<span>calls RESTful endpoint at port 5055</span>| RasaCustomAction
+    RasaCustomAction -->|<span>calls RESTful endpoint at port 8080</span>| QanarySystem
+
+    QanarySystem -->|<span>1. calls</span>| AutomationServiceComponent
+    QanarySystem -->|<span>2. calls</span>| BirthDataQueryBuilderWikidata
+    QanarySystem -->|<span>3. calls</span>| SparqlExecuterComponent
+
+    AutomationServiceComponent-->|<span>interact using SPARQL</span>| QanaryTriplestore
+    BirthDataQueryBuilderWikidata-->|<span>interact using SPARQL</span>| QanaryTriplestore
+    SparqlExecuterComponent-->|<span>interact using SPARQL</span>| QanaryTriplestore
+
+    SparqlExecuterComponent-->|<span>interact using SPARQL</span>| Wikidata
+
+
+    classDef subgraphClass fill:#FFF,opastroke:#333,stroke:#999,stroke-width:1px,font-size:15px,font-weight:bold;
+    classDef boxClass font-size:100%;
+    linkStyle default stroke-width:2px,stroke:darkgray,fill:#FFFFFF00,color:black;
+
+    class Qanary,Rasa subgraphClass
+    class Chatbot,RasaBackend,RasaCustomAction,QanarySystem,AutomationServiceComponent,BirthDataQueryBuilderWikidata,SparqlExecuterComponent boxClass

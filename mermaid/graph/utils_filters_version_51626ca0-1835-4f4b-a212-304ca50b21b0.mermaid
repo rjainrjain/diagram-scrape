@@ -1,0 +1,107 @@
+flowchart TD
+    A[Start] --> B[ParseVersion]
+    B --> C{Valid Version Format?}
+    C -->|Yes| D[Create Version Struct]
+    C -->|No| E[Return Error]
+    D --> F[Parse Major Version]
+    F --> G[Parse Feature Version]
+    G --> H[Parse Maintenance Version]
+    H --> I{Has Hotfix?}
+    I -->|Yes| J[Parse Hotfix]
+    I -->|No| K[Set Hotfix to 0]
+    J --> L[Return Version Struct]
+    K --> L
+
+    M[IsLessThan] --> N{Compare Major}
+    N -->|Different| O[Return Comparison]
+    N -->|Same| P{Compare Feature}
+    P -->|Different| O
+    P -->|Same| Q{Compare Maintenance}
+    Q -->|Different| O
+    Q -->|Same| R{Compare Hotfix}
+    R --> O
+
+    S[IsAffectedVersion] --> T[Parse Device Version]
+    T --> U{Version >= 11.2?}
+    U -->|Yes| V[Return Not Affected]
+    U -->|No| W[Create Version Struct]
+    W --> X{Is GlobalProtect?}
+    X -->|Yes| Y[Adjust Feature Release]
+    X -->|No| Z[Use Standard Feature Release]
+    Y --> AA{Check MinimumPatchedVersions}
+    Z --> AA
+    AA -->|Found| AB{Compare Versions}
+    AA -->|Not Found| AC{Version < 8.1?}
+    AC -->|Yes| AD[Return Affected]
+    AC -->|No| AE[Return Error]
+    AB -->|Less Than| AF[Return Affected]
+    AB -->|Greater or Equal| AG[Return Not Affected]
+
+    AH[SplitDevicesByVersion] --> AI[Iterate Through Devices]
+    AI --> AJ[Check IsAffectedVersion]
+    AJ --> AK{Is Affected?}
+    AK -->|Yes| AL[Add to Affected List]
+    AK -->|No| AM[Add to Unaffected List]
+    AL --> AN[Continue Iteration]
+    AM --> AN
+    AN --> AO{More Devices?}
+    AO -->|Yes| AI
+    AO -->|No| AP[Return Lists]
+
+    subgraph ParseVersion Function
+        B
+        C
+        D
+        E
+        F
+        G
+        H
+        I
+        J
+        K
+        L
+    end
+
+    subgraph IsLessThan Method
+        M
+        N
+        O
+        P
+        Q
+        R
+    end
+
+    subgraph IsAffectedVersion Function
+        S
+        T
+        U
+        V
+        W
+        X
+        Y
+        Z
+        AA
+        AB
+        AC
+        AD
+        AE
+        AF
+        AG
+    end
+
+    subgraph SplitDevicesByVersion Function
+        AH
+        AI
+        AJ
+        AK
+        AL
+        AM
+        AN
+        AO
+        AP
+    end
+
+    style ParseVersion Function fill:#f9f,stroke:#333,stroke-width:2px
+    style IsLessThan Method fill:#ccf,stroke:#333,stroke-width:2px
+    style IsAffectedVersion Function fill:#cfc,stroke:#333,stroke-width:2px
+    style SplitDevicesByVersion Function fill:#fcc,stroke:#333,stroke-width:2px

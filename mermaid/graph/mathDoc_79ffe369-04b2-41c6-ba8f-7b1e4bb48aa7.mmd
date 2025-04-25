@@ -1,0 +1,105 @@
+graph TD
+    A["math_document (list)"]:::mainDoc
+    
+    subgraph math_document_elements
+      A1["let"]:::letColor
+      A2["assume"]:::assumeColor
+      A3["def"]:::defColor
+      A4["assert"]:::assertColor
+      A5["theorem"]:::theoremColor
+      A6["problem"]:::problemColor
+      A7["cases"]:::casesColor
+      A8["induction"]:::inductionColor
+      A9["contradiction"]:::contradictionColor
+      A10["conclude"]:::concludeColor
+      A11["remark"]:::remarkColor
+    end
+    
+    A --> math_document_elements
+    
+    %% let structure
+    A1 --> B1["variable (string)"]:::variableColor
+    A1 --> |optional| B2["value (string)"]:::optionalColor
+    A1 --> |optional| B3["kind (string)"]:::optionalColor
+    A1 --> |optional| B4["properties (string)"]:::optionalColor
+
+    %% def structure
+    A3 --> C1["term (string)"]:::defColor
+    A3 --> C2["statement (string)"]:::defColor
+    
+    %% assert structure
+    A4 --> D1["claim (string)"]:::assertColor
+    A4 --> |optional| D2["proof_method (string)"]:::optionalColor
+    A4 --> |optional| D3["deductions (list of deduction)"]:::deductionColor
+    A4 --> |optional| D4["calculations (list of calculation_step)"]:::calcColor
+    A4 --> |optional| D5["missing (list of missing)"]:::optionalColor
+    A4 --> |optional| D6["errors (list of error)"]:::errorColor
+    
+    %% deduction structure
+    D3 --> E1["deduced_from (string)"]:::deductionColor
+    D3 --> E2["in_context (boolean)"]:::deductionColor
+    E2 --> |optional| E3["instantiations (list of instantiation)"]:::optionalColor
+
+    %% theorem structure
+    A5 --> F1["hypothesis (list of let, assume)"]:::theoremColor
+    A5 --> F2["conclusion (string)"]:::theoremColor
+    A5 --> F3["proved (boolean)"]:::theoremColor
+    A5 --> |optional| F4["proof (math_document)"]:::optionalColor
+    A5 --> |optional| F5["ref (string)"]:::optionalColor
+    A5 --> |optional| F6["cite (string)"]:::optionalColor
+    A5 --> |optional| F7["missing (list of missing)"]:::optionalColor
+    A5 --> |optional| F8["errors (list of error)"]:::errorColor
+    
+    %% problem structure
+    A6 --> G1["statement (string)"]:::problemColor
+    A6 --> G2["solved (boolean)"]:::problemColor
+    A6 --> |optional| G3["answer (string)"]:::optionalColor
+    A6 --> |optional| G4["proof (math_document)"]:::optionalColor
+    A6 --> |optional| G5["missing (list of missing)"]:::optionalColor
+    A6 --> |optional| G6["errors (list of error)"]:::errorColor
+
+    %% cases structure
+    A7 --> H1["on (string)"]:::casesColor
+    A7 --> H2["split_kind (string)"]:::casesColor
+    A7 --> H3["proof_cases (list of case)"]:::casesColor
+    A7 --> |optional| H4["exhaustiveness (math_document)"]:::optionalColor
+    A7 --> |optional| H5["missing (list of missing)"]:::optionalColor
+    A7 --> |optional| H6["errors (list of error)"]:::errorColor
+
+    %% induction structure
+    A8 --> I1["on (string)"]:::inductionColor
+    A8 --> I2["proof_cases (list of case)"]:::inductionColor
+    A8 --> |optional| I3["missing (list of missing)"]:::optionalColor
+    A8 --> |optional| I4["errors (list of error)"]:::errorColor
+
+    %% contradiction structure
+    A9 --> J1["assumption (string)"]:::contradictionColor
+    A9 --> J2["proof (math_document)"]:::contradictionColor
+    A9 --> |optional| J3["missing (list of missing)"]:::optionalColor
+    A9 --> |optional| J4["errors (list of error)"]:::errorColor
+
+    %% conclude structure
+    A10 --> K1["claim (string)"]:::concludeColor
+    A10 --> |optional| K2["missing (list of missing)"]:::optionalColor
+    A10 --> |optional| K3["errors (list of error)"]:::errorColor
+
+    %% remark structure
+    A11 --> L1["remark (string)"]:::remarkColor
+
+    %% Class Definitions
+    classDef letColor stroke:#1f77b4,stroke-width:2px;
+    classDef assumeColor stroke:#ff7f0e,stroke-width:2px;
+    classDef defColor stroke:#2ca02c,stroke-width:2px;
+    classDef assertColor stroke:#d62728,stroke-width:2px;
+    classDef theoremColor stroke:#9467bd,stroke-width:2px;
+    classDef problemColor stroke:#8c564b,stroke-width:2px;
+    classDef casesColor stroke:#e377c2,stroke-width:2px;
+    classDef inductionColor stroke:#7f7f7f,stroke-width:2px;
+    classDef contradictionColor stroke:#bcbd22,stroke-width:2px;
+    classDef concludeColor stroke:#17becf,stroke-width:2px;
+    classDef remarkColor stroke:#000000,stroke-width:2px;
+    classDef optionalColor stroke:#e41a1c,stroke-dasharray: 5 5,stroke-width:2px;
+    classDef deductionColor stroke:#6baed6,stroke-width:2px;
+    classDef calcColor stroke:#fd8d3c,stroke-width:2px;
+    classDef errorColor stroke:#e6550d,stroke-width:2px;
+    classDef variableColor stroke:#a1d99b,stroke-width:2px;

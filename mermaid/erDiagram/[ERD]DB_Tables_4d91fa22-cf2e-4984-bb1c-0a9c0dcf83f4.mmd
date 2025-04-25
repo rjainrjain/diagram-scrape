@@ -1,0 +1,40 @@
+erDiagram
+    Categories ||--o{ Facts : contains
+    Facts ||--o{ FactTags : has
+    Tags ||--o{ FactTags : has
+    Facts ||--o{ SavedFacts : saved_as
+
+    Categories {
+        int CategoryID PK
+        nvarchar CategoryName
+        nvarchar Description
+        bit IsActive
+        datetime CreatedDate
+        datetime LastModifiedDate
+    }
+
+    Facts {
+        int FactID PK
+        int CategoryID FK
+        nvarchar FactText
+        int ViewCount
+        bit IsVerified
+        datetime DateAdded
+        datetime LastModified
+    }
+
+    Tags {
+        int TagID PK
+        nvarchar TagName
+    }
+
+    FactTags {
+        int FactID PK,FK
+        int TagID PK,FK
+    }
+
+    SavedFacts {
+        int SavedFactID PK
+        int FactID FK
+        datetime DateSaved
+    }

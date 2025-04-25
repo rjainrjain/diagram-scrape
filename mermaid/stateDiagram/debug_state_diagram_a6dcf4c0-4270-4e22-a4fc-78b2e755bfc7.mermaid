@@ -1,0 +1,55 @@
+stateDiagram-v2
+    [*] --> IDLE
+    IDLE: IDLE
+    IDLE --> STEP: Recibir 's' vía uart
+    IDLE --> IM_WRITE: Recibir 'i' vía uart (escribe instruction_memory)
+    IDLE --> CONTINUOUS_MODE: Recibir 'c' vía uart
+    IDLE --> IDLE
+
+    STEP --> FETCH_REGS: Se ejecuta un step (1 cycle)
+
+   
+
+    CONTINUOUS_MODE --> FETCH_REGS: Halted or MAX_CYCLES
+    CONTINUOUS_MODE --> CONTINUOUS_MODE
+   
+
+   
+    state FETCH_REGS {
+        Envio: Enviar 4 bytes
+        state Envio {
+            [*] --> SEND_DATA_TX
+            SEND_DATA_TX --> WAIT_TX: envio 1 byte
+            WAIT_TX --> SEND_DATA_TX: termino de enviar byte
+            WAIT_TX --> [*]: Se enviaron 4 bytes
+
+        }
+        [*] --> CMD_FETCH_PC
+        CMD_FETCH_PC --> Envio
+
+        Envio --> CMD_FETCH_REGS
+        CMD_FETCH_REGS --> Envio
+        
+        Envio --> CMD_FETCH_ALU
+        CMD_FETCH_ALU --> Envio
+        
+        Envio --> CMD_FETCH_MEM
+        CMD_FETCH_MEM --> Envio
+        
+        Envio --> CMD_FETCH_CLK_COUNT
+        CMD_FETCH_CLK_COUNT --> Envio
+
+        Envio --> [*]
+        
+    }
+    FETCH_REGS --> IDLE
+
+    IM_WRITE: escribir instruction_memory
+    state IM_WRITE {
+        [*] --> WAIT_RX
+        WAIT_RX --> WAIT_RX: Recibi 1 byte
+        WAIT_RX --> WRITE_INSTRUCTION: byte_counter == 4
+        WRITE_INSTRUCTION --> [*]: 4 bytes recibidos == HALT_instruction
+        WRITE_INSTRUCTION --> WAIT_RX: Escribi 4 bytes en instruction_memory
+
+    }

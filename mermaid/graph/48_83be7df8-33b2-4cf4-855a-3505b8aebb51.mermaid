@@ -1,0 +1,10 @@
+flowchart TB
+    subgraph "Control Cluster"    
+    AWX-->LocalPod(Local Execution Pod)
+    end
+
+    AWX-->API
+    subgraph "Remote Cluster"
+    API(K8s API)-->RemotePod(Remote Execution Pod)
+    end
+

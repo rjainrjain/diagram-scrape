@@ -1,0 +1,58 @@
+flowchart TD
+subgraph B ["Continuous Integration (CI)"]
+    subgraph B0["github action (main branch)"]
+      subgraph B1[windows]
+        B10(git clone) --> B11
+        B11(install) --> B12
+        B12(build) --> B13(test)
+      end
+      subgraph B2[macos]
+        B20(git clone) --> B21
+        B21(install) --> B22
+        B22(build) --> B23(test)
+      end
+      subgraph B3[ubuntu]
+        B30(git clone) --> B31
+        B31(install) --> B32
+        B32(build) --> B33(test)
+      end
+      B4[builds completed]
+      B5{build<br>type?}
+      B13 --> B4
+      B23 --> B4
+      B33 --> B4
+      B4 --> B5
+    end
+end
+B5 .-> |development|C1
+B5 .-> |production|D1
+subgraph C ["development release"]
+    subgraph C1["github action (staging branch)"]
+      C10(git clone) --> C11(install)
+      C11 --> C12(build)
+      C12 --> C13(github release)
+    end
+end
+subgraph D ["production release"]
+    subgraph D1["github action (release branch)"]
+      D10(git clone) --> D11(install)
+      D11 --> D12(build)
+      D12 --> D13(npm publish release)
+    end
+    D1[npm publish]
+end
+C1 .-> F0
+D1 .-> F0
+subgraph F["Continuous Deployment (CD)"]
+    subgraph F0["github action"]
+    F1["bootstrap"]
+    F2["provision infra"]
+    F3["publish containers"]
+    F4["configure kubernetes"]
+    F5["deploy app"]
+    F1 --> F2
+    F2 --> F3
+    F3 --> F4
+    F4 --> F5
+    end
+end

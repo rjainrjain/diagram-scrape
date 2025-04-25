@@ -1,0 +1,13 @@
+sequenceDiagram
+    participant A as Agora Video SDK<Audio Module>
+    participant B as Agora SD-RTN<Last Mile<server>>, <Last Mile<server>>
+    participant C as Agora Video SDK<Audio Module><Network Jitter Buffering>
+    
+    A->>B: 1
+    B->>B: 2
+    B->>C: 3
+    C->>C: 4
+    rect rgb(224, 224, 224)
+        A->>+C: 5
+        C->>-A: 6
+    end

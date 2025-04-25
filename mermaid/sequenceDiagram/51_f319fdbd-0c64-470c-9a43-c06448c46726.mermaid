@@ -1,0 +1,17 @@
+sequenceDiagram;
+    participant User as User
+    participant App as App
+    participant Auth0 as AWX Authorization Server
+    participant API as AWX API
+    
+    User->>App: (1) Click login link
+    App->>Auth0: (2) Authorization Code Request to /authorize
+    Auth0->>User: (3) Redirect to login/authorization prompt
+    User->>Auth0: (4) Authenticate and Consent
+    Auth0->>App: (5) Authorization Code
+    App->>Auth0: (6) Authorization Code for Application Credentials
+    Auth0->>Auth0:(7) Validate Authorization Code + Application Credentials
+    Auth0->>App: (8) Provide ID Token and Access Token
+    App->>API: (9) Request user data with Access Token
+    API->>App: (10) Response
+

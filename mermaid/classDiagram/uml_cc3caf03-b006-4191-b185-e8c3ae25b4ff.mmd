@@ -1,0 +1,50 @@
+classDiagram
+
+class Entity{
+    # position
+    # boundaries
+    + void draw()
+    - Sprite
+}
+
+class Player{
+    - int score
+    - void jump()
+    - int gravity
+    + position get_location()
+}
+
+class Tile{
+    - bool is_breakable
+    - bool is_broken
+    + bool can_pass(boundaries)
+}
+
+class Reward{
+    - int score
+}
+
+class HeliHat{
+    - int base_acceleration
+}
+
+class Game{
+    - Entity* stuff
+    - Tile generate_tile()
+    + void draw_entities()
+    - bool is_out()
+    - void delete()
+}
+
+class System{
+    - int high_score
+    - void update_screen()
+}
+
+Player --|> Entity
+Tile --|> Entity
+Reward --|> Entity
+HeliHat --|> Entity
+HeliHat .. Player
+System .. Game
+Game .. Entity

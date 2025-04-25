@@ -1,0 +1,29 @@
+sequenceDiagram
+    activate Frontend
+    
+    Frontend->>+Backend: send account credentials
+
+    Backend->>+HCIPal: request account country
+    HCIPal-->>-Backend: account country
+
+    alt account is foreign
+        Backend-->>Frontend: foreign account error
+    else account is german
+        Backend-->>+HCIPal: request validation
+        HCIPal-->>-Backend: validation success/error
+    
+        alt validation error
+            Backend-->>Frontend: validation error
+        else validation success 
+            Backend-->>+HCIPal: request payment
+            HCIPal-->>-Backend: payment result
+            alt payment error 
+                Backend-->>Frontend: payment error
+            else payment success
+                Backend->>Backend: create ticket for user
+                Backend-->>-Frontend: return ticket
+            end
+        end
+    end
+
+    deactivate Frontend

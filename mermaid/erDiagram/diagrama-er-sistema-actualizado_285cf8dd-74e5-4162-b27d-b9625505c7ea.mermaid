@@ -1,0 +1,44 @@
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#00b1c7', 'secondaryColor': '#414042', 'tertiaryColor': '#6c757d', 'primaryBorderColor': '#00c2db'}}}%%
+erDiagram
+    PACIENTE ||--o{ ESTUDIO : "tiene"
+    PACIENTE {
+        UUID id
+        string nombre
+        string apellido
+        date fechaNacimiento
+        string dni
+    }
+    ESTUDIO ||--|| RESULTADO : "tiene"
+    ESTUDIO {
+        UUID id
+        UUID pacienteId
+        UUID medicoSolicitanteId
+        UUID tecnicoRealizadorId
+        enum tipoEstudio
+        datetime fechaRealizacion
+        enum estado
+        string imagenUrl
+    }
+    USUARIO ||--o{ ESTUDIO : "solicita"
+    USUARIO ||--o{ ESTUDIO : "realiza"
+    USUARIO {
+        UUID id
+        string nombre
+        string apellido
+        string email
+        enum rol
+    }
+    RESULTADO ||--o{ ANOMALIA : "detecta"
+    RESULTADO {
+        UUID id
+        UUID estudioId
+        string descripcion
+        datetime fechaResultado
+    }
+    ANOMALIA {
+        UUID id
+        UUID resultadoId
+        enum tipo
+        string descripcion
+        float probabilidad
+    }

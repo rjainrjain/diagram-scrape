@@ -1,0 +1,25 @@
+
+sequenceDiagram
+    participant M as Main
+    participant G as Game
+    participant B as Board
+    participant S as Score
+    participant L as Level
+    participant U as UI
+    M->>G: __init__()
+    G->>B: __init__()
+    G->>S: __init__(0)
+    G->>L: __init__(difficulty, max_value)
+    G->>U: __init__(theme, font)
+    G-->>M: __init__()
+    M->>G: play()
+    G->>B: move_piece(direction)
+    B->>G: get_grid()
+    G->>M: get_grid()
+    G->>U: get_theme()
+    G->>U: get_font()
+    M->>G: get_score()
+    G->>S: get_value()
+    M->>G: get_level()
+    G->>L: get_difficulty()
+    G->>L: get_max_value()

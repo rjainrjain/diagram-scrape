@@ -1,0 +1,30 @@
+
+classDiagram
+    class TravelAdvisor {
+        -WeatherService weather_service
+        -TrafficService traffic_service
+        -RecommendationService recommendation_service
+        -UIService ui_service
+        -NotificationsService notifications_service
+        +start() void
+    }
+    class WeatherService {
+        +get_weather() dict
+    }
+    class TrafficService {
+        +get_traffic() dict
+    }
+    class RecommendationService {
+        +get_recommendations(weather: dict, traffic: dict) list
+    }
+    class UIService {
+        +display_recommendations(recommendations: list) void
+    }
+    class NotificationsService {
+        +send_notifications(weather_changes: dict) void
+    }
+    TravelAdvisor --> WeatherService
+    TravelAdvisor --> TrafficService
+    TravelAdvisor --> RecommendationService
+    TravelAdvisor --> UIService
+    TravelAdvisor --> NotificationsService

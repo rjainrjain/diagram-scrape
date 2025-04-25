@@ -1,0 +1,90 @@
+erDiagram
+  character {
+    number character_id PK
+    string name
+    string description
+    string place_of_birth
+    string identity
+    string fight_style
+    string installation_version
+    string drawing
+    string r_character_id
+    string basic_action_id FK
+    string image_lib_id FK
+  }
+
+  character_weapon {
+    number character_id PK
+    number weapon_id PK
+  }
+
+  character_armor {
+    number character_id PK
+    number armor_id PK
+  }
+
+  skill {
+    number skill_id PK
+    string name
+    string cover
+    string demo
+    string logo
+    string combo_key
+    string consumption_capacity
+    string required_points
+    string trigger_condition
+    string remark
+    string character_id FK
+  }
+
+  character_ability {
+    number ability_id PK
+    string name
+    string cover
+    string demo
+    string logo
+    string combo_key
+    string consumption_capacity
+    string required_points
+    string trigger_condition
+    string remark
+    boolean is_advanced
+    string character_id FK
+  }
+
+  weapon {
+    number weapon_id PK
+    string name
+    string image
+    string ingredient 
+    string demo_url
+    string effect
+    string hp_consume
+    string mp_consume
+    string durability
+    string description
+    string type
+    number price
+  }
+
+  armor {
+    number armor_id PK
+    string name
+    string image
+    string ingredient
+    string increase_hp
+    tring increase_mp
+    string increase_stamina
+    string increase_ap
+    string increase_dp
+    string increase_agility
+    string required_hp
+    string required_mp
+    string required_stamina
+    string required_ap
+    string required_dp
+    string required_agility
+  }
+
+  character ||--|{ skill : has
+  character ||--|| character_ability : own

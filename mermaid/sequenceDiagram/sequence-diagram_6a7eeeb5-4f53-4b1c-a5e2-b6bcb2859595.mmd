@@ -1,0 +1,57 @@
+sequenceDiagram
+
+participant Acc Service
+participant Acc Generator
+participant Block Manager
+participant Block Service
+participant Postgres
+participant DB Service
+participant MongoDB
+
+Acc Service->>Acc Generator: init for instance id
+Acc Generator->>Block Service: get incomplete blocks for id & category
+Block Service->>Postgres: get incomplete blocks
+Postgres->>Block Service: incomplete B(start, end, last)
+Block Service->>Acc Generator: incomplete blocks B(s, e, l)
+Acc Generator->>Block Manager: add blocks
+
+Acc Generator->>Block Manager: get available ranges
+Block Manager->>Acc Generator: available ranges
+Acc Generator->>DB Service: get accessions in ranges
+DB Service->>MongoDB: get accessions
+MongoDB->>DB Service: accessions
+DB Service->>Acc Generator: accessions in mongo but not registered in block
+Acc Generator->>Block Manager: recover these
+Block Manager->>Block Manager: recompute blocks & ranges
+
+Acc Service->>Acc Generator: give me 10 accessions
+Acc Generator->>Block Manager: enough blocks?
+Block Manager->>Acc Generator: yes/no
+opt if not
+    Acc Generator->>Block Service: reserve block for id & category (rs/ss)
+    Block Service->>Postgres: get last saved block
+    Postgres->>Block Service: Block{start=0, end=99, last=40}
+    Block Service->>Block Service: next block
+    Block Service->>Postgres: save B{s=100, e=199}
+    note left of Postgres: block reserved for id
+    Block Service->>Acc Generator: Block{start=100, end=199}
+    Acc Generator->>Block Manager: add block
+end
+loop until 10 accessions
+    Acc Generator->>Block Manager: get accessions from next block
+    Block Manager->>Acc Generator: next accessions
+end
+Acc Generator->>Acc Service: here's 10 accessions
+
+Acc Service->>DB Service: save 10 accessions
+DB Service->>MongoDB: save
+note left of MongoDB: accessions written
+MongoDB->>DB Service: save response
+DB Service->>Acc Service: 10 saved, 0 failed
+Acc Service->>Acc Generator: post save
+Acc Generator->>Block Manager: commit saved accessions
+Block Manager->>Acc Generator: update B{s=100, e=199, l=109}
+Acc Generator->>Block Service: save B{s=100, e=199, l=109}
+Block Service->>Postgres: save B{s=100, e=199, l=109}
+note left of Postgres: watermark saved
+Acc Generator->>Block Manager: release failed accessions

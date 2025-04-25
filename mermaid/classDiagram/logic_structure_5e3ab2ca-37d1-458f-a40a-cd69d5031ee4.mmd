@@ -1,0 +1,142 @@
+classDiagram
+    direction LR
+
+    class IDSCreatesType
+    note for IDSCreatesType "Hier erben auch alle Konzepte von,<br/> welche auf klassen abbilden.<br/> Diese sind:<ul><li>PrimitiveTokens</li><li>PrimitiveTokensResolver</li><li>DesignSystem</li><li>AppTheme</li></ul>"
+
+    class DSEnumType {
+        DSEnumItem[] items
+    }
+
+    namespace Types {
+        class DSType
+        class DSReferenceType
+        class DSPrimitiveType
+        class DSBooleanType
+        class DSColorType
+        class DSDecimalType
+        class DSIntegerType
+        class DSSetType
+        class DSStringType
+        class DSVoidType
+    }
+    namespace Literals {
+        class DSBooleanLiteral {
+            boolean value
+        }
+
+        class DSColorLiteral {
+            DSColor value
+        }
+
+        class DSDecimalLiteral {
+            DSDecimal value
+        }
+
+        class DSIntegerLiteral {
+            integer value
+        }
+
+        class DSSetLiteral
+
+        class DSStringLiteral {
+            string value
+        }
+
+        class DSTypeLiteral
+        class DSInstanceLiteral
+    }
+    namespace Expressions {
+        class DSExpression
+        class DSAndExpression
+        class DSOrExpression
+        class DSDotExpression
+        class DSEqualsExpression
+        class DSVariableReference
+    }
+
+    class DSMethod
+    class DSEnumItemMethod {
+        DSEnumItem item
+    }
+
+    namespace Statements {
+        class DSStatement
+        class DSExpressionStatement
+        class DSIfStatement
+        class DSReturnStatement
+        class DSVariableDefinitionStatement
+
+        class DSStatementList
+    }
+
+    namespace Variables {
+        class IDSCreatesVariable {
+            string name
+        }
+
+        class DSVariableDefinition
+    }
+
+    <<interface>> IDSCreatesType
+    <<interface>> IDSCreatesVariable
+    <<abstract>> DSExpression
+    <<abstract>> DSStatement
+    DSType <|-- DSPrimitiveType
+    DSPrimitiveType <|-- DSBooleanType
+    DSPrimitiveType <|-- DSColorType
+    DSPrimitiveType <|-- DSDecimalType
+    DSPrimitiveType <|-- DSIntegerType
+    DSPrimitiveType <|-- DSSetType
+    DSPrimitiveType <|-- DSStringType
+    DSPrimitiveType <|-- DSVoidType
+    DSType <|-- DSReferenceType
+    IDSCreatesType <|-- DSEnumType
+    DSExpression <|-- DSAndExpression
+    DSExpression <|-- DSOrExpression
+    DSExpression <|-- DSDotExpression
+    DSExpression <|-- DSEqualsExpression
+    DSExpression <|-- DSVariableReference
+    DSExpression <|-- DSBooleanLiteral
+    DSExpression <|-- DSColorLiteral
+    DSExpression <|-- DSDecimalLiteral
+    DSExpression <|-- DSIntegerLiteral
+    DSExpression <|-- DSStringLiteral
+    DSExpression <|-- DSSetLiteral
+    DSMethod <|-- DSEnumItemMethod
+    IDSCreatesVariable <|-- DSVariableDefinition
+    DSStatement <|-- DSExpressionStatement
+    DSStatement <|-- DSIfStatement
+    DSStatement <|-- DSReturnStatement
+    DSStatement <|-- DSVariableDefinitionStatement
+    DSBooleanLiteral ..> DSBooleanType
+    DSColorLiteral ..> DSColorType
+    DSDecimalLiteral ..> DSDecimalType
+    DSIntegerLiteral ..> DSIntegerType
+    DSStringLiteral ..> DSStringType
+    DSSetLiteral ..> DSSetType
+    DSSetType *-- "1" DSType: generic
+    DSAndExpression *-- "1" DSExpression: lhs
+    DSAndExpression *-- "1" DSExpression: rhs
+    DSOrExpression *-- "1" DSExpression: lhs
+    DSOrExpression *-- "1" DSExpression: rhs
+    DSDotExpression *-- "1" DSExpression: lhs
+    DSDotExpression *-- "1" DSMethod: rhs
+    DSEqualsExpression *-- "1" DSExpression: lhs
+    DSEqualsExpression *-- "1" DSExpression: rhs
+    DSSetLiteral "1" *-- "0..n" DSExpression: value
+    DSSetLiteral *-- "1" DSType: generic
+    DSTypeLiteral *-- "1" DSType: value
+    DSInstanceLiteral *-- "1" DSReferenceType: value
+    DSInstanceLiteral "1" *-- "0..n" DSExpression: parameters
+    IDSCreatesVariable *-- "1" DSType: type
+    DSVariableDefinitionStatement *-- "1" DSVariableDefinition: definition
+    DSVariableDefinition "1" *-- "0..1" DSExpression: value
+    DSStatementList "1" *-- "1..n" DSStatement: statements
+    DSExpressionStatement *-- "1" DSExpression: expression
+    DSReturnStatement *-- "1" DSExpression: value
+    DSIfStatement *-- "1" DSExpression: condition
+    DSIfStatement *-- "1" DSStatementList: body
+    DSIfStatement "1" *-- "0..1" DSStatementList: else
+    DSReferenceType o-- "1" IDSCreatesType: reference
+    DSVariableReference o-- "1" IDSCreatesVariable: reference

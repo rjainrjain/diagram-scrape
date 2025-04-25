@@ -1,0 +1,4 @@
+flowchart LR
+  Actor-- Make a release -->actionBuildDocker{{Github Action builds docker image}}
+  actionBuildDocker-->actionPushDocker{{Github Action push docker image}}
+  actionPushDocker-->Docker

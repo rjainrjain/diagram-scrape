@@ -1,0 +1,35 @@
+```mermaid
+sequenceDiagram
+    participant User
+    participant Your_app
+    participant Video_SDK
+    participant Agora
+
+    User->>Your_app: Open App
+    activate Your_app
+    
+    Your_app->>Video_SDK: Initiate the Agora Video SDK engine<br> agoraEngine = RtcEngine.create
+    activate Video_SDK
+    Video_SDK->>Video_SDK: Setup the local video stream<br> agoraEngine.enableVideo()
+    Video_SDK->>Video_SDK: agoraEngine.setupLocalVideo(VideoCanvas)
+    deactivate Video_SDK
+    
+    Your_app->>User: Join a call
+    Your_app->>Video_SDK: Retrieve authentication token to join channel
+    activate Video_SDK
+    Video_SDK->>Agora: Join the channel<br> agoraEngine.joinChannel()
+    activate Agora
+    Agora->>Video_SDK: Retrieve streaming from the other user<br> agoraEngine.setupRemoteVideo(VideoCanvas)
+    Video_SDK->>Video_SDK: Receive and send data stream
+    deactivate Agora
+    deactivate Video_SDK
+    
+    User->>Your_app: Leave the call
+    Your_app->>Video_SDK: Leave the channel<br> agoraEngine.leaveChannel()
+    activate Video_SDK
+    Video_SDK->>Agora: Clean up local resources<br> agoraEngine.destroy()
+    deactivate Video_SDK
+
+    User->>Your_app: Close app
+    deactivate Your_app
+```

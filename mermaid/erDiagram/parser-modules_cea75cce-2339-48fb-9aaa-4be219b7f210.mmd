@@ -1,0 +1,16 @@
+---
+title: Parse modules [2.26.23]
+---
+
+erDiagram
+    SKILLING-PARSER ||--|| FILE-ROUTER : uses
+    FILE-ROUTER ||--o{ FILE-READER : uses
+    SKILLING-PARSER ||--|| PARSER-ENGINE : uses
+    PARSER-ENGINE ||--o{ SLICER-ENGINE : uses
+    SLICER-ENGINE ||--o{ SLICER : uses
+    PARSER-ENGINE ||--|| TOKEN-ENGINE : uses
+    TOKEN-ENGINE ||--o{ TOKEN-STORE: uses
+    PARSER-ENGINE ||--|| MODEL-STORE : uses
+    MODEL-STORE ||--|| MODEL : uses
+    SKILLING-PARSER ||--|| RULE-STORE : uses
+    RULE-STORE ||--o{ VALIDATION-RULES : uses

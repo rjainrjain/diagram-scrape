@@ -1,0 +1,13 @@
+```mermaid
+flowchart BT
+    Login2[초대상태_A9bck38a2K] --> 로비
+    Login[시작하기] --> Oauth[Oauth]
+    Login --> Guest[Guest]
+    Oauth --> 성공[성공]
+    Oauth --> 실패[실패]
+    실패 --> Login
+    성공 --> 닉네임Fetch[api로 데이터 가져옴]
+    닉네임Fetch --> 방정보받기[방이름_A9bck38a2K]
+    방정보받기 --> 로비[로비 소켓접속]
+    Guest --> 방정보받기
+```

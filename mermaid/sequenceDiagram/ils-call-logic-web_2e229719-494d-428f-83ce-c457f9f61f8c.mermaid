@@ -1,0 +1,37 @@
+sequenceDiagram
+    participant User
+    participant Video_SDK as Video SDK
+    participant Agora as SD-RTN
+    participant Host
+    participant Audience
+
+    %% User Actions
+    rect rgb(255, 255, 255)
+        note right of User: User Initializing and Starting Video
+        User ->>+ Video_SDK: Open App
+        Video_SDK ->>+ Agora: Retrieve token
+        Agora -->>- Video_SDK: Token
+        Video_SDK -->>- User: Initialize iniciarSession<br/>App.init
+    end
+
+    %% Host Actions
+    rect rgb(255, 255, 255)
+        note right of Host: Host Joining and Publishing
+        Host ->>+ Video_SDK: agoraEngine.setClientRole("host")
+        Video_SDK ->> Agora: Retrieve token
+        Agora -->> Video_SDK: Token
+        Video_SDK -->> Host: Join channel<br/>agoraEngine.join
+        Host ->>+ Video_SDK: Push local media<br/>agoraEngine.publish
+        Video_SDK -->>- Host: Publish confirmation
+    end
+
+    %% Audience Actions
+    rect rgb(255, 255, 255)
+        note right of Audience: Audience Subscribing and Receiving
+        Audience ->>+ Video_SDK: agoraEngine.setClientRole("audience")
+        Video_SDK ->> Agora: Retrieve token
+        Agora -->> Video_SDK: Token
+        Video_SDK -->> Audience: Join live stream<br/>agoraEngine.join
+        Audience ->> Video_SDK: Subscribe to stream<br/>agoraEngine.subscribe
+        Video_SDK -->>- Audience: Stream data<br/>agoraEngine.on("stream-subscribed")
+    end

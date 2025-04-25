@@ -1,0 +1,47 @@
+%% Diagrama de Classes para as Histórias de Usuário
+classDiagram
+    class API {
+        +consultarPlacas() : Lista<Placa>
+        +cadastrarPlaca(placa: Placa)
+        +consultarVagas() : Lista<Vaga>
+        +consultarPermanencia(placa: Placa) : Permanencia
+        +consultarPlanos() : Lista<PlanoFidelidade>
+    }
+
+    class Placa {
+        +id : int
+        +numero : string
+    }
+
+    class Vaga {
+        +id : int
+        +disponivel : bool
+    }
+
+    class Permanencia {
+        +tempo : int
+        +saldo : float
+    }
+
+    class PlanoFidelidade {
+        +nome : string
+        +beneficios : string
+        +requisitos : string
+    }
+
+    class Database {
+        +conectar()
+        +executarConsulta(query: string)
+        +salvar(placa: Placa)
+        +salvar(vaga: Vaga)
+        +salvar(plano: PlanoFidelidade)
+    }
+
+    API --> Placa : consulta
+    API --> Vaga : consulta
+    API --> Permanencia : calcula
+    API --> PlanoFidelidade : consulta
+    API --> Database : usa
+    Database --> Placa : salva
+    Database --> Vaga : salva
+    Database --> PlanoFidelidade : salva

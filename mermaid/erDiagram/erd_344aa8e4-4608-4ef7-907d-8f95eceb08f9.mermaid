@@ -1,0 +1,111 @@
+erDiagram
+
+    PELANGGAN ||--|| REVIEW : HAVE
+    MITRA ||--|| REVIEW : HAVE
+    MITRA ||--|{ KARYAWAN : HAS
+    PESANAN ||--|{ ORDER_LIST : HAS
+    PELANGGAN |o--o{ PESANAN : HAS
+    PESANAN }o--|| MITRA : HAVE
+    ANTRIAN |o--|| PESANAN : HAVE
+    PRODUK }o--|| MITRA : HAS
+    PRODUK ||--o{ ORDER_LIST : HAS
+
+    PELANGGAN {
+        int      id
+        string   username
+        string   password
+        string   email
+        bool     email_verified
+        string   profile_picture
+        string   nama
+        string   handphone
+        string   alamat
+        int      wallet
+        string   otp
+        time     created_at
+        time     updated_at
+    }
+
+    MITRA {
+        int       id
+        string    nama_toko
+        string    deskripsi_toko
+        string    alamat
+        string    linkGmaps
+        string    hari_buka
+        string    jam_buka
+        string    jam_tutup
+        string    gambar_toko
+        bool      subscription
+        string    status_toko
+        time      created_at
+        time      updated_at
+    }
+
+    PRODUK {
+        int       id
+        string    nama_produk
+        string    deskripsi_produk
+        int       harga
+        string    gambar
+        int       kuantitas
+        int       mitra_id
+        bool      show_produk
+        time      created_at
+        time      updated_at
+    }
+
+    ORDER_LIST {
+        int     id
+        int     quantity
+        string  note
+        int     produk_id
+        string  pesanan_id
+    }
+
+    PESANAN {
+        string  invoice
+        string  payment
+        string  pemesanan
+        bool    takeaway
+        string  status
+        int     pelanggan_id
+        int     mitra_id
+        int     antrian_id
+        time    created_at
+        time    updated_at
+    }
+
+    ANTRIAN {
+        int         id
+        int         estimasi
+        string      order_status
+        string      pesanan_id
+        time    created_at
+        time    updated_at
+    }
+
+    KARYAWAN {
+        int         id
+        string      username
+        string      password
+        string      email
+        string      profile_picture
+        string      nama
+        string      handphone
+        string      alamat
+        bool     isOwner
+        int         mitra_id
+        time    created_at
+        time    updated_at
+    }
+
+    REVIEW {
+        string      komentar
+        int         rating
+        int         mitra_id
+        int         pelanggan_id
+        time        created_at
+        time        updated_at
+    }
+

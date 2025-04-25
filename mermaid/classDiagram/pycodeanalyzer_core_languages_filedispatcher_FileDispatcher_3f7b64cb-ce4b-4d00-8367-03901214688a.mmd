@@ -1,0 +1,115 @@
+classDiagram
+class FileDispatcher {
+<<Class>>
++ Any logger
++ CppAnalyzer cppAnalyzer
++ PythonAnalyzer pythonAnalyzer
++ JavaAnalyzer javaAnalyzer
++ KotlinAnalyzer kotlinAnalyzer
++ UiFileDispatcherListener uiListener
++Constructor(CppAnalyzer cppAnalyzer, PythonAnalyzer pythonAnalyzer, JavaAnalyzer javaAnalyzer, KotlinAnalyzer kotlinAnalyzer, UiFileDispatcherListener uiListener) None
++dispatchRoots(List&lt;Tuple&lt;str,List&lt;str&gt;&gt;&gt; roots) List~AbstractObject~
++dispatch(str rootDir, List~str~ files) List~AbstractObject~
++sortObjects(List~AbstractObject~ abstractObjects) List~AbstractObject~
+}
+class CppAnalyzer {
+<<Class>>
++ List~str~ objectPaths
++ Encoding encoding
++ List~str~ forceIgnoredSymbols
++ Configuration configuration
++ bool configured
++ List~str~ defines
++Constructor(Configuration config) None
++analyze(str rootDir, str path) List~AbstractObject~
++isHeader(str path) bool
++handleHeader(str path, str encoding, str code, List~AbstractObject~ abstractObjects) None
++handleClass(str path, Any klass, List~AbstractObject~ abstractObjects) None
++addMethods(AbstractClass abstraction, Any klass, str visibility) None
++addMembers(AbstractClass abstraction, Any klass, str visibility) None
++addParents(AbstractClass abstraction, Any klass) None
++handleEnum(str path, Any enum, List~AbstractObject~ abstractObjects) None
++handleFunction(str path, Any function, List~AbstractObject~ abstractObjects) None
++clearNamespace(str namespace) str
++extractUnexpectedFromParseError(CppHeaderParser::CppParseError err) str
++defineConfig() None
++handleConfigation() None
+}
+link CppAnalyzer "class££pycodeanalyzer::core::languages::analyzers::cppanalyzer::CppAnalyzer"
+class PythonAnalyzer {
+<<Class>>
++ List~str~ globalImports
++Constructor() None
++analyze(str rootDir, str path) List~AbstractObject~
++handleEnum(str path, str namespace, ClassDef item, List~AbstractObject~ abstractObjects) None
++handleClass(str path, str namespace, ClassDef item, List~AbstractObject~ abstractObjects) None
++isEnumType(str type) bool
++handleFunction(str path, str namespace, FunctionDef item, List~AbstractObject~ abstractObjects) None
++handleMembers(Any func, AbstractClass abstraction) None
++deduceType(FunctionDef func, Assign item) str
++deduceReturnType(Any returnItem) str
++deduceTypeFromTypeName(Name item) str
++deduceTypeFromName(FunctionDef func, Name item) str
++deduceTypeFromTuple(Tuple item) str
++deduceTypeFromList(typeList item) str
++deduceTypeFromDict(Dict item) str
++deduceTypeFromConst(Const item) str
++handleTypeAnnotation(Any typeNope) str
++deduceNamespaceFromAttribute(Attribute attrib, bool isRoot) str
++deduceNamespace(str path, str rootDir) str
++getImportsNameSpace(Any item) List~str~
+}
+link PythonAnalyzer "class££pycodeanalyzer::core::languages::analyzers::pythonanalyzer::PythonAnalyzer"
+class JavaAnalyzer {
+<<Class>>
++ List~str~ globalImports
++Constructor() None
++analyze(str rootDir, str path) List~AbstractObject~
++handleClass(List~AbstractObject~ abstractObjects, str path, str currentNS, Union~javalang::ClassDeclaration,javalang::InterfaceDeclaration~ klass) None
++handleEnum(List~AbstractObject~ abstractObjects, str path, str currentNS, javalang::EnumDeclaration enum) None
++handleParent(Any item, AbstractClass klass) None
++deduceVisibility(Any item) str
++deduceType(Any item) str
+}
+link JavaAnalyzer "class££pycodeanalyzer::core::languages::analyzers::javaanalyzer::JavaAnalyzer"
+class KotlinAnalyzer {
+<<Class>>
++ List~str~ globalImports
++Constructor() None
++analyze(str rootDir, str path) List~AbstractObject~
++handleClass(List~AbstractObject~ abstractObjects, str path, str currentNS, Union~kopyt::ClassDeclaration,kopyt::InterfaceDeclaration~ klass) None
++handleParent(AbstractClass abstraction, kopyt::DelegationSpecifiers item) None
++handleConstuctor(AbstractClass abstraction, Union~kopyt::PrimaryConstructor,kopyt::SecondaryConstructor~ item, bool isPrimary) None
++handleProperty(AbstractClass abstraction, kopyt::PropertyDeclaration item, bool isStatic) None
++handleMethod(AbstractClass abstraction, kopyt::FunctionDeclaration item, bool isStatic) None
++handleEnum(List~AbstractObject~ abstractObjects, str path, str currentNS, kopyt::EnumDeclaration enum) None
++handleFunction(List~AbstractObject~ abstractObjects, str path, str currentNS, kopyt::FunctionDeclaration function) None
++deduceVisibility(Any item) str
++deduceTypeFromExpression(str expression) str
++deduceType(str type) str
+}
+link KotlinAnalyzer "class££pycodeanalyzer::core::languages::analyzers::kotlinanalyzer::KotlinAnalyzer"
+class UiFileDispatcherListener {
+<<Class>>
++notifyAnalyzing(str file) None
++notifyAnalysisEnd() None
+}
+link UiFileDispatcherListener "class££pycodeanalyzer::ui::app::UiFileDispatcherListener"
+class AbstractObject {
+<<Class>>
++ str name
++ str type
++ str origin
++ List~str~ usingNS
++ AbstractObjectLanguage objectLanguage
++ List~str~ linkedGenericTypes
++Constructor(str name, str origin) None
++addUsingNamespace(str namespace) None
+}
+link AbstractObject "class££pycodeanalyzer::core::abstraction::objects::AbstractObject"
+FileDispatcher ..> CppAnalyzer
+FileDispatcher ..> PythonAnalyzer
+FileDispatcher ..> JavaAnalyzer
+FileDispatcher ..> KotlinAnalyzer
+FileDispatcher ..> UiFileDispatcherListener
+FileDispatcher ..> AbstractObject

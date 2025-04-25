@@ -1,0 +1,22 @@
+stateDiagram-v2
+q0: Validate Args
+q1: Display Version Info
+q2: Display Help
+q3: Generate Key
+q4: Encrypt Plaintext
+q5: Decrypt with Key
+q6: Display Usage
+q7: Exit Program
+
+[*] --> q0: args passed
+q0 --> q1: -v or --version argument
+    q1 --> q7
+q0 --> q2: -h or --help argument
+    q2 --> q7
+q0 --> q3: -e flag with plaintext
+q0 --> q6: invalid args
+q3 --> q4: key generated
+q4 --> q5: plaintext encrypted
+    q5 --> q7
+q0 --> q5: -d flag given with ciphertext and key
+q6 --> q7

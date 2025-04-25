@@ -1,0 +1,76 @@
+        classDiagram
+        note for PersistableBase "inheritance=propagateattributes,namespace=persistance"
+        class PersistableBase {
+            +int id
+            +bool active
+        }
+        &lt;&lt;Abstract&gt;&gt; PersistableBase
+    
+        note for TimeLimitedPersistableBase "inheritance=propagateattributes,namespace=persistance"
+        class TimeLimitedPersistableBase {
+            +datetime effFrom
+            +datetime effTo
+        }
+        &lt;&lt;Abstract&gt;&gt; TimeLimitedPersistableBase
+        TimeLimitedPersistableBase --|> PersistableBase
+    
+        note for ReferenceBase "inheritance=propagateattributes,namespace=persistance"
+        class ReferenceBase {
+            +string:50 typeShortDescription
+            +string:150 typeLongDescription
+            +string:10 code
+        }
+        &lt;&lt;Abstract&gt;&gt; ReferenceBase
+        TimeLimitedPersistableBase <|-- ReferenceBase
+    
+        note for Person "inheritance=rollup,namespace=person"    
+        class Person {
+            +string:100 givenNames
+            +string:100 lastName
+            +date dob
+        }
+        PersistableBase <|-- Person
+    
+        note for Employee "inheritance=none,namespace=person"
+        class Employee {
+            +string:150 department
+            +date: startDate
+        }
+        Person <|-- Employee
+    
+        note for Address "inheritance=none,namespace=person"
+        class Address {
+            +string:100 addressLine1
+            +string:100 addressLine2
+            +string:100 addressLine3
+            +string:100 suburb
+            +string:10 postcode
+            +string:10 state
+        }
+        PersistableBase <|-- Address
+    
+        note for Contact "inheritance=none,namespace=person"
+        class Contact {
+            +string:150 details
+        }
+        PersistableBase <|-- Contact
+        Person "0" --> "*" Contact
+        Person "0" --> "*" Address
+    
+        note for GenderType "inheritance=none,namespace=referencedata"
+        class GenderType {
+        }
+        ReferenceBase <|-- GenderType
+        Person "*" --> "1" GenderType
+    
+        note for AddressType "inheritance=none,namespace=referencedata"
+        class AddressType {
+        }
+        ReferenceBase <|-- AddressType
+        Address "*" --> "1" AddressType
+    
+        note for ContactType "inheritance=none,namespace=referencedata"
+        class ContactType {
+        }
+        ReferenceBase <|-- ContactType
+        Contact "*" --> "1" ContactType

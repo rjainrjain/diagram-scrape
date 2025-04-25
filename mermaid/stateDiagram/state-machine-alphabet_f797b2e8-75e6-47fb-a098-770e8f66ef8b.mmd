@@ -1,0 +1,82 @@
+stateDiagram-v2
+    q0 : q0
+    state "Offer_Open 😀" as q0
+    [*] --> q0 : start
+    q0 --> acCo : A
+    acCo : acCo
+    state "active Contract 😀" as acCo
+    Obl1 : Obl1
+    state "Obligation_to_pay_license_fee and grant license 😀" as Obl1
+    acCo --> Obl1 : B
+    Obl1 --> sFL : G
+    Obl1 --> sUP : F
+    Obl1 --> inLic : E
+    sUP: sUP
+    LIT : LIT
+    state "Litigation or arbitration" as LIT
+    sUP --> LIT : T
+    sFL --> LIT : T 
+    sFL --> CANC : U
+    sUP --> CANC : U
+    sFL : sFL
+    state "Failure_to_license" as sFL
+    state "Failed obligation to pay" as sUP
+    sFL --> CANC : U
+    sFR --> LIT : T
+    sFR : sFR
+    state "Failed obligation to remove" as sFR
+    acCo --> Obl5BrLic : D
+    inLic : inLic
+    state "Inactive_License" as inLic
+    acCo --> TERM : C
+    acLic : acLic
+    state "Active_License 😀" as acLic
+    inLic --> acLic : H
+    acLic --> inLic : I
+    acLic --> Obl6 : J
+    Obl3 : Obl3
+    state "Obligation_to_Publish 😀" as Obl3
+    NObl4 : NObl4
+    state "No_obligation_to_publish 😀" as NObl4
+    acLic --> Obl3 : L
+    acLic --> NObl4 : M
+    %% also unclear in text if commissioned also has to submit for approval
+    NObl4 --> waitAppr : N
+    NObl4 --> TERM : W
+    Obl3 --> waitAppr : N
+    sFP : sFP
+    state "Failure_to_Publish" as sFP
+    Obl3 --> sFP : P
+    Obl7 : Obl7
+    state "Obligation Pay Evaluation Fee 😀" as Obl7
+    waitAppr --> Obl7
+    waitAppr --> TERM : X
+    sFP --> CANC : U
+    sFP --> LIT : T
+    sFA : sFA
+    state "failure_to_approve" as sFA
+    sFA --> LIT : T
+    sFA --> CANC : U
+    inLic --> Obl6 : K
+    NObl4 --> Obl6 : J
+    Obl3 --> Obl6 : J
+    Obl5BrLic : Obl5BrLic
+    state "Obligation_to_pay_breach_fee (brLic)" as Obl5BrLic
+    Obl5BrLic --> TERM : Y
+    Obl5BrLic --> LIT : T
+    Obl6 : Obl6
+    state "Obligation_to_Remove_Comments" as Obl6
+    Obl6 --> sFR : S
+    Obl6 --> Obl3 : Z
+    Obl6 --> inLic : Z
+    Obl6 --> NObl4 : Z
+    Obl7 --> sUP : A2
+    Obl7 --> TERM : X
+    waitAppr : waitAppr
+    state "Waiting_for_Approval 😀" as waitAppr
+    waitAppr --> Obl3 : O
+    waitAppr --> sFA : R
+    sUP --> Obl5BrLic : V
+    sFP --> Obl5BrLic : V
+    sFA --> Obl5BrLic : V
+    sFR --> Obl5BrLic : V

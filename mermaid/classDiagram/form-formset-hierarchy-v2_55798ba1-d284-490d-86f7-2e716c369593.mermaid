@@ -1,0 +1,39 @@
+classDiagram
+    class ModelForm {
+        <<Django>>
+    }
+    class inlineformset_factory {
+        <<Django Function>>
+    }
+
+    class QuizForm {
+        +title: CharField
+        +description: TextField
+        +category: CharField
+    }
+    class QuestionForm {
+        +text: CharField
+    }
+    class AnswerForm {
+        +text: CharField
+        +is_correct: BooleanField
+    }
+    class QuestionFormSet {
+        +form: QuestionForm
+        +extra: int
+        +can_delete: bool
+    }
+    class AnswerFormSet {
+        +form: AnswerForm
+        +extra: int
+        +can_delete: bool
+        +max_num: int
+    }
+
+    ModelForm <|-- QuizForm
+    ModelForm <|-- QuestionForm
+    ModelForm <|-- AnswerForm
+    inlineformset_factory --> QuestionFormSet : creates
+    inlineformset_factory --> AnswerFormSet : creates
+    QuizForm --> QuestionFormSet : contains
+    QuestionFormSet --> AnswerFormSet : contains

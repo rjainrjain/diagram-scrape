@@ -1,0 +1,34 @@
+flowchart TD
+    A([Rounded Rectangle]) -->|Solid line| B[Rectangle]
+    A -->|Dotted line| C{Diamond}
+    A -.->|Dotted line| D((Circle))
+    A ==>|Thick line| E{{Hexagon}}
+    A -->|Curved line| F[/Parallelogram/]
+    A -->|Curved dotted line| G[\Trapezoid\]
+    A -->|Multi-segment line| H[Rectangle] --> I[Rectangle] --> J[Rectangle]
+    A -------->|Long solid line| K>Flag]
+    A ----------->|Long dotted line| L[(Database)]
+    K --o M{Decision}
+    K --x N[Action]
+    O[/Input/] --> P[\Output\]
+    Q[[Subroutine]] ==> R((Event))
+    S[("Cylinder")] --> T{{"Double edged"}}
+
+    subgraph Subgraph
+        U[Node 1] --> V[Node 2]
+    end
+
+    A --> Subgraph
+
+    style A fill:#f9d5e5,stroke:#333,stroke-width:2px
+    style B fill:#eeac99,stroke:#333,stroke-width:2px
+    style C fill:#e06377,stroke:#333,stroke-width:2px
+    style D fill:#c83349,stroke:#333,stroke-width:2px
+    style E fill:#5b9aa0,stroke:#333,stroke-width:2px
+    style F fill:#d6d4e0,stroke:#333,stroke-width:2px
+    style G fill:#b8a9c9,stroke:#333,stroke-width:2px
+    style K fill:#622569,stroke:#333,stroke-width:2px,color:#fff
+    style L fill:#622569,stroke:#333,stroke-width:2px
+    style Subgraph fill:#c8e6c9,stroke:#4caf50,stroke-width:2px,color:#37474f
+
+    classDef default fill:#ffcdb2,stroke:#333,stroke-width:1px;

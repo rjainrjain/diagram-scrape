@@ -1,0 +1,34 @@
+
+    classDiagram
+        class Game{
+            -int score
+            -int width
+            -int height
+            -Player player
+            -Food food
+            -bool paused
+            +__init__(self, width: int, height: int)
+            +start_game(self)
+            +pause_game(self)
+            +resume_game(self)
+            +restart_game(self)
+            +end_game(self)
+        }
+        class Player{
+            -int x
+            -int y
+            -int dx
+            -int dy
+            +__init__(self, x: int, y: int)
+            +move(self, dx: int, dy: int)
+            +collide(self, other)
+        }
+        class Food{
+            -int x
+            -int y
+            +__init__(self, x: int, y: int)
+            +draw(self, surface)
+        }
+        Game "1" -- "1" Player: has
+        Game "1" -- "1" Food: has
+    

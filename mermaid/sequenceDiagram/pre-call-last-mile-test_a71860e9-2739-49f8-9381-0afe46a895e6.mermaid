@@ -1,0 +1,11 @@
+sequenceDiagram
+    participant App as &lt;div&gt;&amp;#128241;&lt;br&gt;App&lt;/div&gt;
+    participant SDK as &lt;div&gt;&amp;#9646;&amp;#9646;&lt;br&gt;SDK&lt;/div&gt;
+    participant SD-RTN as &lt;div&gt;&amp;#9729;&lt;br&gt;SD-RTN Edger Server&lt;/div&gt;
+
+    App-&gt;&gt;SDK: Start last mile probe test
+    SDK-&gt;&gt;SD-RTN: Send uplink network probe packet
+    SD-RTN--&gt;&gt;SDK: Return the uplink confirmation packet
+    SDK-&gt;&gt;SD-RTN: Send downlink network probe packet
+    App&lt;&lt;--SDK: Report network quality statistics
+    App-&gt;&gt;SDK: Stop last mile the probe test

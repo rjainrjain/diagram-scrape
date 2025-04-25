@@ -1,0 +1,5 @@
+flowchart TD
+    A[Initial_UTXO]
+    B{Create_Config_Tx}
+    A--"` Spends the UTXO referenced in its NftConfig argument`"---B
+    B ==>|"`Pays the initial DynamicConfigDatum and Config NFT to the script`"| E[Tally_Validator]

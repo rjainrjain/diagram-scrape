@@ -1,0 +1,14 @@
+flowchart TD
+    subgraph Environment of Operation
+    subgraph System of Interest
+    id1[Nextcloud]<-->id2[Apache]
+    end
+    id1<-->id3[MariaDB]
+    id1<-->id8[Storage]
+    id2-->id7[Firewall]
+    id2-->id6[Local User]
+    end
+    id7-->id4((Internet))
+    id4-->id5[Remote User]
+    id4-->id9[External Stakeholder]
+    

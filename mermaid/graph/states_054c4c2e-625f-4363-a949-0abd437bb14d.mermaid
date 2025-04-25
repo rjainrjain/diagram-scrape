@@ -1,0 +1,51 @@
+graph LR
+    BEGIN -- "(" --> COMMENT -- ")" --> END
+    COMMENT -- "[^)]*" --> COMMENT
+    %% any number of non-) characters
+
+    %% Numbers
+    BEGIN -- "[0-9]" --> DIGIT
+    BEGIN -- "{" --> MULTIDIGIT
+    DIGIT --> NUMBER
+    MULTIDIGIT -- "[0-9]+" --> MULTIDIGIT10
+    MULTIDIGIT -- "[0-9A-Za-z]+" --> MULTIDIGIT36
+    MULTIDIGIT10 -- "." --> MULTIFLOAT10
+    MULTIDIGIT36 -- "." --> MULTIFLOAT36
+    MULTIFLOAT10 -- "[0-9]*" --> MULTIFLOAT10
+    MULTIFLOAT36 -- "[0-9A-Za-z]*" --> MULTIFLOAT36
+    MULTIDIGIT10 -- "else" --> ERR
+    MULTIDIGIT36 -- "else" --> ERR
+    MULTIFLOAT10 & MULTIFLOAT36 -- "}" --> NUMBER
+    MULTIFLOAT10 & MULTIFLOAT36 -- "else" --> ERR
+    NUMBER --> END
+
+    %% Strings
+    BEGIN -- "double quote" --> STRING
+    STRING -- "not double quote" --> STRING
+    STRING -- "double quote" --> END
+
+    %% Lists
+    BEGIN -- "[" --> LISTBEGIN
+    BEGIN -- "]" --> LISTEND
+    BEGIN -- "." --> LISTSEP
+    LISTBEGIN & LISTEND & LISTSEP --> END
+
+    %% Functions
+    BEGIN -- "<" --> FUNNAME
+    FUNNAME -- "Not whitespace" --> FUNNAME
+    FUNNAME -- ">" --> END
+    BEGIN -- "/" --> FUNDEFSTART --> END
+    BEGIN -- "\" --> FUNDEFEND --> END
+
+    %% Label Definition
+    BEGIN -- "⟨" --> LABEL
+    LABEL -- "[^⟩]" --> LABEL
+    LABEL -- "⟩" --> END
+
+
+    %% For-Loop
+    BEGIN -- "ɑ" --> LOOPSTART --> END
+    BEGIN -- "ɒ" --> LOOPEND --> END
+
+    %% Everything else
+    BEGIN -- "else" --> INSTRUCTION --> END

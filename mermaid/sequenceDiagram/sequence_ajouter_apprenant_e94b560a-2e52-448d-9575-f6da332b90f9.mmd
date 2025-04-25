@@ -1,0 +1,11 @@
+sequenceDiagram
+actor Formateur
+
+Formateur->>Système: use case : Ajouter apprenant
+Formateur->>Système: Saisir les informations
+Formateur->>+Système: Enregistrer
+Système -->>Système: "Création de l'utilisateur"
+Système -->>Système: "Affectation de rôle : Apprenant"
+note over Système : L'apprenat est en relation avec un utilisateur
+Système-->>-Formateur: message de confirmation
+

@@ -1,0 +1,249 @@
+erDiagram
+
+OpenAPI {
+    String openapi
+    URI jsonSchemaDialect
+    List-Map-String-List-String security
+}
+
+Info {
+    String title
+    String summary
+    String description
+    URL termsOfService
+    String version
+}
+
+Contact {
+    String name
+    URL url
+    String email
+}
+
+License {
+    String name
+    String identifier
+    URL url
+}
+
+Server {
+    String url
+    String description
+}
+
+ServerVariable {
+    List-String enum
+    String default
+    String description
+}
+
+PathItem {
+    String summary
+    String description
+}
+
+Operation {
+    List-String tags
+    String summary
+    String description
+    String operationId
+    Boolean deprecated
+    List-Map-String-List-String security
+}
+
+ExternalDocumentation {
+    String description
+    URL url
+}
+
+Parameter {
+    String name
+    Location in
+    String description
+    Boolean required
+    Boolean deprecated
+    Boolean allowEmptyValue
+    Style style
+    Boolean explode
+    Boolean allowReserved
+    Object example
+}
+
+Schema {
+    Object example
+}
+
+Discriminator {
+    String propertyName
+    Map-String-String mapping
+}
+
+XML {
+    String name
+    URI namespace
+    String prefix
+    Boolean attribute
+    Boolean wrapped
+}
+
+Example {
+    String summary
+    String description
+    Object value
+    URI externalValue
+}
+
+MediaType {
+    Object example
+}
+
+Encoding {
+    String contentType
+    Style style
+    Boolean explode
+    Boolean allowReserved
+}
+
+Header {
+    String description
+    Boolean required
+    Boolean deprecated
+    Style style
+    Boolean explode
+    Boolean allowReserved
+    Object example
+}
+
+RequestBody {
+    String description
+    Boolean required
+}
+
+Response {
+    String description
+}
+
+Link {
+    String operationRef
+    String operationId
+    Map-String-String parameters
+    Object requestBody
+    String description
+}
+
+SecurityScheme {
+    Type type
+    String description
+}
+
+ApiKey {
+    String name
+    Location in
+}
+
+Http {
+    Scheme scheme
+    String bearerFormat
+}
+
+MutualTLS {
+}
+
+OAuth2 {
+}
+
+OAuthFlow {
+    URL authorizationUrl
+    URL tokenUrl
+    URL refreshUrl
+    Map-String-String scopes
+}
+
+OpenIdConnect {
+    URL openIdConnectUrl
+}
+
+Tag {
+    String name
+    String description
+}
+
+OpenAPI ||--|| Info : info
+OpenAPI ||--o{ Server : servers
+OpenAPI ||--o{ PathItem : paths
+OpenAPI ||--o{ PathItem : webhooks
+OpenAPI ||--o| Components : components
+OpenAPI ||--o{ Tag : tags
+OpenAPI ||--o| ExternalDocumentation : externalDocs
+
+Info ||--o| Contact : contact
+Info ||--o| License : license
+
+Server ||--o{ ServerVariable : variables
+
+Tag ||--o| ExternalDocumentation : externalDocs
+
+PathItem ||--o| Operation : get
+PathItem ||--o| Operation : put
+PathItem ||--o| Operation : post
+PathItem ||--o| Operation : delete
+PathItem ||--o| Operation : options
+PathItem ||--o| Operation : head
+PathItem ||--o| Operation : patch
+PathItem ||--o| Operation : trace
+PathItem ||--o{ Server : servers
+PathItem ||--o{ Parameter : parameters
+
+Operation ||--o| ExternalDocumentation : externalDocs
+Operation ||--o{ Parameter : parameters
+Operation ||--o| RequestBody : requestBody
+Operation ||--o{ Response : responses
+Operation ||--o{ Callback : callbacks
+Operation ||--o{ Server : servers
+
+Parameter ||--o| Schema: schema
+Parameter ||--o{ Example : examples
+Parameter ||--o{ MediaType : content
+
+Schema ||--o| Discriminator : discriminator
+Schema ||--o| XML : xml
+Schema ||--o| ExternalDocumentation : externalDocs
+
+MediaType ||--o| Schema: schema
+MediaType ||--o{ Example : examples
+MediaType ||--o{ Encoding : encoding
+
+Encoding ||--o{ Header : headers
+
+Header ||--o| Schema: schema
+Header ||--o{ Example : examples
+Header ||--o{ MediaType : content
+
+RequestBody ||--|{ MediaType : content
+
+Response ||--o{ Header : headers
+Response ||--o{ MediaType : content
+Response ||--o{ Link : links
+
+Link ||--o| Server : server
+
+Callback ||--o{ PathItem : callbackPaths
+
+Components ||--o{ Schema : schemas
+Components ||--o{ Response : responses
+Components ||--o{ Parameter : parameters
+Components ||--o{ Example : examples
+Components ||--o{ RequestBody : requestBodies
+Components ||--o{ Header : headers
+Components ||--o{ SecurityScheme : securitySchemes
+Components ||--o{ Link : links
+Components ||--o{ Callback : callbacks
+Components ||--o{ PathItem : pathItems
+
+SecurityScheme ||--o| ApiKey : oneOf
+SecurityScheme ||--o| Http : oneOf
+SecurityScheme ||--o| MutualTLS : oneOf
+SecurityScheme ||--o| OAuth2 : oneOf
+SecurityScheme ||--o| OpenIdConnect : oneOf
+
+OAuth2 ||--|{ OAuthFlow : flows

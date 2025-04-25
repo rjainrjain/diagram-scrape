@@ -1,0 +1,12 @@
+flowchart LR
+    subgraph CPU["Central Processing Unit (CPU)"]
+        direction TB
+        ArithmeticUnit["Arithmetic & Logic Unit"]
+        ControlUnit["Control Unit"]
+        MemoryUnit["Memory Unit"]
+        
+        ArithmeticUnit-->ControlUnit-->ArithmeticUnit
+        MemoryUnit-->ControlUnit-->MemoryUnit
+    end
+    InputUnit["Input Unit"]-->CPU 
+    CPU-->OutputUnit["Output Unit"]

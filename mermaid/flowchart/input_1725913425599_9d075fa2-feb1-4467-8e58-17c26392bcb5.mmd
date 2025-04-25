@@ -1,0 +1,9 @@
+flowchart TD
+    A[Start] --> B{Add filter to coffee maker?}
+    B -- Yes --> C[Add water to coffee maker]
+    B -- No --> D[Brew coffee]
+    C --> D
+    D --> E[Pour coffee into cup]
+    E --> F[Add milk and sugar (optional)]
+    F --> G[Enjoy your coffee]
+    G --> H[End]

@@ -1,0 +1,60 @@
+Some numbers (2009-2023):  
+
+ * Total orders: ~55'000
+ * Total CDs burned and shipped: ~75'000
+ * Total stories ordered: ~200'000
+ * Although payment was optional, about 80% of CDs and 70% of MP3s delivered sooner or later were paid for (with the amount chosen by the customer)
+
+[Read countless testimonials](https://gschichtefritz.ch/page/about) from enthusiastic customers (in German).
+
+The legacy gschichtefritz.ch code was written in Java and included a wide range of modules and functionalities. 
+Here’s an overview.
+```{mermaid}
+mindmap
+  root((GF legacy))
+    Shop
+      Regular Shop
+      Promo & Event Shops
+        Live orders at events
+      Coupons
+      Mass Orders for institutions
+      FB & Insta integration
+    Website
+      News: live sync from FB
+      Childrens drawings album: sync from FB 
+      Live Events
+      Static CMS Pages
+    Email
+      Shop related Emails
+      Newsletters
+      Reminders
+    App Backend
+    Vaadin Admin UI
+    Accounting
+      Processing
+        TWINT
+        QR Bill
+        Stripe
+        Paypal
+        Postfinanace
+        camt files
+      Double entry bookkeeping
+      Reporting
+      Annual financial statements
+        Balance sheet
+        Income statement
+    Audiostore
+      Audioautogram
+        Recording
+        Delivery
+      Story
+        Concatenation
+        WAV & MP3 Encoding
+    Delivery Factory Client
+      CD Burning
+      Printing Letters
+    PDF
+      Letters & Invoices
+      Coloring pages
+    Inventory
+```

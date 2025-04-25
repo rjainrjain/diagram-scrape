@@ -1,0 +1,40 @@
+classDiagram
+    PubSubClient~T~ ..> MessageEnvelope
+    CommandDispatcher~T~ ..> MessageEnvelope
+    ICommandRouter~T~ ..> MessageEnvelope
+    IMessagePublisher~in T~ <|-- PubSubClient~T~
+    IMessageSubscriber~T~ <|-- PubSubClient~T~
+    PubSubClient~T~ --> CommandDispatcher~T~
+    ICommandRouter~T~ ..> PubSubClient~T~ 
+    CommandDispatcher~T~ ..> ICommandRouter~T~ 
+    class IMessageSubscriber~T~{
+        +MessageReceivedCallback(string topic, T message) Task
+        Subscribe(string topic, MessageReceivedCallback callback)* Task
+    } 
+    class IMessagePublisher~in T~{
+        Publish(string topic, ~T~ payload): Task*
+    }
+    class PubSubClient~T~{
+        CreateNewInstance(MqttSettings settings, ILogger logger): Task<PubSubClient~T~>$
+        +Publish(string topic, ~T~ payload) Task
+        +Subscribe(string topic, MessageReceivedCallback callback) Task
+    }
+    class CommandDispatcher{
+        -Dictionary[string, List~ICommandRouter~T~~] _CommandRoutersByTopic
+        +CommandDispatcher(PubSubClient~T~ client, List~ICommandRouter~T~~ CommandRouters, ILogger logger)
+    }
+    class ICommandRouter~T~{
+        Predicate~T~ MessageSelector*
+        IMessagePublisher~T~ MessagePublisher*
+        string IncomingTopic*
+        string OutgoingTopic*
+        RouteAsync(T message) Task
+    }
+    class MessageEnvelope{
+        +string Id
+        +string CorrelationId
+        +string ContextId
+        +string MessageType
+        +string payload
+        +DateTime CreatedAt
+    }

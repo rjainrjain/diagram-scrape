@@ -1,0 +1,108 @@
+erDiagram
+    ALBUM {
+        INTEGER AlbumId
+        NVARCHAR Title
+        INTEGER ArtistId
+    }
+
+    ARTIST {
+        INTEGER ArtistId
+        NVARCHAR Name
+    }
+
+    CUSTOMER {
+        INTEGER CustomerId
+        NVARCHAR FirstName
+        NVARCHAR LastName
+        NVARCHAR Company
+        NVARCHAR Address
+        NVARCHAR City
+        NVARCHAR State
+        NVARCHAR Country
+        NVARCHAR PostalCode
+        NVARCHAR Phone
+        NVARCHAR Fax
+        NVARCHAR Email
+        INTEGER SupportRepId
+    }
+
+    EMPLOYEE {
+        INTEGER EmployeeID
+        NVARCHAR LastName
+        NVARCHAR FirstName
+        NVARCHAR Title
+        INTEGER ReportsTo
+        DATETIME BirthDate
+        DATETIME HireDate
+        NVARCHAR Address
+        NVARCHAR City
+        NVARCHAR State
+        NVARCHAR Country
+        NVARCHAR PostalCode
+        NVARCHAR Phone
+        NVARCHAR Fax
+        NVARCHAR Email
+    }
+
+    GENRE {
+        INTEGER GenreId
+        NVARCHAR Name
+    }
+
+    INVOICE {
+        INTEGER InvoiceId
+        INTEGER CustomerId
+        DATETIME InvoiceDate
+        NVARCHAR BillingAddress
+        NVARCHAR BillingCity
+        NVARCHAR BillingState
+        NVARCHAR BillingCountry
+        NVARCHAR BillingPostalCode
+        NUMERIC Total
+    }
+
+    INVOICELINE {
+        INTEGER InvoiceLineId
+        INTEGER InvoiceId
+        INTEGER TrackId
+        NUMERIC UnitPrice
+        INTEGER Quantity
+    }
+
+    MEDIATYPE {
+        INTEGER MediaTypeId
+        NVARCHAR Name
+    }
+
+    PLAYLIST {
+        INTEGER PlaylistId
+        NVARCHAR Name
+    }
+
+    PLAYLISTTRACK {
+        INTEGER PlaylistId
+        INTEGER TrackId
+    }
+
+    TRACK {
+        INTEGER TrackId
+        NVARCHAR Name
+        INTEGER AlbumId
+        INTEGER MediaTypeId
+        INTEGER GenreId
+        NVARCHAR Composer
+        INTEGER Milliseconds
+        INTEGER Bytes
+        NUMERIC UnitPrice
+    }
+
+    ALBUM ||--|{ TRACK : "contains"
+    ARTIST ||--|| ALBUM : "creates"
+    CUSTOMER ||--|| INVOICE : "receives"
+    EMPLOYEE ||--o| CUSTOMER : "assists"
+    GENRE ||--|{ TRACK : "categorizes"
+    INVOICE ||--|{ INVOICELINE : "has"
+    MEDIATYPE ||--|{ TRACK : "has"
+    PLAYLIST ||--|{ PLAYLISTTRACK : "includes"
+    PLAYLISTTRACK ||--|| TRACK : "includes"
+    TRACK ||--|| INVOICELINE : "sells"

@@ -1,0 +1,16 @@
+flowchart TD
+
+    MongoDB[(MongoDB Data Storage)] 
+    MongoDB-->UserData([User Registration Data])--> UserProfile([Registered User Profile])
+    UserProfile--> Conversations(User Conversations)
+    Conversations--Active Chats--> OngoingChats[User's Ongoing Chats]
+
+    WelcomePage[Welcome Page]
+
+    Visitor[Visitor]
+    Visitor-->WelcomePage
+
+    WelcomePage-->IsRegistered{Is User Registered?}
+    IsRegistered--Yes-->UserProfile
+    IsRegistered--No-->SignUpPage[Sign Up Page]
+    SignUpPage--Register/Hash New User Info-->MongoDB

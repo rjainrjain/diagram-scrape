@@ -1,0 +1,47 @@
+sequenceDiagram
+    title: Async Process: Task Splitter (Divide and Conquer)
+    participant MessageBroker as Message Broker
+    participant Splitter as Task Splitter Async Process
+    participant DB as PostgreSQL DB
+    participant Drive as Google Drive
+
+    MessageBroker ->> Splitter: Task obtained for splitting into smaller chunks
+
+    Splitter ->> DB: Fetch mission details using mission ID
+    DB -->> Splitter: Query response
+
+    break if mission status is not "CREATED"
+        Splitter -->> MessageBroker: ACK task so that next task can be picked up
+    end
+
+    Splitter ->> DB: Update the mission status to "IN_PROGRESS"
+    DB -->> Splitter: Query response
+
+    Splitter ->> Drive: Fetch file IDs of the resume files present in the Google drive folder<br>Assign variable driveFileIds with the file IDs
+    Drive -->> Splitter: Response
+
+    break if error
+        Splitter ->> DB: Update the mission status to "FAILED"
+        DB -->> Splitter: Query response
+
+        Splitter -->> MessageBroker: ACK task so that next task can be picked up
+    end
+
+    break if driveFileIds is empty
+        Splitter ->> DB: Update the mission status to "COMPLETED"
+        DB -->> Splitter: Query response
+
+        Splitter -->> MessageBroker: ACK task so that next task can be picked up
+    end
+
+    Splitter ->> Drive: Create Google spreadsheet and populate the mission details
+    Drive -->> Splitter: Response
+
+    Splitter ->> DB: Update the mission record with the Google Spreadsheet URL and total count
+    DB -->> Splitter: Query response
+
+    loop over driveFileIds with resumeFileId as the iteration variable
+        Splitter ->> MessageBroker: Enqueue task to be picked up by Rover, passing resumeFileId, mission ID and report spreadsheet ID in params
+    end
+
+    Splitter -->> MessageBroker: ACK task so that next task can be picked up

@@ -1,0 +1,8 @@
+flowchart TD
+    A[Customer] -->|request a song| B(Bartech)
+    B --> |Notifies| C(DJ)
+    C --> CC{Decides}
+    CC -->|One| D[Play the song]
+    CC -->|Two| E[Ignore request]
+    D --> |makes happy| A
+    E --> |makes upset| A

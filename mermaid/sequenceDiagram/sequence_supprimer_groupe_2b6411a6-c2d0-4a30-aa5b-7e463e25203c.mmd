@@ -1,0 +1,13 @@
+sequenceDiagram
+
+actor Formateur
+
+Formateur->>Système: use case : Supprimer groupe
+Formateur->>+Système: Supprimer
+
+Système -->>Système: "Vérification de l'absence des relations avec des projets."
+Système -->>Système: "Suppression des affectations avec les membres"
+Système -->>Système: "Suppression de groupe"
+
+Système-->>-Formateur: message de confirmation
+

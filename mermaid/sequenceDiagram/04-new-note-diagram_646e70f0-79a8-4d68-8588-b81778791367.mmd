@@ -1,0 +1,33 @@
+sequenceDiagram
+    participant browser
+    participant server
+
+    browser->>server: POST the new note to https://studies.cs.helsinki.fi/exampleapp/new_note
+    activate server
+    server-->>browser: returns status code 302, acting as a URL redirect to reload page
+    deactivate server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/notes as requested
+    activate server
+    server-->>browser: HTML document
+    deactivate server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.css
+    activate server
+    server-->>browser: the CSS file
+    deactivate server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.js
+    activate server
+    server-->>browser: the JS file
+    deactivate server
+
+    Note right of browser: the browser starts executing JS code to fetch data from server (as explained in the notes)
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+    activate server
+    server-->>browser: [{..},...,{"content": "note i posted", ...}]
+    deactivate server
+
+    Note right of browser: the browser executes callback function to render the UPDATED notes that we submitted in the beginning.
+

@@ -1,0 +1,13 @@
+graph TD
+    A[Image & Text Prompt] --> B[GAN]
+    B --> C[Consequent Frames]
+
+    subgraph GAN
+        B --> D[Discriminator]
+        B --> E[Generator]
+
+        D --> F[Real/Fake?]
+        E <-- F
+    end
+
+    E --> C

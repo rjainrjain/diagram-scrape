@@ -1,0 +1,46 @@
+erDiagram
+    ADMIN ||--o{ ADMIN_ROLE: has
+    ADMIN {
+        string id PK
+        string name
+        string email
+        string phone
+        string password
+        boolean isActive
+        datetime createdAt
+        datetime updatedAt
+        datetime lastLoginAt
+    }
+    ROLE ||--o{ ADMIN_ROLE: assigned_to
+    ROLE ||--o{ ROLE_PERMISSION: has
+    ROLE {
+        int id PK
+        string name
+        string description
+        datetime createdAt
+        datetime updatedAt
+    }
+    PERMISSION ||--o{ ROLE_PERMISSION: assigned_to
+    PERMISSION {
+        int id PK
+        string name
+        string description
+        string resource
+        string action
+        datetime createdAt
+        datetime updatedAt
+    }
+    ADMIN_ROLE {
+        int id PK
+        string adminId FK
+        int roleId FK
+        datetime createdAt
+        datetime updatedAt
+    }
+    ROLE_PERMISSION {
+        int id PK
+        int roleId FK
+        int permissionId FK
+        datetime createdAt
+        datetime updatedAt
+    }

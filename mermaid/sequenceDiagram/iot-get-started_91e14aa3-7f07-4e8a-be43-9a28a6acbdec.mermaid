@@ -1,0 +1,47 @@
+sequenceDiagram
+  participant User
+  participant IoT_SDK as IoT SDK
+  participant SD_RTN as SD-RTN
+
+  User ->>+ IoT_SDK: Set up Agora engine
+  rect rgb(255,255,255)
+    note right of IoT_SDK: Instantiate the Agora engine
+    IoT_SDK ->>+ SD_RTN: Set engine options
+    SD_RTN -->>- IoT_SDK: Engine options set
+    note right of SD_RTN: Verify license and initialize the engine
+    IoT_SDK ->>+ SD_RTN: Create a connection
+    SD_RTN -->>- IoT_SDK: Connection created
+  end
+
+  User ->>+ IoT_SDK: Join a channel
+  rect rgb(255,255,255)
+    note right of IoT_SDK: Call the method to join a channel
+    SD_RTN ->>+ SD_RTN: On join channel success callback
+    SD_RTN -->>- SD_RTN: Channel joined
+  end
+
+  User ->>+ IoT_SDK: Send audio and video
+  rect rgb(255,255,255)
+    note right of IoT_SDK: Start thread to send audio data
+    note right of SD_RTN: Start thread to send video data
+  end
+
+  User ->>+ IoT_SDK: Receive audio and video
+  rect rgb(255,255,255)
+    SD_RTN ->>+ SD_RTN: On audio data callback
+    SD_RTN -->>- SD_RTN: Render audio frame
+    SD_RTN ->>+ SD_RTN: On video data callback
+    SD_RTN -->>- SD_RTN: Render video frame
+  end
+
+  User ->>+ IoT_SDK: Leave channel
+  rect rgb(255,255,255)
+    note right of IoT_SDK: Call the leave channel method
+  end
+
+  User ->>+ IoT_SDK: Clean up
+  rect rgb(255,255,255)
+    note right of SD_RTN: Destroy the connection
+    IoT_SDK ->>+ SD_RTN: Call the finish method to release resources
+    SD_RTN -->>- IoT_SDK: Resources released
+  end

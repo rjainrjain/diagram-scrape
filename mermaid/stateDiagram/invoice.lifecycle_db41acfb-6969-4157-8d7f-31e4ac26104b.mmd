@@ -1,0 +1,15 @@
+---
+title: Invoice lifecycle
+---
+stateDiagram-v2
+  direction LR
+  [*] --> draft
+  draft --> open: finalize
+  draft --> void: cancelled
+  open --> paid: pay
+  note left of draft
+    An invoice cannot only be modified
+    while it's in a draft state
+  end note
+  open --> void: cancelled
+  open --> uncollectible: cannot_get_payment

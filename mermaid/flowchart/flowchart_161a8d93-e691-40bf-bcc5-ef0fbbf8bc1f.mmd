@@ -1,0 +1,12 @@
+flowchart TD
+Start([開始]) --> CheckFile{Mermaidファイルの変更があるか?}
+CheckFile --> |ある| Parse[Mermaidファイルを解析]
+CheckFile --> |ない| End([終了])
+Parse --> Validate{構文が正しいか?}
+Validate --> |正しい| CheckNew{新規追加か？}
+Validate --> |正しくない| Error[エラーを表示]
+CheckNew --> |はい| NewComment[新規追加用コメントを作成]
+CheckNew --> |いいえ| FixComment[変更用コメントを作成]
+NewComment --> End
+FixComment --> End
+Error --> End

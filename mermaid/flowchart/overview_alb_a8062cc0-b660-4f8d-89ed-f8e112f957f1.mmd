@@ -1,0 +1,6 @@
+flowchart LR
+    A[Browser] -->|https,1.2.3.4| B[ALB]
+    B --> |https,10.x.x.x|C(Route)
+    C --> |http,10.x.x.x|P{NetworkPolicy: <br />Allow 1.2.3.4}
+    P -->|x|D(App Pod)
+    P --> |http|E[️Drop]

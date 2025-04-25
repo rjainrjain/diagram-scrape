@@ -1,0 +1,42 @@
+graph TD
+    A[Start] --> B[Extract Raw Data]
+    B --> C[Transform Data]
+    C --> D{Data Typing Before or After?}
+    D -->|Before| E1[Data Typing]
+    D -->|After| F1[Load into Postgres]
+    E1 --> F1
+    F1 -->|If not done before| E2[Data Typing]
+    E2 --> G[Query Processing]
+    F1 -->|If done before| G
+    
+    subgraph "1. Data Extraction"
+    B --> B1[Download .txt files]
+    B1 --> B2[Convert to Parquet]
+    end
+    
+    subgraph "2. Data Transformation"
+    C --> C1[Use Polars Python API]
+    C --> C2[Use NLP libraries]
+    C1 --> C3[Normalize text data]
+    C2 --> C3
+    end
+    
+    subgraph "3. Data Typing"
+    E1 & E2 --> D1[Apply SOLI framework]
+    D1 --> D2[Connect fields with legal significance]
+    end
+    
+    subgraph "4. Database Loading"
+    F1 --> F2[Load transformed data]
+    F2 --> F3[Postgres instance]
+    end
+    
+    subgraph "5. Query Processing"
+    G --> G1[Rust CLI application]
+    G1 --> G2[Search Postgres DB]
+    G2 --> G3[Return query results]
+    G3 --> G4[Option for additional searches]
+    end
+
+    B2 -.-> |Future Automation| B
+    G4 -.-> G1

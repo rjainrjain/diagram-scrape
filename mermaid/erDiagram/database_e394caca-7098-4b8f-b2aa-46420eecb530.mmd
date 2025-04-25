@@ -1,0 +1,41 @@
+erDiagram
+    SENSORS ||--o{ RAW_DATA : has
+    SENSORS ||--o{ PROCESSED_DATA : has
+    SENSORS ||--o{ ENGINEERED_FEATURES : has
+    SENSORS ||--o{ MODEL_ARTIFACTS : has
+    SENSORS {
+        int id PK
+        string sensor_name
+        float centroid_longitude
+        float centroid_latitude
+        json metadata
+    }
+    RAW_DATA {
+        int id PK
+        int sensor_id FK
+        datetime timestamp
+        float value
+        json metadata
+    }
+    PROCESSED_DATA {
+        int id PK
+        int sensor_id FK
+        datetime timestamp
+        binary data
+        json metadata
+    }
+    ENGINEERED_FEATURES {
+        int id PK
+        int sensor_id FK
+        datetime timestamp
+        binary data
+        json metadata
+    }
+    MODEL_ARTIFACTS {
+        int id PK
+        int sensor_id FK
+        string model_type
+        datetime creation_date
+        binary model_data
+        json metadata
+    }

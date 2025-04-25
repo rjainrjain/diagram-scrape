@@ -1,0 +1,9 @@
+sequenceDiagram
+participant Client
+participant ClientHandler
+Client->>ClientHandler: SIGN_UP (mail, name, password)
+alt success
+    ClientHandler->>Client: SIGN_UP_OK (mail, name)
+else failure
+    ClientHandler->>Client: SIGN_UP_KO (message)
+end

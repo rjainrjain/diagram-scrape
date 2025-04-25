@@ -1,0 +1,37 @@
+sequenceDiagram
+    autonumber
+    activate Main
+
+    Main ->> CLIConfigurator: <<create>> <br/> sessionFrom(args)
+    activate CLIConfigurator
+    CLIConfigurator ->> CLIConfigurator: <<create>> <br/> configuration
+    CLIConfigurator ->> AntiPlagiarismSession: <<create>> <br/> configure(configuration)
+    CLIConfigurator -->> Main: session
+    deactivate CLIConfigurator
+
+    Main ->> AntiPlagiarismSession: run
+    activate AntiPlagiarismSession
+
+    loop for each submitted project
+        loop for each corpus project
+            note right of AntiPlagiarismSession: This nested loop is <br/> computed concurrently.
+            AntiPlagiarismSession -) TokenizationFacade: execute()
+            activate TokenizationFacade
+            TokenizationFacade ->> TokenizationFacade: analyze()
+            TokenizationFacade ->> TokenizationFacade: filter()
+            TokenizationFacade ->> TokenizationFacade: compare()
+            TokenizationFacade -->> AntiPlagiarismSession: reports
+            deactivate TokenizationFacade
+        end
+
+        AntiPlagiarismSession ->> FileExporter: export(reports)
+        activate FileExporter
+        FileExporter ->> FileExporter: data export
+        FileExporter -->> AntiPlagiarismSession: 
+        deactivate FileExporter
+    end
+
+    AntiPlagiarismSession -->> Main: 
+    deactivate AntiPlagiarismSession
+
+    deactivate Main

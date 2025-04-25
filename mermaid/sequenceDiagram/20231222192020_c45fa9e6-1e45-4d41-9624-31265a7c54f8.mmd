@@ -1,0 +1,22 @@
+sequenceDiagram
+    participant M as Main
+    participant U as UI
+    participant G as Game
+    participant L as Leaderboard
+    participant D as Difficulty
+    M->>U: start()
+    loop Game Loop
+        U->>U: update()
+        U->>G: move(direction)
+        G->>G: add_new_tile()
+        G->>G: check_game_over()
+        alt Game Over
+            G-->>U: Game Over
+            U->>L: add_score(player_name, score)
+            break
+        end
+    end
+    U->>D: adjust_difficulty(level)
+    D->>G: modify_gameplay(game)
+    M->>L: get_top_scores()
+    L-->>M: return top_scores

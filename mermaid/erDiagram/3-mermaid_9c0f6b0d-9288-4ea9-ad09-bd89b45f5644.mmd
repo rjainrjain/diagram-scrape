@@ -1,0 +1,108 @@
+erDiagram
+
+  "Post" {
+    String id "🗝️"
+    String type 
+    String avatar 
+    Int topic_id 
+    Int post_id 
+    String content 
+    String audioUrl "❓"
+    DateTime created_at 
+    String threadId 
+    String selection "❓"
+    }
+  
+
+  "Reply" {
+    String id "🗝️"
+    Boolean is_approved "❓"
+    }
+  
+
+  "Text" {
+    Int id "🗝️"
+    String name 
+    DateTime createdAt "❓"
+    DateTime updatedAt "❓"
+    }
+  
+
+  "Page" {
+    String id "🗝️"
+    Int order 
+    String content 
+    String imageUrl 
+    }
+  
+
+  "Suggestion" {
+    String id "🗝️"
+    String oldValue "❓"
+    String newValue 
+    String threadId 
+    DateTime created_at 
+    DateTime updated_at "❓"
+    String audioUrl "❓"
+    String version "❓"
+    }
+  
+
+  "SuggestionComment" {
+    Int id "🗝️"
+    String text 
+    String audioUrl "❓"
+    DateTime created_at 
+    DateTime updated_at "❓"
+    String type "❓"
+    }
+  
+
+  "User" {
+    String id "🗝️"
+    String email 
+    String avatarUrl 
+    DateTime created_at 
+    Boolean isAdmin 
+    String name 
+    DateTime updated_at "❓"
+    String username 
+    }
+  
+
+  "UserPreference" {
+    Int id "🗝️"
+    String theme 
+    String language 
+    }
+  
+    "Post" o|--|| "User" : "creatorUser"
+    "Post" o|--|| "Page" : "page"
+    "Post" o|--|| "Text" : "text"
+    "Post" o{--}o "Reply" : "reply"
+    "Post" o{--}o "User" : "likedBy"
+    "Reply" o|--|| "Post" : "parentPost"
+    "Reply" o{--}o "User" : "likedBy"
+    "Text" o|--|o "User" : "author"
+    "Text" o{--}o "Page" : "Page"
+    "Text" o{--}o "Suggestion" : "Suggestion"
+    "Text" o{--}o "Post" : "Post"
+    "Page" o|--|| "Text" : "text"
+    "Page" o{--}o "Post" : "Post"
+    "Page" o{--}o "Suggestion" : "Suggestion"
+    "Suggestion" o|--|| "Page" : "page"
+    "Suggestion" o|--|| "Text" : "text"
+    "Suggestion" o|--|| "User" : "user"
+    "Suggestion" o{--}o "SuggestionComment" : "SuggestionComment"
+    "Suggestion" o{--}o "User" : "likedBy"
+    "SuggestionComment" o|--|| "Suggestion" : "suggestion"
+    "SuggestionComment" o|--|| "User" : "author"
+    "User" o{--}o "Post" : "Post"
+    "User" o{--}o "Suggestion" : "Suggestion"
+    "User" o{--}o "SuggestionComment" : "SuggestionComment"
+    "User" o{--}o "Text" : "Text"
+    "User" o|--|o "UserPreference" : "preference"
+    "User" o{--}o "Reply" : "likedReply"
+    "User" o{--}o "Post" : "likedPost"
+    "User" o{--}o "Suggestion" : "likedSuggestion"
+    "UserPreference" o{--}o "User" : "User"

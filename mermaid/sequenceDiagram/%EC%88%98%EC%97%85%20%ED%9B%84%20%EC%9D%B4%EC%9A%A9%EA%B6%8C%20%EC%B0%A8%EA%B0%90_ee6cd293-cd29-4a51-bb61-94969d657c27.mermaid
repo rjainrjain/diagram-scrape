@@ -1,0 +1,8 @@
+sequenceDiagram
+    participant Batch
+    participant DB
+    Batch->>DB: 예약된 수업, 사용자 조회
+    activate DB
+    DB->>Batch: 예약된 수업, 사용자 응답
+    deactivate DB
+    Batch->>DB: 사용자 별 이용권 차감

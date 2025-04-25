@@ -1,0 +1,8 @@
+
+graph LR
+  A[React Application] -- API Calls --> B[AWS AppSync]
+  B -- Triggers --> C[AWS Lambda]
+  C -- Interacts --> D[LLM Chatbot]
+  D -- Stores Data --> E[Amazon DynamoDB]
+  B -- Retrieves Data --> E
+  A -- Fetches Data --> B

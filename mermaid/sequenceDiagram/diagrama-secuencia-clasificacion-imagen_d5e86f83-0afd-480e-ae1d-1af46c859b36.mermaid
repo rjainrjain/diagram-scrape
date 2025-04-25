@@ -1,0 +1,47 @@
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#00b1c7', 'secondaryColor': '#414042', 'tertiaryColor': '#6c757d', 'primaryBorderColor': '#00c2db'}}}%%
+sequenceDiagram
+    participant T as Técnico RX
+    participant API as API Gateway
+    participant V as Validador de Imágenes
+    participant P as Preprocesador
+    participant ML as Modelo ML
+    participant BD as Base de Datos
+    participant N as Notificador
+
+    T->>API: Cargar imagen
+    activate API
+    API->>V: Validar imagen
+    activate V
+    alt Imagen válida
+        V-->>API: Imagen OK
+        API->>P: Preprocesar imagen
+        activate P
+        P-->>API: Imagen preprocesada
+        API->>ML: Clasificar imagen
+        activate ML
+        ML-->>API: Resultados de clasificación
+        deactivate ML
+        API->>BD: Guardar resultados
+        activate BD
+        BD-->>API: Confirmación
+        deactivate BD
+        API->>N: Notificar resultados
+        activate N
+        N-->>T: Notificación enviada
+        deactivate N
+    else Imagen inválida
+        V-->>API: Imagen no válida
+        API->>N: Notificar error
+        activate N
+        N-->>T: Solicitud de nueva imagen
+        deactivate N
+    end
+    deactivate V
+    deactivate API
+
+    opt Revisión manual requerida
+        API->>N: Solicitar revisión
+        activate N
+        N-->>T: Notificación de revisión manual
+        deactivate N
+    end

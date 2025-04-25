@@ -1,0 +1,13 @@
+classDiagram
+    direction LR
+    Engine o-- ProcessorInterface: call
+
+    class Engine {
+        + execute(Document $document): ModelInterface
+    }
+
+    class ProcessorInterface {
+        + execute(Document $document): ModelInterface
+        + score(Document $document): int
+    }
+

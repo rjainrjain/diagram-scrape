@@ -1,0 +1,46 @@
+%%{init: { "theme": "default", 'themeVariables': { 'fontSize': '14px', 'fontFamily': 'Inter'} } }%%
+flowchart LR
+    classDef Document fill:#F9FAFB
+    classDef Component fill:#ECFCCB
+    classDef Container fill:#FEFCE8, stroke-width:2px, stroke-dasharray: 2 2
+    classDef FlowStart fill:#16A34A, color:#F9FAFB, stroke-width:1px
+    classDef FlowFinish fill:#16A34A, color:#F9FAFB, stroke-width:3px
+
+backend_s3["backend 's3'"]
+
+aws_s3_bucket.bucket["`aws_s3_bucket
+    .**bucket**`"]
+aws_s3_bucket_cors_configuration.content["`aws_s3_bucket_cors_configuration
+    .**content**`"]
+aws_s3_bucket_acl.content["`aws_s3_bucket_acl
+    .**content**`"]
+aws_s3_bucket_ownership_controls.s3_bucket_acl_ownership["`aws_s3_bucket_ownership_controls
+    .**s3_bucket_acl_ownership**`"]
+aws_iam_user.content_bucket["`aws_iam_user
+.**content_bucket**`"]
+aws_s3_bucket_public_access_block.public["`aws_s3_bucket_public_access_block
+.**public**`"]
+aws_s3_bucket_policy.content_bucket["`aws_s3_bucket_policy
+.**content_bucket**`"]
+
+
+subgraph tf["terraform"]
+    subgraph required_providers
+        aws
+    end
+
+    backend_s3
+end
+
+subgraph resources
+    direction TB
+    aws_iam_user.content_bucket
+    aws_s3_bucket.bucket -. "`bucket.id`" .-> aws_s3_bucket_cors_configuration.content
+    aws_s3_bucket.bucket -. "`bucket.id`" .-> aws_s3_bucket_acl.content
+    aws_s3_bucket.bucket -. "`bucket.id`" .-> aws_s3_bucket_ownership_controls.s3_bucket_acl_ownership
+    aws_s3_bucket.bucket -. "`bucket.id`" .-> aws_s3_bucket_public_access_block.public
+    aws_s3_bucket.bucket -. "`bucket.id`" .-> aws_s3_bucket_policy.content_bucket
+    aws_s3_bucket_acl.content -- "`depends on`" --> aws_s3_bucket_ownership_controls.s3_bucket_acl_ownership
+    aws_s3_bucket_ownership_controls.s3_bucket_acl_ownership -- "`depends on`" --> aws_s3_bucket_public_access_block.public
+    aws_s3_bucket_policy.content_bucket -- "`depends on`" --> aws_s3_bucket_public_access_block.public
+end

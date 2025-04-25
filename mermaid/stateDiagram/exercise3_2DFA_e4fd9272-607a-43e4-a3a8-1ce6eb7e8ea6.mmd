@@ -1,0 +1,11 @@
+---
+title: DFA of ^a?(ba?)$
+---
+stateDiagram-v2
+    direction LR
+    [] --> s0 : start
+    s0 --> s0 : b
+    s0 --> s1 : a
+    s1 --> s0 : b
+    s1 --> []
+    s0 --> [] 

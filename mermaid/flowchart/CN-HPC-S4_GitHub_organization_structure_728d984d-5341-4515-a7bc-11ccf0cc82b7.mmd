@@ -1,0 +1,67 @@
+flowchart TD
+    A[ICSC CN HPC Spoke 4<br>Github Organization]
+
+    subgraph **1st Level Teams**
+    B1[WP1]
+    X1:::hidden
+    B2[WP2]
+    X2:::hidden
+    B3[WP3]
+    B4[WP4]
+    B5[WP5]
+    X3:::hidden
+    B6[Innovation Grants]
+    end
+    classDef hidden fill:none,stroke:none
+ 
+    A --> B1
+    A --- X1 --> B2
+    A --- X2 --> B3
+    A --> B4
+    A --> B5
+    A --- X3 --> B6
+    
+    subgraph **2nd Level Teams**
+    C1[Institution 1]
+    C2[Institution 2]
+    C3[Task 3.1]
+    X2_1:::hidden
+    C4[Task 3.2]
+    C5[Task 3.3]
+    C6[Grant 1]
+    C7[Grant 2]
+    end
+
+    B2 --- C1
+    B2 --- C2
+    B3 --- C3
+    B3 --- X2_1 --- C4
+    B3 --- C5
+    B6 --- C6
+    B6 --- C7
+
+    subgraph **3rd Level Teams**
+    D1[Work Group 1]
+    D2[Work Group 2]
+    D3[Work Group 3]
+    D4[Work Group 4]
+    D5[Work Group 5]
+    end
+
+    C4 --> D1
+    C4 --> D2
+    C4 --> D3
+    C4 --> D4
+    C4 --> D5
+
+    E1[(Repository 1)]
+    E2[(Repository 2)]
+    E3[(Repository 3)]
+    E4[(Repository 4)]
+    E5[(Repository 5)]
+
+    D1 --> E1
+    D2 --> E2
+    D3 --> E3
+    D4 --> E4
+    D5 --> E5

@@ -1,0 +1,27 @@
+``` mermaid
+sequenceDiagram
+    participant browser
+    participant server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/spa
+    activate server
+    server -->> browser: HTML document
+    deactivate server
+
+    browser ->> server: GET https://studies.cs.helsinki.fi/exampleapp/main.css
+    activate server
+    server -->> browser: CSS stylesheet
+    deactivate server
+
+    browser ->> server: GET https://studies.cs.helsinki.fi/exampleapp/spa.js
+    activate server
+    server -->> browser: SPA JavaScript script file
+    deactivate server
+    note right of browser: Browser execute the SPA JavaScript file, in which fetching JSON from the server
+
+    browser ->> server: GEThttps://studies.cs.helsinki.fi/exampleapp/data.json
+    activate server
+    server -->> browser: JSDN file 
+    deactivate server
+    note right of browser: Browser continuing to execute the SPA JavaScript file, parsing JSON file and rendering the list of notes from it
+```

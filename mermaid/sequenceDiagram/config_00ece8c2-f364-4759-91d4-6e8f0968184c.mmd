@@ -1,0 +1,16 @@
+sequenceDiagram
+	participant Extension Frontend
+	participant Backend
+	participant Database
+	participant Wargaming API
+
+	Extension Frontend->>+Backend: create or update configuration
+	Backend->>Database: retrieve channel and ships
+	Backend->>+Wargaming API: /wows/accounts/list
+	Wargaming API-->>-Backend: user ID
+	Backend->>+Wargaming API: /wows/ships/stats
+	Wargaming API-->>-Backend: player statistics
+	Backend->>+Backend: calculate ship delta
+	Backend->>-Database: store channel and ships
+	Database-->>Backend: ;
+	Backend-->>-Extension Frontend: channel information

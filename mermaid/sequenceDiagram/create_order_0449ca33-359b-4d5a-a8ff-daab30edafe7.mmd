@@ -1,0 +1,20 @@
+sequenceDiagram
+    buyer->>react ambassador: access to reactambassador.com/
+    react ambassador->>api gateway: GET backend.com/products
+    api gateway->>product microservice: GET product.com/products
+    product microservice->>product db: get all products
+    product db->> product microservice:  return all products
+    product microservice->>api gateway: return all products
+    api gateway->>react ambassador: return all products
+    react ambassador->>buyer: render product list
+    buyer->>react ambassador: pick products and press generate link button
+    react ambassador->>api gateway: POST backend.com/link
+    api gateway->>product microservice: POST product.com/link
+    product microservice->>product db: save link with product ids
+    product db->> product microservice: return link created
+    product microservice->>api gateway: return link created
+    api gateway->>react ambassador: return link created
+    react ambassador->>buyer: show link
+    buyer->>react ambassador: press link 
+    react ambassador->>buyer: redirect nextcheckout.com/{code}
+    buyer->>next checkout: access to nextcheckout.com/{code}

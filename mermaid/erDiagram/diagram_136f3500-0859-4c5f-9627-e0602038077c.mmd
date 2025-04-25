@@ -1,0 +1,42 @@
+erDiagram
+    User {
+        int id PK
+        string username
+        string email
+        string password
+        datetime created_at
+    }
+
+    Task {
+        int id PK
+        string name
+        int timeout
+        int memory_limit
+        string description
+        datetime created_at
+    }
+
+    Test {
+        int id PK
+        int task_id FK
+        int test_num
+        string in
+        string out
+        datetime created_at
+    }
+
+    Attempt {
+        int id PK
+        int user_id FK
+        int task_id FK
+        string solution_file
+        boolean succeeded
+        int failed_test FK
+        datetime created_at
+    }
+
+    %% Relationships
+    User ||--o{ Attempt: "has many"
+    Task ||--o{ Test : "has many"
+    Attempt ||--|| Task : "has one"
+    Attempt ||--|| Test : "has one"

@@ -1,0 +1,16 @@
+sequenceDiagram
+    participant User
+    participant Voice_SDK as Voice SDK
+    participant SD_RTN as SD-RTN (Agora)
+
+    User->>+Voice_SDK: Open app
+    Voice_SDK->>+SD_RTN: Initialize the Agora Voice SDK engine: agoraEngine = createAgoraRtcEngine()
+    Voice_SDK->>+SD_RTN: Register the event handler: agoraEngine.registerEventHandler
+    Voice_SDK->>+SD_RTN: Set a client role: agoraEngine.setClientRole
+    Voice_SDK->>+SD_RTN: Set a channel profile: agoraEngine.setChannelProfile
+    Voice_SDK->>+SD_RTN: Join a channel using the token: agoraEngine.joinChannel
+    SD_RTN->>+Voice_SDK: Remote user joined
+    SD_RTN->>+Voice_SDK: Send and receive data streams
+    User->>+Voice_SDK: Leave call
+    Voice_SDK->>+SD_RTN: Leave the channel: agoraEngine.leaveChannel()
+    User->>+Voice_SDK: Close app

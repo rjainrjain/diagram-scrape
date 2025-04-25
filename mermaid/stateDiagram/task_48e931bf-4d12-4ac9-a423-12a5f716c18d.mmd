@@ -1,0 +1,13 @@
+stateDiagram
+  [*] --> Pending
+  Pending --> Running
+  Pending --> Cancelled
+  Running --> Aborting
+  Running --> Failed
+  Running --> Completed
+  Aborting --> Aborted
+  Aborting --> Running
+  Aborted --> [*]
+  Failed --> [*]
+  Completed --> [*]
+  Cancelled --> [*]

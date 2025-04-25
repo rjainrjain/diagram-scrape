@@ -1,0 +1,15 @@
+flowchart LR
+ User
+ MMW[Modbus</br> MiddleWare]
+ subgraph PMUP [Petit Modbus</br> User Port]
+ PMB[Petit Modbus]
+ end
+ subgraph App [Application]
+ CSM[Config SM]
+ end
+ PMB <-- Modbus Comm --> User
+ CSM -- Controls --> MMW
+ CSM -- Start/Stop --> PMB
+ PMUP -- Controls --> App
+ PMUP -- Controls --> CSM
+ MMW -.Hardware Control.-> PMUP

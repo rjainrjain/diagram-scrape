@@ -1,0 +1,128 @@
+flowchart LR
+    A[Front-end Cloud Development] --> B[Cloud Fundamentals]
+    
+    subgraph Cloud_Fundamentals
+    B1[How does cloud computing work?]
+    B2[Cloud service models]
+    B3[Cloud deployment models]
+    B4[Cloud security basics]
+    B --> B1
+    B --> B2
+    B --> B3
+    B --> B4
+    end
+
+    B --> C[Cloud Providers]
+
+    subgraph Cloud_Providers
+    C1[AWS]
+    C2[Azure]
+    C3[Google Cloud]
+    C --> C1
+    C --> C2
+    C --> C3
+    end
+
+    C --> D[Infrastructure as Code]
+
+    subgraph Infrastructure_as_Code
+    D1[Terraform]
+    D2[CloudFormation]
+    D3[ARM Templates]
+    D --> D1
+    D --> D2
+    D --> D3
+    end
+
+    D --> E[Containerization]
+
+    subgraph Containerization
+    E1[Docker]
+    E2[Kubernetes]
+    E --> E1
+    E --> E2
+    end
+
+    E --> F[Serverless]
+
+    subgraph Serverless
+    F1[AWS Lambda]
+    F2[Azure Functions]
+    F3[Google Cloud Functions]
+    F --> F1
+    F --> F2
+    F --> F3
+    end
+
+    F --> G[CI/CD]
+
+    subgraph CI_CD
+    G1[Jenkins]
+    G2[GitLab CI]
+    G3[GitHub Actions]
+    G --> G1
+    G --> G2
+    G --> G3
+    end
+
+    G --> H[Version Control Systems]
+
+    subgraph Version_Control_Systems
+    H1[Git]
+    H2[GitHub]
+    H3[GitLab]
+    H --> H1
+    H --> H2
+    H --> H3
+    end
+
+    H --> I[Programming Languages]
+
+    subgraph Programming_Languages
+    I1[Python]
+    I2[JavaScript/Node.js]
+    I3[Go]
+    I --> I1
+    I --> I2
+    I --> I3
+    end
+
+    I --> J[Databases]
+
+    subgraph Databases
+    J1[SQL]
+    J2[NoSQL]
+    J --> J1
+    J --> J2
+    end
+
+    J --> K[Monitoring and Logging]
+
+    subgraph Monitoring_and_Logging
+    K1[Prometheus]
+    K2[ELK Stack]
+    K3[Cloud-native monitoring tools]
+    K --> K1
+    K --> K2
+    K --> K3
+    end
+
+    K --> L[API Development]
+
+    subgraph API_Development
+    L1[RESTful APIs]
+    L2[GraphQL]
+    L --> L1
+    L --> L2
+    end
+
+    L --> M[Security]
+
+    subgraph Security
+    M1[Identity and Access Management]
+    M2[Encryption]
+    M3[Network Security]
+    M --> M1
+    M --> M2
+    M --> M3
+    end

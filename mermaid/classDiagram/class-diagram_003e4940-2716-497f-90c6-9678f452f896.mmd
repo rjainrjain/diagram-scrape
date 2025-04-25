@@ -1,0 +1,97 @@
+classDiagram
+    class User {
+        -id: int
+        -firstName: string
+        -lastName: string
+        -email: string
+        -password: string
+        -gender: string
+        -dob: Date
+        -weight: float
+        -height: float
+        -createdAt: Date
+        -updatedAt: Date
+        +register(firstName: string, lastName: string, email: string, password: string, gender: string, dob: Date, weight: float, height: float): bool
+        +login(email: string, password: string): bool
+        +logout(): void
+        +resetPassword(): void
+        +createHabit(name: string, description: string, categoryId: int): Habit
+        +getHabits(): Habit[]
+        +findUserById(id: int): User
+    }
+
+    class HabitCategory {
+        -id: int
+        -name: string
+        -createdAt: Date
+        -updatedAt: Date
+        +createHabit(name: string, description: string): Habit
+        +getHabits(): Habit[]
+        +createCategory(name: string): void
+        +deleteCategory(): void
+        +findCategoryById(id: int): HabitCategory
+    }
+
+    class Habit {
+        -id: int
+        -name: string
+        -description: string
+        -categoryId: int
+        -createdAt: Date
+        -updatedAt: Date
+        +createGoal(frequency: int, targetValue: int): Goal
+        +getGoals(): Goal[]
+        +createReminder(message: string, cronConfig: string): Reminder
+        +getReminders(): Reminder[]
+        +addDailyRecord(date: Date): void
+        +getDailyRecords(): DailyRecord[]
+        +editHabit(name: string, description: string, categoryId: int): void
+        +deleteHabit(): void
+        +findHabitById(id: int): Habit
+        -habitCategory: HabitCategory
+    }
+
+    class Goal {
+        -id: int
+        -frequency: int
+        -targetValue: int
+        -habitId: int
+        -createdAt: Date
+        -updatedAt: Date
+        +editGoal(frequency: int, targetValue: int): void
+        +deleteGoal(): void
+        +findGoalById(id: int): Goal
+        -habit: Habit
+    }
+
+    class Reminder {
+        -id: int
+        -message: string
+        -cronConfig: string
+        -habitId: int
+        -createdAt: Date
+        -updatedAt: Date
+        +editReminder(message: string, cronConfig: string): void
+        +deleteReminder(): void
+        +findReminderById(id: int): Reminder
+        -habit: Habit
+    }
+
+    class DailyRecord {
+        -id: int
+        -date: Date
+        -habitId: int
+        -createdAt: Date
+        -updatedAt: Date
+        +editDailyRecord(date: Date): void
+        +deleteDailyRecord(): void
+        +findDailyRecordById(id: int): DailyRecord
+        -habit: Habit
+    }
+
+    User *-- Habit : has
+    HabitCategory "1"--"*" Habit : has
+    Habit *-- Goal : has
+    Habit *-- Reminder : has
+    Habit *-- DailyRecord : has
+

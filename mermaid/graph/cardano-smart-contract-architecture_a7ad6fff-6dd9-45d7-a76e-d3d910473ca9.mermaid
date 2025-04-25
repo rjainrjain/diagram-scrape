@@ -1,0 +1,14 @@
+graph TD
+    A[Smart Contract] -->|Defines| B[Data Structures]
+    A -->|Implements| C[Functions]
+    B --> D[Hash]
+    B --> E[Timestamp]
+    B --> F[Researcher ID]
+    C --> G[Store Hash]
+    C --> H[Verify Hash]
+    C --> I[Retrieve Hash]
+    J[Web Server] -->|Calls| G
+    J -->|Calls| H
+    J -->|Calls| I
+    K[Cardano Node] -->|Executes| A
+    L[Blockchain] -->|Stores| M[Contract State]

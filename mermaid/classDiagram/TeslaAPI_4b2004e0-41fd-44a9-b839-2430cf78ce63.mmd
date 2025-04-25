@@ -1,0 +1,212 @@
+classDiagram
+    class FavoriteCommands {
+        -List<Command> Commands
+        -List<string> BaseTasks
+    }
+    
+    class Command {
+        -string? _displayName
+        +string Name
+        +string DisplayName
+        +bool Selected
+        +int Value
+        +int BoolValue
+    }
+    
+    FavoriteCommands --> "*" Command : contains
+
+    class GetAllVIN {
+        -HttpClient _httpClient
+        +GetAllVIN(string accessToken)
+        +Task<string?> GetVIN()
+    }
+
+    class VehicleResponse {
+        +List<VehicleInfo> Response
+    }
+
+    class VehicleInfo {
+        +long IdS
+    }
+    
+    GetAllVIN --> VehicleResponse : Uses
+    VehicleResponse --> "*" VehicleInfo : contains
+
+    class UserToken {
+        <<static>> String BaseUrl
+        <<static>> String RedirectUrl
+        <<static>> String ClientId
+        <<static>> String ClientSecret
+        <<static>> String tokenEndpoint
+        <<static>> String Scope
+        +<<static>> Task<string?> GetUserToken(NavigationManager, IJSRuntime)
+        -<<static>> Task<bool> IsTokenStillValid(LocalStorageService)
+        -<<static>> void RedirectUser(NavigationManager, IJSRuntime)
+        +<<static>> void RedirectUserToIndex(NavigationManager, IJSRuntime)
+        +<<static>> Task<string?> GenerateUserToken(string, IJSRuntime)
+        +<<static>> Task<string?> RefreshToken(string, IJSRuntime, NavigationManager)
+        +<<static>> Task<string> StoreToken(TokenResponse, IJSRuntime)
+    }
+    
+    class LocalStorageService {
+        +Task<T> GetItemAsync<T>(string key)
+        +Task SetItemAsync<T>(string key, T value)
+    }
+    
+    class TokenResponse {
+        String access_token
+        String refresh_token
+        int expires_in
+    }
+
+    UserToken --> LocalStorageService : Uses
+    UserToken ..> TokenResponse : Manipulates
+
+    class RegisterVehicleClass {
+        <<static>> RegisterVehicle(string accessToken)
+    }
+    
+    class ErrorResponse {
+        String error_code
+        String error_description
+    }
+
+    RegisterVehicleClass ..> ErrorResponse : Parses
+
+    class PartnerToken {
+        <<static>> Task<string?> GetPartnerToken(IJSRuntime jsRuntime)
+        <<static>> bool IsTokenStillValid(TokenResponse? tokenResponse)
+        <<static>> Task<string?> GeneratePartnerToken()
+        <<static>> void StoreToken(TokenResponse tokenResponse)
+    }
+    
+    class TokenResponse {
+        String access_token
+        String refresh_token
+        String token_type
+        int expires_in
+        String scope
+    }
+    
+    class ErrorResponse {
+        String error_code
+        String error_description
+    }
+
+    PartnerToken ..> TokenResponse : Uses -- "Generate, Check, Store"
+    PartnerToken ..> ErrorResponse : Parses -- "On Error"
+
+    class EcKeyGenerator {
+        -String EcPrivateKey
+    }
+
+    class CommandsMethod {
+        <<static>> Task Honk(string, string, VehicleDataResponse, Command)
+        <<static>> Task Flash(string, string, VehicleDataResponse, Command)
+        <<static>> Task SetSentryMode(string, string, VehicleDataResponse, Command)
+        <<static>> Task Unlock(string, string, VehicleDataResponse, Command)
+        <<static>> Task OpenChargePort(string, string, VehicleDataResponse, Command)
+        <<static>> Task<string?> NewhttpClient(string, string, string, VehicleDataResponse, string?)
+    }
+    
+    class VehicleDataResponse {
+        VehicleState response
+    }
+    
+    class VehicleState {
+        bool sentry_mode_available
+        bool sentry_mode
+        bool locked
+        ChargeState charge_state
+    }
+    
+    class ChargeState {
+        bool charge_port_door_open
+    }
+    
+    class Command {
+        String Name
+        String DisplayName
+        bool Selected
+        int Value
+        int BoolValue
+    }
+
+    CommandsMethod ..> VehicleDataResponse : Uses
+    CommandsMethod ..> Command : Uses
+    VehicleDataResponse --> VehicleState : Contains
+    VehicleState --> ChargeState : Contains
+
+    class Code {
+        <<static>> string GenerateRandomString(int length)
+        <<static>> byte[] Sha256(string input)
+        <<static>> string Base64UrlEncode(byte[] data)
+    }
+    class WakeUp {
+        <<static>> Task<VehicleDataResponse?> WakeItUp(string vehicleVIN, string userToken)
+        <<static>> Task<VehicleDataResponse?> GetVehicleInfo(string vehicleVIN, string userToken)
+    }
+    
+    class VehicleDataResponse {
+        ResponseData response
+    }
+    
+    class ResponseData {
+        long user_id
+        int vehicle_id
+        string vin
+        ChargeState charge_state
+        VehicleState vehicle_state
+    }
+    
+    class ChargeState {
+        int battery_level
+        string preconditioning_times
+        bool preconditioning_enable
+        bool charge_port_door_open
+        string charging_state
+        bool managed_charging_active
+        string? managed_charging_start_time
+        int time_to_full_charge
+    }
+    
+    class VehicleState {
+        bool sentry_mode
+        bool sentry_mode_available
+        bool preconditioning_enable
+        bool remote_start
+        bool locked
+    }
+
+    WakeUp ..> VehicleDataResponse : Uses
+    VehicleDataResponse --> ResponseData : Contains
+    ResponseData --> ChargeState : Contains
+    ResponseData --> VehicleState : Contains
+
+    class ILocalStorageService {
+        <<interface>> 
+        Task SetItemAsync<T>(string key, T value)
+        Task<T?> GetItemAsync<T>(string key)
+        Task RemoveItemAsync(string key)
+    }
+    
+    class LocalStorageService {
+        -IJSRuntime _jsRuntime
+        +LocalStorageService(IJSRuntime jsRuntime)
+        +Task SetItemAsync<T>(string key, T value)
+        +Task<T?> GetItemAsync<T>(string key)
+        +Task RemoveItemAsync(string key)
+    }
+    
+    class LocalStorageServiceWrapper {
+        -LocalStorageService _localStorageService
+        +LocalStorageServiceWrapper(LocalStorageService localStorageService)
+        +Task SetItemAsync<T>(string key, T value)
+        +Task<T?> GetItemAsync<T>(string key)
+        +Task RemoveItemAsync(string key)
+    }
+
+    ILocalStorageService <|.. LocalStorageService : Implements
+    ILocalStorageService <|.. LocalStorageServiceWrapper : Implements
+    LocalStorageServiceWrapper --> LocalStorageService : Uses
+

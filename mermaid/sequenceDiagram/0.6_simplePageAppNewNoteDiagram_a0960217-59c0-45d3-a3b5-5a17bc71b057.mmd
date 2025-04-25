@@ -1,0 +1,12 @@
+sequenceDiagram
+    participant browser
+    participant server
+
+    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+     Note right of browser: it sends what is inside of input 'note' as a JSON
+    activate server
+     Note left of server: server returns a json with the message 'note created'
+    server-->>browser: 201 Created {"message":"note created"}
+    deactivate server
+
+    Note right of browser: now the event handler code renders the new note without url redirect

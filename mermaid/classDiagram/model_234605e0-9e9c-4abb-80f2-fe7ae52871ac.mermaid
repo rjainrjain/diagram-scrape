@@ -1,0 +1,29 @@
+%%{init: {'theme': 'neutral', 'fontFamily': 'Noto Sans'}}%%
+
+classDiagram
+    direction TB
+    site "1" -- "0..n" listener
+    site "1" -- "0..n" connector
+    class site {
+        name
+        ingress
+        &lt;settings&gt;
+        init()
+        delete()
+    }
+    class listener {
+        routing-key
+        host
+        port
+        &lt;settings&gt;
+        create()
+        delete()
+    }
+    class connector {
+        routing-key
+        selector
+        port
+        &lt;settings&gt;
+        create()
+        delete()
+    }

@@ -1,0 +1,14 @@
+classDiagram
+    class Book {
+        String title
+        List~Authors~ authors
+        List~String~ languages
+        int downloads
+    }
+    class Authors{
+        +String name
+        +int birth_year
+        +int death_year
+    }
+
+    Book <|--|> Authors

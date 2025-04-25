@@ -1,0 +1,15 @@
+graph TD
+    Scheduler["GCP Scheduler"]
+    LifeMetricsUI["Life Metrics UI"]
+    LifeMetrics{{"Life Metrics API (GCP)"}}
+    MonzoAPI["Monzo API"]
+    FitbitAPI["Fitbit API"]
+    Grafana["Grafana Cloud"]
+    InfluxDB[(InfluxDB Cloud)]
+
+    Scheduler --> LifeMetrics
+    LifeMetricsUI --> LifeMetrics
+    LifeMetrics <--> MonzoAPI
+    LifeMetrics <--> FitbitAPI
+    LifeMetrics --> |Write|InfluxDB
+    Grafana --> |Query|InfluxDB

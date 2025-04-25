@@ -1,0 +1,10 @@
+flowchart LR
+    A[POST /login]
+    A --> D[Validate Schema] --> J
+    A --> E[Validate hCaptcha] --> J
+
+    A --> F[Check if user exists]
+    F --> H[Match passwords]--> J
+    
+            
+    J[Create JWT cookie] --> X[Send response]

@@ -1,0 +1,30 @@
+%%{
+  init: {
+    'theme': 'base',
+    'themeVariables': {
+      'activationBorderColor':'#000',
+      'activationBkgColor':'#F00',
+      'primaryColor': '#FFF',
+      'primaryTextColor': '#000',
+      'primaryBorderColor': '#000',
+      'lineColor': '#000',
+      'secondaryColor': '#FFF',
+      'labelBoxBorderColor':'#F00',
+      'tertiaryColor': '#000',
+      'fontFamily':'Times New Roman'
+    }
+  }
+}%%
+sequenceDiagram
+    autonumber
+    activate Middleman
+      par Gossiping
+          Middleman->>Its Peer #1: Asking for broadcast & Broadcast with POW
+      and
+          Middleman->>Its Peer #2: Asking for broadcast & Broadcast with POW
+      and
+          Middleman->>Its Peer #3: Asking for broadcast & Broadcast with POW
+      and
+          Middleman->>...:Asking for broadcast & Broadcast with POW
+      end
+    deactivate Middleman

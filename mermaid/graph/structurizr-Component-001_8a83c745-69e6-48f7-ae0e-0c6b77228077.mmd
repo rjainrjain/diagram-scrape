@@ -1,0 +1,31 @@
+graph LR
+  linkStyle default fill:#ffffff
+
+  subgraph diagram [Home System - MediaServer - Components]
+    style diagram fill:#ffffff,stroke:#ffffff
+
+    1["<div style='font-weight: bold'>Alex</div><div style='font-size: 70%; margin-top: 0px'>[Person]</div>"]
+    style 1 fill:#ffffff,stroke:#773adc,color:#773adc
+
+    subgraph 10 [MediaServer]
+      style 10 fill:#ffffff,stroke:#5ea0ef,color:#5ea0ef
+
+      11("<div style='font-weight: bold'>Jellyfin</div><div style='font-size: 70%; margin-top: 0px'>[Component]</div><div style='font-size: 80%; margin-top:10px'>Media Server</div>")
+      click 11 http://tv.home:8096/web/index.html "http://tv.home:8096/web/index.html"
+      style 11 fill:#ffffff,stroke:#5ea0ef,color:#5ea0ef
+      12("<div style='font-weight: bold'>Jackett</div><div style='font-size: 70%; margin-top: 0px'>[Component]</div><div style='font-size: 80%; margin-top:10px'>Proxy server that translates<br />queries into<br />tracker-site-specific</div>")
+      click 12 http://tv.home:9117/UI/Dashboard "http://tv.home:9117/UI/Dashboard"
+      style 12 fill:#ffffff,stroke:#50e6ff,color:#50e6ff
+      13("<div style='font-weight: bold'>Sonarr</div><div style='font-size: 70%; margin-top: 0px'>[Component]</div><div style='font-size: 80%; margin-top:10px'>Smart PVR for newsgroup and<br />bittorrent users</div>")
+      click 13 http://tv.home:8989/ "http://tv.home:8989/"
+      style 13 fill:#ffffff,stroke:#949494,color:#949494
+      14("<div style='font-weight: bold'>Transmission</div><div style='font-size: 70%; margin-top: 0px'>[Component]</div><div style='font-size: 80%; margin-top:10px'>Torrent client</div>")
+      click 14 http://tv.home:9091/transmission/web/ "http://tv.home:9091/transmission/web/"
+      style 14 fill:#ffffff,stroke:#1490df,color:#1490df
+    end
+
+    1-- "<div>Watches TV</div><div style='font-size: 70%'></div>" -->11
+    11-- "<div>Pulls media</div><div style='font-size: 70%'></div>" -->13
+    13-- "<div>Triggers download</div><div style='font-size: 70%'></div>" -->14
+    13-- "<div>Searches episode</div><div style='font-size: 70%'></div>" -->12
+  end

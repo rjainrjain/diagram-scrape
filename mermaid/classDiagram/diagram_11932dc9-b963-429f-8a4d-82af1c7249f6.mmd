@@ -1,0 +1,30 @@
+classDiagram
+    class CreditCard {
+        - double limit
+        - double balance
+        - List<PurchaseManager> shoppingList
+        + CreditCard(limit: double)
+        + launchBuy(purchaseManager: PurchaseManager): boolean
+        + getLimit(): double
+        + getBalance(): double
+        + getShoppingList(): List<PurchaseManager>
+    }
+
+    class PurchaseManager {
+        - double value
+        - String description
+        + PurchaseManager(value: double, description: String)
+        + getValue(): double
+        + getDescription(): String
+        + toString(): String
+        + compareTo(otherPurchaseManager: PurchaseManager): int
+    }
+
+    class Main {
+        + main(args: String[])
+    }
+
+    CreditCard "1" --> "0..*" PurchaseManager : has
+    Main --> CreditCard : uses
+    Main --> PurchaseManager : uses
+

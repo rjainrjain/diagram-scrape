@@ -1,0 +1,28 @@
+erDiagram
+    CUSTOMERS ||--o{ ORDERS : places
+    ORDERS ||--|{ ORDER_ITEMS : contains
+    PRODUCTS ||--o{ ORDER_ITEMS : "is part of"
+    CUSTOMERS {
+        int customer_id PK
+        string name
+        string email
+        string address
+    }
+    ORDERS {
+        int order_id PK
+        int customer_id FK
+        date order_date
+        string status
+    }
+    PRODUCTS {
+        int product_id PK
+        string name
+        float price
+        int stock_quantity
+    }
+    ORDER_ITEMS {
+        int order_id FK
+        int product_id FK
+        int quantity
+        float unit_price
+    }

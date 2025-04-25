@@ -1,0 +1,54 @@
+classDiagram
+Student --> UI: 1. login()
+UI --> SelectionController: 2. checkUserQualification(username)
+SelectionController --> SelectionRepository: 3. checkQualificationResult(username)
+SelectionRepository --> DBConnector: 4. execute(Q2S.1, username)
+DBConnector --> SelectionRepository: 5. return hasQualificationResult
+SelectionRepository --> SelectionController: 6. return hasQualificationResult
+SelectionController --> UI: 7. redirectToHome()
+SelectionController --> SelectionRepository: 8. getQualificationDetails(username)
+SelectionRepository --> DBConnector: 9. execute(Q2S.2)
+DBConnector --> SelectionRepository: 10. return qualificationDetails[]
+SelectionRepository --> SelectionController: 11. qualificationDetails[]
+SelectionController --> UI: 12. displayQualificationResults(qualificationDetails)
+
+Student --> UI: 13. acceptPosition(positionId)
+Student --> UI: 14. saveSelections()
+Student --> UI: 15. confirmAction()
+UI --> SelectionController: 16. processSelectionConfirmation(selections)
+SelectionController --> SelectionRepository: 17. validateSelections(selections)
+SelectionController --> SelectionRepository: 18. updateQualificationResults(username)
+SelectionRepository --> DBConnector: 19. execute(Q2S.3)
+DBConnector --> SelectionRepository: 20. updateResults
+SelectionRepository --> SelectionController: 21. updateSuccess
+SelectionController --> UI: 22. redirectToHome()
+
+    class Student {
+
+    }
+
+    class UI {
+        +login()
+        +acceptPosition()
+        +saveSelections()
+        +confirmAction()
+
+        +redirectToHome()
+        +displayQualificationResults()
+    }
+
+    class SelectionController {
+        +checkUserQualification()
+        +processSelectionConfirmation()
+    }
+
+    class SelectionRepository {
+        +checkQualificationResult()
+        +getQualificationDetails()
+        +validateSelections()
+        +updateQualificationResults()
+    }
+
+    class DBConnector {
+        +executeQuery()
+    }

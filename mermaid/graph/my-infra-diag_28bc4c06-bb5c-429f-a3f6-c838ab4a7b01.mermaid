@@ -1,0 +1,43 @@
+graph TD
+    UI[Web Dashboard] --> TaskScheduler
+    CLI[CLI Interface] --> TaskScheduler
+    
+    TaskScheduler[Task Scheduler] --> Orchestration
+    
+    subgraph Orchestration
+        Ansible[Ansible Controller]
+        Terraform[Terraform Engine]
+        Selenium[Selenium Grid]
+        MLControl[ML Controller]
+    end
+    
+    Orchestration --> AWS
+    
+    subgraph AWS
+        EC2[EC2 Instances]
+        S3[S3 Storage]
+        Lambda[Lambda Functions]
+    end
+    
+    AWS --> ScanEngine
+    
+    subgraph ScanEngine[Scanning Engine]
+        Network[Network Scanners<br/>Nmap/Masscan]
+        VulnScan[Vulnerability Scanners<br/>OpenVAS/Nuclei]
+        OSINT[OSINT Tools<br/>TheHarvester/Shodan]
+        WebScan[Web Scanners<br/>OWASP ZAP/Nikto]
+    end
+    
+    ScanEngine --> DataProc
+    
+    subgraph DataProc[Data Processing]
+        VulnDB[Vulnerability DB]
+        KB[Knowledge Base]
+        MLEngine[ML Engine]
+    end
+    
+    DataProc --> AutoRemedy[Auto Remediation]
+    DataProc --> Reports[Report Engine]
+    
+    Reports --> UI
+    AutoRemedy --> Ansible

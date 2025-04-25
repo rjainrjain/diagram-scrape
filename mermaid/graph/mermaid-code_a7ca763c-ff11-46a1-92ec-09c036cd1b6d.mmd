@@ -1,0 +1,17 @@
+flowchart TB
+subgraph M04239
+    subgraph Default function
+    end
+    subgraph App0
+    end
+    subgraph App1
+    end
+    subgraph AppX
+    end
+end
+M04239 --port2--> p1[Port 50010]
+M04239 --Port1--> p2[Port 50011]
+M04239 --PortX--> p3[Port 5001X]
+App0 --> p4[Port 51010]
+App1 --> p5[Port 51011]
+AppX --> p6[Port 5101X]

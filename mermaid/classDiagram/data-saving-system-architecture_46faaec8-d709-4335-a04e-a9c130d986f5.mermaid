@@ -1,0 +1,21 @@
+classDiagram
+    class SaveSystem {
+        +Save(data: ISerializable, filename: string)
+        +Load~T~(filename: string): T
+    }
+    class ISerializable {
+        <<interface>>
+        +Serialize(): byte[]
+        +Deserialize(data: byte[])
+    }
+    class JsonSerializer {
+        +Serialize(obj: object): string
+        +Deserialize~T~(json: string): T
+    }
+    class BinarySerializer {
+        +Serialize(obj: object): byte[]
+        +Deserialize~T~(data: byte[]): T
+    }
+    SaveSystem --> ISerializable
+    SaveSystem --> JsonSerializer
+    SaveSystem --> BinarySerializer

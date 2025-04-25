@@ -1,0 +1,16 @@
+sequenceDiagram
+    participant MCM as :MonolithConnectionManager
+    box Discovery Module
+    participant DT as DiscoveryTask
+    participant MD as :ServiceDiscoverer
+    end
+
+    DT->>+MD: Poll for Monoliths
+    MD->>-DT: Return Vec<ConnectionConfig>
+    Note over DT: Maintains a list of connection configs
+    Note over DT: Determines config list differences
+    Note over DT: Builds a Discovery update message
+    DT->>MCM: Send Discovery update over channel
+    Note over MCM: Connects to discovered Monoliths
+
+

@@ -1,0 +1,15 @@
+flowchart TD
+    ControlNode[Control Node]
+    ExecutionNode1[Execution Node 1]
+    ExecutionNode2[Execution Node 2]
+
+    ControlNode --> ExecutionNode1
+    ControlNode --> ExecutionNode2
+
+    subgraph ManagedNodes[Managed Nodes]
+        ManagedNode1[Managed Node 1]
+        ManagedNode2[Managed Node 2]
+    end
+
+    ExecutionNode1 --> ManagedNode1
+    ExecutionNode2 --> ManagedNode2

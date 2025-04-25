@@ -1,0 +1,36 @@
+classDiagram
+    class Student {
+        +String name
+        +int id
+        +List<Subject> subjects
+        +Student(int id, String name)
+        +getName(): String
+        +getId(): int
+        +getSubjects(): List<Subject>
+        +addSubject(Subject subject): void
+    }
+
+    class Subject {
+        +String name
+        +double score
+        +Subject(String name, double score)
+        +getName(): String
+        +getScore(): double
+    }
+
+    class GradedCourses {
+        +gradedCourses(int studentID, String studentName, double... scores): Student
+    }
+
+    class AverageCalculator {
+        +calculateAverage(Student student): double
+    }
+
+    class ReportPrinter {
+        +printReport(Student student): void
+    }
+
+    Student "1" --> "*" Subject : contains
+    Student --> GradedCourses : creates
+    AverageCalculator --> Student : calculates average
+    ReportPrinter --> Student : prints report

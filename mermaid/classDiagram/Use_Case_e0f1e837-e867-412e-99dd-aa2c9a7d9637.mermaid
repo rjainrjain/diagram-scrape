@@ -1,0 +1,25 @@
+classDiagram
+    class Utilisateur {
+        - id: int
+        - nom: string
+        - prenom: string
+        - telephone: string
+        - motDePasse: string
+        - date email_verified_at
+    }
+
+    class Categorie {
+        - id: int
+        - nom: string
+        - description: string
+    }
+
+    class DepenseMensuelle {
+        - id: int
+        - montant: float
+        - categorie: Categorie
+        - date: Date
+    }
+
+    Utilisateur "1" --> "*" Categorie : catégorise
+    DepenseMensuelle "1" --> "1" Categorie : utilise

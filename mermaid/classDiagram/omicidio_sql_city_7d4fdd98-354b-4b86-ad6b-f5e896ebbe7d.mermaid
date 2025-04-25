@@ -1,0 +1,73 @@
+classDiagram
+class rapporto_scena_del_crimine {
+	data: INTEGER
+	tipo: TEXT
+	descrizione: TEXT
+	luogo: TEXT
+}
+
+class patente {
+	id: INTEGER
+	eta: INTEGER
+	altezza: INTEGER
+	colore_occhi: TEXT
+	colore_capelli: TEXT
+	sesso: TEXT
+	targa: TEXT
+	costruttore_veicolo: TEXT
+	modello_veicolo: TEXT
+}
+
+class facebook_ingresso_eventi {
+	persona_id: INTEGER
+	evento_id: INTEGER
+	nome_evento: TEXT
+	data: INTEGER
+}
+
+class interrogatorio {
+	persona_id: INTEGER
+	trascrizione: TEXT
+}
+
+class get_fit_now_iscrizione {
+	id: TEXT
+	persona_id: INTEGER
+	nome: TEXT
+	data_iscrizione: INTEGER
+	tipo_iscrizione: TEXT
+}
+
+class get_fit_now_ingresso {
+	tessera_id: TEXT
+	data_ingresso: INTEGER
+	ora_ingresso: INTEGER
+	ora_uscita: INTEGER
+}
+
+class soluzione {
+	utente: INTEGER
+	valore: TEXT
+}
+
+class reddito {
+	codice_fiscale: CHAR
+	reddito_annuo: INTEGER
+}
+
+class persona {
+	id: INTEGER
+	nome: TEXT
+	patente_id: INTEGER
+	numero_civico: INTEGER
+	indirizzo: TEXT
+	codice_fiscale: CHAR
+}
+
+facebook_ingresso_eventi "*" -- "1" persona : persona_id
+interrogatorio "*" -- "1" persona : persona_id
+get_fit_now_iscrizione "*" -- "1" persona : persona_id
+get_fit_now_ingresso "*" -- "1" get_fit_now_iscrizione : tessera_id
+persona "*" -- "1" reddito : codice_fiscale
+persona "*" -- "1" patente : patente_id
+

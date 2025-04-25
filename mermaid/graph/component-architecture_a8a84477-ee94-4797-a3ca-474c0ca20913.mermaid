@@ -1,0 +1,56 @@
+graph TD
+    subgraph Core ["Core Module"]
+        Auth["AuthModule"]
+        Guards["GuardsModule"]
+        Services["ServicesModule"]
+        Shared["SharedModule"]
+    end
+
+    subgraph Features ["Feature Modules"]
+        User["UserModule"]
+        Customer["CustomerModule"]
+        Client["ClientModule"]
+        Developer["DeveloperModule"]
+        Admin["AdminModule"]
+        Owner["OwnerModule"]
+    end
+
+    subgraph User ["User Features"]
+        Profile["ProfileComponent"]
+        Settings["SettingsComponent"]
+    end
+
+    subgraph Auth ["Auth Components"]
+        SignIn["SignInComponent"]
+        SignUp["SignupComponent"]
+        ConfirmSignUp["ConfirmSignUpComponent"]
+        ForgotPassword["ForgotPasswordComponent"]
+    end
+
+    subgraph Customer ["Customer Features"]
+        EventReg["EventRegistrationComponent"]
+        Payment["PaymentComponent"]
+        History["TransactionHistoryComponent"]
+    end
+
+    subgraph Client ["Client Features"]
+        UserMgmt["UserManagementComponent"]
+        EventMgmt["EventManagementComponent"]
+        TransMgmt["TransactionManagementComponent"]
+    end
+
+    subgraph Developer ["Developer Features"]
+        ClientMgmt["ClientManagementComponent"]
+        CustMgmt["CustomerManagementComponent"]
+        ErrorHandler["ErrorHandlingComponent"]
+        Logger["LoggingComponent"]
+        Monitor["MonitoringComponent"]
+    end
+
+    Core --> Features
+    Auth --> User
+    Auth --> Customer
+    Auth --> Client
+    Auth --> Developer
+    Auth --> Admin
+    Auth --> Owner

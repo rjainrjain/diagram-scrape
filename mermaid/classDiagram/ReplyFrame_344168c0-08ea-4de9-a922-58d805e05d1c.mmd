@@ -1,0 +1,55 @@
+%%{
+  init: {
+    'theme': 'base',
+    'themeVariables': {
+      'primaryColor': '#FFFFFF',
+      'primaryTextColor': '#000',
+      'primaryBorderColor': '#000',
+      'lineColor': '#000',
+      'secondaryColor': '#000',
+      'secondaryTextColor': '#000',
+      'secondaryBorderColor': '#000',
+      'tertiaryColor': '#000',
+      'tertiaryTextColor': '#000',
+      'tertiaryBorderColor': '#000',
+      'fontFamily':'Times New Roman'
+    }
+  }
+}%%
+classDiagram
+    class SignableObject{
+        Bytes signature
+        +sign(Bytes private_key)
+        +verify(Bytes public_key):Boolean
+    }
+    class HODLInvoice{
+        +int amount
+        +pay()
+        +Bytes payment_hash
+        +settle(Bytes preimage)
+    }
+    class SettlementPromise{
+        +Certificate settler_certificate
+        +Bytes network_payment_hash
+        +Bytes hash_of_encrypted_reply_payload
+        +int reply_payment_amount
+    }
+    class ReplyPayload{
+        +Certificate replier_certificate
+        +RequestPayload signed_request_payload
+        +Bytes encrypted_reply_message
+        +HODLInvoice reply_invoice
+    }
+    class ReplyFrame{
+        +Bytes encrypted_reply_payload
+        +SettlementPromise signed_settlement_promise
+        +OnionRoute forward_onion
+        +HODLInvoice network_invoice
+    }
+    SignableObject <|-- SettlementPromise
+    ReplyFrame  o--  ReplyPayload : encrypted_reply_payload
+    ReplyFrame  o--  SettlementPromise : signed_settlement_promise
+    ReplyPayload o-- HODLInvoice: reply_invoice
+    ReplyFrame o-- HODLInvoice: network_invoice
+    
+    

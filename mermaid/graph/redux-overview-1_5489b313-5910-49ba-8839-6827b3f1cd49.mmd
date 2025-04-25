@@ -1,0 +1,52 @@
+graph TB
+
+  subgraph Actions
+    actionTypes[Action Types]-->actionCreators[Action Creators]
+    actionTypes-->reducers[Slice Reducers]
+  end
+
+  subgraph Reducers
+    reducers-->hor[High-Order Reducers]
+    reducers-->combineReducers["combineReducers()"]
+    hor-->combineReducers
+    combineReducers-->rootReducer[Root Reducer]
+  end
+
+  subgraph Store
+    middlewares[Action Middlewares]--"applyMiddleware()"-->enhancers[Store Enhancers]
+    enhancers--"compose()"-->createStore["createStore()"]
+    rootReducer-->createStore
+    initialState[Initial States]-->createStore
+    createStore-->store
+  end
+
+  subgraph Connect
+    actionCreators--"bindActionCreators()"-->dispatch["store.dispatch()"]
+    dispatch-->mapDispatchToProps
+    mapDispatchToProps-->connect["connect()"]
+
+    inputSelector[Input Selectors]-->createSelector["createSelector()"]
+    transform[Transform Function]-->createSelector
+    createSelector-->selector[Memoized Selector]
+    selector-->mapStateToProps
+    mapStateToProps-->connect
+
+    store--"Provider"-->subApp["Sub-App's Root Component"]
+    subApp--store-->containers["Container Components"]
+    containers--store-->connect
+
+    connect--props-->containers
+  end
+
+style actionTypes fill:#ff0,stroke:#333,stroke-width:4px;
+style actionCreators fill:#ff0,stroke:#333,stroke-width:4px;
+style reducers fill:#ff0,stroke:#333,stroke-width:4px;
+style combineReducers fill:#ff0,stroke:#333,stroke-width:4px;
+style initialState fill:#ff0,stroke:#333,stroke-width:4px;
+style createStore fill:#ff0,stroke:#333,stroke-width:4px;
+style mapDispatchToProps fill:#ff0,stroke:#333,stroke-width:4px;
+style inputSelector fill:#ff0,stroke:#333,stroke-width:4px;
+style transform fill:#ff0,stroke:#333,stroke-width:4px;
+style mapStateToProps fill:#ff0,stroke:#333,stroke-width:4px;
+style subApp fill:#ff0,stroke:#333,stroke-width:4px;
+style containers fill:#ff0,stroke:#333,stroke-width:4px;

@@ -1,0 +1,29 @@
+flowchart TD
+    Raw[(Raw MS/MS Data)] -->|Preprocessing| Search[Search Engine]
+    Target[(Target Fasta)] --> Search
+    Decoy[(Decoy Fasta)] --> Search
+    Target -->|Pseudoreverse| Decoy
+    Search -->|Similarity to theoretical spectra| PSMs[(PSMs)]
+
+    subgraph "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>b10prot Identification Workflows</b>"
+        PSMs -->|rank=1, best PSM per peptide| Peptides[(Peptides)]
+        Peptides --> TDA[Target-decoy approach]
+        TDA --> LP[(Scored Peptides)]
+        LP --> PAnalyzer
+        LP -->|unique to gene| LPQ[LPGF]
+        LP -->|unique to group| LPG[LPGF]
+
+        subgraph "<b>Protein Groups</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+            PAnalyzer --> Groups[(Protein Groups)]
+            Groups --> LPG
+            LPG --> GScores[(Scored Groups)]
+            GScores --> FDRG[Target-decoy approach]
+            FDRG -->|Normal FDR <= 1%| IDG[(Group Identifications)]
+        end
+
+        subgraph "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Genes</b>"
+            LPQ --> QScores[(Scored Genes)]
+            QScores --> FDRQ[Refined FDR]
+            FDRQ -->|Refined FDR <= 1%| IDQ[(Gene Identifications)]
+        end
+    end

@@ -1,0 +1,76 @@
+erDiagram
+    Especialidad ||--o{ Doctor : FK_ID_Especialidad
+    Doctor ||--o{ Historial_Paciente : FK_ID_Doctor
+    Doctor ||--o{ Habitacion : FK_ID_Doctor1
+    Medicina ||--o{ Habitacion : FK_ID_Medicina
+    Paciente ||--o{ Historial_Paciente : FK_ID_Paciente
+    Paciente ||--o{ Habitacion : FK_ID_Paciente1
+    Tipo_Usuario ||--o{ Usuario : FK_ID_TipoUsuario
+    Especialidad {
+        int ID_Especialida
+        varchar Nombre
+        varchar Descripcion
+        bit Disponible
+    }
+    Doctor {
+        int ID_Doctor
+        varchar Nombre
+        varchar Apellido
+        int Colegiado
+        bit Disponible
+        int FK_ID_Especialidad
+    }
+    Medicina {
+        int ID_Medicina
+        varchar Nombre
+        bit Perecedero
+        smalldatetime Fecha_Ingreso
+        smalldatetime Fecha_Lote
+        smalldatetime Fecha_Caducidad
+        varchar Casa
+        varchar TipoMedicamento
+        varchar Descripcion
+        varchar Imagen
+        varchar Imagen
+        
+    }
+    Paciente {
+        int ID
+        char Identificador
+        varchar Nombre
+        varchar Apellido
+        varchar Residencia
+        int Contacto
+        varchar Estado
+        bit AltaBaja
+        int Edad
+        int Visitas
+    }
+    Tipo_Usuario {
+        int ID_TipoUsuario
+        char Nombre
+        bit ModuloPaciente
+        bit ModuloDoctor
+        bit ModuloMedicina
+        bit ModuloReporte
+    }
+    Usuario {
+        varchar Usuario
+        char Contrasena
+        bit ActivoInactivo
+        int FK_ID_TipoUsuario
+    }
+    Historial_Paciente {
+        int FK_ID_Paciente
+        int FK_ID_Doctor
+        smalldatetime FechaIngreso
+        smalldatetime FechaSalida
+        bit Accidente
+        bit Enfermedad
+        varchar Examen
+    }
+    Habitacion {
+        int ID_Habitacion
+        int FK_ID_Doctor1
+        int FK_ID_Paciente1
+    }

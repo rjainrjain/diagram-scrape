@@ -1,0 +1,13 @@
+graph TB
+    Start(Start) --> InconsistencyAnalysis[Inconsistency Analysis]
+    InconsistencyAnalysis -->|Passed| ContentExtraction[Content Extraction]
+    InconsistencyAnalysis -->|Failed| InconsistencyFailure[Set Failure Reason: Inconsistency Analysis]
+    ContentExtraction --> TransactionLookup[Transaction Lookup]
+    TransactionLookup -->|Found| SignatureAnalysis[Signature Analysis]
+    TransactionLookup -->|Not Found| TransactionFailure[Set Failure Reason: Transaction Lookup]
+    SignatureAnalysis -->|Valid| Success[Set Success Reason: Success]
+    SignatureAnalysis -->|Invalid| SignatureFailure[Set Failure Reason: Signature Analysis]
+    InconsistencyFailure --> End[End]
+    TransactionFailure --> End
+    SignatureFailure --> End
+    Success --> End

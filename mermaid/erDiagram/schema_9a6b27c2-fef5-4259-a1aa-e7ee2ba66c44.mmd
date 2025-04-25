@@ -1,0 +1,87 @@
+erDiagram
+
+    addresses {
+    uuid id pk
+    string street
+    string city
+    string state
+    int state_id fk
+    int country_id fk
+    timestamp created_at
+    timestamp last_edited_at }
+
+    clubs {
+    uuid id pk
+    string name
+    uuid address_id
+    timestamp created_at
+    timestamp last_edited_at }
+
+    users ||--o| roles : role_id
+    users {
+    uuid id pk
+    int role_id fk
+    string nickname
+    string email
+    string passcode
+    timestamp created_at
+    timestamp last_edited_at }
+
+    manages ||--o| users : user_id
+    manages ||--o| clubs : club_id
+    manages {
+    uuid user_id fk
+    uuid club_id fk
+    timestamp created_at
+    timestamp last_edited_at }
+
+    exclusives ||--o| users : user_id
+    exclusives ||--o| posts : post_id
+    exclusives ||--o| payments : payment_id
+    exclusives {
+    uuid user_id fk
+    uuid post_id fk
+    uuid payment_id fk
+    timestamp starts_at
+    timestamp ends_at }
+
+    payments ||--o| users : user_id
+    payments {
+    uuid id pk
+    uuid user_id fk
+    timestamp transacted_at }
+
+    roles {
+    int id pk
+    string name
+    timestamp created_at
+    timestamp last_edited_at }
+
+    formats {
+    int id pk
+    string name
+    timestamp created_at
+    timestamp last_edited_at }
+
+    posts ||--o| users : user_id
+    posts ||--o| clubs : club_id
+    posts ||--o| formats : format_id
+    posts {
+    uuid id pk
+    uuid user_id fk
+    uuid club_id fk
+    int format_id fk
+    string title
+    string content
+    timestamp created_at
+    timestamp last_edited_at }
+
+    comments ||--o| posts : post_id
+    comments ||--o| users : user_id
+    comments {
+    uuid id pk
+    uuid post_id fk
+    uuid user_id fk
+    string content
+    timestamp created_at
+    timestamp last_edited_at }

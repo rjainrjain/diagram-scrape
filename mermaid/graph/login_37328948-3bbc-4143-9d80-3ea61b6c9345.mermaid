@@ -1,0 +1,16 @@
+graph TD
+    A[Receive Login Request] --> B{Validate Email Existence}
+    B --> |User Not Found| C[Throw loginException]
+    B --> |User Found| D{Verify Password}
+    C --> E[Return loginException]
+    D --> |Password Match| F[Return User Data]
+    D --> |Password Mismatch| G[Throw loginException]
+    G --> H[Return loginException]
+
+style A fill:#BBF,stroke:#333,stroke-width:2px
+style B fill:#BBF,stroke:#333,stroke-width:2px
+style C fill:#F66,stroke:#333,stroke-width:2px
+style D fill:#BBF,stroke:#333,stroke-width:2px
+style E fill:#F66,stroke:#333,stroke-width:2px
+style F fill:#BBF,stroke:#333,stroke-width:2px
+style G fill:#BBF,stroke:#333,stroke-width:2px

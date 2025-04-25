@@ -1,0 +1,173 @@
+classDiagram
+Jspreadsheet <.. SpreadsheetView
+IObservable <.. SpreadsheetView
+
+
+namespace librariesGroupe{
+    class Jspreadsheet
+}
+
+Observable <.. IObservable
+namespace otherGroupe{
+    class IObservable{
+        +Observable observable
+    }
+    class Observable {
+        +constructor() 
+        +subscribe(func) 
+        +unsubscribe(func)
+        +notify(data) 
+    }
+    class EncryptString{
+        +password_generate_key()
+        +auto_generate_key()
+        +import_secret_key(exportedSecretKey)
+        +getKey(passphrase, salt = null)
+        +getFixedField()
+        +getInvocationField()
+        +encrypt_string(secretKey, src_string)
+        +decrypt_string(secretKey, encryptedResult)
+    }
+
+    
+    class DynamicGenerationInterface{
+        +function Generate(arg)
+    }
+}
+
+namespace viewGroupe{
+    class SpreadsheetView{
+        +Observable observable
+    }
+}
+SpreadsheetView <.. MainPresenter
+
+namespace presenterGroupe{
+    class MainPresenter{
+        TaskDataRepository TaskData
+        TaskDataTemplateRepository TaskDataTemplate
+    }
+}
+
+
+
+
+
+MainPresenter ..> SetTaskDataChangeCallbackUseCase
+MainPresenter ..> SetTaskDataTemplateChangeCallbackUseCase
+
+IObservable <.. SpreadsheetView
+
+IUseCase <|-- SetTaskDataChangeCallbackUseCase
+IUseCase <|-- SetTaskDataTemplateChangeCallbackUseCase
+
+
+
+SetTaskDataChangeCallbackUseCase ..> TaskDataTemplateRepository
+SetTaskDataTemplateChangeCallbackUseCase ..> TaskDataTemplateRepository
+namespace useCaseGroupe{
+    class IUseCase{
+        +run()
+    }
+
+
+    
+    class TaskDataTemplate2TaskDataUseCase{
+        +run()
+    }
+
+    class saveLocalStrage{
+        +run()
+    }
+    class loadLocalStrage{
+        +run()
+    }
+    class SetTaskDataTemplateMemberUseCase{
+        +run()
+    }
+    class SetTaskDataMemberUseCase{
+        +run()
+    }
+    
+    class SetTaskDataTemplateChangedCallbackUseCase{
+        +run()
+    }
+    class SetTaskDataChangedCallbackUseCase{
+        +run()
+    }
+    class SetTaskDataTemplateLoadCallbackUseCase{
+        +run()
+    }
+    class SetTaskDataLoadCallbackUseCase{
+        +run()
+    }
+    class SetTaskDataInsertedCallbackUseCase{
+        +run()
+    }
+
+    class TaskDataTemplate2TableHeaders{
+        +run()
+    }
+    class TaskData2TableData{
+        +run()
+    }
+}
+
+
+namespace repositoryGroupe{
+    class TaskDataTemplateRepository{
+        +Observable observable
+        +TaskDataTemplateEntity[] DefaultTaskDataTemplate
+        +TaskDataTemplateEntity[] TaskDataTemplate
+    }
+    class TaskDataRepository{
+        +TaskDataEntity[] TaskData
+
+        +Observable observable
+    }
+}
+TaskDataEntity "1"..> "*" TaskDataTemplate
+TaskDataTemplateEntity ..>  TaskDataTemplate
+TaskDataTemplateEntity ..>  TableTaskDataTemplate
+TaskDataRepository "1"..> "*" TaskDataEntity
+TaskDataTemplateEntity ..>  JspreadsheetTaskDataTemplate
+TaskDataTemplateEntity ..>  TaskUiTemplate
+TaskDataTemplateRepository "1" --> "*" TaskDataTemplateEntity
+
+TaskDataRepository ..>  IObservable
+TaskDataTemplateRepository  -->  IObservable
+
+TaskDataRepository ..> DynamicGenerationInterface
+EncryptString ..> EncryptedResultEntity
+
+namespace entityGroupe{
+    class TaskDataEntity{
+    }
+    class TaskDataTemplate{
+        +member
+        +defaultValue
+    }
+    class TaskUiTemplate{
+        +title
+    }
+    class TaskDataTemplateEntity{
+        +TaskDataTemplate TaskDataTemplate
+        +jspreadsheetTaskDataTemplate jspreadsheetTaskDataTemplate
+        +tableTaskDataTemplate tableTaskDataTemplate
+    }
+    class TableTaskDataTemplate{
+        +type
+        +width
+        +colNum
+        +readOnly
+    }
+    class JspreadsheetTaskDataTemplate{
+        +editor
+        +source
+        +options
+    }
+    class EncryptedResultEntity{
+        +data
+        +iv
+    }
+}

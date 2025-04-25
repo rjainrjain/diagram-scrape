@@ -1,0 +1,185 @@
+%% Generated with Stately Studio
+
+stateDiagram-v2
+  state "Smart Home" as Smart_Home {
+    [*] --> Smart_Home.Off
+    Smart_Home.Off --> Smart_Home.On : init!
+    state "Off" as Smart_Home.Off
+        state "On" as Smart_Home.On {
+            direction TB
+            Smart_Home.On.Thermal_balance --> Smart_Home.On.check_Thermal_balance : xstate.after(ONEHOUR)#Smart Home.On.Thermal_balance
+            Smart_Home.On.check_Thermal_balance --> Smart_Home.On.Thermal_balance : always\nif [room1ColderThanRoom2] \ndo / heatRoom1\ndo / coolRoom2
+            Smart_Home.On.check_Thermal_balance --> Smart_Home.On.Thermal_balance : always\nif [room1HotterThanRoom2] \ndo / coolRoom1\ndo / heatRoom2
+            Smart_Home.On.check_Thermal_balance --> Smart_Home.On.Thermal_balance : always\nif [room1EqualToRoom2]
+            state "Thermal_balance" as Smart_Home.On.Thermal_balance
+            --
+            state "check_Thermal_balance" as Smart_Home.On.check_Thermal_balance
+                  state "User" as Smart_Home.On.User {
+                        [*] --> Smart_Home.On.User.home
+                        Smart_Home.On.User.home --> Smart_Home.On.User.home : timetableOn
+                        Smart_Home.On.User.home --> Smart_Home.On.User.home : timetableOff
+                        Smart_Home.On.User.home --> Smart_Home.On.User.not_home : leave
+                        Smart_Home.On.User.home --> Smart_Home.On.User.home : windowsOpen
+                        Smart_Home.On.User.home --> Smart_Home.On.User.home : windowsClose
+                        state "home" as Smart_Home.On.User.home
+                        state "not_home" as Smart_Home.On.User.not_home
+                  }
+            --
+                  state "Timetable" as Smart_Home.On.Timetable {
+                        
+                                state "Timer" as Smart_Home.On.Timetable.Timer {
+                                        [*] --> Smart_Home.On.Timetable.Timer.ZEROtoSIX_IN
+                                        Smart_Home.On.Timetable.Timer.ZEROtoSIX_IN --> Smart_Home.On.Timetable.Timer.ZEROtoSIX_OUT : always\nif [isTimetableOn] \ndo / setTargetTemperature
+                                        Smart_Home.On.Timetable.Timer.ZEROtoSIX_IN --> Smart_Home.On.Timetable.Timer.ZEROtoSIX_OUT : always\nif [isTimetableOff]
+                                        Smart_Home.On.Timetable.Timer.ZEROtoSIX_OUT --> Smart_Home.On.Timetable.Timer.SIXtoTEN_IN : xstate.after(SIXHOURS)#Smart Home.On.Timetable.Timer.ZEROtoSIX OUT
+                                        Smart_Home.On.Timetable.Timer.SIXtoTEN_IN --> Smart_Home.On.Timetable.Timer.SIXtoTEN_OUT : always\nif [isTimetableOn] \ndo / setTargetTemperature
+                                        Smart_Home.On.Timetable.Timer.SIXtoTEN_IN --> Smart_Home.On.Timetable.Timer.SIXtoTEN_OUT : always\nif [isTimetableOff]
+                                        Smart_Home.On.Timetable.Timer.SIXtoTEN_OUT --> Smart_Home.On.Timetable.Timer.TENtoEIGHTEEN_IN : xstate.after(FOURHOURS)#Smart Home.On.Timetable.Timer.SIXtoTEN OUT
+                                        Smart_Home.On.Timetable.Timer.TENtoEIGHTEEN_IN --> Smart_Home.On.Timetable.Timer.TENtoEIGHTEEN_OUT : always\nif [isTimetableOn] \ndo / setTargetTemperature
+                                        Smart_Home.On.Timetable.Timer.TENtoEIGHTEEN_IN --> Smart_Home.On.Timetable.Timer.TENtoEIGHTEEN_OUT : always\nif [isTimetableOff]
+                                        Smart_Home.On.Timetable.Timer.TENtoEIGHTEEN_OUT --> Smart_Home.On.Timetable.Timer.EIGHTEENtoTWENTYFOUR_IN : xstate.after(SIXHOURS)#Smart Home.On.Timetable.Timer.TENtoEIGHTEEN OUT
+                                        Smart_Home.On.Timetable.Timer.EIGHTEENtoTWENTYFOUR_IN --> Smart_Home.On.Timetable.Timer.EIGHTEENtoTWENTYFOUR_OUT : always\nif [isTimetableOn] \ndo / setTargetTemperature
+                                        Smart_Home.On.Timetable.Timer.EIGHTEENtoTWENTYFOUR_IN --> Smart_Home.On.Timetable.Timer.EIGHTEENtoTWENTYFOUR_OUT : always\nif [isTimetableOff]
+                                        Smart_Home.On.Timetable.Timer.EIGHTEENtoTWENTYFOUR_OUT --> Smart_Home.On.Timetable.Timer.ZEROtoSIX_IN : xstate.after(SIXHOURS)#Smart Home.On.Timetable.Timer.EIGHTEENtoTWENTYFOUR OUT
+                                        state "ZEROtoSIX IN" as Smart_Home.On.Timetable.Timer.ZEROtoSIX_IN
+                                        state "ZEROtoSIX OUT" as Smart_Home.On.Timetable.Timer.ZEROtoSIX_OUT
+                                        state "SIXtoTEN IN" as Smart_Home.On.Timetable.Timer.SIXtoTEN_IN
+                                        state "SIXtoTEN OUT" as Smart_Home.On.Timetable.Timer.SIXtoTEN_OUT
+                                        state "TENtoEIGHTEEN IN" as Smart_Home.On.Timetable.Timer.TENtoEIGHTEEN_IN
+                                        state "TENtoEIGHTEEN OUT" as Smart_Home.On.Timetable.Timer.TENtoEIGHTEEN_OUT
+                                        state "EIGHTEENtoTWENTYFOUR IN" as Smart_Home.On.Timetable.Timer.EIGHTEENtoTWENTYFOUR_IN
+                                        state "EIGHTEENtoTWENTYFOUR OUT" as Smart_Home.On.Timetable.Timer.EIGHTEENtoTWENTYFOUR_OUT
+                                }
+                        --
+                                state "state" as Smart_Home.On.Timetable.state {
+                                        [*] --> Smart_Home.On.Timetable.state.active
+                                        Smart_Home.On.Timetable.state.active --> Smart_Home.On.Timetable.state.inactive : timetableOff \ndo / setTimetableOff
+                                        Smart_Home.On.Timetable.state.inactive --> Smart_Home.On.Timetable.state.active : timetableOff \ndo / setTimetableOn
+                                        Smart_Home.On.Timetable.state.inactive --> Smart_Home.On.Timetable.state.inactive : setTempManually \ndo / setTargetTemperature
+                                        state "active" as Smart_Home.On.Timetable.state.active
+                                        state "inactive" as Smart_Home.On.Timetable.state.inactive
+                                }
+                  }
+            --
+                  state "Windows" as Smart_Home.On.Windows {
+                        [*] --> Smart_Home.On.Windows.closed
+                        Smart_Home.On.Windows.closed --> Smart_Home.On.Windows.open : windowsOpen
+                        Smart_Home.On.Windows.open --> Smart_Home.On.Windows.closed : windowsClose
+                        Smart_Home.On.Windows.open --> Smart_Home.On.Windows.open : xstate.after(FIVEMINUTES)#Smart Home.On.Windows.open \ndo / cool1\ndo / cool2
+                        state "closed" as Smart_Home.On.Windows.closed
+                        state "open" as Smart_Home.On.Windows.open
+                  }
+            --
+                  state "Room 1" as Smart_Home.On.Room_1 {
+                        
+                                state "Temperature" as Smart_Home.On.Room_1.Temperature {
+                                        [*] --> Smart_Home.On.Room_1.Temperature.3
+                                        Smart_Home.On.Room_1.Temperature.1 --> Smart_Home.On.Room_1.Temperature.2 : heatRoom1
+                                        Smart_Home.On.Room_1.Temperature.2 --> Smart_Home.On.Room_1.Temperature.1 : coolRoom1
+                                        Smart_Home.On.Room_1.Temperature.2 --> Smart_Home.On.Room_1.Temperature.3 : heatRoom1
+                                        Smart_Home.On.Room_1.Temperature.3 --> Smart_Home.On.Room_1.Temperature.2 : coolRoom1
+                                        Smart_Home.On.Room_1.Temperature.3 --> Smart_Home.On.Room_1.Temperature.4 : heatRoom1
+                                        Smart_Home.On.Room_1.Temperature.4 --> Smart_Home.On.Room_1.Temperature.3 : coolRoom1
+                                        Smart_Home.On.Room_1.Temperature.4 --> Smart_Home.On.Room_1.Temperature.5 : heatRoom1
+                                        Smart_Home.On.Room_1.Temperature.5 --> Smart_Home.On.Room_1.Temperature.4 : coolRoom1
+                                        state "1\nentry / xstate.assign" as Smart_Home.On.Room_1.Temperature.1
+                                        state "2\nentry / xstate.assign" as Smart_Home.On.Room_1.Temperature.2
+                                        state "3\nentry / xstate.assign" as Smart_Home.On.Room_1.Temperature.3
+                                        state "4\nentry / xstate.assign" as Smart_Home.On.Room_1.Temperature.4
+                                        state "5\nentry / xstate.assign" as Smart_Home.On.Room_1.Temperature.5
+                                }
+                        --
+                                state "Control" as Smart_Home.On.Room_1.Control {
+                                        [*] --> Smart_Home.On.Room_1.Control.ON
+                                        Smart_Home.On.Room_1.Control.WindowsOpen --> Smart_Home.On.Room_1.Control.ON : windowsClose
+                                        Smart_Home.On.Room_1.Control.Left --> Smart_Home.On.Room_1.Control.ON : enter
+                                        Smart_Home.On.Room_1.Control.ON --> Smart_Home.On.Room_1.Control.WindowsOpen : windowsOpen
+                                        Smart_Home.On.Room_1.Control.ON --> Smart_Home.On.Room_1.Control.Left : leave
+                                        state "WindowsOpen" as Smart_Home.On.Room_1.Control.WindowsOpen
+                                        state "Left" as Smart_Home.On.Room_1.Control.Left
+                                                  state "ON\n\nincrease/decrease temperature every 10 minutes" as Smart_Home.On.Room_1.Control.ON {
+                                                            [*] --> Smart_Home.On.Room_1.Control.ON.Waiting
+                                                            Smart_Home.On.Room_1.Control.ON.Heat --> Smart_Home.On.Room_1.Control.ON.Waiting : xstate.after(TENMINUTES)#Smart Home.On.Room 1.Control.ON.Heat \ndo / heatRoom1
+                                                            Smart_Home.On.Room_1.Control.ON.Cool --> Smart_Home.On.Room_1.Control.ON.Waiting : xstate.after(TENMINUTES)#Smart Home.On.Room 1.Control.ON.Cool \ndo / coolRoom1
+                                                            Smart_Home.On.Room_1.Control.ON.Waiting --> Smart_Home.On.Room_1.Control.ON.Heat : heat1
+                                                            Smart_Home.On.Room_1.Control.ON.Waiting --> Smart_Home.On.Room_1.Control.ON.Cool : cool1
+                                                            state "Heat" as Smart_Home.On.Room_1.Control.ON.Heat
+                                                            state "Cool" as Smart_Home.On.Room_1.Control.ON.Cool
+                                                            state "Waiting" as Smart_Home.On.Room_1.Control.ON.Waiting
+                                                  }
+                                }
+                        --
+                                state "Sensor" as Smart_Home.On.Room_1.Sensor {
+                                        [*] --> Smart_Home.On.Room_1.Sensor.CheckTemperatures
+                                        Smart_Home.On.Room_1.Sensor.Waiting --> Smart_Home.On.Room_1.Sensor.CheckTemperatures : xstate.after(FIVEMINUTES)#Smart Home.On.Room 1.Sensor.Waiting
+                                        Smart_Home.On.Room_1.Sensor.CheckTemperatures --> Smart_Home.On.Room_1.Sensor.tooCold : always\nif [isTooCold]
+                                        Smart_Home.On.Room_1.Sensor.CheckTemperatures --> Smart_Home.On.Room_1.Sensor.tooHot : always\nif [isTooHot]
+                                        Smart_Home.On.Room_1.Sensor.CheckTemperatures --> Smart_Home.On.Room_1.Sensor.CorrectTemperature : always\nif [isCorrectTemperature]
+                                        Smart_Home.On.Room_1.Sensor.tooCold --> Smart_Home.On.Room_1.Sensor.Waiting : always
+                                        Smart_Home.On.Room_1.Sensor.tooHot --> Smart_Home.On.Room_1.Sensor.Waiting : always
+                                        Smart_Home.On.Room_1.Sensor.CorrectTemperature --> Smart_Home.On.Room_1.Sensor.Waiting : always
+                                        state "Waiting" as Smart_Home.On.Room_1.Sensor.Waiting
+                                        state "CheckTemperatures\n\ncompare target to actual temperature" as Smart_Home.On.Room_1.Sensor.CheckTemperatures
+                                        state "tooCold\nentry / heat1" as Smart_Home.On.Room_1.Sensor.tooCold
+                                        state "tooHot\nentry / cool1" as Smart_Home.On.Room_1.Sensor.tooHot
+                                        state "CorrectTemperature\nentry / off1" as Smart_Home.On.Room_1.Sensor.CorrectTemperature
+                                }
+                  }
+            --
+                  state "Room 2" as Smart_Home.On.Room_2 {
+                        
+                                state "Temperature" as Smart_Home.On.Room_2.Temperature {
+                                        [*] --> Smart_Home.On.Room_2.Temperature.4
+                                        Smart_Home.On.Room_2.Temperature.1 --> Smart_Home.On.Room_2.Temperature.2 : heatRoom2
+                                        Smart_Home.On.Room_2.Temperature.2 --> Smart_Home.On.Room_2.Temperature.1 : coolRoom2
+                                        Smart_Home.On.Room_2.Temperature.2 --> Smart_Home.On.Room_2.Temperature.3 : heatRoom2
+                                        Smart_Home.On.Room_2.Temperature.3 --> Smart_Home.On.Room_2.Temperature.2 : coolRoom2
+                                        Smart_Home.On.Room_2.Temperature.3 --> Smart_Home.On.Room_2.Temperature.4 : heatRoom2
+                                        Smart_Home.On.Room_2.Temperature.4 --> Smart_Home.On.Room_2.Temperature.3 : coolRoom2
+                                        Smart_Home.On.Room_2.Temperature.4 --> Smart_Home.On.Room_2.Temperature.5 : heatRoom2
+                                        Smart_Home.On.Room_2.Temperature.5 --> Smart_Home.On.Room_2.Temperature.4 : coolRoom2
+                                        state "1\nentry / xstate.assign" as Smart_Home.On.Room_2.Temperature.1
+                                        state "2\nentry / xstate.assign" as Smart_Home.On.Room_2.Temperature.2
+                                        state "3\nentry / xstate.assign" as Smart_Home.On.Room_2.Temperature.3
+                                        state "4\nentry / xstate.assign" as Smart_Home.On.Room_2.Temperature.4
+                                        state "5\nentry / xstate.assign" as Smart_Home.On.Room_2.Temperature.5
+                                }
+                        --
+                                state "Control" as Smart_Home.On.Room_2.Control {
+                                        [*] --> Smart_Home.On.Room_2.Control.ON
+                                        Smart_Home.On.Room_2.Control.WindowsOpen --> Smart_Home.On.Room_2.Control.ON : windowsClose
+                                        Smart_Home.On.Room_2.Control.Left --> Smart_Home.On.Room_2.Control.ON : enter
+                                        Smart_Home.On.Room_2.Control.ON --> Smart_Home.On.Room_2.Control.WindowsOpen : windowsOpen
+                                        Smart_Home.On.Room_2.Control.ON --> Smart_Home.On.Room_2.Control.Left : leave
+                                        state "WindowsOpen" as Smart_Home.On.Room_2.Control.WindowsOpen
+                                        state "Left" as Smart_Home.On.Room_2.Control.Left
+                                                  state "ON\n\nincrease/decrease temperature every 10 minutes" as Smart_Home.On.Room_2.Control.ON {
+                                                            [*] --> Smart_Home.On.Room_2.Control.ON.Waiting
+                                                            Smart_Home.On.Room_2.Control.ON.Heat --> Smart_Home.On.Room_2.Control.ON.Waiting : xstate.after(TENMINUTES)#Smart Home.On.Room 2.Control.ON.Heat \ndo / heatRoom2
+                                                            Smart_Home.On.Room_2.Control.ON.Cool --> Smart_Home.On.Room_2.Control.ON.Waiting : xstate.after(TENMINUTES)#Smart Home.On.Room 2.Control.ON.Cool \ndo / coolRoom2
+                                                            Smart_Home.On.Room_2.Control.ON.Waiting --> Smart_Home.On.Room_2.Control.ON.Heat : heat2
+                                                            Smart_Home.On.Room_2.Control.ON.Waiting --> Smart_Home.On.Room_2.Control.ON.Cool : cool2
+                                                            state "Heat" as Smart_Home.On.Room_2.Control.ON.Heat
+                                                            state "Cool" as Smart_Home.On.Room_2.Control.ON.Cool
+                                                            state "Waiting" as Smart_Home.On.Room_2.Control.ON.Waiting
+                                                  }
+                                }
+                        --
+                                state "Sensor" as Smart_Home.On.Room_2.Sensor {
+                                        [*] --> Smart_Home.On.Room_2.Sensor.CheckTemperatures
+                                        Smart_Home.On.Room_2.Sensor.Waiting --> Smart_Home.On.Room_2.Sensor.CheckTemperatures : xstate.after(FIVEMINUTES)#Smart Home.On.Room 2.Sensor.Waiting
+                                        Smart_Home.On.Room_2.Sensor.CheckTemperatures --> Smart_Home.On.Room_2.Sensor.tooCold : always\nif [isTooCold]
+                                        Smart_Home.On.Room_2.Sensor.CheckTemperatures --> Smart_Home.On.Room_2.Sensor.tooHot : always\nif [isTooHot]
+                                        Smart_Home.On.Room_2.Sensor.CheckTemperatures --> Smart_Home.On.Room_2.Sensor.CorrectTemperature : always\nif [isCorrectTemperature]
+                                        Smart_Home.On.Room_2.Sensor.tooCold --> Smart_Home.On.Room_2.Sensor.Waiting : always
+                                        Smart_Home.On.Room_2.Sensor.tooHot --> Smart_Home.On.Room_2.Sensor.Waiting : always
+                                        Smart_Home.On.Room_2.Sensor.CorrectTemperature --> Smart_Home.On.Room_2.Sensor.Waiting : always
+                                        state "Waiting" as Smart_Home.On.Room_2.Sensor.Waiting
+                                        state "CheckTemperatures\n\ncompare target to actual temperature" as Smart_Home.On.Room_2.Sensor.CheckTemperatures
+                                        state "tooCold\nentry / heat2" as Smart_Home.On.Room_2.Sensor.tooCold
+                                        state "tooHot\nentry / cool2" as Smart_Home.On.Room_2.Sensor.tooHot
+                                        state "CorrectTemperature\nentry / off2" as Smart_Home.On.Room_2.Sensor.CorrectTemperature
+                                }
+                  }
+        }
+  }

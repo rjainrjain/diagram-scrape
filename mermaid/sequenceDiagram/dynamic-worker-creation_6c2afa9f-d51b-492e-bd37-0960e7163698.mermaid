@@ -1,0 +1,15 @@
+sequenceDiagram
+    participant SW as Sequencer Worker
+    participant WT as Worker Tool
+    participant CW as Custom Worker
+    participant T as Tools
+
+    SW->>SW: Identify need for<br/>specialized role
+    SW->>WT: Create custom worker
+    Note over WT: Defines new role with:<br/>1. Custom system prompt<br/>2. Specific task prompt<br/>3. Required toolset
+    
+    WT->>CW: Initialize worker
+    Note over CW: Custom worker starts<br/>with specialized role
+    
+    CW->>T: Access assigned toolset
+    Note over T: Tools available based on<br/>assigned toolset in config

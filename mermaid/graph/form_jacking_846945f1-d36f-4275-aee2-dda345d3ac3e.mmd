@@ -1,0 +1,14 @@
+graph LR
+subgraph Attacker
+    A[Inject Malicious Code] --> B[Capture Form Data]
+    B --> C[Send Data to Server]
+    C --> D[Use Data Fraudulently]
+end
+
+subgraph Website
+    E[Vulnerable Website] --> B
+end
+
+subgraph User
+    F[Submits Form] --> E
+end

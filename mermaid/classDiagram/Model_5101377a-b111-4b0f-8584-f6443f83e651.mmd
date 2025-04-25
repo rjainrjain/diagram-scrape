@@ -1,0 +1,277 @@
+classDiagram
+  direction LR
+
+  class BaseModel {
+    #string table
+    #array~string~ casts
+    #array~string~ fillable
+
+    +scopeGetDataTable(query, param) data
+    +scopeParamQuery(query, param) query
+    +scopeParamsWith(query, param) query
+  }
+
+  class Category {
+    +string id
+    +string name
+    +string|null image
+    +string|null created_at
+    +string|null updated_at
+
+    +products() Relation~HasMany~
+  }
+
+  class Order {
+    +string id
+    +float total
+    +string order_status
+    +string order_number
+    +string shipping_status
+    +string cancel_reason
+    +string shipping_tracking_number
+    +string shipping_courier
+    +array shipping_history
+    +string reciever_name
+    +string reciever_phone
+    +string delivery_province_id
+    +string delivery_province
+    +string delivery_city_id
+    +string delivery_city
+    +string delivery_postal_code
+    +string delivery_address
+    +string delivery_service
+    +float delivery_cost
+    +string user_id
+    +string store_id
+    +string transaction_id
+    +string|null created_at
+    +string|null updated_at
+    +string|null accept_deadline
+    +string|null shipping_deadline
+    +string|null deliver_deadline
+    +string|null recieve_deadline
+    +string|null paid_at
+    +string|null accepted_at
+    +string|null shipped_at
+    +string|null delivered_at
+    +string|null completed_at
+    +string|null canceled_at
+
+    #getTrackInfo(Order) data|null
+    +user() Relation~BelongsTo~
+    +store() Relation~BelongsTo~
+    +transaction() Relation~BelongsTo~
+    +order_items() Relation~HasMany~
+  }
+
+  class OrderItem {
+    +string id
+    +int quantity
+    +string product_id
+    +string product_variant_id
+    +string order_id
+    +string|null created_at
+    +string|null updated_at
+
+    +order() Relation~BelongsTo~
+    +product() Relation~BelongsTo~
+    +product_variant() Relation~BelongsTo~
+    +review() Relation~HasOne~
+  }
+
+  class Product {
+    +string id
+    +string name
+    +string slug
+    +string description
+    +float price
+    +int stok
+    +float average_rating
+    +string category_id
+    +string store_id
+    +string|null store_category_id
+    +string|null created_at
+    +string|null updated_at
+
+    +category() Relation~BelongsTo~
+    +store_category() Relation~BelongsTo~
+    +store() Relation~BelongsTo~
+    +order_items() Relation~HasMany~
+    +orders() Relation~HasManyThrough~
+    +product_images() Relation~HasMany~
+    +product_variants() Relation~HasMany~
+    +reviews() Relation~HasMany~
+    +variant_options() Relation~HasMany~
+
+    +calculateCosineSimilarity(setA, setB) float
+    +calculateJaccardSimilarity(setA, setB) float
+    +calculateSimilarity(setA, setB) array~number~
+    +generateRecommendations(setA, setB) array~string~
+    +scopeGetRecomendation(query, param, userId) query
+  }
+
+  class ProductImage {
+    +string id
+    +string image_url
+    +bool main_image
+    +string product_id
+    +string|null created_at
+    +string|null updated_at
+
+    +product() Relation~BelongsTo~
+  }
+
+  class ProductVariant {
+    +string id
+    +float price
+    +int stok
+    +string product_id
+    +string|null created_at
+    +string|null updated_at
+
+    +product() Relation~BelongsTo~
+    +order_items() Relation~HasMany~
+    +variant_options() Relation~BelongsToMany~
+  }
+
+  class Review {
+    +string id
+    +int rating
+    +string coment
+    +string user_id
+    +string product_id
+    +string|null created_at
+    +string|null updated_at
+
+    +user() Relation~BelongsTo~
+    +product() Relation~BelongsTo~
+    +product_variant() Relation~BelongsTo~
+    +order_item() Relation~BelongsTo~
+  }
+
+  class Store {
+    +string id
+    +string name
+    +string slug
+    +string address
+    +string city
+    +string city_id
+    +string province
+    +string province_id
+    +string postal_code
+    +string status
+    +string|null image
+    +string|null store_description
+    +string user_id
+    +string|null created_at
+    +string|null updated_at
+
+    +user() Relation~BelongsTo~
+    +products() Relation~HasMany~
+    +store_banners() Relation~HasMany~
+    +store_categories() Relation~HasMany~
+    +orders() Relation~HasMany~
+    +order_items() Relation~HasManyThrough~
+    +reviews() Relation~HasManyThrough~
+  }
+
+  class StoreBanner {
+    +string id
+    +string|null description
+    +string image
+    +string store_id
+    +string|null created_at
+    +string|null updated_at
+
+    +store() Relation~BelongsTo~
+  }
+
+  class StoreCategory {
+    +string id
+    +string name
+    +string slug
+    +string|null image
+    +string store_id
+    +string|null created_at
+    +string|null updated_at
+
+    +store() Relation~BelongsTo~
+  }
+
+  class Transaction {
+    +string id
+    +float total
+    +string serial_order
+    +string transaction_id
+    +string payment_status
+    +string status_code
+    +string payment_type
+    +string|null payment_code
+    +string|null snap_token
+    +string|null pdf_url
+    +string user_id
+    +string|null created_at
+    +string|null updated_at
+
+    +user() Relation~BelongsTo~
+    +orders() Relation~HasMany~
+  }
+
+  class User {
+    +int id
+    +string name
+    +string email
+    +string role
+    +string|null email_verified_at
+    +string password
+    +string phone_number
+    +string|null image
+    +string|null remember_token
+    +string|null created_at
+    +string|null updated_at
+
+    +orders() Relation~HasMany~
+    +reviews() Relation~HasMany~
+    +store() Relation~HasOne~
+    +getJWTIdentifier() string
+    +getJWTCustomClaims() array
+    +receivesBroadcastNotificationsOn() string
+  }
+
+  class VariantOption {
+    +string id
+    +string value
+    +string product_id
+    +string variant_type_id
+    +string|null created_at
+    +string|null updated_at
+
+    +product() Relation~BelongsTo~
+    +variant_type() Relation~BelongsTo~
+    +product_variants() Relation~BelongsToMany~
+  }
+
+  class VariantType {
+    +string id
+    +string name
+    +string|null created_at
+    +string|null updated_at
+
+    +variant_options() Relation~HasMany~
+  }
+
+  
+BaseModel--|>Category 
+BaseModel--|>Order 
+BaseModel--|>OrderItem 
+BaseModel--|>Product 
+BaseModel--|>ProductImage 
+BaseModel--|>ProductVariant 
+BaseModel--|>Review 
+BaseModel--|>Store 
+BaseModel--|>StoreBanner 
+BaseModel--|>StoreCategory 
+BaseModel--|>Transaction 
+BaseModel--|>User 
+BaseModel--|>VariantOption 
+BaseModel--|>VariantType 

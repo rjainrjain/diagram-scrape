@@ -1,0 +1,166 @@
+classDiagram
+    class Usuario {
+        -usuarioID: int
+        -nome: string
+        -email: string
+        -telefone: string
+        -ra: string
+        -tipoUsuario: string
+        -permissao: string
+        +realizarOrdem(ordem: Ordem)
+        +fazerInscricao(inscricao: Inscricao)
+        +submeterTrabalho(submissao: Submissao)
+        +receberCertificado(certificado: Certificado)
+        +editarPerfil()
+        +alterarSenha()
+        +verificarPermissao(permissao: string): bool
+        +bloquearUsuario()
+        +desbloquearUsuario()
+        +resetarSenha()
+        +enviarNotificacao(mensagem: string)
+    }
+
+    class Evento {
+        -eventoID: int
+        -nome: string
+        -descricao: string
+        -dataInicio: datetime
+        -dataTermino: datetime
+        -modalidade: string
+        -limiteParticipantes: int
+        +adicionarAtividade(atividade: Atividade)
+        +emitirIngresso(ingresso: Ingresso)
+        +gerarCertificado(certificado: Certificado)
+        +editarDetalhes()
+        +cancelarEvento()
+        +listarInscritos(): List<Usuario>
+        +listarAtividades(): List<Atividade>
+        +listarIngressos(): List<Ingresso>
+        +listarCertificados(): List<Certificado>
+        +definirLimiteParticipantes(limite: int)
+        +alterarModalidade(modalidade: string)
+        +verificarDisponibilidade(): bool
+    }
+
+    class Atividade {
+        -atividadeID: int
+        -nome: string
+        -descricao: string
+        -dataHoraInicio: datetime
+        -dataHoraTermino: datetime
+        -valor: decimal
+        -quantidadeVagas: int
+        -local: Local
+        +inscreverParticipante(inscricao: Inscricao)
+        +receberSubmissao(submissao: Submissao)
+        +editarDetalhes()
+        +cancelarAtividade()
+        +listarInscritos(): List<Usuario>
+        +listarSubmissoes(): List<Submissao>
+        +definirQuantidadeVagas(vagas: int)
+        +definirValor(valor: decimal)
+        +definirLocal(local: Local)
+        +verificarDisponibilidade(): bool
+    }
+
+    class Local {
+        -localID: int
+        -nome: string
+        -descricao: string
+        -capacidade: int
+        -equipamentos: string
+        +reservarLocal(atividade: Atividade): bool
+        +liberarLocal(atividade: Atividade)
+        +listarReservas(): List<Atividade>
+        +editarDetalhes()
+        +definirCapacidade(capacidade: int)
+        +adicionarEquipamento(equipamento: string)
+        +removerEquipamento(equipamento: string)
+    }
+
+    class Ordem {
+        -ordemID: int
+        -dataCriacao: datetime
+        -valorTotal: decimal
+        -formaPagamento: string
+        -statusPagamento: string
+        -codigoPagamento: string
+        +adicionarIngresso(ingresso: Ingresso)
+        +removerIngresso(ingresso: Ingresso)
+        +realizarPagamento(): bool
+        +cancelarOrdem()
+        +listarIngressos(): List<Ingresso>
+        +calcularValorTotal(): decimal
+        +gerarCodigoPagamento(): string
+        +verificarStatusPagamento(): string
+    }
+
+    class Ingresso {
+        -ingressoID: int
+        -inscricaoID: int
+        -codigoIngresso: string
+        -dataEmissao: datetime
+        -evento: Evento
+        -atividade: Atividade
+        +validarIngresso(): bool
+        +emitirIngresso(evento: Evento, atividade: Atividade)
+        +cancelarIngresso()
+        +gerarCodigoIngresso(): string
+        +verificarValidade(): bool
+    }
+
+    class Inscricao {
+        -inscricaoID: int
+        -usuarioID: int
+        -atividadeID: int
+        -valorTotal: decimal
+        -formaPagamento: string
+        -statusPagamento: string
+        +adicionarAtividade(atividade: Atividade)
+        +removerAtividade(atividade: Atividade)
+        +realizarPagamento()
+        +cancelarInscricao()
+    }
+
+    class Certificado {
+        -certificadoID: int
+        -atividadeID: int
+        -usuarioID:int
+        -dataEmissao: datetime
+        -codigoVerificacao: string
+        +validarCertificado(): bool
+        +gerarCodigoVerificacao(): string
+        +enviarCertificadoParticipante(participante: Usuario)
+        +emitirCertificado(evento: Evento, participante: Usuario)
+        +cancelarCertificado(certificadoID: int)
+    }
+
+    class Submissao {
+        -submissaoID: int
+        -tituloTrabalho: string
+        -descricao: string
+        -arquivo: blob
+        -dataSubmissao: datetime
+        -status: string
+        +avaliarSubmissao()
+        +definirStatus(status: string)
+        +adicionarFeedback(feedback: string)
+        +enviarNotificacaoAutor(mensagem: string)
+        +validarFormato(): bool
+        +verificarPrazo(): bool
+    }
+
+    Usuario ..> Ordem
+    Usuario ..> Inscricao
+    Usuario ..> Submissao
+    Usuario ..> Certificado
+    Evento ..> Atividade
+    Evento ..> Ingresso
+    Evento ..> Inscricao
+    Evento ..> Submissao
+    Evento ..> Certificado
+    Atividade ..> Inscricao
+    Atividade ..> Submissao
+    Atividade ..> Local
+    Ordem ..> Ingresso
+    Inscricao ..> Atividade

@@ -1,0 +1,13 @@
+graph TD
+  A[Component Mounts] --> B[Initialize shouldScrollToBottom = true]
+
+  H[User Scrolls] --> I[handleScroll Function]
+  I --> J{Is User at Bottom?}
+  J -->|Yes| K[Set shouldScrollToBottom = true]
+  J -->|No| L[Set shouldScrollToBottom = false]
+
+  M[useEffect Hook] --> N{Messages Changed?}
+  N -->|Yes| O{Is shouldScrollToBottom true?}
+  O -->|Yes| P[Scroll to Bottom]
+  O -->|No| Q[Do Not Scroll]
+  N -->|No| R[No Action]

@@ -1,0 +1,25 @@
+classDiagram
+  class Server {
+    - authentication_module: AuthenticationModule
+    - database: Database
+    + process_SNMP_trap()
+    + check_SNMP_community()
+    + check_data_consistency()
+    + analyze_data()
+    + analyze_port_status()
+    + enable_port()
+    + disable_port()
+    + convert_data_to_JSON()
+    + save_data()
+  }
+
+  class AuthenticationModule {
+    + check_SNMP_community(): bool
+  }
+
+  class Database {
+    + save_data()
+  }
+
+  Server --> AuthenticationModule : authentication_module // объект класса AuthenticationModule, который отвечает за проверку сообщества SNMP в полученном трапе
+  Server --> Database : database // объект класса Database, который отвечает за сохранение данных

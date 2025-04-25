@@ -1,0 +1,99 @@
+%%{
+  init: {
+    'theme': 'forest',
+    'themeVariables': {
+      'noteBkgColor': '#ff3344'
+    }
+  }
+}%%
+
+stateDiagram-v2
+  direction LR
+
+  %%classDef caca fill:white,color:blue,font-weight:bold,stroke-width
+  
+  %%LEXER_TOKEN comment
+  %%LEXER_TOKEN done
+  %%LEXER_TOKEN space
+  %%LEXER_TOKEN string
+  %%LEXER_TOKEN section_begin
+  %%LEXER_TOKEN section_end
+  %%LEXER_TOKEN line_break
+
+  %% start state
+  [*] --> start
+  start --> end: EOS
+  start --> comment: SEMICOLON
+  start --> space: TAB SPACE
+  start --> cr: CR
+  start --> start: NL
+  start --> section_name: OPEN_BRACKET
+  start --> key: UNDERSCORE LOWER_LETTER UPPER_LETTER DIGIT
+  start --> expecting_value: EQUAL
+  start --> start_error: ANY
+  note right of start_error
+    Unexpected "."
+  end note
+  
+  %% space state
+  space --> space: TAB SPACE
+  space --> end: EOS
+  space --> cr: CR
+  space --> start: NL
+  space --> key: UNDERSCORE LOWER_LETTER UPPER_LETTER DIGIT
+  space --> expecting_value: EQUAL
+  
+  %% cr state
+  cr --> start: NL
+  cr --> cr_error: ANY EOS
+  note right of cr_error
+    Expecting "NL" instead of "."
+  end note
+
+  %% comment state
+  comment --> comment: ANY
+  comment --> cr: CR
+  comment --> start: NL
+  comment --> end: EOS
+
+  %%class comment caca
+
+  %% section_name state
+  section_name --> section_name: UNDERSCORE LOWER_LETTER UPPER_LETTER DIGIT PERIOD
+  section_name --> start: ]
+  section_name --> section_name_error: TAB SPACE CR NL EOS
+  note left of section_name_error
+    Unexpected char in section name
+  end note
+  
+  %% key state
+  key --> key: UNDERSCORE LOWER_LETTER UPPER_LETTER DIGIT PERIOD
+  key --> space: TAB SPACE
+  key --> cr: CR
+  key --> start: NL
+  key --> expecting_value: EQUAL
+  key --> end: EOS
+  
+  %% expecting_value state
+  expecting_value --> value_space: TAB SPACE
+  expecting_value --> cr: CR
+  expecting_value --> start: NL
+  expecting_value --> end: EOS
+  expecting_value --> value: ANY
+
+  %% value_space state
+  value_space --> value_space: TAB SPACE
+  value_space --> cr: CR
+  value_space --> start: NL
+  value_space --> end: EOS
+  value_space --> value: ANY
+  
+  %% value state
+  value --> value: ANY
+%%  value --> space: TAB SPACE
+  value --> cr: CR
+  value --> start: NL
+  value --> end: EOS
+
+  %% end state
+  end --> [*]

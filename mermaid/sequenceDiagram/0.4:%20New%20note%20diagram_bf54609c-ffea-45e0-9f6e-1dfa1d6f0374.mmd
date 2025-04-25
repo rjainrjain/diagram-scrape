@@ -1,0 +1,11 @@
+sequenceDiagram
+    autonumber
+    participant Browser
+    participant Server
+    Browser->>+Server: POST https://studies.cs.helsinki.fi/exampleapp/new_note
+    Server-->>Server: Processes
+    Server-->>Server: Saves
+    Server-->>Browser: Response (Success / Faliure)
+    Browser-->Browser: Updates the Pages According to response
+
+    

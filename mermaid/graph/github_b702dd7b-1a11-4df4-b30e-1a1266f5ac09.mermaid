@@ -1,0 +1,23 @@
+graph TD
+    subgraph Row1[Harvesting]
+        A[PRs Made] 
+        B[PR Reviews] 
+        C[PR Comments]
+    end
+
+    subgraph Row2[Storage]
+        D[PRs Made] 
+        E[PR Reviews] 
+        F[PR Comments]
+    end
+
+    subgraph Row3[Derived Measurements]
+        G[How many PRs I reviewed] -->  H[Quality of Review] 
+        I[PRs I made]
+        I --> J[Quality of PR]
+        I --> K[Number of comments on PR]
+        I --> L[Dumb mistakes in PR]
+    end
+
+    Row1 --> Row2
+    Row2 --> Row3

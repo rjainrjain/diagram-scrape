@@ -1,0 +1,31 @@
+---
+title: version 4 - online Typo3 content management system
+---
+
+%%{ init: {'theme': 'neutral'} }%%
+graph LR
+
+subgraph offline
+    gimp([Image editor]) --> source{{Original images}}
+end
+
+subgraph online
+    database[(database)]
+    images{{Uploaded images}}
+    editor[[Typo3 admin]]
+    cms[[Typo3 CMS]]
+    generated{{Generated images}}
+end
+
+editor --> database
+editor --> images
+
+database --> cms
+images --> cms
+cms --> generated
+
+adminbrowser([Browser]) --> editor
+source --> editor
+
+cms -.-> browser(((WWW)))
+generated -.-> browser

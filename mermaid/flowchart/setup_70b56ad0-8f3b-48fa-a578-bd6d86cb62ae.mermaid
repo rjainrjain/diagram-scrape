@@ -1,0 +1,36 @@
+flowchart TD
+    Alunos[Alunos]
+        id_matricula[Matricula] --> Alunos
+        Nome_Aluno[Nome] --> Alunos
+        Email --> Alunos
+        Senha --> Alunos
+        ID --> Alunos
+
+    Cursos[Cursos]
+        id_cursos --> Cursos
+        dura_min[Duração Minima] --> Cursos
+        dura_max[Duração Máxima]--> Cursos
+        Nome_Curso[Nome] --> Cursos
+
+    Ingresso{Ingresso}
+        Cursos --> Ingresso
+        Alunos --> Ingresso
+
+    Campus[Campus]
+        id_campus --> Campus
+        cidade --> Campus
+        estado --> Campus
+        nome_campus[Nome] --> Campus
+
+    Cusos_campus{Cursos-Campus}
+        Cursos --> Cusos_campus
+        Campus --> Cusos_campus
+
+    Campus_Funcionario{Campus-Funcionario}
+        Cursos --> Campus_Funcionario
+        Funcionario --> Campus_Funcionario
+
+    Funcionario[Funcionario]
+        id_funcionario --> Funcionario
+        tipo_funcionario[Cargo] --> Funcionario
+        nome_funcionario[Nome] --> Funcionario

@@ -1,0 +1,34 @@
+flowchart TD
+    Start["Start"] --> MethodCheck{Is POST Request?}
+    MethodCheck -- Yes --> TryBlock[Try Block]
+    MethodCheck -- No --> InvalidRequest["Return: Invalid Request"]
+
+    TryBlock --> GetData[Get Data from request.POST and request.FILES]
+    GetData --> DefinePaths[Define baseDir and folderPath]
+    DefinePaths --> CheckFolder{Does folderPath exist?}
+
+    CheckFolder -- No --> InitializeProject[Initialize Project]
+    InitializeProject --> ParseLabels[Parse fabricLabels]
+    ParseLabels --> CreateProject[Create Project with fabricName and labels]
+    CreateProject --> CreateDirectories[Create necessary directories]
+    CreateDirectories --> CreateFabricObject[Create and Save Fabric Object]
+    CreateFabricObject --> SaveImages[Save Images to /samples/]
+    SaveImages --> SaveDescription[Save description.txt]
+
+    SaveDescription --> CheckFabricName{Is fabricName not empty?}
+    CheckFabricName -- Yes --> ExtractDataset[Extract dataset ZIP]
+    CheckFabricName -- No --> ContinueProcess
+
+    ExtractDataset --> ListImages[Test, Train, Valid Images]
+    ListImages --> CreateTasks[Create Tasks for Test, Train, Valid]
+    CreateTasks --> CreateDataset[Create and Save Dataset Object]
+    CreateDataset --> SuccessResponse["Return: Fabric Created Successfully"]
+
+    CheckFolder -- Yes --> FabricExists["Return: Fabric Already Exists"]
+    
+    InitializeProject --> SuccessResponse
+    FabricExists --> End["End"]
+    SuccessResponse --> End
+    InvalidRequest --> End
+
+    TryBlock -->|Exception| ErrorHandler["Return: Error with Exception"]

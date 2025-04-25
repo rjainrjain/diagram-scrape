@@ -1,0 +1,20 @@
+sequenceDiagram
+    participant Client as Внешний сервис
+    participant API as API слой
+    participant APP as App слой
+    participant REPO as Repo слой
+    participant DB as База данных
+
+    Client->>+API: Запрос (gRPC)
+    API->>API: Конвертирует запрос в формат domain
+    API->>+APP: Запрос в формате domain
+    APP->>APP: Обрабатывает данные (бизнес логика)
+    APP->>+REPO: Данные для репозитория
+    REPO->>REPO: Конвертирует в формат БД
+    REPO->>+DB: Запрос в БД
+    DB->>REPO: Ответ из БД
+    REPO->>REPO: Конвертирует в формат domain
+    REPO->>-APP: Ответ в формате domain
+    APP->>-API: Ответ в формате domain
+    API->>API: Конвертирует ответ в формат gRPC
+    API->>-Client: Ответ (gRPC)

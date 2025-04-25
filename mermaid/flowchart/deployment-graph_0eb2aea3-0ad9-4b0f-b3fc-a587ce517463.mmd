@@ -1,0 +1,23 @@
+flowchart-elk RL
+   classDef skipped color:#ccc,fill:#777,stroke:#333,stroke-dasharray: 5 5
+   core:content-storage([core:content-storage]) --> rootDeps
+   cms:discovery-api([cms:discovery-api]) --> core:content-storage
+   cms:downloads-api([cms:downloads-api]) --> core:content-storage
+   cms:management-api([cms:management-api]) --> core:content-storage
+   core:content-storage-backup([core:content-storage-backup]) --> core:content-storage
+   core:primary-domain-routing([core:primary-domain-routing]) --> rootDeps
+   core:config-storage([core:config-storage]) --> rootDeps
+   core:versioned-config([core:versioned-config]) --> core:config-storage
+   search:search-cluster([search:search-cluster]) --> rootDeps
+   search:search-api([search:search-api]) --> search:search-cluster
+   edge:alb-vpc([edge:alb-vpc]) --> rootDeps
+   edge:load-balancer([edge:load-balancer]) --> edge:alb-vpc
+   search:search-doc-storage([search:search-doc-storage]) --> rootDeps
+   edge:load-balancer --> cms:discovery-api
+   edge:load-balancer --> cms:downloads-api
+   edge:load-balancer --> cms:management-api
+   edge:load-balancer --> search:search-api
+   edge:cdn([edge:cdn]) --> edge:load-balancer
+   subgraph rootDeps[Root Dependencies]
+      core:envgroup-resources([core:envgroup-resources]) --> core:root-resources([core:root-resources])
+   end

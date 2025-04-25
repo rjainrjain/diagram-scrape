@@ -1,0 +1,93 @@
+erDiagram
+    Customer ||--o{ Account : has
+    Account ||--o{ AccountCarrier : has
+    Account ||--o{ AccountContact : has
+    Account ||--o{ AccountNote : has
+    Account ||--o{ AccountNoteDetail : has
+    Account ||--o{ AccountWorker : has
+    Account ||--o{ AccountXref : has
+    Carrier ||--o{ AccountCarrier : has
+    Contact ||--o{ AccountContact : has
+    User ||--o{ AccountWorker : has
+
+    Account {
+        string accountId PK
+        string customerId FK
+        string accountName
+        date effDate
+        date termDate
+        string statusCode
+        string situsState
+        string naicsCode
+        boolean hasCustomProgram
+        string programName
+        boolean hasCustomizedUrl
+        string customUrl
+        string pin
+        string customSurvey
+        boolean isReleased
+        boolean isLinx
+    }
+
+    Customer {
+        string customerId PK
+    }
+
+    AccountCarrier {
+        string accountId PK, FK
+        string carrierId PK, FK
+        string typeCode
+        date effDate
+        date termDate
+    }
+
+    Carrier {
+        string carrierId PK
+    }
+
+    AccountContact {
+        string accountId PK, FK
+        string contactId PK, FK
+        string typeCode
+        string refId
+        date effDate
+        date termDate
+    }
+
+    Contact {
+        string contactId PK
+    }
+
+    AccountNote {
+        string accountId PK, FK
+        string noteId PK
+        string typeCode
+        string note
+        date effDate
+        date termDate
+        boolean isInstruction
+        string instructionCode
+    }
+
+    AccountNoteDetail {
+        string accountId PK, FK
+        string noteId PK, FK
+        string noteLineId PK
+        string note
+    }
+
+    AccountWorker {
+        string accountId PK, FK
+        string userId PK, FK
+        string roleCode
+    }
+
+    User {
+        string userId PK
+    }
+
+    AccountXref {
+        string accountId PK, FK
+        string altAccountId PK
+        string systemCode
+    }

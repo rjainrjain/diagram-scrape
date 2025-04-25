@@ -1,0 +1,30 @@
+graph TD
+    subgraph "Push 요청 Server: 야구중계서버, 어드민, 스케쥴러 등"
+        AA[푸시 스케쥴 등록] --> BB[스케쥴에 따라 요청 전달]
+    end
+    BB ==> A
+    subgraph P[Push Server]
+        U[클라이언트 응답 수신, 캐시로 유저 지표 저장]--> U2[배치로 30분간격 DB 등록]
+        A[사용자 요청 수신]
+        A --> B[디바이스 푸시 동의 여부를 바탕으로 타겟 대상 설정]
+        B --> C[클라이언트OS 별로, 최대 1000명씩 구분해 그룹 설정]
+        C --> D[메시지 내용, 공통 데이터 설정]
+        subgraph loop
+            D --> E{비동기로 메시지 푸시 작업 시작}
+            E --> |Android| G[Android 포맷 설정]
+            E --> |iOS| H[iOS 포맷 설정]
+        end
+        J[비동기 작업 완료]
+    end
+    loop ==> J
+    subgraph F["Firebase Cloud Messaging"]
+        G --> K[Firebase Console Message 그룹 푸시 API 호출]
+        H --> K
+        K --> L[FCM에서 클라이언트로 메시지 전달]
+        L --> O[서버에 전달 완료 및 성공 실패 전달]
+        O --> J
+    end
+    subgraph "클라이언트"
+        L ==> M[클리아언트 푸시메시지 응답]
+    end
+    M ==> U

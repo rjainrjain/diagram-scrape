@@ -1,0 +1,20 @@
+sequenceDiagram
+    participant U as User
+    participant F as Frontend (SearchPatients)
+    participant B as Backend (FileController)
+    participant FS as File System
+
+    U->>F: Click "Download All" button
+    F->>B: Send bulk download request
+    B->>FS: Fetch requested files
+    FS-->>B: Return files
+    B->>B: Create zip archive
+    B-->>F: Send zip file
+    F->>U: Initiate zip download
+
+    U->>F: Click individual file download
+    F->>B: Request single file
+    B->>FS: Fetch file
+    FS-->>B: Return file
+    B-->>F: Send file
+    F->>U: Initiate file download

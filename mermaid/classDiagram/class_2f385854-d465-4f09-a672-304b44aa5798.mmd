@@ -1,0 +1,39 @@
+---
+title: class diagram
+---
+classDiagram
+    User "1"o--"*" Branch
+    Branch "1"o--"*" Song
+    class User{
+        +Long id
+        +String username
+        +String password
+        +List<Branch> branches
+        +String name
+        +String surname
+        -login(username, password)
+        -logout()
+        -newUser(username, password, name, surname)
+        -edit(username, password, name, surname)
+        -delete(id)
+    }
+    class Branch{
+        +Long id
+        +String name
+        +String address
+        +List<Song> playList
+        -createBranch(name, address)
+        -deleteBranch(id)
+        -editBranch(id, name, address)
+    }
+    class Song{
+        +bool isPlayed
+        +String artist
+        +String gender
+        +String name
+        +Long id
+        +addSong(artist, gender, name)
+        +deleteSong(id)
+        +playSong(id)
+    }
+

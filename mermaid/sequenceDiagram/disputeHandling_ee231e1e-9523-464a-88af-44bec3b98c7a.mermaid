@@ -1,0 +1,72 @@
+sequenceDiagram
+    actor Learner
+    actor Admin
+    actor Tutor
+    participant Frontend
+    participant System
+    participant Database
+    participant RecordingService
+
+    Learner->>Frontend: Click on "Report Session"
+    activate Learner
+    activate Frontend
+    Frontend->>System: rateTutor(sessionId)
+    activate System
+    System->>+Database: flagSessionAsDisputed(sessionId)
+    Database-->>-System: disputeFlagged()
+    System-->>Frontend: disputeRegistered()
+    deactivate System
+    Frontend-->>Learner: Dispute confirmed
+    deactivate Frontend
+
+    loop Dispute Resolution
+        Admin->>System: handleDispute(sessionId)
+        activate System
+        activate Admin
+        System->>+Database: fetchDisputeDetails(sessionId)
+        Database-->>-System: returnDisputeInfo()
+        System-->>Admin: Display dispute information
+        System->>+RecordingService: retrieveSessionRecording(sessionId)
+        RecordingService-->>-System: returnSessionRecording()
+        System-->>Admin: Display session recording
+
+        System->>+Database: fetchSessionFeedback(sessionId)
+        Database-->>-System: returnSessionFeedback()
+        System-->>Admin: Display session feedback
+    end
+
+    Admin->>System: issueRefund(sessionId)
+    alt Resolved in favor of Tutor
+        System->>+Database: addPaymentToTutorWallet(tutorId, amount)
+        Database-->>-System: paymentConfirmed()
+        System->>+Database: updateSessionStatus(sessionId, "Resolved in favor of Tutor")
+        Database-->>-System: statusUpdated()
+        System-->>Frontend: disputeResolutionStatus()
+        activate Frontend
+
+        par
+            Frontend-->>Learner: Display dispute result
+            activate Tutor
+            Frontend->>Tutor: Payment added to your wallet
+            deactivate Tutor
+        end
+        deactivate Frontend
+    else Resolved in favor of Learner
+        System->>+Database: refundLearnerWallet(learnerId, amount)
+        Database-->>-System: refundConfirmed()
+        System->>Database: updateSessionStatus(sessionId, "Resolved in favor of Learner")
+        Database-->>System: statusUpdated()
+        System-->>Frontend: disputeResolutionStatus()
+        activate Frontend
+
+        par
+            Frontend-->>Learner: Display dispute result
+            activate Tutor
+            Frontend->>Tutor: Notify dispute outcome
+            deactivate Tutor
+        end
+    end
+    deactivate System
+    deactivate Frontend
+    deactivate Admin
+    deactivate Learner

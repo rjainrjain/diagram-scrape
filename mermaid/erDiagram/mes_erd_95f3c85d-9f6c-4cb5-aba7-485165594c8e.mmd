@@ -1,0 +1,113 @@
+erDiagram
+    TECHSEQUENCE ||--o{ TECHPROCESS : "sequence"
+    TECHPROCESS ||--o{ TECHPROCESS : "parent_process"
+    TECHPROCESS ||--o{ MATERIALLINE : "input"
+    TECHPROCESS ||--o{ MATERIALLINE : "child_process_inputs"
+    TECHPROCESS ||--o{ MATERIALLINE : "combined_inputs"
+    TECHPROCESS ||--o{ EQUIPMENTUSAGE : "machine"
+    TECHPROCESS ||--o{ EQUIPMENTUSAGE : "child_process_machines"
+    TECHPROCESS ||--o{ EQUIPMENTUSAGE : "combined_machines"
+    TECHPROCESS ||--o{ WORKERTYPEUSAGE : "worker"
+    TECHPROCESS ||--o{ WORKERTYPEUSAGE : "child_process_workers"
+    TECHPROCESS ||--o{ WORKERTYPEUSAGE : "combined_workers"
+    TECHPROCESS ||--o{ OUTPUTLINE : "output"
+    TECHPROCESS ||--o{ OUTPUTLINE : "child_process_outputs"
+    TECHPROCESS ||--o{ OUTPUTLINE : "combined_outputs"
+    MATERIALMATERIAL ||--o{ MATERIALLINE : "material"
+    MATERIALMATERIAL ||--o{ OUTPUTLINE : "output"
+    EQUIPMENTTEMPLATE ||--o{ EQUIPMENTUSAGE : "machine"
+    WORKERGROUP ||--o{ WORKERTYPEUSAGE : "worker_group_ids"
+
+    TECHSEQUENCE {
+        order INTEGER
+    }
+
+    TECHPROCESS {
+        name CHAR
+        code CHAR
+        sequence MANY2ONE
+        description CHAR
+        bom_ids MANY2MANY
+        parent_process MANY2ONE
+        child_process_ids ONE2MANY
+        input ONE2MANY
+        input_description HTML
+        child_process_inputs MANY2MANY
+        combined_inputs MANY2MANY
+        machine ONE2MANY
+        child_process_machines MANY2MANY
+        combined_machines MANY2MANY
+        worker ONE2MANY
+        child_process_workers MANY2MANY
+        combined_workers MANY2MANY
+        output ONE2MANY
+        child_process_outputs MANY2MANY
+        combined_outputs MANY2MANY
+        output_description HTML
+        image IMAGE
+        documents BINARY
+        document_name CHAR
+        ng_percent FLOAT
+    }
+
+    MATERIALMATERIAL {
+        name CHAR
+        code CHAR
+        description HTML
+        electronic_material BOOLEAN
+        designator CHAR
+        footprint CHAR
+        lib_ref CHAR
+        manufacturer_name CHAR
+        supplier_name CHAR
+        supplier_code CHAR
+    }
+
+    MATERIALLINE {
+        material MANY2ONE
+        mat_qty FLOAT
+        mat_uom CHAR
+        mat_waste FLOAT
+        tech_process_id MANY2ONE
+        name CHAR
+        code CHAR
+        description HTML
+        electronic_material BOOLEAN
+        designator CHAR
+        footprint CHAR
+        lib_ref CHAR
+        manufacturer_name CHAR
+        supplier_name CHAR
+        supplier_code CHAR
+    }
+
+    OUTPUTLINE {
+        output MANY2ONE
+        output_description HTML
+        tech_process_id MANY2ONE
+    }
+
+    EQUIPMENTTEMPLATE {
+        name CHAR
+        code CHAR
+        position CHAR
+    }
+
+    EQUIPMENTUSAGE {
+        machine MANY2ONE
+        machine_hours FLOAT
+        tech_process_id MANY2ONE
+    }
+
+    WORKERGROUP {
+        name CHAR
+        code CHAR
+        expertise_level SELECTION
+        worker_ids MANY2MANY
+    }
+
+    WORKERTYPEUSAGE {
+        worker_group_ids MANY2ONE
+        worker_hours FLOAT
+        tech_process_id MANY2ONE
+    }

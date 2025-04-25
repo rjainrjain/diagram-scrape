@@ -1,0 +1,91 @@
+%%{init: {'theme': 'neutral', 'themeVariables': { 'fontSize': '16px'}}}%%
+
+graph TB
+    subgraph Client ["Client Applications"]
+        Browser["Web Browser"]
+        MobileApp["Mobile App"]
+    end
+
+    subgraph Gateway ["API Layer"]
+        APIGateway["API Gateway<br/>(Spring Cloud Gateway)"]
+        SwaggerUI["Swagger UI"]
+    end
+
+    subgraph Auth ["Authentication"]
+        Keycloak["Keycloak"]
+    end
+
+    subgraph Services ["Microservices"]
+        WebApp["Bookstore WebApp<br/>(Frontend)"]
+        CatalogSvc["Catalog Service"]
+        OrderSvc["Order Service"]
+        NotifSvc["Notification Service"]
+    end
+
+    subgraph MessageBroker ["Message Broker"]
+        RabbitMQ["RabbitMQ"]
+    end
+
+    subgraph Storage ["Data Layer"]
+        CatalogDB[(Catalog DB)]
+        OrderDB[(Order DB)]
+        NotifDB[(Notification DB)]
+    end
+
+    subgraph Infra ["Infrastructure"]
+        Vault["HashiCorp Vault"]
+        MailHog["MailHog<br/>(Email Testing)"]
+    end
+
+    subgraph Monitoring ["Monitoring Stack"]
+        Prometheus["Prometheus"]
+        Grafana["Grafana"]
+        Loki["Loki"]
+        Tempo["Tempo"]
+    end
+
+    %% Client connections
+    Browser --> APIGateway
+    MobileApp --> APIGateway
+
+    %% API Gateway connections
+    APIGateway --> WebApp
+    APIGateway --> CatalogSvc
+    APIGateway --> OrderSvc
+    APIGateway --> NotifSvc
+    APIGateway --> SwaggerUI
+
+    %% Service connections
+    CatalogSvc --> CatalogDB
+    OrderSvc --> OrderDB
+    NotifSvc --> NotifDB
+    
+    %% Auth connections
+    APIGateway --> Keycloak
+    WebApp --> Keycloak
+    
+    %% Message broker connections
+    OrderSvc --> RabbitMQ
+    RabbitMQ --> NotifSvc
+    
+    %% Infrastructure connections
+    NotifSvc --> MailHog
+    
+    %% Vault connections
+    Vault -.-> CatalogSvc
+    Vault -.-> OrderSvc
+    Vault -.-> NotifSvc
+    Vault -.-> RabbitMQ
+    Vault -.-> Keycloak
+
+    %% Monitoring connections
+    Prometheus -.-> CatalogSvc
+    Prometheus -.-> OrderSvc
+    Prometheus -.-> NotifSvc
+    Prometheus -.-> WebApp
+    Loki -.-> CatalogSvc
+    Loki -.-> OrderSvc
+    Loki -.-> NotifSvc
+    Tempo -.-> CatalogSvc
+    Tempo -.-> OrderSvc
+    Tempo -.-> NotifSvc

@@ -1,0 +1,32 @@
+erDiagram
+
+producto{
+    int id_producto pk
+    str nombre
+    str descripcion
+    str precio
+}
+producto 1--1+ detalle: tiene
+
+cliente{
+    int id_usr pk
+    str nombre
+    str direccion
+    str telefono
+}
+cliente 1--1+ pedido: tiene
+
+
+pedido{
+    int id_pedido pk
+    int id_usr fk
+    date fecha
+}
+pedido 1--1+ detalle: tiene
+
+detalle{
+    int id_detalle pk
+    int id_usr fk
+    int id_pedido fk
+    int cantidad
+}

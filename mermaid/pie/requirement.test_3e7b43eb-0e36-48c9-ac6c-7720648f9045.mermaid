@@ -1,0 +1,204 @@
+%% SYNTAX TEST "source.mermaid" "requirement diagram test"
+
+requirementDiagram
+%% <------------------ keyword.control.mermaid
+    %% a comment
+%%  ^^^^^^^^^^^^ comment
+    requirement test_req {
+%%  ^^^^^^^^^^^ keyword.control.mermaid
+%%              ^^^^^^^^ variable
+%%                       ^ keyword.control.mermaid
+        id: 1
+%%      ^^^ keyword.control.mermaid
+%%          ^ variable
+        text: the test text.
+%%      ^^^^^ keyword.control.mermaid
+%%            ^^^^^^^^^^^^^^ string
+        risk: high
+%%      ^^^^^ keyword.control.mermaid
+%%            ^^^^ entity.name.function.mermaid
+        verifymethod: test
+%%      ^^^^^^^^^^^^^ keyword.control.mermaid
+%%                    ^^^^ entity.name.function.mermaid
+    }
+%%  ^ keyword.control.mermaid
+
+    functionalRequirement test_req2 {
+%%  ^^^^^^^^^^^^^^^^^^^^^ keyword.control.mermaid
+%%                        ^^^^^^^^^ variable
+%%                                  ^ keyword.control.mermaid
+        id: 1.1
+%%      ^^^ keyword.control.mermaid
+%%          ^^^ variable
+        text: the second test text.
+%%      ^^^^^ keyword.control.mermaid
+%%            ^^^^^^^^^^^^^^^^^^^^^ string
+        risk: low
+%%      ^^^^^ keyword.control.mermaid
+%%            ^^^ entity.name.function.mermaid
+        verifymethod: inspection
+%%      ^^^^^^^^^^^^^ keyword.control.mermaid
+%%                    ^^^^^^^^^^ entity.name.function.mermaid
+    }
+%%  ^ keyword.control.mermaid
+
+    performanceRequirement test_req3 {
+%%  ^^^^^^^^^^^^^^^^^^^^^^ keyword.control.mermaid
+%%                         ^^^^^^^^^ variable
+%%                                   ^ keyword.control.mermaid
+        id: 1.2
+%%      ^^^ keyword.control.mermaid
+%%          ^^^ variable
+        text: the third test text.
+%%      ^^^^^ keyword.control.mermaid
+%%            ^^^^^^^^^^^^^^^^^^^^ string
+        risk: medium
+%%      ^^^^^ keyword.control.mermaid
+%%            ^^^^^^ entity.name.function.mermaid
+        verifymethod: demonstration
+%%      ^^^^^^^^^^^^^ keyword.control.mermaid
+%%                    ^^^^^^^^^^^^^ entity.name.function.mermaid
+    }
+%%  ^ keyword.control.mermaid
+
+    interfaceRequirement test_req4 {
+%%  ^^^^^^^^^^^^^^^^^^^^ keyword.control.mermaid
+%%                       ^^^^^^^^^ variable
+%%                                 ^ keyword.control.mermaid
+        id: 1.2.1
+%%      ^^^ keyword.control.mermaid
+%%          ^^^^^ variable
+        text: the fourth test text.
+%%      ^^^^^ keyword.control.mermaid
+%%            ^^^^^^^^^^^^^^^^^^^^^ string
+        risk: medium
+%%      ^^^^^ keyword.control.mermaid
+%%            ^^^^^^ entity.name.function.mermaid
+        verifymethod: analysis
+%%      ^^^^^^^^^^^^^ keyword.control.mermaid
+%%                    ^^^^^^^^ entity.name.function.mermaid
+    }
+%%  ^ keyword.control.mermaid
+
+    physicalRequirement test_req5 {
+%%  ^^^^^^^^^^^^^^^^^^^ keyword.control.mermaid
+%%                      ^^^^^^^^^ variable
+%%                                ^ keyword.control.mermaid
+        id: 1.2.2
+%%      ^^^ keyword.control.mermaid
+%%          ^^^^^ variable
+        text: the fifth test text.
+%%      ^^^^^ keyword.control.mermaid
+%%            ^^^^^^^^^^^^^^^^^^^^ string
+        risk: medium
+%%      ^^^^^ keyword.control.mermaid
+%%            ^^^^^^ entity.name.function.mermaid
+        verifymethod: analysis
+%%      ^^^^^^^^^^^^^ keyword.control.mermaid
+%%                    ^^^^^^^^ entity.name.function.mermaid
+    }
+%%  ^ keyword.control.mermaid
+
+    designConstraint test_req6 {
+%%  ^^^^^^^^^^^^^^^^ keyword.control.mermaid
+%%                   ^^^^^^^^^ variable
+%%                             ^ keyword.control.mermaid
+        id: 1.2.3
+%%      ^^^ keyword.control.mermaid
+%%          ^^^^^ variable
+        text: the sixth test text.
+%%      ^^^^^ keyword.control.mermaid
+%%            ^^^^^^^^^^^^^^^^^^^^ string
+        risk: medium
+%%      ^^^^^ keyword.control.mermaid
+%%            ^^^^^^ entity.name.function.mermaid
+        verifymethod: analysis
+%%      ^^^^^^^^^^^^^ keyword.control.mermaid
+%%                    ^^^^^^^^ entity.name.function.mermaid
+    }
+%%  ^ keyword.control.mermaid
+
+    element test_entity {
+%%  ^^^^^^^ keyword.control.mermaid
+%%          ^^^^^^^^^^^ variable
+%%                      ^ keyword.control.mermaid
+        type: simulation
+%%      ^^^^^ keyword.control.mermaid
+%%            ^^^^^^^^^^ variable
+    }
+%%  ^ keyword.control.mermaid
+
+    element test_entity2 {
+%%  ^^^^^^^ keyword.control.mermaid
+%%          ^^^^^^^^^^^^ variable
+%%                       ^ keyword.control.mermaid
+        type: word doc
+%%      ^^^^^ keyword.control.mermaid
+%%            ^^^^^^^^ variable
+        docRef: reqs/test_entity
+%%      ^^^^^^^ keyword.control.mermaid
+%%              ^^^^^^^^^^^^^^^^ variable
+    }
+%%  ^ keyword.control.mermaid
+
+    element test_entity3 {
+%%  ^^^^^^^ keyword.control.mermaid
+%%          ^^^^^^^^^^^^ variable
+%%                       ^ keyword.control.mermaid
+        type: "test suite"
+%%      ^^^^^ keyword.control.mermaid
+%%            ^^^^^^^^^^^^ variable
+        docRef: github.com/all_the_tests
+%%      ^^^^^^^ keyword.control.mermaid
+%%              ^^^^^^^^^^^^^^^^^^^^^^^^ variable
+    }
+%%  ^ keyword.control.mermaid
+
+    test_entity - satisfies -> test_req2
+%%  ^^^^^^^^^^^ variable
+%%              ^ keyword.control.mermaid
+%%                ^^^^^^^^^ keyword.control.mermaid
+%%                          ^^ keyword.control.mermaid
+%%                             ^^^^^^^^^ variable
+    test_req - traces -> test_req2
+%%  ^^^^^^^^ variable
+%%           ^ keyword.control.mermaid
+%%             ^^^^^^ keyword.control.mermaid
+%%                    ^^ keyword.control.mermaid
+%%                       ^^^^^^^^^ variable
+    test_req - contains -> test_req3
+%%  ^^^^^^^^ variable
+%%           ^ keyword.control.mermaid
+%%             ^^^^^^^^ keyword.control.mermaid
+%%                      ^^ keyword.control.mermaid
+%%                         ^^^^^^^^^ variable
+    test_req3 - contains -> test_req4
+%%  ^^^^^^^^^ variable
+%%            ^ keyword.control.mermaid
+%%              ^^^^^^^^ keyword.control.mermaid
+%%                       ^^ keyword.control.mermaid
+%%                          ^^^^^^^^^ variable
+    test_req4 - derives -> test_req5
+%%  ^^^^^^^^^ variable
+%%            ^ keyword.control.mermaid
+%%              ^^^^^^^ keyword.control.mermaid
+%%                      ^^ keyword.control.mermaid
+%%                         ^^^^^^^^^ variable
+    test_req5 - refines -> test_req6
+%%  ^^^^^^^^^ variable
+%%            ^ keyword.control.mermaid
+%%              ^^^^^^^ keyword.control.mermaid
+%%                      ^^ keyword.control.mermaid
+%%                         ^^^^^^^^^ variable
+    test_entity3 - verifies -> test_req5
+%%  ^^^^^^^^^^^^ variable
+%%               ^ keyword.control.mermaid
+%%                 ^^^^^^^^ keyword.control.mermaid
+%%                          ^^ keyword.control.mermaid
+%%                             ^^^^^^^^^ variable
+    test_req <- copies - test_entity2
+%%  ^^^^^^^^ variable
+%%           ^^ keyword.control.mermaid
+%%              ^^^^^^ keyword.control.mermaid
+%%                     ^ keyword.control.mermaid
+%%                       ^^^^^^^^^^^^ variable

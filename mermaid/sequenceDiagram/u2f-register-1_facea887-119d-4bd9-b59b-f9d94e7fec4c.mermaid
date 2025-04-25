@@ -1,0 +1,12 @@
+sequenceDiagram
+Note over Server: generate challenge
+Server ->> Browser: challenge,app id
+Browser ->> U2F device: challenge,origin,app id
+Note over U2F device: generate key pair and handle
+Note over U2F device: store (app id,handle) -> private key
+Note over U2F device: sign (challenge,origin, app id,handle, public key) with attestation private key
+U2F device ->> Browser: signature(challenge,origin, app id,handle, public key),handle,public key,attestation cert
+Browser ->> Server: signature(challenge,origin, app id,handle, public key),handle,public key,attestation cert,origin
+Note over Server: validate signature with attestation public key
+Note over Server: validate origin
+Note over Server: store handle -> public key

@@ -1,0 +1,22 @@
+sequenceDiagram
+    actor L as Léna(user)
+    participant Application
+    participant Quest Manager
+    Quest Manager ->> Quest Manager: UpdateDailyQuests(Léna)
+    Quest Manager ->> Quest Manager: UpdateWeeklyQuests(Léna)
+    L ->> Application: Login
+    Application ->> Quest Manager: GetQuests(Léna)
+    alt user logs in for the first time today
+        Quest Manager ->> Quest Manager: GenerateDailyQuests(Léna)
+        Quest Manager ->> Application: ReturnDailyQuests(Léna)
+    else user has already logged in today
+        Quest Manager ->> Application: ReturnDailyQuests(Léna)
+    end
+    Application ->> L: DisplayDailyQuests(Léna)
+    alt user logs in for the first time this week
+        Quest Manager ->> Quest Manager: GenerateWeeklyQuests(Léna)
+        Quest Manager ->> Application: ReturnWeeklyQuests(Léna)
+    else user has already logged in this week
+        Quest Manager ->> Application: ReturnWeeklyQuests(Léna)
+    end
+    Application ->> L: DisplayWeeklyQuests(Léna)

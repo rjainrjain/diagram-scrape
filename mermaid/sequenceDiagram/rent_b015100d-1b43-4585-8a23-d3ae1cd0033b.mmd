@@ -1,0 +1,10 @@
+sequenceDiagram
+User->>App: Tap QR Code button
+loop Check Credit Card
+    App->>App: Check if user has credit card
+end
+App->>User: Redirect to Scanner
+User->>App: Scan Carrier QR Code
+App->>Backend: Send Rent request
+Backend->>App: Return successfull request
+App->>User: Redirect user to home with ongoing rent

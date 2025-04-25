@@ -1,0 +1,12 @@
+flowchart LR
+    L["fa:fa-person-booth" Librarian] --> Login(["Log in"]) --> S["fa:fa-keyboard" System]
+    L --> Checkout(["Checkout a book"]) --> S
+    L -.-> Print(["Print user's checkout record"]) -.-> S
+
+    A["fa:fa-person-booth" Admin] --> Login
+    A --> AddNew(["Add new member"]) --> S
+    A -.-> Copy(["Add a copy of an existing book"]) -.-> S
+    A -.-> Add(["Add a new book"]) -.-> S
+    
+    S --> DB[(Database)]
+    

@@ -1,0 +1,44 @@
+classDiagram
+    class Game{
+        +start_game() -> None
+        +place_bet(amount: int) -> None
+        +hit() -> None
+        +stand() -> None
+        +double_down() -> None
+        +display_game() -> None
+        +display_outcome() -> None
+    }
+    class Deck{
+        +shuffle() -> None
+        +draw_card() -> Card
+    }
+    class Player{
+        +__init__(name: str, balance: int) -> None
+        +get_balance() -> int
+        +set_balance(balance: int) -> None
+        +get_hand_value() -> int
+        +add_card(card: Card) -> None
+        +clear_hand() -> None
+    }
+    class Dealer{
+        +__init__() -> None
+        +get_hand_value() -> int
+        +add_card(card: Card) -> None
+        +clear_hand() -> None
+    }
+    class Card{
+        +__init__(suit: str, rank: str) -> None
+        +get_value() -> int
+        +__str__() -> str
+    }
+    class Utils{
+        +calculate_hand_value(hand: List[Card]) -> int
+    }
+    Game "1" -- "1" Deck: has
+    Game "1" -- "1" Player: has
+    Game "1" -- "1" Dealer: has
+    Player "1" -- "1" Card: has
+    Dealer "1" -- "1" Card: has
+    Utils "1" -- "1" Card: uses
+    Utils "1" -- "1" Player: uses
+    Utils "1" -- "1" Dealer: uses

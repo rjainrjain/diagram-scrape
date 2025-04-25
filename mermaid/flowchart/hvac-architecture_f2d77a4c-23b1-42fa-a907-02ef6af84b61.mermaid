@@ -1,0 +1,96 @@
+flowchart TB
+    %% Styling with dark text
+    classDef sensor fill:#E2EB98,stroke:#93A392,stroke-width:2px,color:#000000,font-weight:bold
+    classDef controller fill:#ADBF97,stroke:#93A392,stroke-width:2px,color:#000000,font-weight:bold
+    classDef processing fill:#BAD9A2,stroke:#93A392,stroke-width:2px,color:#000000,font-weight:bold
+    classDef storage fill:#9DC4B5,stroke:#93A392,stroke-width:2px,color:#000000,font-weight:bold
+    classDef cloud fill:#E2EB98,stroke:#93A392,stroke-width:2px,color:#000000,font-weight:bold
+    
+    subgraph DataCollection["Data Collection Layer"]
+        direction LR
+        OS["Occupancy<br/>Sensors"]:::sensor
+        TH["Temperature &<br/>Humidity Sensors"]:::sensor
+        ESP["ESP32<br/>Microcontroller"]:::controller
+        OS --> ESP
+        TH --> ESP
+    end
+
+    subgraph Processing["Processing & Communication"]
+        direction LR
+        NR["Node-RED<br/>Server"]:::processing
+        WA["Weather<br/>APIs"]:::cloud
+        WIFI["Wi-Fi/Cloud<br/>Connection"]:::cloud
+        ESP --> WIFI
+        WIFI --> NR
+        WA --> NR
+    end
+
+    subgraph MLLayer["ML & Data Management"]
+        direction LR
+        RL["Reinforcement<br/>Learning Model"]:::processing
+        DVC["Data Version<br/>Control"]:::processing
+        MLF["MLflow"]:::processing
+        AF["Apache<br/>Airflow"]:::processing
+        NR --> RL
+        RL --> DVC
+        RL --> MLF
+        AF --> RL
+    end
+
+    subgraph Storage["Storage Layer"]
+        direction LR
+        PG[("PostgreSQL")]:::storage
+        AWS[("AWS Storage")]:::storage
+        NR --> PG
+        MLF --> AWS
+        DVC --> AWS
+    end
+
+    subgraph DevOps["CI/CD Pipeline"]
+        direction LR
+        GIT["Git"]:::controller
+        DOC["Docker"]:::controller
+        JEN["Jenkins"]:::controller
+        GIT --> DOC
+        DOC --> JEN
+    end
+
+    subgraph Interface["User Interface"]
+        direction LR
+        DJ["Django<br/>Backend"]:::processing
+        RC["React<br/>Frontend"]:::processing
+        FT["Flutter<br/>Mobile"]:::processing
+        DJ --> RC
+        DJ --> FT
+    end
+
+    subgraph Collab["Collaboration"]
+        direction LR
+        DH["Dagshub"]:::cloud
+        GIT --> DH
+        AWS --> DH
+    end
+
+    %% Cross-layer connections with styled lines
+    ESP === PG
+    NR === DJ
+    RL === DJ
+    PG === DJ
+    JEN === AWS
+
+    %% Layout adjustments
+    DataCollection --> Processing
+    Processing --> MLLayer
+    MLLayer --> Storage
+    Storage --> Interface
+    DevOps --> Interface
+    Collab --> Interface
+
+%% Subgraph styling with dark text
+style DataCollection fill:#E2EB98,stroke:#93A392,stroke-width:3px,color:#000000,font-weight:bold
+style Processing fill:#ADBF97,stroke:#93A392,stroke-width:3px,color:#000000,font-weight:bold
+style MLLayer fill:#BAD9A2,stroke:#93A392,stroke-width:3px,color:#000000,font-weight:bold
+style Storage fill:#9DC4B5,stroke:#93A392,stroke-width:3px,color:#000000,font-weight:bold
+style DevOps fill:#E2EB98,stroke:#93A392,stroke-width:3px,color:#000000,font-weight:bold
+style Interface fill:#ADBF97,stroke:#93A392,stroke-width:3px,color:#000000,font-weight:bold
+style Collab fill:#BAD9A2,stroke:#93A392,stroke-width:3px,color:#000000,font-weight:bold

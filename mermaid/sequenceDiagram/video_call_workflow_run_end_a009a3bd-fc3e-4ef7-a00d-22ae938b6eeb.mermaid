@@ -1,0 +1,28 @@
+sequenceDiagram
+    participant A as Client
+    participant B as Client
+    participant C as Agora Platform
+    
+    rect rgb(173, 216, 230)
+    note over A, C: Run call
+    A->>C: Connect to local audio and video resources
+    A->>C: Join channel
+    A->>C: Send audio and video to channel
+    B->>C: Connect to local audio and video resources
+    B->>C: Join.IOException
+    B->>C: Send audio and video to channel
+    end
+    
+    rect rgb(173, 216, 230)
+    note over A, B: Communicate
+    A->>B: --
+    B->>A: --
+    end
+    
+    rect rgb(173, 216, 230)
+    note over B, C: End call
+    A->>C: Close audio and video
+    A->>C: Leave channel
+    B->>C: Close audio and video
+    B->>C: Leave channel
+    end

@@ -1,0 +1,17 @@
+flowchart LR
+    DataIngestion ==> Embeddings
+    DataIngestion ==> CommentModeration
+    Embeddings ==> TopicModeling
+    TopicModeling ==> Labeling
+    TopicModeling ==> Structure
+    CommentModeration ==> TopicModeling
+    Structure & Labeling ==> Tree
+    Tree == Agreement Scoring ==> Insights
+
+    DataIngestion[Data Ingestion]
+    CommentModeration[Comment \n Moderation]
+    Labeling[Topic Label \n Generation]
+    TopicModeling[Topic Modeling]
+    Structure[Insight \n Generation]
+    Tree[Argument Mapping]
+    Insights[Actionable Insights]

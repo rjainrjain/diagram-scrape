@@ -1,0 +1,9 @@
+sequenceDiagram
+    participant Customer
+    participant Video Transcoder
+    participant Video Compression
+    participant Video Delivery
+    Customer->>Video Transcoder: Start Video Transcoding
+    Video Transcoder-->>Video Compression: Pass video data
+    Video Compression-->>Video Delivery: Compressed video
+    Video Delivery-->>Customer:Asynchronous Notification

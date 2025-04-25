@@ -1,0 +1,15 @@
+sequenceDiagram
+    note left of Client: 결제 페이지(purchase)
+    Client->>+Server: 결제 버튼 클릭
+    Server->>+KakaoPay: 결제 준비 요청<br>(KakaoPayReadyRequestVO)
+    KakaoPay->>-Server: 결제 준비 응답<br>(KakaoPayReadyResponseVO)
+    Server->>-Client: 결제 페이지 안내<br>next_redirect_pc_url
+    note left of Client: 카카오페이<br>결제 페이지<br>출력
+    Client->>+KakaoPay: 인증 및 구매 절차
+    KakaoPay->>Server: 구매 성공/실패/취소 알림
+    note left of Server: 결제 완료 정보 검토
+    Server->>+KakaoPay: 결제 승인 요청<br>KakaoPayApproveRequestVO
+    KakaoPay->>-Server: 결제 승인 응답<br>KakaoPayApproveResponseVO
+    note right of Server: DB저장시점
+    Server->>Client: 결제 완료 안내<br>완료 페이지 출력
+    note left of Client: 결제 완료 페이지 확인

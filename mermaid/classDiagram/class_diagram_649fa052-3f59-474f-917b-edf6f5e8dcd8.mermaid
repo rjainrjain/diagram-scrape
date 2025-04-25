@@ -1,0 +1,93 @@
+classDiagram
+    User <|-- Employer
+    User <|-- Applicant
+    Profile <|-- ApplicantProfile
+    Profile <|-- EmployerProfile
+    Post <|-- JobPost
+    ApplicantProfile <|-- Preferences
+
+
+    class User {
+        +Long id
+        +string username
+        +string email
+        +string password
+        Profile getProfile()
+    }
+
+    class Preferences {
+        +User user
+        +List<Employer> interestedCompanies
+        +List<String> interestedIndustries
+        +Double minSalary
+        +Double maxSalary
+        +string jobTiming
+        +string location
+        void updatePreferences()
+
+    }
+
+
+    class Employer {
+        +string employerName
+        +EmployerProfile employerProfile
+        void postJob()
+        void viewApplications()
+    }
+
+    class Applicant {
+        +string applicantName
+        +ApplicantProfile applicantProfile
+        +Preferences preferences
+        +String resume
+        void applyForJob(JobPost jobPost)
+        void viewAppliedJobs()
+
+    }
+
+    class Profile {
+        +User user
+        +string name
+        +string bio
+        void editProfile()
+    }
+
+    class EmployerProfile {
+        +String industry
+        +int employerId
+        +string companyDescription
+    }
+
+    class ApplicantProfile {
+        +int applicantId
+        +List<String> skills
+    }
+
+    class Post {
+        +int id
+        -string title
+        -string description
+    }
+
+    class JobPost {
+        +int employerId
+        +Long jobID
+        -String location
+        +List<String> tags
+        -Double minSalary
+        -Double maxSalary
+        -LocalDateTime closedDate
+        +List<Applicant> applicants
+    }
+
+
+    class Application {
+        +int id
+        +int applicantId
+        +int jobPostId
+        +Date applicationDeadline
+    }
+
+
+    Applicant --> Application : "applies"
+    EmployerProfile --> JobPost : "creates"

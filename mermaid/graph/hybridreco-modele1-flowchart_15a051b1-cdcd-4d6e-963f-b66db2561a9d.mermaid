@@ -1,0 +1,20 @@
+graph TD
+    A[Start] --> B[Prepare Data]
+    B --> C[Create User/Word Mappings]
+    C --> D[Preprocess Data]
+    D --> E[Create Hybrid Recommender Model]
+    E --> F[Train Model]
+    F --> G[Evaluate Model]
+    G --> H[Save Model]
+    H --> I[End]
+
+    subgraph Hybrid Recommender Model
+        E1[User Input] --> E2[Word Input]
+        E1 --> E3[User Features Input]
+        E2 --> E4[Word Features Input]
+        E2 --> E5[Embedding Layers]
+        E3 --> E6[Dense Layers]
+        E4 --> E6
+        E5 --> E6
+        E6 --> E7[Output Layer]
+    end

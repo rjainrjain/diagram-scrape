@@ -1,0 +1,47 @@
+erDiagram
+
+Usuario{
+    int id_usuario PK
+    varchar nombre_usuario
+    varchar usuario_usuario
+    varchar password_usuario
+}
+
+Productos{
+    int id_producto PK
+    varchar nombre_producto
+    float precio_producto
+}
+
+Clientes{
+    int id_cliente PK
+    varchar nombre_cliente
+    varchar apellido_cliente
+    varchar cedula_cliente
+    varchar telefono_cliente
+    varchar direccion_cliente
+}
+
+OrdenDeVenta{
+    int id_orden PK
+    date fecha_orden
+    int id_cliente_per FK
+    float total
+
+}
+
+OrdenDeVenta ||--|| Clientes: id_cliente
+
+DetalleOrden{
+    int id_detalleOrden PK
+    int id_orden_per FK
+    int id_producto_per FK
+    int cantidad_producto
+
+}
+
+DetalleOrden }o--|| OrdenDeVenta: id_orden
+DetalleOrden ||--o{ Productos: id_producto
+
+
+

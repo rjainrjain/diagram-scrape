@@ -1,0 +1,52 @@
+stateDiagram-v2
+    [*] --> QuizCreation: Admin/Root inicia criação
+    
+    state QuizCreation {
+        [*] --> Draft
+        state "Draft (Em Criação)" as Draft
+        state "Com Questões" as WithQuestions
+        state "Pronto para Publicar" as ReadyToPublish
+        state "Publicado" as Published
+        state "Despublicado" as Unpublished
+
+        Draft --> WithQuestions: Adicionar questões
+        WithQuestions --> Draft: Editar quiz
+        WithQuestions --> ReadyToPublish: Todas questões adicionadas
+        ReadyToPublish --> Published: Publicar quiz
+        Published --> Unpublished: Despublicar
+        Unpublished --> Published: Republicar
+    }
+
+    state QuizAttempt {
+        [*] --> Started
+        state "Iniciado" as Started
+        state "Em Progresso" as InProgress
+        state "Completo" as Completed
+        state "Abandonado" as Abandoned
+
+        Started --> InProgress: Respondendo questões
+        InProgress --> InProgress: Próxima questão
+        InProgress --> Completed: Todas questões respondidas
+        InProgress --> Abandoned: Usuário abandona
+        Completed --> [*]: Finalizar tentativa
+        Abandoned --> [*]: Cancelar tentativa
+    }
+
+    state QuestionResponse {
+        [*] --> Objective
+        
+        state Objective {
+            [*] --> AwaitingChoice
+            state "Aguardando Escolha" as AwaitingChoice
+            state "Selecionado" as Selected
+            state "Confirmado" as Confirmed
+
+            AwaitingChoice --> Selected: Selecionar resposta
+            Selected --> Confirmed: Confirmar escolha
+            Selected --> AwaitingChoice: Mudar escolha
+        }
+    }
+
+    QuizCreation --> QuizAttempt: Quiz publicado
+    QuizAttempt --> QuestionResponse: Para cada questão
+    QuestionResponse --> QuizAttempt: Resposta registrada

@@ -1,0 +1,14 @@
+sequenceDiagram
+    Executor-->>+Future1: Poll
+    Future1->>+SubFuture1: Poll
+    SubFuture1-->>Future1: Not ready
+    Future1-->>Executor: Not ready
+    Executor-->>Executor: Do some other work (other future)
+    Executor-->>Future1: Poll
+    Future1->>+SubFuture1: Poll
+    SubFuture1-->>Future1: Not ready
+    Future1-->>Future1: Do some work
+    Future1-->>Executor: Not ready
+    Executor-->>Executor: Do some other work (other future)
+    Executor-->>Future1: Poll
+    Future1-->>-Executor: Completed

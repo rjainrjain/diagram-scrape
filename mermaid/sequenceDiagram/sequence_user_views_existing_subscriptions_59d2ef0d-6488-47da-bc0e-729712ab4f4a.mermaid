@@ -1,0 +1,35 @@
+sequenceDiagram
+
+title Existing user logs in to view subscriptions
+
+
+
+
+user ->> airtext: starts login<br/>(supplying email or phone)
+airtext ->> cerc_api: GET /find-subscriber
+
+
+alt if user unknown
+	cerc_api ->> airtext: returns 404
+	airtext ->> user: try again or create new account
+
+else else if email or phone number is found at CERC
+	cerc_api ->> airtext: returns UUID
+	airtext ->> auth_notifier: send_email or send_sms<br/>(with auth code)
+	auth_notifier ->> user: sends email or sms<br/>ith auth code
+
+	activate airtext
+
+	user ->> airtext: completes login by<br/>entering auth code
+
+	note right of airtext: start user session
+
+	airtext ->> user: redirect to user dashboard
+end
+
+user ->> airtext: view subscriptions
+airtext ->> cerc_api: GET /subscriptions/{subscriberId}
+cerc_api ->> airtext: returns list of subscriptions
+airtext ->> user: show list of subscriptions
+
+deactivate airtext

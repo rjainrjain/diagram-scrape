@@ -1,0 +1,68 @@
+graph TD
+    A[Start] --> B[User Creation]
+    B --> C[Generate User Key]
+    C --> D[Encrypt User Key with Master Key]
+    D --> E[Store Encrypted User Key in Supabase]
+
+    F[Data Encryption Request] --> G[Retrieve Encrypted User Key from Supabase]
+    G --> H[Decrypt User Key]
+    H --> I[Generate Salt and IV]
+    I --> J[Derive Key from User Key]
+    J --> K[Encrypt Data]
+    K --> L[Combine Salt, IV, and Encrypted Data]
+    L --> M[Store Combined Encrypted Data in IndexedDB]
+
+    N[Data Decryption Request] --> O[Retrieve Encrypted Data from IndexedDB]
+    O --> P[Retrieve Encrypted User Key from Supabase]
+    P --> Q[Decrypt User Key]
+    Q --> R[Split Encrypted Data into Salt, IV, and Encrypted Content]
+    R --> S[Derive Key from User Key and Salt]
+    S --> T[Decrypt Data]
+    T --> U[Return Decrypted Data to Client]
+    U --> V[End]
+
+    subgraph "User Key Generation and Storage"
+    B
+    C
+    D
+    E
+    end
+
+    subgraph "Encryption Process and Storage"
+    F
+    G
+    H
+    I
+    J
+    K
+    L
+    M
+    end
+
+    subgraph "Decryption Process and Retrieval"
+    N
+    O
+    P
+    Q
+    R
+    S
+    T
+    U
+    end
+
+    subgraph "Supabase"
+    DB1[User Table]
+    end
+
+    subgraph "IndexedDB"
+    DB2[Blood Test Results Table]
+    DB3[Attachments Table]
+    end
+
+    E --> DB1
+    M --> DB2
+    M --> DB3
+    G --> DB1
+    O --> DB2
+    O --> DB3
+    P --> DB1

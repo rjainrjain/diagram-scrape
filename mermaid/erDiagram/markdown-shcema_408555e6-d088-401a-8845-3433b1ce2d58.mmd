@@ -1,0 +1,33 @@
+---
+title: Article (Doc) and Learn (Unit) Model [2.26.23]
+---
+erDiagram
+    DOCUMENT ||--|| HTML : child
+    HTML ||--|| HEAD  : child
+    HTML ||--|| BODY  : child
+    HEAD ||--|| METADATA  : child
+    BODY ||--|| H1  : child
+    H1 || --o{ MD-OBJECT  : child
+    H1 || --o{ H2  : child
+    H2 || --o{ MD-OBJECT  : child
+    H2 || --o{ H3  : child
+    H3 || --o{ MD-OBJECT  : child
+    H3 || --o{ H4  : child
+    H4 || --o{ MD-OBJECT  : child
+    H4 || --o{ H5  : child
+    H5 || --o{ MD-OBJECT  : child
+    H5 || --o{ H6  : child
+    H6 || --o{ MD-OBJECT  : child
+    MD-OBJECT || --o{ P : child
+    MD-OBJECT || --o{ OL : child
+    MD-OBJECT || --o{ UL : child
+    MD-OBJECT || --o{ UL : child
+    MD-OBJECT || --o{ TABLE : child
+    MD-OBJECT || --o{ CODE : child
+    MD-OBJECT || --o{ ALERT : child
+    MD-OBJECT || --o{ FIGURE : child
+    P || --o{ LINK : child
+    OL || --o{ LI : child
+    UL || --o{ LI : child
+    TABLE || --o{ ROW : child
+    ROW || --o{ COLUMN : child

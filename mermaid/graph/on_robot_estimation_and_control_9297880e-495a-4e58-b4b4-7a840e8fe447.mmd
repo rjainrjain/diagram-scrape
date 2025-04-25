@@ -1,0 +1,69 @@
+graph TD
+    classDef sensorinput fill:#859900,stroke:#002b36,stroke-width:4px,color:#002b36;
+    classDef models fill:#268bd2,stroke:#002b36,stroke-width:4px,color:#002b36;
+    classDef stateestimation fill:#cb4b16,stroke:#002b36,stroke-width:4px,color:#002b36;
+    classDef controls fill:#6c71c4,stroke:#002b36,stroke-width:4px,color:#002b36;
+    classDef actuators fill:#dc322f,stroke:#002b36,stroke-width:4px,color:#002b36;
+    classDef agents fill:#b58900,stroke:#002b36,stroke-width:4px,color:#002b36;
+
+    subgraph SSL Vision
+        V0[Vision]:::sensorinput
+    end
+
+    subgraph AI
+        P0(Trajectory Planner):::agents
+    end
+
+    subgraph Robot
+        subgraph stm32h7
+            C0[IMU]:::sensorinput
+            O0[Optical Flow]:::sensorinput
+
+            FD(Forward Dynamics Model):::models
+            BD(Backward Dynamics Model):::models
+
+            CSE(EKF State Estimator):::models
+            LQR(Linear Quadratic Regulator):::controls
+
+            V0 --> |Global State Estimate| CSE
+
+            C0 --> |Angular Rate| CSE
+            C0 --> |Acceleration| CSE
+            O0 --> |Velocity Estimate| CSE
+
+            P0 --> |Desired State| LQR
+            CSE -->|State Estimate| LQR
+            CSE --> |State Estimate| P0
+
+            LQR --> |Body Force Command| BD
+
+            FD --> |Body Acceleration/Force| CSE
+            FD --> |Body Velocity| CSE
+
+            %% ENC -->|Velocity| FD
+        end
+
+        subgraph STSPIN
+            FMD(Forward Motor Model):::models
+            BMD(Backward Motor Model):::models
+            WPID(Wheel PID):::controls
+            
+
+
+            CS -->|Current| FMD
+            ENC -->|Ticks| FMD
+            FMD --> |Wheel Velocity| FD
+            FMD --> |Wheel Torque| FD
+            FMD --> |Torque| WPID
+
+            subgraph Motor
+                M[Motor]:::actuators
+                CS[Current Sensing]:::sensorinput
+                ENC[Encoder]:::sensorinput
+            end
+
+            WPID --> |Torque Command| M
+            BD --> |Wheel Torque Command| BMD
+            BMD --> |Duty Cycle| M
+        end 
+    end

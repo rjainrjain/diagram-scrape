@@ -1,0 +1,54 @@
+classDiagram
+    class Banco {
+        -String nome
+        -List~Conta~ contas
+        +getNome() String
+        +setNome(String nome)
+        +getContas() List~Conta~
+        +setContas(List~Conta~ contas)
+    }
+    
+    class Cliente {
+        -String nome
+        +getNome() String
+        +setNome(String nome)
+    }
+    
+    class Conta {
+        -int agencia
+        -int numero
+        -double saldo
+        -Cliente cliente
+        +Conta(Cliente cliente)
+        +sacar(double valor)
+        +depositar(double valor)
+        +transferir(double valor, IConta contaDestino)
+        +getAgencia() int
+        +getNumero() int
+        +getSaldo() double
+        #imprimirInfosComuns()
+    }
+    
+    class ContaCorrente {
+        +ContaCorrente(Cliente cliente)
+        +imprimirExtrato()
+    }
+    
+    class ContaPoupanca {
+        +ContaPoupanca(Cliente cliente)
+        +imprimirExtrato()
+    }
+    
+    class IConta {
+        <<interface>>
+        +sacar(double valor)
+        +depositar(double valor)
+        +transferir(double valor, IConta contaDestino)
+        +imprimirExtrato()
+    }
+    
+    Banco --> Conta
+    Conta ..> IConta
+    ContaCorrente --> Conta
+    ContaPoupanca --> Conta
+    Conta --> Cliente

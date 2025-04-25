@@ -1,0 +1,41 @@
+classDiagram
+class User {
+    + uuid: UUID
+    + first_name: str
+    + last_name: str
+    + email: str
+    + password_hash: str
+    + created_at: str
+    + updated_at: str
+    + create_place(): void
+    + update_profile(): void
+}
+class Place {
+    name: str
+    description: str
+    adress: str
+    latitude: float
+    longitude: float
+    created_at: str
+    updated_at: str
+}
+
+
+class Review {
+    + uuid: UUID
+    + rating: int
+    + comment: str
+    + created_at: str
+    + updated_at: str
+}
+
+class Amenity {
+    + uuid: UUID
+    + name: str
+    + created_at: str
+    + updated_at: str
+}
+
+User "1" --> "* Plusieur Place ou 0 *" Place : Owns("Posséde")
+Place "1" --> "* Plusieur Review ou 0*" Review : Receives("Reçoit")
+Place "1" --> "* Plusieur Amenity ou 0" Amenity : Has("a")

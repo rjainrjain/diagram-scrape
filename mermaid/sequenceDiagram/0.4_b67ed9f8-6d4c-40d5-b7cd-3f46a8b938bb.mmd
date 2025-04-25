@@ -1,0 +1,32 @@
+sequenceDiagram
+    participant browser
+    participant server
+
+    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note
+    activate server
+    server-->>browser: HTML document
+    deactivate server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/notes
+    activate server
+    server-->>browser: the notes file
+    deactivate server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.css
+    activate server
+    server-->>browser: the main.css file
+    deactivate server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.js
+    activate server
+    server-->>browser: the main.js file
+    deactivate server
+
+    Note right of browser: Note right of browser: The browser starts executing the JavaScript code that fetches the JSON from the server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+    activate server
+    server-->>browser: [{"content":"Newlandswashere","date":"2024-09-13T21:40:16.720Z"},{"content":"Note to self: Never post to the public internet. Also, remember to check if this website is private or public","date":"2024-09-13T21:49:32.956Z"},... ]
+    deactivate server
+
+    Note right of browser: The browser executes the callback function that renders the notes

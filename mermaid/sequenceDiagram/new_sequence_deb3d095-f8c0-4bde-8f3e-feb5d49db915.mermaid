@@ -1,0 +1,72 @@
+sequenceDiagram
+    participant IO as IOHandler
+    participant Game
+    participant p1 as p1 : Player
+    participant p2 as p2 : Player
+    participant p3 as p3 : Player
+
+    IO  ->>+ Game : playRound()
+    Game ->> IO : getCommandOrders()
+    IO -->> Game : Orders
+    Game ->> Game : Check orders validity
+
+    loop 3 times
+        note right of Game: Expand
+        Game ->> p1: expand()
+        p1 ->> IO : userInput
+        IO -->> p1 : input
+        p1 ->> Cell : getOwner()
+        Cell -->> p1 : owner
+        p1 ->> p1 : getAvailableShips
+        p1 ->> p1 : Check input validity
+        p1 ->> Ship: setCell(cell)
+        Game ->> p2: expand()
+        note right of Game: Explore
+        Game ->> p1 : Explore()
+        p1 ->> IO : userInput
+        IO -->> p1 : input
+        p1 ->> Cell : getOwner()
+        Cell -->> p1 : owner
+        p1 ->> Ship: isUsed()
+        Ship -->> p1: bool
+        p1 ->> p1 : Check input validity
+        p1 ->> Ship: setCell(cell)
+        Game ->> p3: Explore()
+        note right of Game: Exterminate
+        Game ->> p1 : Exterminate()
+        p1 ->> IO : userInput
+        IO -->> p1 : input
+        p1 ->> Cell : getOwner()
+        Cell -->> p1 : owner
+        p1 ->> Cell: getShip()
+        Cell -->> p1: Ship
+        p1 ->> p1 : Check input validity
+        p1 ->> Cell: setShip()
+        Cell -->> p1: Ship
+        Game ->> Game: isPlayerDead()
+    end
+
+    note right of Game : sustain Ship
+    Game ->> Cell: getSystem()
+    Cell -->> Game : System
+    Game ->> Cell: getShips()
+    Cell -->> Game : Ship[]
+    alt too much Ships
+        Game ->> Ship: setCell(null)
+    end
+
+    note right of Game : Score
+    Game ->> p1 : score()
+    p1 ->> IO : userInput
+    IO -->> p1 : input
+    p1 ->> Sector : isUsed()
+    Sector -->> p1 : bool
+    p1 -->> p1: add Score
+    Game ->> p2 : score()
+    Game ->> p3 : score()
+    Game ->> p2 : score() because p2 own the tri-prime
+
+    alt Game is over
+        Game ->> Game : endGame()
+    end
+    Game -->>- IO : void

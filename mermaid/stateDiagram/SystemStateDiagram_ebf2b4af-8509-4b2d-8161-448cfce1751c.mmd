@@ -1,0 +1,7 @@
+stateDiagram-v2
+    [*] --> DisplayingCode
+    DisplayingCode --> DisplayingAnimation : show animation
+    DisplayingAnimation --> DisplayingResources : show resources
+    DisplayingResources --> EvaluatingCode : evaluate code
+    EvaluatingCode --> ProvidingFeedback : provide feedback
+    ProvidingFeedback --> [*]

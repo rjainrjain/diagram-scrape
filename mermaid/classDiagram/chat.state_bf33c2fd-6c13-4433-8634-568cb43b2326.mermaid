@@ -1,0 +1,60 @@
+classDiagram
+
+  namespace Feature {
+    class ChatDomain {
+      +messages: Message[]
+      +streaming: boolean
+      +sendMessage(message: Message)void
+      +addChunk(chunk: Chunk)void
+      +endResponse()void
+      -addMessage(message: Message)void
+      -promptLLM(messages: Message[])void
+    }
+
+    class ChatUI {
+    }
+
+    class MessageList {
+      +messages: Message[]
+    }
+
+    class MessageUI {
+      +message: Message
+    }
+
+    class ChatInput {
+      -inputText: string
+      -onInputChange(text: string)void
+      +onSendMessage()void
+    }
+  }
+
+  namespace Model {
+    class Message {
+      content: string
+      sender: 'User' | 'Assistant'
+    }
+
+    class Chunk {
+      content: string
+    }
+  }
+
+  namespace Ports {
+    class LLMProxy {
+      sendPrompt(input: SendPromptInput)void
+    }
+
+    class SendPromptInput {
+      +messages: Message[]
+      +addChunkCallback: function
+      +endCallback: function
+    }
+  }
+
+  ChatUI --> ChatDomain
+  ChatUI --> MessageList
+  MessageList --> MessageUI
+  ChatUI --> ChatInput
+
+  LLMProxy --> SendPromptInput

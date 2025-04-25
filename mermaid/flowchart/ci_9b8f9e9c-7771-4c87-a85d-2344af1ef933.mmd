@@ -1,0 +1,4 @@
+flowchart TD
+  A[Terraform] -->|Create ECR Repository| B[ECR Repository]
+  D[GitHub Workflow]  -->|GitHub Secrets| F[Build Docker Image]
+  F -->|Push Image to ECR| C[ECR Repository with Image]

@@ -1,0 +1,117 @@
+classDiagram
+
+class ThermalModel {
+    +Float duration
+    +Float timestep
+    +Dict~str, HeatStorageNode~ addHeatStorageNodes
+    +Dict~str, int~ counters
+    +Dict~str, List[Tuple[str, int]]~ IDmap
+    +pandas.Dataframe temperatureReadings
+    -addHeatStorageNodes(List~(name, parameters)~ nodes)
+    -addInterfaceNodes(nameHSN, List~(name, parameters)~ nodes)
+    -addInterfaceLinks(nameHSN, nameIFN, List~(name, target, linkeTypes, parameters)~ links)
+    +simulate()
+    +save(filename?)
+    +plotfig()
+    +display()
+    -createMatrices()
+    -addTemperatureReading()
+    +ThermalModel(simulation_duration, timestep, model_description)
+}
+
+class Node {
+    -Float temperature
+    +Dict parameters
+    +computeHeatExchange()
+    +getTemperature() Float
+    +Node(parameters)
+}
+
+class HeatStorageNode {
+    -Float timestep
+    +Float mass
+    +Float heatCapacity
+    +Float heatGeneration
+    -Float heatExchange
+    -Float temperature
+    +Dict~String, InterfaceNode~ interfaces
+    -computeHeatExchange() Float
+    -computeTemperatureDifference() Float
+    +computeTemperature()
+    +addInterfaceNode(name, parameters)
+    +addInterfaceLink(linkName, interfaceName, node2, linkTypes, parameters)
+    +HeatStorageNode(parameters)
+}
+
+class InterfaceNode {
+    +HeatStorageNode referenceNode
+    +Dict~String, Link~ interfaceLinks
+    -Float temperature
+    -Float heatExchange
+    -Float emissivity
+    -Float absorptivity
+    -Dict~str, Link~ interfaceLinks
+    +computeHeatExchange() Float
+    +addLink(name, node2, linkTypes, parameters)
+    +InterfaceNode(referenceNode, parameters)
+}
+
+class Link {
+    +InterfaceNode node1
+    +InterfaceNode node2
+    +List~LinkType~ linkTypes
+    +Dict parameters
+    +computeHeatExchange() Float
+    +Link(node1, node2, List~Type[LinkType]~ linkTypes, parameters)
+}
+
+
+class LinkType {
+    <<Abstract>>
+    +Dict options
+    +InterfaceNode node1
+    +InterfaceNode node2
+    +computeViewingFactor() Float
+    +computeHeatExchange() Float
+    +LinkType(options)
+}
+
+class ManualLink {
+    -Function func
+}
+
+class RadiationLink {
+    -Float radiationArea1
+    -Float radiationArea2
+    -Float viewingFactor
+}
+
+class ContactLink {
+    -Float contactArea
+    -Float resistance
+}
+
+class ConductionLink {
+    -Float conductionArea
+    -float conductivity
+    -Float length
+}
+
+ThermalModel -- HeatStorageNode
+
+HeatStorageNode --|> Node
+InterfaceNode --|> Node
+
+ManualLink --|> LinkType
+RadiationLink --|> LinkType
+ContactLink --|> LinkType
+ConductionLink --|> LinkType
+AmbientLink --|> LinkType
+VacuumChamberLink --|> LinkType
+
+Link "1..*" -- "2" InterfaceNode
+
+InterfaceNode "1..*" -- "1" HeatStorageNode
+
+LinkType -- Link
+LinkType -- InterfaceNode

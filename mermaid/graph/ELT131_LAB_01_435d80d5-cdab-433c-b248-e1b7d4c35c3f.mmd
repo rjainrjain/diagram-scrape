@@ -1,0 +1,454 @@
+Title:      Report ELT131 LAB 01
+Author:     Del Basso, Manuel
+Date:       16-03-2017
+Location:   WHZ
+Footicon:   ./pics/whz.png
+
+ELT131 - Lab 01 report
+==============================
+[TOC]
+
+# Introduction #
+The goal of Lab01 is to use different methods to determine the runtime between two debugger breakpoints as well as the accuracy of periodically activities like timer based IRQs. 
+
+__Used components:__
+
+ - Hardware
+     - TI TMS320F28335 Explorer Kit for TI C2000™ F28x family of microprocessors, controller card Delfino
+     - Oscilloscope: PC-USB Scope _PCSU1000, velleman_
+ - Software
+     - Code Composer Studio Version: 7.1.0.00015 (CCS7)
+     - Board support via ti's [__controlSUITE__](http://www.ti.com/tool/controlsuite?DCMP=mcu_controlsuite&HQS=controlsuite) v3.4.5
+ - Development Plattform
+     + ```lsb_release -d``` <span style="margin-left: 1em;">Linux Mint 18 Sarah (LinuxMint)</span>
+     + ```uname -rpo``` <span style="margin-left: 1em;">4.4.0-57-generic x86_64 GNU/Linux</span>
+
+Due to bandwidth limitations in measuring equipment (PC-USB Scope "PCSU1000, velleman", 1Gs/s 2x60MHz), the _SYSCLKOUT_ has been lowered by 5 from $150\\si{MHz}$ to $30\\si{MHz}$.
+
+
+# Part RAM #
+## Function Test and Measurement ##
+>Use an Oscilloscope and measure the time interval between pulses at signal ePWM1A (GPIO0):
+
+<a href="pics/50us_irq2irq.bmp" target="_blank"><figure style=""> <img src="pics/50us_irq2irq.png" title="IRQ periode: 50us" class="noborder"><figcaption>IRQ periode: $\,50\\si{us}$</figcaption> </figure></a>
+
+>As you can see, most of the time the signal is at 0V-level. The CPU-"workload" is the time spent between rising and falling edge of GPIO0, which seems to be negligible compared to the time, in which the processor is waiting for the next interrupt. Try to make a more precise measurement of the CPU - load: Measure the pulse width of GPIO0!
+
+---
+
+```c
+/**
+ * Macros
+ */
+#define testPinLvl(x)   GpioDataRegs.GPADAT.bit.GPIO0 = x
+#define testPinTgl      GpioDataRegs.GPATOGGLE.bit.GPIO0 = 1;
+```
+
+```c
+/**
+ * SYSCLKOUT = 30MHz * PLLCR_DIV / PLLSTS_DIVSEL(=2) = 30MHz
+ */
+SysCtrlRegs.PLLCR.bit.DIV = 2;
+// SysCtrlRegs.PLLCR.bit.DIV = 10;
+```
+
+```c
+/**
+ * @brief      Timer0 IRQ callback
+ */
+void cpu_timer0_isr(void) {
+    testPinLvl(1);                  //!< Rising edge
+    PieCtrlRegs.PIEACK.all  = 1;    //!< Acknowledge PIE group 1
+
+//   for (int i = 0; i < LOAD; i++)   //!< CPU load
+//       asm("  NOP");
+    testPinLvl(0);                  //!< Falling edge
+}
+```
+
+<a href="./pics/166us_hi2lo.bmp" target="_blank"><figure style=""> <img src="./pics/166us_hi2lo.png" title="IRQ handler active time: 166 ns" class="noborder"></a><figcaption>IRQ handler active time: $\,166\si{ns}$</figcaption> </figure>
+
+>The F28335 runs at a speed of 150 MHz, e.g. each instruction cycle is 1/150MHz = 6.67 ns long. The disassembly window shows 5 instructions between rising edge (instruction at address 00954a) and falling edge (instruction at address 009552).
+
+```
+MOVB ACC,#8bit Load Accumulator With 8-bit value:   CYC 1   (2x)
+MOVW DP, #16bit Load the Entire Data Page:          CYC 1   (2x)
+MOVL ACC,loc32 Load Accumulator With 32 Bits:       CYC 1
+```
+
+<lmjx>$ \eqlbl{t_{high}=5\cdot\frac{1}{30\si{MHz}}\approx 166\si{ns}}{eq_thigh1}$</lmjx>
+
+---
+
+### Use the CCS clock profiler ###
+<a href="./pics/clockProfiler.png" target="_blank"><figure style=""> <img src="./pics/clockProfiler.png" title="The clock profiler counts 105 clock cycles (LOAD=10) between rising and falling edge." class="noborder"></a><figcaption>The clock profiler counts 105 clock cycles (LOAD=10) between rising and falling edge.</figcaption> </figure>
+
+---
+
+### Increaese of CPU - Load ###
+<a href="./pics/7_1_perc.bmp" target="_blank"><figure style=""> <img src="./pics/7_1_perc.png" title="Load by 10x NOP results in 7.1% CPU load." class="noborder"></a><figcaption>Load by 10x NOP results in 7.1% CPU load.</figcaption> </figure>
+
+<a href="./pics/37_perc.bmp" target="_blank"><figure style=""> <img src="./pics/37_perc.png" title="Load by 55x NOP results in 37.0% CPU load." class="noborder"></a><figcaption>Load by 55x NOP results in 37.0% CPU load.</figcaption> </figure>
+
+<a href="./pics/73_8_perc.bmp" target="_blank"><figure style=""> <img src="./pics/73_8_perc.png" title="Load by 110x NOP results in 73.8% CPU load." class="noborder"></a><figcaption>Load by 110x NOP results in 73.8% CPU load.</figcaption> </figure>
+
+## Disassembly ##
+
+```
+135     void cpu_timer0_isr(void) {                                //!< Cycles
+        cpu_timer0_isr():
+009596:   761B        ASP                                          //!<   1
+009597:   FFF0        PUSH         RB                              //!<   1
+009598:   E20000BD    MOV32        *SP++, STF                      //!<   1
+00959a:   E6300600    SETFLG       RNDF32=1,RNDF64=1               //!<    ?
+00959c:   FE02        ADDB         SP, #2                          //!<   1
+00959d:   2942        CLRC         OVM|PAGE0                       //!<    ?
+00959e:   5616        CLRC         AMODE                           //!<    ?
+
+136         GpioDataRegs.GPADAT.all = 1;    //!< Rising edge
+00959f:   0201        MOVB         ACC, #1                         //!<   1
+0095a0:   761F01BF    MOVW         DP, #0x1bf                      //!<   1
+0095a2:   1E00        MOVL         @0x0, ACC                       //!<   1
+
+137         PieCtrlRegs.PIEACK.all  = 1;    //!< Ack PIE group 1
+0095a3:   761F0033    MOVW         DP, #0x33                       //!<   1
+0095a5:   56BF0121    MOVB         @0x21, #0x01, UNC               //!<   1
+----------------------------------------------------------------------------- 2 cyc
+139         int i = LOAD;
+0095a7:   761F0300    MOVW         DP, #0x300                      //!<   1
+0095a9:   921E        MOV          AL, @0x1e                       //!<   1
+0095aa:   9641        MOV          *-SP[1], AL                     //!<   1
+----------------------------------------------------------------------------- 3 cyc
+141             asm("  NOP");
+        C$L2:
+0095ab:   7700        NOP                                          //!<   1
+140         do {
+0095ac:   9CFF        ADDB         AL, #-1                         //!<   1
+0095ad:   9641        MOV          *-SP[1], AL                     //!<   1
+0095ae:   60FD        SB           C$L2, NEQ                       //!<  4/7
+----------------------------------------------------------------------------- (LOAD-1)*10 + 7
+144        GpioDataRegs.GPADAT.all = 0;     //!< Falling edge
+0095af:   0200        MOVB         ACC, #0                         //!<   1
+0095b0:   761F01BF    MOVW         DP, #0x1bf                      //!<   1
+0095b2:   1E00        MOVL         @0x0, ACC                       //!<   1
+----------------------------------------------------------------------------- 3 cyc
+--------------------------------------------------------------------------------------------
+                                                        busyCyc(LOAD) = (LOAD-1)*10+7+3+5
+145     }
+0095b3:   FE82        SUBB         SP, #2                          //!<    ?
+0095b4:   E28000BE    MOV32        STF, *--SP                      //!<   1
+0095b6:   3B30        SETC         INTM|DBGM                       //!<    ?
+0095b7:   FFF1        POP          RB                              //!<    ?
+0095b8:   7617        NASP                                         //!<   1
+0095b9:   7602        IRET                                         //!<    ?
+```
+<p></p>
+
+The total cycles between rising and falling GPIO edge could be determined by:
+
+\begin{align}
+\mathrm{cyc_{IRQ}(LOAD)} &\,=\, 10\cdot (LOAD - 1)+15 \\\
+\mathrm{t_{IRQ}(LOAD)} &\,=\, \frac{10}{30\si{MHz}} \cdot (LOAD - 1)+15 \\\
+\mathrm{CPU_{load[\%]}(LOAD)} &\,=\, 100\cdot \frac{t_{IRQ}}{50\si{us}} \,=\, \frac{2}{3} \cdot ((LOAD - 1)+1.5) \\\
+                            &\,=\, \frac{2}{3} \cdot (LOAD + 0.5) \\\
+\end{align}
+
+For calculating the ```LOAD``` value as a function of the _desired CPU load in percentage_, the macro function
+```c
+#define _cpuLoad(loadInPercent) ((uint16_t) ((float)loadInPercent * 3/2 - .5))
+``` 
+has been defined at global namespace.
+
+
+<center><div>
+
+| LOAD | cyc_irq | t_irq<br>in [us] | CPU load<br>in [%] |
+|:----:|:-------:|:----------------:|:------------------:|
+|    1 |      15 |             0.50 |                1.0 |
+|    2 |      25 |             0.83 |                1.7 |
+|    3 |      35 |             1.17 |                2.4 |
+|    5 |      55 |             1.83 |                3.7 |
+|   10 |     105 |             3.50 |                7.0 |
+|   30 |     305 |            10.17 |               20.3 |
+|   45 |     455 |            15.17 |               30.3 |
+|   55 |     555 |            18.50 |               37.0 |
+|  110 |    1105 |            36.83 |               73.7 |
+|  145 |    1455 |            48.00 |               97.0 |
+
+</div></center>
+
+
+
+## Precision of the ISR - Repetition rate ##
+>Next, a test will be performed to measure the precision of the repetition rate (“Jitter”) of
+the Interrupt Service Routine.
+
+>For Digital Control Systems it is very important to have a very stable time base, because all
+theoretical derivations from time continuous systems to time discrete systems rely on the 1st
+assumption, that let’s say a sample frequency of 20 kHz is all the time constant.
+- Remove all breakpoints from previous tests.
+- Run the code from with a CPU – load in the region of 40-60 %.
+- Change the code in the ISR, so that we just toggle the pin GPIO0 on each entry of the ISR (Hint: Use Register “GPATOGGLE”).
+
+>To measure any differences in the repetition rate of the interrupt services, set the "persist" function of your oscilloscope to "infinity", trigger the signal at the rising edge and display the position of the falling edge.
+
+
+```c
+/**
+ * @brief      Timer0 IRQ callback
+ */
+void cpu_timer0_isr(void) {
+#ifndef JITTER
+    GpioDataRegs.GPADAT.all = 1;            //!< Rising edge
+#else
+    GpioDataRegs.GPATOGGLE.bit.GPIO0= 1;    //!< Toggle rising edge
+#endif
+    PieCtrlRegs.PIEACK.all  = 1;            //!< Acknowledge PIE group 1
+
+    int i = LOAD;
+    do {
+        asm("  NOP");
+    } while (--i);
+
+#ifndef JITTER
+   GpioDataRegs.GPADAT.all = 0;             //!< Falling edge
+#endif
+}
+```
+
+>Add a graphical display of your jitter measurement to your Lab-report!
+If you were able to see a jitter, fine. If not, add a 2nd asm("  NOP") instruction into the while(1)-loop.
+
+<a href="./pics/jitter.bmp" target="_blank"><figure style=""> <img src="./pics/jitter.bmp" title="Interrupt jitter" class="noborder"></a><figcaption>Interrupt jitter approx. $130\si{ns}$ ($\frac{4}{30\si{MHz}}\,\approx\,133\si{ns}$) </figcaption> </figure>
+
+>Now try to explain the jitter. Hint: inspect the disassembly code at the end of the main function.
+
+<u>From document __C28x Assembly Language Instructions__</u>[^fnAssembly]
+
+>SB Short conditional branch:
+If the specified condition is true, then branch by adding the signed 8-bit constant value to the current PC value; otherwise continue execution without branching:
+If (COND = true) PC = PC + signed 8-bit offset;
+If (COND = false) PC = PC + 1;
+
+<boxed>Note: If (COND = true) then the instruction takes 7 cycles.
+If (COND = false) then the instruction takes 4 cycles.
+If (__COND = UNC__) then the instruction takes __4 cycles__.</boxed>
+
+## Interrupt Latency ##
+The term _interrupt latency_ describes the number of CPU clock cycles required for a processor to respond to an interrupt request (__IRQ__). In the domain of continuous time signals, most interrupt requests occur in a synchron manner related to the $f_ {CPU}$ signal since the clock of most interrupt requesting modules is derived from $f_ {CPU}$.
+
+## IRQ response jitters ##
+For many architectures, the exact interrupt latency depends on what type of mnemonic the processor is executing at the time the interrupt occurs. The processor responds to a interrupt request only when the current executing instruction completes, which can add a number of extra clock cycles. This variation results in jitters of IRQ responses, which could be problematic in applications like audio processing (signal distortions) and motor control (harmonics or vibrations).
+
+## Code ##
+<details Markdown="1"><summary>main.c</summary>
+
+</details>
+
+# Part FLASH #
+
+## Function Test and Measurement ##
+
+<center>
+
+| LOAD   | cyc_irq   | t_irq<br>in [us]   | CPU load<br>in [%]   |
+|:------:|:---------:|:------------------:|:--------------------:|
+| 1      | 31        | 0.50               | 1.0                  |
+| 2      |           |                    |                      |
+| 5      |           |                    |                      |
+| 10     | 166       | 6.08               | 12.7                 |
+| 45     | 800       | 27.1               | 54.1                 |
+| 55     | 897       | 33.1               | 66.2                 |
+| 110    | 1667      | 66.2               | 97.2                 |
+
+</center>
+
+<a href="./pics/jitter_flash.bmp" target="_blank"><figure style=""> <img src="./pics/jitter_flash.bmp" title="Interrupt jitter - Part Flash" class="noborder"></a><figcaption>Interrupt jitter - Part Flash - approx. $330\si{ns}$ ($\frac{4}{30\si{MHz}}\,\approx\,133\si{ns}$) </figcaption> </figure>
+
+# Sources #
+<details markdown=1>
+    <summary>main.c</summary>
+```c
+/**
+ * @file        main.c
+ * @project     ELT131_LAB_01
+ *
+ * @date        21 Mar 2017
+ * @author      Manuel Del Basso (mainster)
+ * @email       manuel.delbasso@gmail.com
+ *
+ * @ide         Code Composer Studio Version: 7.1.0.00015
+ * @license     GNU GPL v3
+ *
+   @verbatim
+
+    ------------------------------------------------------------------------
+
+    Copyright (C) 2016  Manuel Del Basso
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+    ------------------------------------------------------------------------
+
+   @endverbatim
+ *
+ */
+#include "DSP28x_Project.h"
+#include <stdint.h>
+#include <stdbool.h>
+
+/**
+ * Prototypes
+ */
+interrupt void cpu_timer0_isr(void);
+void delaySamps(uint16_t samps);
+void MD_InitSysCtrl(uint16_t MD_DSP28_PLLCR);
+uint16_t cpuLoad(float load_in_percent);
+
+/**
+ * Virtual GPIO
+ */
+bool vGPIO = false;
+
+/**
+ * Macros
+ */
+#define testPinLvl(pinLevel)    GpioDataRegs.GPADAT.bit.GPIO0 = pinLevel
+#define testPinTgl              GpioDataRegs.GPATOGGLE.bit.GPIO0 = 1;
+//#define testPinLvl(x)   vGPIO = x
+//#define testPinTgl()    vGPIO ^= 0x01
+
+/**
+ * t_irq = (10*(LOAD-1)+15)/30e6
+ * CPU_load[%] = 100* t_irq/50us
+ *             = 100*(10*(LOAD-1)+15)/(30e6 * 50e-6)
+ *             = 1e3/1.5e3*((LOAD-1)+1.5)
+ *             = 2/3*((LOAD-1)+1.5)
+ */
+#define _cpuLoad(loadInPercent) ((uint16_t) ((float)loadInPercent * 3/2 - .5))
+
+/* BSP related */
+#define ledInit     GpioCtrlRegs.GPADIR.bit.GPIO9 = 1; \
+                    GpioCtrlRegs.GPADIR.bit.GPIO11 = 1
+
+#define led1Lvl(x) GpioDataRegs.GPADAT.bit.GPIO9 = x        //!< GPA
+#define led1Tgl() GpioDataRegs.GPATOGGLE.bit.GPIO9 = 1      //!< GPA
+
+#define led2Lvl(x) GpioDataRegs.GPATOGGLE.bit.GPIO11 = x    //!< GPA
+#define led2Tgl() GpioDataRegs.GPATOGGLE.bit.GPIO11 = 1     //!< GPA
+
+#define MD_SYSCLKOUT 30     //!< [MHz]
+
+#undef      FLASH
+#undef      JITTER
+
+
+/**
+ * Global variables
+ */
+uint16_t LOAD = 0;
+
+/*
+ * ===================== main of ELT131_LAB_01 =====================
+ */
+int main(void) {
+    /**
+     * MCU frequency = crystal frequency * PLL multiplier {set by PLLCR.bit.DIV}
+     *                  / PLL divider {set by PLLSTS.bit.DIVSEL}
+     * For example:
+     *      150MHz = 30MHz * 10 / 2
+     *      30MHz = 30MHz * 2 / 2
+     */
+    MD_InitSysCtrl( 2 );
+
+    #ifdef FLASH
+    memcpy( &RamfuncsRunStart,
+            &RamfuncsLoadStart,
+            (unsigned long)(&RamfuncsLoadEnd - &RamfuncsLoadStart)+1 );
+    InitFlash();
+    #endif
+
+    InitPieCtrl();
+    InitPieVectTable();
+
+    EALLOW;
+    GpioCtrlRegs.GPADIR.bit.GPIO0 = 1;
+    GpioCtrlRegs.GPAPUD.bit.GPIO0 = 0;
+    GpioDataRegs.GPACLEAR.bit.GPIO0 = 1;
+    PieVectTable.TINT0 = &cpu_timer0_isr;   //!<  Re-map vector table
+    ledInit;
+    EDIS;
+
+    InitCpuTimers();
+    ConfigCpuTimer(&CpuTimer0, MD_SYSCLKOUT, 50);
+
+    PieCtrlRegs.PIEIER1.bit.INTx7 = 1;
+
+    IER |= M_INT1;
+    asm("  PUSH IER");
+    asm("  POP DBGIER");
+    EINT;                           //!< Enable global interrupt intm
+    ERTM;                           //!< Enable global real time debug module
+
+    float loadInPercent = 50.3;
+    LOAD = _cpuLoad(loadInPercent);
+
+    CpuTimer0Regs.TCR.bit.TSS = 0;  //!< Timer Start/Stop
+
+    while (1)
+        asm("  NOP");
+}
+
+/**
+ * @brief      Timer0 IRQ callback
+ */
+void cpu_timer0_isr(void) {
+#ifndef JITTER
+    GpioDataRegs.GPADAT.all = 1;            //!< Rising edge
+#else
+    GpioDataRegs.GPATOGGLE.bit.GPIO0= 1;    //!< Toggle rising edge
+#endif
+    PieCtrlRegs.PIEACK.all  = 1;            //!< Acknowledge PIE group 1
+
+    int i = LOAD;
+    do {
+        asm("  NOP");
+    } while (--i);
+
+#ifndef JITTER
+   GpioDataRegs.GPADAT.all = 0;             //!< Falling edge
+#endif
+}
+
+
+/**
+ * @brief      InitSysCtrl = f(MD_DSP28_PLLCR)
+ *
+ * @param[in]  MD_DSP28_PLLCR   The md dsp 28 pllcr
+ */
+void MD_InitSysCtrl(uint16_t MD_DSP28_PLLCR) {
+   // Disable the watchdog
+   DisableDog();
+
+   // Initialize the PLL control: PLLCR and DIVSEL
+   // DSP28_PLLCR and DSP28_DIVSEL are defined in DSP2833x_Examples.h
+   InitPll(MD_DSP28_PLLCR, DSP28_DIVSEL);
+
+   // Initialize the peripheral clocks
+   InitPeripheralClocks();
+}
+```
+</details>
+
+ 
+[^fnAssembly]: __SPRU430F–August 2001–Revised April 2015__ http://www.ti.com/lit/ug/spru430f/spru430f.pdf

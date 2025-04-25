@@ -1,0 +1,38 @@
+erDiagram
+    USER ||--o{ ORDER : places
+    USER {
+        integer id
+        string email
+        string name
+        string address
+    }
+    ORDER ||--|{ ORDER_ITEM : contains
+    ORDER {
+        integer id
+        integer user_id
+        date order_date
+        string status
+        decimal total_amount
+    }
+    PRODUCT ||--o{ ORDER_ITEM : "ordered in"
+    PRODUCT {
+        integer id
+        string name
+        text description
+        decimal price
+        integer stock_quantity
+        integer category_id
+    }
+    ORDER_ITEM {
+        integer id
+        integer order_id
+        integer product_id
+        integer quantity
+        decimal unit_price
+    }
+    CATEGORY ||--o{ PRODUCT : has
+    CATEGORY {
+        integer id
+        string name
+        text description
+    }

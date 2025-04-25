@@ -1,0 +1,78 @@
+classDiagram
+class Partecipante {
+	partecipanteId: INTEGER
+	nome: TEXT
+	cognome: TEXT
+}
+
+class Istruttore {
+	istruttoreId: INTEGER
+	nome: TEXT
+	cognome: TEXT
+}
+
+class Corso {
+	corsoId: INTEGER
+	denominazione: TEXT
+	descrizione: TEXT
+}
+
+class CorsoOfferto {
+	corsoOffertoId: INTEGER
+	corsoId: INTEGER
+	istruttoreId: INTEGER
+	numeroMassimoPartecipanti: INTEGER
+	descrizione: TEXT
+	inizio: TEXT
+	fine: TEXT
+}
+
+class Giorno {
+	giornoId: INTEGER
+	giorno: TEXT
+	abbreviazione: TEXT
+}
+
+class FasciaOraria {
+	fasciaOrariaId: INTEGER
+	giornoId: INTEGER
+	inizio: TEXT
+	fine: TEXT
+}
+
+class Sala {
+	salaId: INTEGER
+	sala: TEXT
+	capienza: INTEGER
+}
+
+class Orario {
+	corsoOffertoId: INTEGER
+	fasciaOrariaId: INTEGER
+	salaId: INTEGER
+}
+
+class Partecipazione {
+	partecipanteId: INTEGER
+	corsoOffertoId: INTEGER
+	dataRilascioCertificato: TEXT
+	dataScadenzaCertificato: TEXT
+}
+
+class Specializzazione {
+	istruttoreId: INTEGER
+	corsoId: INTEGER
+	titolo: TEXT
+}
+
+CorsoOfferto "*" -- "1" Istruttore : istruttoreId
+CorsoOfferto "*" -- "1" Corso : corsoId
+FasciaOraria "*" -- "1" Giorno : giornoId
+Orario "*" -- "1" Sala : salaId
+Orario "*" -- "1" FasciaOraria : fasciaOrariaId
+Orario "*" -- "1" CorsoOfferto : corsoOffertoId
+Partecipazione "*" -- "1" CorsoOfferto : corsoOffertoId
+Partecipazione "*" -- "1" Partecipante : partecipanteId
+Specializzazione "*" -- "1" Corso : corsoId
+Specializzazione "*" -- "1" Istruttore : istruttoreId
+

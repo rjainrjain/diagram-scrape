@@ -1,0 +1,18 @@
+
+    sequenceDiagram
+        participant M as Main
+        participant S as Scanner
+        participant D as Database
+        participant Me as Menu
+        participant L as Logger
+        participant A as Actions
+        M->>S: scan()
+        S->>M: return scan results
+        M->>D: store(scan results)
+        M->>S: compare(scan results, base scan results)
+        S->>M: return discrepancies
+        M->>D: store(discrepancies)
+        M->>L: log(discrepancies)
+        M->>A: execute(actions based on discrepancies)
+        M->>Me: display(scan results, discrepancies)
+    

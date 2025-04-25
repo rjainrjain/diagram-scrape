@@ -1,0 +1,25 @@
+graph TD
+    A[Cliente] -->|Faz requisição| B(Middleware)
+    B -->|Processa requisição| C{Roteador}
+    C -->|Rota de usuário| D[Controlador de Usuário]
+    C -->|Rota de autenticação| E[Controlador de Autenticação]
+    C -->|Outras rotas| F[Outros Controladores]
+    D --> G[Serviço de Usuário]
+    E --> H[Serviço de Autenticação]
+    F --> I[Outros Serviços]
+    G --> J[Repositório de Usuário]
+    H --> K[Repositório de Autenticação]
+    I --> L[Outros Repositórios]
+    J --> M[(Banco de Dados)]
+    K --> M
+    L --> M
+    G --> N[Fila de Mensagens]
+    H --> N
+    I --> N
+    G --> O[Tarefas Celery]
+    H --> O
+    I --> O
+    D --> P[Resposta HTTP]
+    E --> P
+    F --> P
+    P --> A

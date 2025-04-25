@@ -1,0 +1,11 @@
+graph TD
+    A[Create a flowchart diagram for:]
+    A --> B[graph TD]
+    B --> C{Include a decision?}
+    C -->|Yes| D[A[Start] --> B{Is it working?}
+    B -->|Yes| E[C[Great!]]
+    B -->|No| F[D[Check your code]]]
+    C -->|No| E[No need for decision]
+    D --> F
+    E --> G[End]
+    F --> G

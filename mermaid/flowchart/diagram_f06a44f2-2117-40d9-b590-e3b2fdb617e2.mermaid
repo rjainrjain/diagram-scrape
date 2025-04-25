@@ -1,0 +1,63 @@
+---
+config:
+  theme: base
+  look: classic
+  layout: elk
+---
+flowchart TD
+ subgraph subGraph0["Camada de Entrada"]
+        APIGW["APIGW"]
+  end
+ subgraph subGraph1["Aplicacao REST"]
+        DIC["DIC"]
+        SC["SC"]
+        HC["HC"]
+  end
+ subgraph subGraph2["Validador de Contrato"]
+        DCR["DCR"]
+        SR["SR"]
+  end
+ subgraph subGraph3["Destino dos Dados (Factory)"]
+        DestinoFactory["DestinoFactory"]
+  end
+ subgraph subGraph4["Camada de Mensageria"]
+        FM["FM"]
+        CF["CF"]
+  end
+ subgraph Armazenamento["Armazenamento"]
+        DL["DL"]
+        Redis["Redis"]
+  end
+ subgraph subGraph6["Rotas Escalaveis (Stack Pydantic)"]
+        SchemaRoute["SchemaRoute"]
+        ContractRoute["ContractRoute"]
+  end
+    Cliente["Cliente"] -- POST /api/v1/data/ingest --> APIGW
+    APIGW -- Roteamento --> DIC & SC & HC & SchemaRoute & SchemaRoute & ContractRoute & ContractRoute
+    DIC -- Valida header e contrato --> DCR
+    DCR -- Consulta esquema --> SR
+    SR -- Retorna esquema --> DCR
+    DCR -- Validacao concluida --> DIC
+    DIC -- Definir destino do dado - Factory --> DestinoFactory
+    DestinoFactory -- Envia para fila --> FM
+    DestinoFactory -- Armazena em Cold Storage --> DL
+    DestinoFactory -- Armazena em Repositorio --> Redis
+    Cliente -- GET /api/v1/data/status/id --> APIGW
+    SC -- Consulta status --> Redis
+    Redis -- Retorna status --> SC
+    SC -- Resposta status --> Cliente
+    FM -- Processa dados --> CF
+    CF -- Armazena dados no Data Lake --> DL
+    CF -- Atualiza status --> Redis
+    Cliente -- GET /api/v1/health --> APIGW
+    HC -- Retorna status da aplicacao --> Cliente
+    Cliente -- POST /api/v1/schema/register --> APIGW
+    SchemaRoute -- Registrar esquema --> Cliente
+    Cliente -- GET /api/v1/schema/id --> APIGW
+    SchemaRoute -- Retorna esquema --> Cliente
+    Cliente -- POST /api/v1/contract/register --> APIGW
+    ContractRoute -- Registrar contrato --> Cliente
+    Cliente -- GET /api/v1/contract/id --> APIGW
+    ContractRoute -- Retorna contrato --> Cliente
+    n1["This is sample label"]
+    n1@{ img: "https://static.mermaidchart.dev/whiteboard/default-image-shape.svg", h: 200, w: 200, pos: "b"}

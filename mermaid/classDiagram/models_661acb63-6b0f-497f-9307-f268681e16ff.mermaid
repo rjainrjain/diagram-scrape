@@ -1,0 +1,40 @@
+---
+title: Class Diagram
+---
+classDiagram
+    class Base{
+        +GUID ID
+        +DateTime Created
+        +DateTime LastUpdated
+    }
+    
+    class User{
+        +string Name
+        +string Password
+        +string Email
+    }
+    
+    class Post{
+        +string Title
+        +string Content
+    }
+    
+    class Topic{
+        +string Name
+        +string Description
+    }
+    
+    class Comment{
+        +string Content
+    }
+    
+    class Like{
+        +int Likes
+    }
+    
+    Base <|-- User
+    Base <|-- Post
+    Base <|-- Topic
+    Base <|-- Comment
+    Base <|-- Like
+    

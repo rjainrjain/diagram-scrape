@@ -1,0 +1,26 @@
+---
+title: Publication example
+---
+classDiagram
+    class SaleableItem {
+        <<interface>>
+        +sellItem()
+        +getPrice()
+    }
+    class Editable {
+        <<abstract>>
+        + abstract edit()
+        + abstract initialize()
+        + getInput(String s)
+        + getInput(int i)
+
+    }
+
+    class Publication {
+
+    }
+    SaleableItem <|.. Publication
+    Editable <|-- Publication
+    Publication <|-- Magazine
+    Magazine <|-- DiscMagazine
+    Publication <|-- Book

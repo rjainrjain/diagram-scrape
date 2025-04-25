@@ -1,0 +1,37 @@
+classDiagram
+    class GeoMetricObject {
+        - color: Color
+        - dateCreated: LocalDate
+        - filled: boolean
+
+        + getColor() Color
+        + setColor(color: Color) void
+        + getDate() LocalDate
+        + setDate(date: LocalDate) void
+        + isFilled() boolean
+        + setFilled(filled: boolean) void
+    }
+
+    class Rectangle {
+        - height: double
+        - width: double
+
+        + getHeight() double
+        + setHeight(height: double) void
+        + getWidth() double
+        + setWidth(width: double) void
+
+        + getArea() double
+        + getPerimeter() double
+        + toString() String
+    }
+
+    class Circle {
+        - radius: double = 5
+
+        + getRadius() Double
+        + setRadius(radius: Double) void
+    }
+
+    GeoMetricObject <|-- Rectangle
+    GeoMetricObject <|-- Circle

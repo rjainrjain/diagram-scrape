@@ -1,0 +1,17 @@
+sequenceDiagram
+    participant M as Main
+    participant G as Game
+    participant P as Player
+    participant D as Dealer
+    participant S as Scoreboard
+    M->>G: start_game()
+    G->>D: deal()
+    D-->>P: Card
+    D-->>G: Card
+    G->>P: hit() or stand()
+    P-->>G: Card or None
+    G->>D: deal()
+    D-->>G: Card
+    G->>S: update_score()
+    S-->>G: Score
+    G->>M: end_game()

@@ -1,0 +1,32 @@
+<div class="mermaid">
+sequenceDiagram
+  User->>Cloud Controller:cf delete-service
+  Cloud Controller->>On Demand Broker:DELETE instance
+  On Demand Broker->>BOSH:run pre-delete errand
+  BOSH->>On Demand Broker:accepted
+  On Demand Broker->>Cloud Controller:accepted
+  Cloud Controller->>User: delete in progress
+  loop until errand bosh task is complete
+    Cloud Controller->>On Demand Broker:GET last operation
+    On Demand Broker->>BOSH:GET errand task
+    BOSH->>On Demand Broker:task in progress
+    On Demand Broker->>Cloud Controller:delete in progress
+  end
+  Cloud Controller->>On Demand Broker:GET last operation
+  On Demand Broker->>BOSH:GET errand task
+  BOSH->>On Demand Broker:task done
+  On Demand Broker->>BOSH:delete deployment
+  BOSH->>On Demand Broker:accepted
+  loop until delete deployment bosh task is complete
+    Cloud Controller->>On Demand Broker: GET last operation
+    On Demand Broker->>BOSH: GET delete deployment task
+    BOSH->>On Demand Broker: task in progress
+    On Demand Broker->>Cloud Controller: delete in progress
+  end
+  Cloud Controller->>On Demand Broker: GET last operation
+  On Demand Broker->>BOSH: GET delete deployment task
+  BOSH->>On Demand Broker: task done
+  On Demand Broker->>Cloud Controller: delete succeeded
+  User->>Cloud Controller:cf service
+  Cloud Controller->>User: not found
+</div>

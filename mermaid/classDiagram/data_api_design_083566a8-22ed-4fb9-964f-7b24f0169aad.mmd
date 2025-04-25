@@ -1,0 +1,14 @@
+classDiagram
+    class Uniswap{
+        +str pool_id
+        +dict pool_data
+        +get_pool_data(pool_id: str): dict
+    }
+    class Calculator{
+        +dict price_range
+        +float apy
+        +float roi
+        +set_price_range(price_range: dict)
+        +calculate_apy_roi(pool_data: dict, price_range: dict): tuple
+    }
+    Uniswap "1" -- "1" Calculator: provides data

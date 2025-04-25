@@ -1,0 +1,43 @@
+sequenceDiagram
+    actor User
+    actor Scooter
+
+    User ->> Scooter: Rent Scooter
+
+    activate User
+    activate Scooter
+    alt Scooter has low battery
+        Scooter -->> User: Scooter low on battery, please charge.
+
+        deactivate User
+        deactivate Scooter
+
+    else Scooter is broken
+        activate User
+        activate Scooter
+
+        Scooter -->> User: Scooter is broken, please send a repair request.
+        
+        deactivate User
+        deactivate Scooter
+
+    else Scooter is available to be rented
+        activate ScooterApp
+        activate User
+        activate Scooter
+        Scooter ->> ScooterApp: Ride Started
+        Scooter -->> User: Enjoy the ride!
+
+        ScooterApp ->> Scooter: Ride Ended
+
+        Scooter ->> User: Ride Ended
+        deactivate Scooter
+        
+        User ->> ScooterApp: Remove Scooter Session
+        deactivate User
+        deactivate ScooterApp
+        
+        %% Re-activate to indicate processing removal of scooter session
+        activate ScooterApp
+        deactivate ScooterApp
+    end

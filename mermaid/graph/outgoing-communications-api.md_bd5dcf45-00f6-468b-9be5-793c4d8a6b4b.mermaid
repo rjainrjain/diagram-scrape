@@ -1,0 +1,25 @@
+graph RL
+	subgraph Events
+	NewsletterSubscriptionConfirmedEmailSuccededIntegrationEvent:::event
+	NewsletterSubscriptionConfirmedEmailFailedIntegrationEvent:::event
+	NewsletterSubscriptionSubmittedEmailSuccededIntegrationEvent:::event
+	NewsletterSubscriptionSubmittedEmailFailedIntegrationEvent:::event
+	NewsletterSubscriptionConfirmedIntegrationEvent:::event
+	NewsletterSubscriptionSubmittedIntegrationEvent:::event
+	end
+	subgraph HTTP Requests
+	POST
+	GET
+	end
+    subgraph Outgoing communications Api
+	Database
+	Api
+    Api-->Database
+	Api-. Subscription confirmation's mail successfully sent .-> NewsletterSubscriptionConfirmedEmailSuccededIntegrationEvent
+	Api-. Subscription confirmation's mail sending failure .-> NewsletterSubscriptionConfirmedEmailFailedIntegrationEvent
+	Api-. Subscription's mail successfully sent .-> NewsletterSubscriptionSubmittedEmailSuccededIntegrationEvent
+	Api-. Subscription's mail sending failure .-> NewsletterSubscriptionSubmittedEmailFailedIntegrationEvent
+    NewsletterSubscriptionConfirmedIntegrationEvent-. Listening this event to send a mail .-> Api
+	NewsletterSubscriptionSubmittedIntegrationEvent-. Listening this event to send a mail .-> Api
+	end
+	classDef event fill:#f96;

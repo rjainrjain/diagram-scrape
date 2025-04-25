@@ -1,0 +1,35 @@
+sequenceDiagram
+    participant User as User
+    participant Auth as Auth
+    participant API as API
+    participant Database as Database
+    User->>+Auth: register(username, email, password)
+    Auth->>+API: POST /api/register
+    API->>+Database: INSERT INTO users (username, email, password)
+    Database-->>-API: Success
+    API-->>-Auth: Success
+    Auth-->>-User: Success
+    User->>+Auth: login(username, password)
+    Auth->>+API: POST /api/login
+    API->>+Database: SELECT * FROM users WHERE username = 'username' AND password = 'password'
+    Database-->>-API: User data
+    API-->>-Auth: Success
+    Auth-->>-User: Success
+    User->>+API: POST /api/photos
+    API->>+Database: INSERT INTO photos (image_url, user_id)
+    Database-->>-API: Success
+    API-->>-User: Success
+    User->>+API: POST /api/photos/{photo_id}/comments
+    API->>+Database: INSERT INTO comments (text, user_id, photo_id)
+    Database-->>-API: Success
+    API-->>-User: Success
+    User->>+API: POST /api/photos/{photo_id}/likes
+    API->>+Database: INSERT INTO likes (user_id, photo_id)
+    Database-->>-API: Success
+    API-->>-User: Success
+    User->>+API: DELETE /api/photos/{photo_id}/likes/{like_id}
+    API->>+Database: DELETE FROM likes WHERE id = like_id
+    Database-->>-API: Success
+    API-->>-User: Success
+    User->>+Auth: logout()
+    Auth-->>-User: Success

@@ -1,0 +1,27 @@
+
+
+
+
+stateDiagram
+
+state "project" as B
+state "vintages" as C
+state "Batch Tokenized" as D
+state "Tokens" as E
+state "Certificate" as F
+state "Pools" as G
+state "Tradable token" as H
+state "Software" as A
+
+  [*] --> A: User decide to tokenize a project
+     A --> B: Programmatic system mint a new project
+      B --> C: is linked with
+      C --> A: revert the vintage
+      C --> D: create batches of vintages
+      D --> E: lock batch and mint
+      D --> C: defractionalize batch
+      D --> F: burn Batch
+      E --> F: burn Tokens
+      E --> G: insert tokens in pools
+      F --> [*]
+      G --> H: swap tokens with token tradable everywhere

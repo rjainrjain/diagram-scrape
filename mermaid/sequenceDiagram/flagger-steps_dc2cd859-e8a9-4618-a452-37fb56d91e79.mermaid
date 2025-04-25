@@ -1,0 +1,23 @@
+sequenceDiagram
+    participant P as Primary Service/Deploy
+    participant F as Flagger
+    participant C as Canary Service/Deploy
+    participant M as Prometheus Metrics
+    participant V as Virtual Service
+    
+    Note over F: New version detected
+    F->>C: 1. Initialize canary deployment
+    F->>V: 2. Configure initial traffic weights (100-0)
+    F->>M: 3. Begin metrics collection
+    loop Analysis Phase
+        F->>V: 4. Increase canary traffic weight
+        F->>M: 5. Check metrics
+        F->>C: 6. Verify deployment health
+        alt Metrics Pass
+            F->>V: 7a. Continue progressive traffic shift
+        else Metrics Fail
+            F->>V: 7b. Rollback to primary
+        end
+    end
+    F->>P: 8. Promote or rollback
+    F->>C: 9. Cleanup canary resources

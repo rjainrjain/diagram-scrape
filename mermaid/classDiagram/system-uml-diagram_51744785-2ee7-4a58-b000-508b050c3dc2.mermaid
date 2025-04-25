@@ -1,0 +1,32 @@
+classDiagram
+    class AggregationServer {
+        -MainServerThread
+        +listenForConnections()
+    }
+    class ClientHandlerThread {
+        +handleRequest()
+        +updateLamportClock()
+    }
+    class ContentServer {
+        -SingleThread
+        +readData()
+        +sendPUTRequest()
+        +updateLamportClock()
+    }
+    class GETClient {
+        -SingleThread
+        +sendGETRequest()
+        +processResponse()
+        +updateLamportClock()
+    }
+
+    AggregationServer "1" *-- "many" ClientHandlerThread : spawns
+    AggregationServer ..> ContentServer : receives PUT from
+    AggregationServer ..> GETClient : sends data to
+    ContentServer ..> ClientHandlerThread : sends PUT to
+    GETClient ..> ClientHandlerThread : sends GET to
+
+    note for AggregationServer "Listens for incoming connections\nSpawns a new ClientHandlerThread\nfor each connection"
+    note for ClientHandlerThread "Handles both PUT and GET requests\nEach request runs on a separate thread"
+    note for ContentServer "Runs as a single thread\nPeriodically sends data to AggregationServer"
+    note for GETClient "Runs as a single thread\nPeriodically requests data from AggregationServer"

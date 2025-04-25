@@ -1,0 +1,10 @@
+stateDiagram-v2
+    Open    --> Complete : bad_data
+    Open --> Alerting : create, resolve
+    Alerting --> Active : select
+    Active--> Complete : finish
+    Active --> Alerting : deselect
+    Active --> Escalated : escalate
+    Escalated --> Complete : escalate_close
+    Active --> Waiting : defer, wait
+    Waiting --> Alerting : timeout, finish

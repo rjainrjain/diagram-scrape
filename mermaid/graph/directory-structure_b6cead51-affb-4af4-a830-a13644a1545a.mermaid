@@ -1,0 +1,46 @@
+```mermaid
+graph TD
+    A[MysticFunds]
+    A --> B[cmd]
+    A --> C[internal]
+    A --> D[pkg]
+    A --> E[proto]
+    A --> F[scripts]
+    A --> G[deployment]
+    A --> H[docs]
+
+    B --> B1[api-gateway]
+    B --> B2[wizard-service]
+    B --> B3[mana-service]
+    B --> B4[spell-service]
+    B --> B5[realm-service]
+    B --> B6[auth-service]
+
+    C --> C1[wizard]
+    C --> C2[mana]
+    C --> C3[spell]
+    C --> C4[realm]
+    C --> C5[auth]
+
+    C1 --> C1a[handler]
+    C1 --> C1b[repository]
+    C1 --> C1c[service]
+
+    C5 --> C5a[handler]
+    C5 --> C5b[service]
+    C5 --> C5c[model]
+
+    D --> D1[database]
+    D --> D2[logger]
+    D --> D3[config]
+    D --> D4[auth]
+
+    E --> E1[wizard]
+    E --> E2[mana]
+    E --> E3[spell]
+    E --> E4[realm]
+    E --> E5[auth]
+
+    G --> G1[docker]
+    G --> G2[kubernetes]
+```

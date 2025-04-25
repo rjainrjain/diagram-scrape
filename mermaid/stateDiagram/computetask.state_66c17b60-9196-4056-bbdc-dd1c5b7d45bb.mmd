@@ -1,0 +1,36 @@
+stateDiagram-v2
+    waitingBuilding: WAITING_FOR_BUILDER_SLOT
+	building: BUILDING
+	waitingParent: WAITING_FOR_PARENT_TASKS
+	waitingExecutor: WAITING_FOR_EXECUTOR_SLOT
+	executing: EXECUTING
+	canceled: CANCELED
+	failed: FAILED
+	done: DONE
+
+
+	[*] --> waitingBuilding
+	[*] --> building
+	[*] --> waitingParent
+	[*] --> waitingExecutor
+	[*] --> failed
+    [*] --> canceled
+
+	waitingBuilding --> building
+	building --> waitingParent
+	waitingParent --> waitingExecutor
+	waitingExecutor --> executing
+	executing --> done
+	done --> [*]
+
+	
+	building --> failed
+	executing --> failed
+	failed --> [*]
+	
+	waitingBuilding --> canceled
+	building --> canceled
+	waitingParent --> canceled
+	waitingExecutor --> canceled
+	executing --> canceled
+	canceled --> [*]

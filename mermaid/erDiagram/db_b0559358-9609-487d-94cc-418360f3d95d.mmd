@@ -1,0 +1,17 @@
+erDiagram
+    user {
+        int id PK
+        UUID alternaitve_id UK
+        string(69) name
+        string(69) password
+        bool remember
+    }
+
+    shared-addresses {
+        int user PK, FK
+        string(420) device_name PK
+        string(420) address
+        datetime last_updated
+    }
+
+    user only one to zero or more shared-addresses : shares

@@ -1,0 +1,7 @@
+sequenceDiagram
+    EDA->>+Controller: Job Template Launch
+    Controller->>EDA: Job Info
+    EDA->>Controller: Subscribe to job summary event
+    Controller->>-EDA: Job summary
+    EDA->>+Controller: Request job details
+    Controller->>-EDA: Job details

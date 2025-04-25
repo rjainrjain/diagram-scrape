@@ -1,0 +1,8 @@
+graph TB
+    A[Client] -->|HTTP Request| B[API Gateway]
+    B --> C[Recipe Matching Service]
+    C -->|Query| D[(Recipe Database)]
+    C -->|Query| E[(Ingredient Index)]
+    F[Recipe Ingestion Service] -->|Update| D
+    F -->|Update| E
+    G[Admin Dashboard] --> F

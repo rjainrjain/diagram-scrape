@@ -1,0 +1,50 @@
+sequenceDiagram
+    User ->> ScooterApp: Register
+    alt already registered
+        ScooterApp ->> User: Cancel
+    else too young to register
+        ScooterApp ->> User: Cancel
+    else register
+        ScooterApp ->> User: Confirm registration
+    end
+
+    User ->> ScooterApp: Log in
+    alt Username or password is incorrect
+        ScooterApp ->> User: Cancel
+    else Username and password match
+        ScooterApp ->> User: Log in successfully
+    end
+
+    User ->> ScooterApp: removeScooter
+    ScooterApp ->> Scooter: Rent
+    alt Scooter low on battery
+        Scooter ->> ScooterApp: Cancel rent
+        ScooterApp ->> Scooter: recharge()
+        Scooter ->> ScooterApp: Confirm charge
+    else Scooter is broken
+        Scooter ->> ScooterApp: Cancel rent
+        ScooterApp ->> Scooter: requestRepair()
+        Scooter ->> ScooterApp: Confirm repair
+    else scooter is not located
+        Scooter ->> ScooterApp: Cancel rent
+    else Scooter undocked successfully
+        Scooter ->> ScooterApp: undock confirmed
+    activate Scooter
+    end
+    ScooterApp ->> User: Inform about the rent status
+
+    User ->> ScooterApp: addScooter
+    alt location or/and scooter not provided
+        ScooterApp ->> User: Cancel
+    else location is not valid
+        ScooterApp ->> User: Cancel
+    else scooter be added
+        ScooterApp ->> Scooter: dock in a location
+        deactivate Scooter
+        ScooterApp ->> User: Inform about the dock status
+    end
+
+    User ->> ScooterApp: set scooter as broken
+    ScooterApp ->> Scooter: scooter is broken
+    Scooter ->> ScooterApp: confirm scooter is set as broken
+    ScooterApp ->> User: confirm scooter is set as broken

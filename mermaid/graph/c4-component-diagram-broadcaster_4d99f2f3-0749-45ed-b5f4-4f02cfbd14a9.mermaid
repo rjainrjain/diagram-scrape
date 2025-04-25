@@ -1,0 +1,6 @@
+graph TD
+    ST[Scheduled Task Component] -->|Triggers| WS[Web Scraping Component]
+    ST -->|Triggers| NP[NATS Publishing Component]
+    WS -->|Scrapes news| NW[News Websites]
+    NP -->|Publishes messages| NATS[NATS]
+    WS -->|Scraped data| NP

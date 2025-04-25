@@ -1,0 +1,22 @@
+flowchart TD
+    A[["시작"]] --> B{"문자 입력"}
+    B --> C1{"알파벳"} & C2{"숫자"} & C3{"공백"} & C4{"해당사항 없음"}
+    C1 --> D["모스부호 변환"]
+    C2 --> D
+    C3 --> E["단어 간격 처리"]
+    C4 --> B
+    D --> F["모스부호 출력"]
+    E --> B
+    F --> G["피에조 & LED 출력"]
+    G --> B
+    
+    style A color:#000000, stroke:#FFFFFF,fill:#E1BEE7
+    style B color:#000000, stroke:#FFFFFF, fill:#FFF9C4
+    style C1 color:#000000, stroke:#FFFFFF, fill:#BBDEFB
+    style C2 color:#000000, stroke:#FFFFFF, fill:#BBDEFB
+    style C3 color:#000000, stroke:#FFFFFF, fill:#BBDEFB
+    style C4 color:#000000, stroke:#FFFFFF,fill:#757575
+    style D color:#000000, stroke:#FFFFFF, fill:#C8E6C9
+    style E color:#000000, stroke:#FFFFFF, fill:#C8E6C9
+    style F color:#000000, stroke:#FFFFFF,fill:#FFCDD2
+    style G color:#000000, stroke:#FFFFFF,fill:#FFE0B2

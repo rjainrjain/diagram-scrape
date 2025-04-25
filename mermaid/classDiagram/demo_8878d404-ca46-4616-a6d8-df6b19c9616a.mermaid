@@ -1,0 +1,36 @@
+classDiagram
+  class algolia {
+    algolia
+    <<rectangle>>
+  }
+  class search_bar {
+    search_bar
+    <<rectangle>>
+  }
+  class magnifying_glass_icon {
+    magnifying_glass_icon
+    <<icon>>
+  }
+  class blue_square {
+    blue_square
+    <<square>>
+  }
+  class character {
+    character
+    <<person>>
+  }
+  class left_pen {
+    left_pen
+    <<pen>>
+  }
+  class right_pen {
+    right_pen
+    <<pen>>
+  }
+  %% Relationship
+  algolia *-- blue_square
+  algolia *-- character
+  algolia *-- search_bar
+  search_bar *-- magnifying_glass_icon
+  algolia *-- left_pen
+  algolia *-- right_view

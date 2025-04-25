@@ -1,0 +1,108 @@
+classDiagram
+
+
+    User *-- Profile
+    User *-- Post
+    User *-- Follow
+    User *-- UserBlock
+    User *-- UserMute
+    class User {
+       id: String
+       username: String!
+       name: String!
+
+       getByid(id: String) : User
+       getByUserName(username: String) : User
+       getByName(name: String) : [User]
+    }
+
+
+    class Profile{
+        id: String
+        user_id: User!
+
+        getById(id: String): Profile
+        getByUser(id: String): [Profile]
+
+    }
+
+    Post *-- PostReport
+    Post *-- Comment
+    Post *-- Hashtag
+    class Post {
+        id: String
+        user_id: User!
+        post: String!
+
+        getById(id: String): Post
+        getByUser(id: String): [Post]
+    }
+
+    class Comment {
+        id: String
+        post_id: Post!
+        user_id: User!
+
+        getById(id: String): Comment
+        getByUser(id: String): [Comment]
+        getByPost(id: String): [Comment]
+    }
+
+    class Follow {
+        id: String
+        user_id: User!
+        follower_id: User!
+
+        getById(id: String): Follow
+        getByUser(id: String): [Follow]
+        getByFollower(id: String): [Follow]
+    }
+
+    class Hashtag {
+        id: String
+        tag: String!
+
+        getById(id: String): Hashtag
+    }
+
+    class PostReport {
+        id: String
+        post_id: Post!
+        user_id: User!
+
+        getById(id: String): PostReport
+        getByUser(id: String): [PostReport]
+        getByPost(id: String): [PostReport]
+    }
+
+    class UserBlock {
+        id: String
+        user_id: User!
+        follower_id: User!
+        date: String
+
+        getById(id: String): UserBlock
+        getByUser(id: String): [UserBlock]
+        getByFollower(id: String): [UserBlock]
+    }
+
+    class UserMute {
+        id: String
+        user_id: User!
+        follower_id: User!
+        date: String
+
+        getById(id: String): UserMute
+        getByUser(id: String): [UserMute]
+        getByFollower(id: String): [UserMute]
+    }
+
+    class Profile {
+        id: String
+        user_id: User!
+        age: Int
+        bio: String
+
+        getById(id: String): Profile
+        getByUser(id: String): [Profile]
+    }

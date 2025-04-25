@@ -1,0 +1,20 @@
+sequenceDiagram
+    participant Usuario
+    participant Aplicación
+    participant Conductor
+    participant SistemaPago
+
+    Usuario->>Aplicación: Solicita viaje
+    Aplicación->>Aplicación: Busca conductores cercanos
+    Aplicación->>Conductor: Notifica nuevo viaje
+    Conductor->>Aplicación: Acepta viaje
+    Aplicación->>Usuario: Confirma viaje y muestra detalles del conductor
+    Usuario->>Aplicación: Confirma ubicación de recogida
+    Conductor->>Usuario: Recoge al usuario
+    Conductor->>Aplicación: Inicia viaje
+    Conductor->>Aplicación: Finaliza viaje
+    Aplicación->>SistemaPago: Procesa pago
+    SistemaPago->>Aplicación: Confirma pago
+    Aplicación->>Usuario: Solicita calificación
+    Usuario->>Aplicación: Envía calificación
+    Aplicación->>Conductor: Actualiza calificación

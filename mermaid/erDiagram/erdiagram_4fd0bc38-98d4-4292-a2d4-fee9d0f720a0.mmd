@@ -1,0 +1,20 @@
+erDiagram
+    account {
+        bigint id PK
+        varchar username
+        varchar password_hash
+        varchar display_name
+        text    avatar
+        text    header
+        text    note
+        created_at  datetime
+    }
+
+    status {
+        bigint id PK
+        bigint account_id FK
+        text   content
+        created_at datetime
+    }
+
+    status }o--|| account : has

@@ -1,0 +1,251 @@
+classDiagram
+    class Monster {
+        -Long id
+        -String name
+        -String type
+        -int dangerLevel
+        -String habitat
+        -String description
+        -String imageUrl
+        -LocalDateTime createdAt
+        -LocalDateTime updatedAt
+        -Set<Weakness> weaknesses
+        -Set<Power> powers
+        -List<Appearance> appearances
+        +getters()
+        +setters()
+    }
+
+    class Weakness {
+        -Long id
+        -String name
+        -Set<Monster> monsters
+        +getters()
+        +setters()
+    }
+
+    class Power {
+        -Long id
+        -String name
+        -Set<Monster> monsters
+        +getters()
+        +setters()
+    }
+
+    class Appearance {
+        -Long id
+        -String location
+        -Date date
+        -int witnesses
+        -Monster monster
+        +getters()
+        +setters()
+    }
+
+    class MonsterRepository {
+        <<interface>>
+        +findAll(Pageable pageable) Page<Monster>
+        +findById(Long id) Optional<Monster>
+        +save(Monster monster) Monster
+        +deleteById(Long id) void
+        +existsByNameIgnoreCase(String name) boolean
+        +findByType(String type) List<Monster>
+        +findByDangerLevelGreaterThanEqual(int level) List<Monster>
+    }
+
+    class WeaknessRepository {
+        <<interface>>
+        +findAll() List<Weakness>
+        +findById(Long id) Optional<Weakness>
+        +findByNameIgnoreCase(String name) Optional<Weakness>
+        +existsByNameIgnoreCase(String name) boolean
+        +findAllByMonsterId(Long monsterId) Set<Weakness>
+    }
+
+    class PowerRepository {
+        <<interface>>
+        +findAll() List<Power>
+        +findById(Long id) Optional<Power>
+        +findByNameIgnoreCase(String name) Optional<Power>
+        +existsByNameIgnoreCase(String name) boolean
+        +findAllByMonsterId(Long monsterId) Set<Power>
+    }
+
+    class AppearanceRepository {
+        <<interface>>
+        +findAll() List<Appearance>
+        +findById(Long id) Optional<Appearance>
+        +findAllByMonsterId(Long monsterId) List<Appearance>
+        +findByIdAndMonsterId(Long id, Long monsterId) Optional<Appearance>
+        +deleteByIdAndMonsterId(Long id, Long monsterId) void
+    }
+
+    class MonsterDTO {
+        -Long id
+        -String name
+        -String type
+        -int dangerLevel
+        -List<String> weaknesses
+        -List<String> powers
+        -List<AppearanceDTO> appearances
+        -String habitat
+        -String description
+        -String imageUrl
+        -LocalDateTime createdAt
+        -LocalDateTime updatedAt
+    }
+
+    class AppearanceDTO {
+        -Long id
+        -String location
+        -Date date
+        -int witnesses
+    }
+
+    class MonsterPage {
+        -Long id
+        -String name
+        -String type
+        -int dangerLevel
+        -String habitat
+        -String description
+        -String imageUrl
+    }
+
+    class MonsterMapper {
+        -ModelMapper modelMapper
+        -WeaknessRepository weaknessRepository
+        -PowerRepository powerRepository
+        +toDTO(Monster monster) MonsterDTO
+        +toEntity(MonsterDTO monsterDTO) Monster
+        +toDTOList(List<Monster> monsters) List<MonsterDTO>
+        +toEntityList(List<MonsterDTO> monsterDTOs) List<Monster>
+        +toPageDTO(Page<Monster> monsters) Page<MonsterPage>
+    }
+
+    class AppearanceMapper {
+        -ModelMapper modelMapper
+        +toDTO(Appearance appearance) AppearanceDTO
+        +toEntity(AppearanceDTO appearanceDTO) Appearance
+        +toDTOList(List<Appearance> appearances) List<AppearanceDTO>
+        +toEntityList(List<AppearanceDTO> appearanceDTOs) List<Appearance>
+    }
+
+    class PowerMapper {
+        -ModelMapper modelMapper
+        +toDTO(Power power) PowerDTO
+        +toEntity(PowerDTO powerDTO) Power
+        +toDTOList(List<Power> powers) List<PowerDTO>
+        +toEntityList(List<PowerDTO> powerDTOs) List<Power>
+    }
+
+    class WeaknessMapper {
+        -ModelMapper modelMapper
+        +toDTO(Weakness weakness) WeaknessDTO
+        +toEntity(WeaknessDTO weaknessDTO) Weakness
+        +toDTOList(List<Weakness> weaknesses) List<WeaknessDTO>
+        +toEntityList(List<WeaknessDTO> weaknessDTOs) List<Weakness>
+    }
+
+    class MonsterService {
+        -MonsterRepository monsterRepository
+        -WeaknessRepository weaknessRepository
+        -PowerRepository powerRepository
+        -AppearanceRepository appearanceRepository
+        -MonsterMapper monsterMapper
+        -AppearanceMapper appearanceMapper
+        -List<MonsterValidation> validations
+        +getAllMonsters(int page, int size, String sortBy) Page<Monster>
+        +getMonsterById(Long id) Monster
+        +getMonsterFullById(Long id) Monster
+        +createMonster(MonsterDTO monsterDTO) Monster
+        +updateMonster(Long id, MonsterDTO monsterDTO) Monster
+        +deleteMonster(Long id) void
+        +getMonstersByType(String type) List<Monster>
+        +getDangerousMonsters(int level) List<Monster>
+        +getAppearancesByMonsterId(Long monsterId) List<Appearance>
+        +getAppearanceById(Long monsterId, Long id) Appearance
+        +createAppearance(Long monsterId, AppearanceDTO appearanceDTO) Appearance
+        +updateAppearance(Long monsterId, Long id, AppearanceDTO appearanceDTO) Appearance
+        +deleteAppearance(Long monsterId, Long id) void
+    }
+
+    class TraitService {
+        -PowerRepository powerRepository
+        -WeaknessRepository weaknessRepository
+        -PowerMapper powerMapper
+        -WeaknessMapper weaknessMapper
+        +getAllPowers() List<PowerDTO>
+        +getPowerById(Long id) PowerDTO
+        +createPower(PowerDTO powerDTO) PowerDTO
+        +updatePower(Long id, PowerDTO powerDTO) PowerDTO
+        +deletePower(Long id) void
+        +getAllWeaknesses() List<WeaknessDTO>
+        +getWeaknessById(Long id) WeaknessDTO
+        +createWeakness(WeaknessDTO weaknessDTO) WeaknessDTO
+        +updateWeakness(Long id, WeaknessDTO weaknessDTO) WeaknessDTO
+        +deleteWeakness(Long id) void
+    }
+
+    class PowerDTO {
+        -Long id
+        -String name
+    }
+
+    class WeaknessDTO {
+        -Long id
+        -String name
+    }
+
+    class UniqueMonsterName {
+        -MonsterRepository monsterRepository
+        +validate(MonsterDTO monsterDTO) void
+    }
+
+    class CreatePowerIfNotExist {
+        -PowerRepository powerRepository
+        +validate(MonsterDTO monsterDTO) void
+    }
+
+    class CreateWeaknessIfNotExist {
+        -WeaknessRepository weaknessRepository
+        +validate(MonsterDTO monsterDTO) void
+    }
+
+    class MonsterValidation {
+        <<interface>>
+        +validate(MonsterDTO monsterDTO) void
+    }
+
+    class OnCreate {
+        <<interface>>
+    }
+
+    class OnUpdate {
+        <<interface>>
+    }
+
+    Monster "1" *-- "*" Appearance
+    Monster "*" -- "*" Weakness
+    Monster "*" -- "*" Power
+    MonsterDTO -- AppearanceDTO : contains
+    MonsterService -- MonsterRepository : uses >
+    MonsterService -- WeaknessRepository : uses >
+    MonsterService -- PowerRepository : uses >
+    MonsterService -- AppearanceRepository : uses >
+    MonsterService -- MonsterMapper : uses >
+    MonsterService -- AppearanceMapper : uses >
+    MonsterRepository -- Monster : manages >
+    WeaknessRepository -- Weakness : manages >
+    PowerRepository -- Power : manages >
+    AppearanceRepository -- Appearance : manages >
+    TraitService -- PowerRepository : uses >
+    TraitService -- WeaknessRepository : uses >
+    TraitService -- PowerMapper : uses >
+    TraitService -- WeaknessMapper : uses >
+    MonsterService ..> MonsterValidation : uses >
+    MonsterDTO ..> OnCreate : uses >
+    MonsterDTO ..> OnUpdate : uses >
+    UniqueMonsterName -- MonsterRepository : uses >
+    CreatePowerIfNotExist -- PowerRepository : uses >
+    CreateWeaknessIfNotExist -- WeaknessRepository : uses >

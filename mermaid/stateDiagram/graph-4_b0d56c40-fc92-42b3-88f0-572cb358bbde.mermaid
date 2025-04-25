@@ -1,0 +1,18 @@
+stateDiagram-v2
+classDef common fill: white, stroke: black
+class s1_1, s1_2, s1_4, s1_3 common
+classDef unreachable fill: #FF9800, stroke-dasharray: 5 5
+class s1_3 unreachable
+classDef thrown fill: none, stroke: none
+state "【s1_1】\nProgram:enter\nIfStatement:enter\nIdentifier (foo)" as s1_1
+state "【s1_2】\nThrowStatement:enter\nIdentifier (bar)\nThrowStatement:exit" as s1_2
+state "【s1_4】\nIfStatement:exit\nProgram:exit" as s1_4
+state "【s1_3】" as s1_3
+thrown:::thrown: ✘
+[*] --> s1_1
+s1_1 --> s1_2
+s1_1 --> s1_4
+s1_2 --> s1_3
+s1_3 --> s1_4
+s1_4 --> [*]
+s1_2 --> thrown

@@ -1,0 +1,56 @@
+sequenceDiagram
+    participant User as "User &#128100;"
+    participant Admin as "Admin &#128100;"
+    participant App as "App &#9724;"
+    participant EnterpriseFirewall as "Enterprise Firewall &#9724;"
+    participant CloudProxy as "Cloud Proxy &#9724;"
+    participant SDRTN as "SD-RTN &#9724;"
+
+    rect rgb(255, 255, 255)
+        note right of User: User
+            User->>App: Open the app
+            User->>App: Join a channel
+    end
+
+    rect rgb(255, 255, 255)
+        note right of Admin: Admin
+    end
+
+    rect rgb(255, 255, 255)
+        note right of App: App
+            App->>App: Initialize the Agora Video SDK engine
+    end
+
+    rect rgb(255, 255, 255)
+        note right of EnterpriseFirewall: Enterprise Firewall
+            EnterpriseFirewall->>EnterpriseFirewall: Whitelist IP addresses and ports for Cloud Proxy in the firewall
+    end
+
+    subgraph Implemented by you
+        User
+        Admin
+        App
+        EnterpriseFirewall
+    end
+
+    subgraph Provided by Agora
+        CloudProxy
+        SDRTN
+    end
+
+    alt Join a channel directly
+        App->>SDRTN: Join a Channel
+        SDRTN-->>App: Join Success &NewLine; Send and receive data
+        or Video SDK automatically attempts to connect securely on TLS 443
+        App->>SDRTN: Join Success &NewLine; Send and receive data
+        or Join Channel failed &NewLine; Connection attempt on TLS 443 failed: Enable cloud proxy
+        App->>CloudProxy: Call the method to enable a Cloud Proxy connection
+            CloudProxy->>CloudProxy: Check whitelist to grant access
+            CloudProxy->>App: Join a channel &NewZealand; Join success &NewZealand; Send data stream &NewZealand; Receive data stream  
+    end
+
+    CloudProxy->>CloudProxy: Request access to Cloud Proxy
+    CloudProxy->>CloudProxy: Request access to Cloud Proxy
+    CloudProxy->>CloudProxy: Proxy information
+
+    SDRTN->>SDRTN: Request to join a channel

@@ -1,0 +1,23 @@
+flowchart TD
+  python[Python]
+  package_versions[combination of package versions]
+  virtual_environment_manager[virtual environment manager]
+  create_isolated_environments[create isolated environments]
+  venv[venv virtualenv]
+  conda[conda]
+  hpc2n[HPC2N]
+  lunarc[LUNARC]
+  uppmax[UPPMAX's Rackham]
+
+  python -->|has| package_versions
+  package_versions -->|managed by|virtual_environment_manager
+  virtual_environment_manager --> |has goal|create_isolated_environments
+  package_versions -.- create_isolated_environments
+  virtual_environment_manager --> |among others|conda
+  virtual_environment_manager --> |among others|venv
+
+  conda -->|works on|uppmax
+  conda -->|works on|lunarc
+  venv -->|works on|uppmax
+  venv -->|works on|hpc2n
+  venv -->|works on|lunarc

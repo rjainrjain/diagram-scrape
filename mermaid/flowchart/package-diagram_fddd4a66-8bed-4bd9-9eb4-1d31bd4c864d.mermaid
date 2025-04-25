@@ -1,0 +1,85 @@
+flowchart TB
+    subgraph Presentation[Presentation Layer]
+        UI[UserInterface]
+        QI[QuizInterface]
+        RI[ResponseInterface]
+        AD[AdminDashboard]
+    end
+
+    subgraph Core[Core Layer]
+        UC[UserCore]
+        QC[QuizCore]
+        RC[ResponseCore]
+    end
+
+    subgraph Domain[Domain Layer]
+        subgraph Models
+            M1[User]
+            M2[Quiz]
+            M3[Category]
+            M4[Question]
+            M5[Answer]
+            M6[QuizResponse]
+            M7[QuestionResponse]
+        end
+        
+        subgraph Enums
+            E1[Role]
+            E2[Type]
+        end
+        
+        subgraph DTOs
+            D1[UserDTO]
+            D2[QuizDTO]
+            D3[ResponseDTO]
+        end
+    end
+
+    subgraph Infrastructure[Infrastructure Layer]
+        subgraph Database
+            DB1[Repositories]
+            DB2[Migrations]
+            DB3[Schemas]
+        end
+        
+        subgraph Security
+            S1[Authentication]
+            S2[Authorization]
+            S3[Encryption]
+        end
+    end
+
+    subgraph Services[Services Layer]
+        US[UserService]
+        QS[QuizService]
+        RS[ResponseService]
+        CS[CategoryService]
+    end
+
+    subgraph Utils[Utils Layer]
+        subgraph Validators
+            V1[InputValidator]
+            V2[BusinessRuleValidator]
+        end
+        
+        subgraph Helpers
+            H1[DateHelper]
+            H2[StringHelper]
+            H3[FormatHelper]
+        end
+    end
+
+    %% Dependências entre camadas
+    Presentation --> Core
+    Core --> Domain
+    Core --> Services
+    Services --> Domain
+    Services --> Infrastructure
+    Infrastructure --> Domain
+    Utils --> Domain
+    Utils --> Services
+
+    %% Estilo
+    classDef default fill:#f9f9f9,stroke:#333,stroke-width:2px;
+    classDef layerStyle fill:#e4e4e4,stroke:#333,stroke-width:4px;
+    class Presentation,Core,Domain,Infrastructure,Services,Utils layerStyle;

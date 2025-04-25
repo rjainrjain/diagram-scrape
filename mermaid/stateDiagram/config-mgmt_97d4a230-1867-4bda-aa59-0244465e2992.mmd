@@ -1,0 +1,10 @@
+stateDiagram-v2
+    [*] --> Developer
+    Developer --> Infrastructure
+    Developer --> Kubernetes
+    Developer --> CommonConfig
+    Infrastructure --> CommonConfig
+    CommonConfig --> Application
+    Kubernetes --> CommonConfig
+    CommonConfig --> Kubernetes
+    Application --> [*]

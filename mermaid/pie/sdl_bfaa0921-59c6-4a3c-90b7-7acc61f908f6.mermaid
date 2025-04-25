@@ -1,0 +1,16 @@
+graph TD;
+    my_game["Mein Spiel"]
+    engine["Meine Engine"]
+    raw_input["Raw Input"]
+    direct_input["Direct Input"]
+    my_game-->engine
+    engine-->SDL
+    SDL-->Vulkan
+    SDL-->DirectX
+    SDL-->OpenGL
+    SDL-->Metal
+    SDL-->WASAPI
+    SDL-->OpenAL
+    SDL-->XInput
+    SDL-->direct_input
+    SDL-->raw_input

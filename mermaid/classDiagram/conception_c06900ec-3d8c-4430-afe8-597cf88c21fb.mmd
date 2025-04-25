@@ -1,0 +1,34 @@
+classDiagram
+  class Book {
+    +int id
+    +String ISBN
+    +String title
+    +Date publicationDate
+  }
+
+  class Loan {
+    +int id
+    +Date startDate
+    +Date dueDate
+    +Date returnDate
+  }
+
+  class Author {
+    +int id
+    +String lastName
+    +String firstName
+    +String nationality
+  }
+
+  class Reader {
+    +int id
+    +String cardNumber
+    +String lastName
+    +String firstName
+    +String address
+  }
+
+  %% Relations
+  Reader "1" -- "*" Loan : "has"
+  Book "1" -- "*" Loan : "associated with"
+  Author "1" -- "*" Book : "writes"

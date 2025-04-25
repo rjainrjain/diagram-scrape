@@ -1,0 +1,19 @@
+flowchart TD;
+
+subgraph docker
+    mqtt[eclipse-mosquitto]
+    mobius[mock_mobius]
+    ma[mobius_adapter]
+    mongo[(MongoDB)]
+    b[backend]
+
+    b -- TCP 1884 --> mqtt
+    ma -- TCP 1884 --> mqtt
+    mobius <--> mongo
+    b <--> mongo
+    ma -- HTTP 5000 --> mobius
+end
+
+out([host network])
+out -- 1884 --> mqtt
+out -- 5000 --> b

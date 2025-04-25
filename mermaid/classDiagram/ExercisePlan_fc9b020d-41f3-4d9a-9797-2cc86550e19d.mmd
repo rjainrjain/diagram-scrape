@@ -1,0 +1,24 @@
+classDiagram
+  ExercisePlan -- QuantitativeValue
+  ExercisePlan -- Energy
+  ExercisePlan -- Duration
+
+
+class ExercisePlan {
+
+  number repetitions
+  QuantitativeValue repetitions
+  QuantitativeValue intensity
+  string intensity
+  QuantitativeValue workload
+  Energy workload
+  Duration activityDuration
+  QuantitativeValue activityDuration
+  string restPeriods
+  QuantitativeValue restPeriods
+  string activityFrequency
+  QuantitativeValue activityFrequency
+  string additionalVariable
+  string exerciseType
+
+ }

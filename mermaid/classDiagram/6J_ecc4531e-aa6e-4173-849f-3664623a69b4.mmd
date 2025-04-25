@@ -1,0 +1,47 @@
+classDiagram
+    JobAnnouncer --> UI: 1. clickMyAnnouncements()
+    UI --> JobAnnouncementController: 2. getMyAnnouncements()
+    JobAnnouncementController --> JobAnnouncementRepository: 3. fetchMyAnnouncements()
+    JobAnnouncementRepository --> DBConnector: 4. execute(Q6J.1)
+    DBConnector --> JobAnnouncementRepository: 5. return announcementsList
+    JobAnnouncementRepository --> JobAnnouncementController: 6. return announcementsList
+    JobAnnouncementController --> UI: 7. return formattedAnnouncements
+    
+    JobAnnouncer --> UI: 8. selectAnnouncement(jobAnnounceId)
+    UI --> JobAnnouncementController: 9. getAnnouncementDetails(jobAnnounceId)
+    JobAnnouncementController --> JobAnnouncementRepository: 10. getPositionDetails(jobAnnounceId)
+    JobAnnouncementRepository --> DBConnector: 11. execute(Q6J.2, jobAnnounceId)
+    DBConnector --> JobAnnouncementRepository: 12. return positionDetails
+    JobAnnouncementRepository --> JobAnnouncementController: 13. return positionDetails
+    JobAnnouncementController --> StudentRepository: 14. getApplicantsInfo(jobAnnounceId)
+    StudentRepository --> DBConnector: 15. execute(Q6J.3, jobAnnounceId)
+    DBConnector --> StudentRepository: 16. return applicantsList
+    StudentRepository --> JobAnnouncementController: 17. return applicantsList
+    JobAnnouncementController --> UI: 18. return combinedDetails
+    UI --> UI: 19. displayAnnouncementAndApplicants()
+
+    class JobAnnouncer {
+
+    }
+
+    class UI {
+        +displayAnnouncementAndApplicants()
+    }
+
+    class JobAnnouncementController {
+        +getMyAnnouncements()
+        +getAnnouncementDetails()
+    }
+
+    class JobAnnouncementRepository {
+        +fetchMyAnnouncements()
+    }
+
+    class StudentRepository {
+        +getPositionDetails()
+        +getApplicantsInfo()
+    }
+
+    class DBConnector {
+        +executeQuery()
+    }

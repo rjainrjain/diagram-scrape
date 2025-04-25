@@ -1,0 +1,8 @@
+flowchart TD
+    A(start)
+    A -- setup --> B[pinMode Knopf setzen] --> C[pinMode LED setzen]
+    C -- loop --> D{Knopf gedrückt?} -- ja --> E[schalte LED ein]
+    D -- nein --> D
+    E --> F[warte 5 Sekunden]
+    F --> G[schalte LED aus]
+    G --> D

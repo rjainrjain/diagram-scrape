@@ -1,0 +1,9 @@
+sequenceDiagram
+    Toten-->>lines_server: Cria um ticket
+    ERP-->>API: Chama próximo ticket para recepção
+    API-->>lines_server: Chama próximo ticket para recepção
+    TV-->>lines_server: A cada segundo verifica se algum ticket deve ser chamada
+    ERP-->>API: Paciente esperando médico
+    ERP-->>API: Médico chama paciente
+    API-->>lines_server: Chama próximo ticket para a sala do médico
+    TV-->>lines_server: A cada segundo verifica se algum ticket deve ser chamada

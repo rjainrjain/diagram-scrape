@@ -1,0 +1,37 @@
+classDiagram
+    class Shape {
+        <<abstract>>
+        +toString(): String
+        +calculateArea(): double
+        +calculatePerimeter(): double
+    }
+
+    class Circle {
+        -radio: double
+        +Circle(radius: double)
+        +toString(): String
+        +calculateArea(): double
+        +calculatePerimeter(): double
+    }
+
+    class Rectangle {
+        -width: double
+        -height: double
+        +Rectangle(width: double, height: double)
+        +toString(): String
+        +calculateArea(): double
+        +calculatePerimeter(): double
+    }
+
+    class Triangle {
+        -height: double
+        -base: double
+        +Triangle(height: double, base: double)
+        +toString(): String
+        +calculateArea(): double
+        +calculatePerimeter(): double
+    }
+
+    Shape <|-- Circle
+    Shape <|-- Rectangle
+    Shape <|-- Triangle

@@ -1,0 +1,33 @@
+
+sequenceDiagram
+  actor Pembeli
+  participant V_H as View #10095; HomePage
+  participant C_O as Controller #10095; OrderController
+  participant M_O as Model #10095; Order
+  participant V_O as View #10095; OrderPage
+
+  Pembeli->>V_H: klik menu "Pesanan"
+
+  activate Pembeli
+  activate V_H
+
+  V_H->>C_O: paginated_user_orders()
+
+  deactivate V_H
+
+  activate C_O
+
+  C_O->>M_O: get()
+
+  activate M_O
+
+  M_O-->>C_O: data pesanan
+
+  deactivate M_O
+
+  activate V_O
+  C_O-->>V_O: return view with data pesanan
+
+  deactivate C_O
+  deactivate V_O
+  deactivate Pembeli

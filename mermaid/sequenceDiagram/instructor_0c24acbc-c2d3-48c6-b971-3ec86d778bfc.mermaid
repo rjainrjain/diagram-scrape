@@ -1,0 +1,35 @@
+sequenceDiagram
+    participant Instructor
+    participant Website
+    participant Backend
+    participant Admin
+
+    Instructor ->> Website: Access website
+    Website ->> Backend: Request homepage data
+    Backend -->> Website: Respond with homepage data
+    Website -->> Instructor: Display homepage
+
+    Instructor ->> Website: View internships
+    Website ->> Backend: Request internships data
+    Backend -->> Website: Respond with internships data
+    Website -->> Instructor: Display internships
+
+    Instructor ->> Website: View student profiles
+    Website ->> Backend: Request student profiles
+    Backend -->> Website: Respond with student profiles
+    Website -->> Instructor: Display student profiles
+
+    Instructor ->> Website: Post internship
+    Website ->> Backend: Display internship form
+    Backend -->> Website: Internship form ready
+    Website -->> Instructor: Fill internship details
+
+    Instructor ->> Website: Enter internship details
+    Website ->> Backend: Submit internship details
+    Backend -->> Website: Internship posted successfully
+
+    Instructor ->> Website: Flag internship for review
+    Website ->> Backend: Send flag request
+    Backend -->> Admin: Send flag notification
+    Admin -->> Website: Review flagged internship
+    Website -->> Instructor: Confirmation message

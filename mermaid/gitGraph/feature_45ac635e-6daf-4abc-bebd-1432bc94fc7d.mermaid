@@ -1,0 +1,36 @@
+%%{init: {
+    'theme': 'base',
+    'gitGraph': {
+        'showCommitLabel': false,
+        'mainBranchName': 'main'
+    }
+}}%%
+gitGraph LR:
+    commit tag:"initial"
+
+    branch develop
+    checkout develop
+    commit
+    commit
+
+    branch feature/feat1
+    checkout feature/feat1
+    commit
+
+    checkout develop
+    branch feature/feat2
+    checkout feature/feat2
+    commit
+    commit
+
+    checkout feature/feat1
+    commit
+
+    checkout develop
+    merge feature/feat1
+
+    checkout feature/feat2
+    commit
+
+    checkout develop
+    merge feature/feat2

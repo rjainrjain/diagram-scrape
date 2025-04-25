@@ -1,0 +1,18 @@
+graph TD;
+    A[GraphicsManager] --> B[GraphicsContext];
+    A --> C[LayerManager];
+    I --> D[BufferManager];
+
+    D --> E[LineBuffer2D];
+    D --> F[PolygonBuffer2D];
+    D --> G[PointBuffer2D];
+
+    C --> I[Layer1];
+    C --> J[Layer2];
+    C --> K[LayerN];
+    
+    subgraph Shape Implementation Classes
+        E --> M[Lines];
+        F --> N[Polygons];
+        G --> O[Points];
+    end

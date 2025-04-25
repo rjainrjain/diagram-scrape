@@ -1,0 +1,11 @@
+sequenceDiagram
+    participant browser
+    participant server
+
+    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+    activate server
+    server-->>browser: Response from server Code 201: {"message":"note created"}
+    deactivate server
+
+    Note right of browser: The browser sends the input in JSON file, the server acknowledges the input but doesnt redirect the browser
+

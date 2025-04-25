@@ -1,0 +1,10 @@
+---
+title: Bulkhead Policy Example
+---
+flowchart LR
+    caller[Calling Service] --> limiter
+    inflight --> target[Target Service]
+
+    subgraph "Bulkhead Policy"
+        limiter["Limiter (max: 200)"] --> inflight["Inflight Requests"]
+        end

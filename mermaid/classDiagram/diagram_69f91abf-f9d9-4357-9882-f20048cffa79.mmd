@@ -1,0 +1,78 @@
+
+classDiagram
+class Tireur {
+-id: int
+-nom: String
+-dob: Date
+-email: String
++getId() int
++getNom() String
++getDob() Date
++getEmail() String
++setId(int id) void
++setNom(String nom) void
++setDob(Date dob) void
++setEmail(String email) void
+}
+
+    class Seance {
+        -id: int
+        -date: Date
+        +getId() int
+        +getDate() Date
+        +setId(int id) void
+        +setDate(Date date) void
+    }
+
+    class TireurSeance {
+        -id: int
+        -tireur_id: int
+        -seance_id: int
+        -best: double
+        -moyenne: double
+        -absence: boolean
+        -retard: boolean
+        +getId() int
+        +getTireurId() int
+        +getSeanceId() int
+        +getBest() double
+        +getMoyenne() double
+        +isAbsence() boolean
+        +isRetard() boolean
+        +setId(int id) void
+        +setTireurId(int tireurId) void
+        +setSeanceId(int seanceId) void
+        +setBest(double best) void
+        +setMoyenne(double moyenne) void
+        +setAbsence(boolean absence) void
+        +setRetard(boolean retard) void
+    }
+
+    class CiblePointage {
+        -id: int
+        -tireurSeance_id: int
+        -cible_id: int
+        -pointage: double
+        +getId() int
+        +getTireurSeanceId() int
+        +getCibleId() int
+        +getPointage() double
+        +setId(int id) void
+        +setTireurSeanceId(int tireurSeanceId) void
+        +setCibleId(int cibleId) void
+        +setPointage(double pointage) void
+    }
+
+    class Cible {
+        -id: int
+        -type: String
+        +getId() int
+        +getType() String
+        +setId(int id) void
+        +setType(String type) void
+    }
+
+    Tireur "1" -- "*" TireurSeance
+    Seance "1" -- "*" TireurSeance
+    TireurSeance "1" -- "*" CiblePointage
+    Cible "1" -- "*" CiblePointage

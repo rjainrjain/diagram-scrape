@@ -1,0 +1,67 @@
+classDiagram
+    class User{
+        +username: str
+        +email: str
+        +password: str
+        +create_workflow(data: dict) -> Workflow
+        +get_workflow(id: int) -> Workflow
+        +get_workflows() -> List[Workflow]
+        +delete_workflow(id: int) -> None
+    }
+
+    class Workflow{
+        +id: int
+        +name: str
+        +description: str
+        +status: str
+        +created_at: datetime
+        +updated_at: datetime
+        +add_task(data: dict) -> Task
+        +get_task(id: int) -> Task
+        +get_tasks() -> List[Task]
+        +delete_task(id: int) -> None
+        +run() -> None
+        +schedule(cron_expression: str) -> None
+    }
+
+    class Task{
+        +id: int
+        +name: str
+        +description: str
+        +status: str
+        +created_at: datetime
+        +updated_at: datetime
+        +add_action(data: dict) -> Action
+        +get_action(id: int) -> Action
+        +get_actions() -> List[Action]
+        +delete_action(id: int) -> None
+    }
+
+    class Action{
+        +id: int
+        +name: str
+        +description: str
+        +status: str
+        +created_at: datetime
+        +updated_at: datetime
+        +run() -> None
+    }
+
+    class API{
+        +get(url: str, params: dict) -> Response
+        +post(url: str, data: dict) -> Response
+        +put(url: str, data: dict) -> Response
+        +delete(url: str) -> Response
+    }
+
+    class Response{
+        +status_code: int
+        +json() -> dict
+    }
+
+    User "1" -- "1..*" Workflow: has
+    Workflow "1" -- "1..*" Task: has
+    Task "1" -- "1..*" Action: has
+    Workflow "1" -- "1" API: uses
+    Task "1" -- "1" API: uses
+    Action "1" -- "1" API: uses

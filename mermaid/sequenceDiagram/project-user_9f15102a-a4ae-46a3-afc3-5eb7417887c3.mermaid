@@ -1,0 +1,22 @@
+sequenceDiagram
+    participant Client as Client
+    participant Server as Server
+    participant DB as DB
+
+    Client->>Server: POST /api/endpoint
+    Server->>DB: Delete Many { projectId }
+    DB-->>Server: Delete Success/Failure
+    alt newUserIds.length > 0
+        Server->>DB: Create Many { projectId, userIds }
+        DB-->>Server: Create Success/Failure
+        Server->>Client: 201 Created, JSON(projectUsers)
+    else
+        Server->>Client: 400 Bad Request, JSON({ error: "No valid user IDs provided." })
+    end
+
+    Client->>Server: GET /api/endpoint/:projectId
+    Server->>DB: Find { projectId }
+    DB-->>Server: Query Results
+    Server->>DB: Populate userIds
+    DB-->>Server: Populated Results
+    Server->>Client: 200 OK, JSON(projectUsers)

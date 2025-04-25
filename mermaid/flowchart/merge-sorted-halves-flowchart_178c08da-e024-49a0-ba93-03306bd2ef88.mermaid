@@ -1,0 +1,16 @@
+flowchart TD
+    A[Start] --> B[Create leftArray and rightArray]
+    B --> C[Log merging process]
+    C --> D{While leftIndex < leftSize and rightIndex < rightSize}
+    D -- Yes --> E[Compare elements and merge]
+    D -- No --> F[Copy remaining elements]
+    F --> G[Log merged result]
+    G --> H[End]
+
+    %% Adding a side and up return path to show looping
+    E --> |Next iteration| I
+    I -.-> |Loop back| D
+    
+    %% Styling to position the loop
+    classDef loopBack stroke:#333,stroke-width:2px,color:#333,stroke-dasharray: 5 5
+    class I loopBack

@@ -1,0 +1,28 @@
+graph TD
+    subgraph Row1[Getting Started.]
+        A[Install Kubernetes locally] 
+        B[Deploy a Pod] 
+        C[Set up Kubectl]
+    end
+
+    subgraph Row2[Core Concepts.]
+        D[Create a Deployment] 
+        E[Expose a Service] 
+        F[Use ConfigMaps & Secrets]
+    end
+
+    subgraph Row3[Scaling & Management.]
+        G[Horizontal Pod Autoscaling] 
+        H[Set up Persistent Storage] 
+        I[Rolling Updates & Rollbacks]
+    end
+
+    subgraph Row4[Advanced.]
+        J[Set up Ingress] 
+        K[Monitor Cluster] 
+        L[Set up Network Policies]
+    end
+
+    Row1 --> Row2
+    Row2 --> Row3
+    Row3 --> Row4

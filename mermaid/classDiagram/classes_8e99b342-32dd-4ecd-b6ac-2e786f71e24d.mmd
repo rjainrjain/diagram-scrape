@@ -1,0 +1,11 @@
+classDiagram
+  class AnalysisForm {
+    consumable_name : ModelChoiceField
+    end_date : ModelChoiceField
+    start_date : ModelChoiceField
+  }
+  class Result {
+    error : Optional[str]
+    ok : bool
+    value : Optional[Any]
+  }

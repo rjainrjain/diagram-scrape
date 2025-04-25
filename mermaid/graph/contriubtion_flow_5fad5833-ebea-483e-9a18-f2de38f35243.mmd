@@ -1,0 +1,28 @@
+graph TD
+  subgraph How an Accepted Proposal is Merged
+    zeta[One assignee creates a new branch]
+    zeta --> eta[New code gets written, committed, and pushed]
+    eta --> theta[One assignee submits pull request]
+    theta --> iota{Code review by at least 2 team members}
+    iota --> |Code does not pass necessary reviews|xi[Branch is updated with requested changes]
+    xi --> iota
+    iota --> |Codes passes review|kappa[Code is merged and conflicts are resolved]
+    kappa --> omicron[Issue is closed]
+  end
+
+  subgraph How a Code Proposal is Made
+    alpha[Raise a Github issue]
+    alpha --> beta["Team discussion of issue (i.e.proposal)"]
+    beta --> gamma{Team decision on proposal}
+
+    %% Team approval path.
+    gamma --> |Total team approval|epsilon[Issue gets assigned to team member or self-assigned]
+
+    %% Team disapproval path.
+    gamma --> |Total team disapproval|lambda[Issue is closed]
+
+    %% Partial agreement.
+    gamma --> |Partial approval or disapproval|mu["Issue must be supplemented with other resources (e.g. Design Document, Research Paper, etc)"]
+    mu --> beta
+  end
+

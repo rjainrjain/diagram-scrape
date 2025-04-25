@@ -1,0 +1,82 @@
+```mermaid
+erDiagram
+Context {
+    string name  
+    date since  
+    date updated  
+    string copyright  
+    uri master  
+}
+Property {
+    string name  
+    string label  
+    string type  
+    double index  
+    double sortPos  
+    boolean primaryKey  
+    boolean mandatory  
+    string namespace  
+    double size  
+    boolean uploadable  
+    string defaultValue  
+    string inputType  
+    string allowedValues  
+    string documentation  
+    string values_from  
+    string externalFormatterURI  
+    boolean showInGrid  
+    boolean isLink  
+    boolean nullable  
+}
+SMWType {
+    string type  
+    string documentation  
+    string id  
+    uri helppage  
+    string typepage  
+    string javaType  
+}
+Topic {
+    string name  
+    string pluralName  
+    string icon  
+    string iconUrl  
+    string documentation  
+    string wikiDocumentation  
+    string defaultstoremode  
+    double listLimit  
+    boolean cargo  
+    boolean headerTabs  
+}
+Action {
+    string name  
+    string servicetype  
+    uri service  
+    string inputtype  
+    string input  
+    string actionpage  
+    string output  
+    string engine  
+    string author  
+    date since  
+    string comment  
+}
+TopicLink {
+    string name  
+    string source  
+    string sourceRole  
+    boolean sourceMultiple  
+    string sourceDocumentation  
+    string target  
+    string targetRole  
+    boolean targetMultiple  
+    string targetDocumentation  
+    boolean masterDetail  
+}
+
+Property ||--|o Topic : "topic"
+SMWType ||--|o Property : "usedByProperties"
+Topic ||--|o Context : "context"
+
+```
+

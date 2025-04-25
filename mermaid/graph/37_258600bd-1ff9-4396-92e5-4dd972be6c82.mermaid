@@ -1,0 +1,29 @@
+graph TB
+    style Organizations fill:#FAD2E1,stroke:#000000,stroke-width:2px,color:#000
+    Organizations -->|Contains| Inventories
+    style Inventories fill:#C9DAF8,stroke:#000000,stroke-width:2px,color:#000
+    Inventories -->|Subdivided into| Groups
+    style Groups fill:#D9EAD3,stroke:#000000,stroke-width:2px,color:#000
+    Inventories -->|Subdivided into| Hosts
+    style Hosts fill:#D0E0E3,stroke:#000000,stroke-width:2px,color:#000
+    Organizations -->|Consists of| Teams
+    style Teams fill:#FFF2CC,stroke:#000000,stroke-width:2px,color:#000
+    Teams -->|Use| Credentials
+    style Credentials fill:#FFE599,stroke:#000000,stroke-width:2px,color:#000
+    Teams -->|Governed by| Permissions
+    style Permissions fill:#EA9999,stroke:#000000,stroke-width:2px,color:#000
+    Teams -->|Includes| Users
+    style Users fill:#D5A6BD,stroke:#000000,stroke-width:2px,color:#000
+    Users -->|Utilize| Credentials1[Credentials]
+    style Credentials1 fill:#FFE599,stroke:#000000,stroke-width:2px,color:#000
+    Users -->|Operate under| Permissions1[Permissions]
+    style Permissions1 fill:#EA9999,stroke:#000000,stroke-width:2px,color:#000
+    Organizations -->|Manages| Projects
+    style Projects fill:#B4A7D6,stroke:#333,stroke-width:2px,color:#000
+    Projects -->|Contain| Playbooks
+    style Playbooks fill:#8E7CC3,stroke:#000000,stroke-width:2px,color:#000
+    Projects -->|Define| JobTemplates[Job Templates]
+    style JobTemplates fill:#B4A7D6,stroke:#000000,stroke-width:2px,color:#000
+    JobTemplates -->|Executed as| Jobs
+    style Jobs fill:#8E7CC3,stroke:#000000,stroke-width:2px,color:#000
+

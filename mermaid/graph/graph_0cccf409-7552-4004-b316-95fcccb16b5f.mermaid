@@ -1,0 +1,25 @@
+graph TD
+    A[Upstream Commit] -->|check suitability| B(Run a downstream rebase to get the latest changes)
+    B --> C{Run in<br> Parallel}
+    C -->|Appveyor CI| D[fa:fa-desktop <br>Windows CI]
+    C -->|Circle CI| E[fa:fa-desktop <br>Docker CI]
+    C -->|Cirrus CI| F[fa:fa-desktop <br>FreeBSD CI]
+    C -->|Azure DevOPS| H[fa:fa-desktop <br>Fuzzing Test<br>+<br>Inspect Deploy<br>Package]
+    C -..-> |investigation| K[experimental]
+    K --> |Bitrise<br>Mobile DevOps| L[fa:fa-desktop <br>Android CI]
+    K --> |Cirrus CI| N[fa:fa-desktop <br>macOS ARM]
+    K --> |GitHub Actions| O[fa:fa-desktop <br>Solaris CI]
+    H[fa:fa-desktop <br>Fuzzing Test<br>+<br>Inspection of<br> Deployment<br>Package] -->|manual approval| X(Azure Deploys<br>the Release)
+    C -..->|decommissioned| P[fa:fa-desktop <br>Travis CI]
+
+
+
+graph TD
+    A[Packaging] -->|Is CI ok?| B(<br>Manual Startup<br>...)
+    B --> B1[Get Source Code<br>From Upstream]
+    B1 --> C{Providers}
+    C -->|GitLab CI| D[fa:fa-desktop <br>FlatPak]
+    C -->|Launchpad| E[fa:fa-desktop <br>Snap]
+    C -->|GitHub Actions| F[fa:fa-desktop <br>Docker<br>Image]
+    C -->|Azure DevOPS| H[fa:fa-desktop <br>Windows<br>64bit]
+    C -->|Cirrus CI| O[fa:fa-desktop <br>macOS<br>ARM]

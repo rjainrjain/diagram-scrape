@@ -1,0 +1,9 @@
+graph TD
+    A[User] -->|Interacts with| B[Next.js Frontend]
+    B -->|Hosted on| C[Netlify]
+    B -->|Connects to| D[Web3.js / ethers.js]
+    D -->|Interacts with| E[Smart Contract]
+    E -->|Deployed on| F[Ethereum Testnet]
+    G[GitHub Repository] -->|CI/CD| H[GitHub Actions]
+    H -->|Deploy Frontend| C
+    H -->|Deploy Smart Contract| F

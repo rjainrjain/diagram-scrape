@@ -1,0 +1,79 @@
+erDiagram
+    USERS {
+        VARCHAR(50) username PK
+        VARCHAR(255) password
+        TINYINT enabled
+    }
+
+AUTHORITIES {
+VARCHAR(50) username FK
+VARCHAR(50) authority
+}
+
+UNIT_OF_MEASURES {
+BIGINT id PK
+VARCHAR(10) code
+VARCHAR(255) full_name
+TIMESTAMP creation_date
+VARCHAR(50) created_by
+VARCHAR(50) last_update_by
+TIMESTAMP last_update_date
+}
+
+CATEGORY {
+BIGINT id PK
+VARCHAR(10) code
+VARCHAR(255) full_name
+TEXT description
+VARCHAR(10) super_category_code FK
+TIMESTAMP creation_date
+VARCHAR(50) created_by
+VARCHAR(50) last_update_by
+TIMESTAMP last_update_date
+}
+
+MEDICATION {
+BIGINT id PK
+VARCHAR(255) name
+TEXT description
+VARCHAR(10) primary_uom_code FK
+VARCHAR(10) category_code FK
+DATE exp_date
+DOUBLE price
+INT quantity
+INT dosage_strength
+TIMESTAMP creation_date
+VARCHAR(50) created_by
+VARCHAR(50) last_update_by
+TIMESTAMP last_update_date
+}
+
+SALES_HEADER {
+BIGINT id PK
+VARCHAR(255) customer_name
+DATE date
+DOUBLE total_amount
+TIMESTAMP creation_date
+VARCHAR(50) created_by
+VARCHAR(50) last_update_by
+TIMESTAMP last_update_date
+}
+
+SALES_ITEM {
+BIGINT id PK
+BIGINT sales_id FK
+BIGINT medication_id FK
+INT quantity
+DOUBLE price
+TIMESTAMP creation_date
+VARCHAR(50) created_by
+VARCHAR(50) last_update_by
+TIMESTAMP last_update_date
+    }
+
+USERS ||--o{ AUTHORITIES : "has"
+SALES_HEADER ||--o{ SALES_ITEM : "contains"
+MEDICATION ||--o{ SALES_ITEM : "includes"
+MEDICATION ||--o| UNIT_OF_MEASURES : "uses"
+CATEGORY ||--o| CATEGORY : "belongs to"
+MEDICATION || --o| CATEGORY : "belongs to"

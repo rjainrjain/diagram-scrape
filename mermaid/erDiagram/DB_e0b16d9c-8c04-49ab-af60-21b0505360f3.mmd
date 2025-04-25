@@ -1,0 +1,27 @@
+erDiagram
+    organization ||--|{ module : has
+    organization ||--|| job : has
+
+    organization {
+      id int 
+      organization_name text 
+      organization_password text 
+      organization_email text 
+    }
+    
+    module {
+      id int 
+      organization_id int
+      module_name text 
+      notify_when notification_frequency 
+    }
+
+    job {
+      id int
+      organization_id int
+      job_name        text
+      job_description text
+      job_starts_at   timestamp
+      job_last_run    timestamp
+      job_schedule    schedule
+    }

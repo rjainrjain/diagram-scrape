@@ -1,0 +1,25 @@
+sequenceDiagram
+    participant Temporal Server
+    participant Gathering
+    participant Processing
+    participant PromQL
+    participant Importer
+    participant DataDog
+    loop 15s interval
+        Gathering ->> Temporal Server: scrape
+        Gathering ->> Processing: push
+    end 
+    Note right of Processing: Gathering is<br>gobally distributed<br>and pushed at<br>various times
+    loop 30s interval
+        Processing ->> Processing: aggregate
+            Note right of Processing: Aggregation is over<br>a look back
+        Processing ->> PromQL: publish
+    end
+    Note right of PromQL: Aggregation and<br>publish loop can run<br>in parallel and out<br>of order
+    loop 30s interval
+        Importer ->> PromQL: query 10m range
+        PromQL -->> Importer: published results
+        Importer ->> DataDog: send metrics series
+        DataDog -->> Importer: report success
+    end
+    Note right of DataDog: 10m range covers<br>out of order<br>results and<br>transient errors

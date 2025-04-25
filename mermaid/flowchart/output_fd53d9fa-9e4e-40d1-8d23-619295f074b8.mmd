@@ -1,0 +1,13 @@
+flowchart TD
+	node1["extract_text"]
+	node2["generate_dataset"]
+	node3["generate_text_dataset"]
+	node4["index_towns"]
+	node5["upload_zoning_docs"]
+	node1-->node2
+	node2-->node3
+	node3-->node4
+	node5-->node1
+	node1-->node2
+	node3-->node1
+	node7["THIS IS NEW NEW"]

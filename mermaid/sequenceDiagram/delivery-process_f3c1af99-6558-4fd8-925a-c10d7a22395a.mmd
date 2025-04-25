@@ -1,0 +1,9 @@
+sequenceDiagram
+  participant S as Student
+  participant L as Learning System
+
+  S -->> S: Receives flash drive via Mail
+  S -->> L: Plug Flash Drive into learning system
+  L -->> S: Give Course Overview UI
+  S --> L: Watch instructional videos to unlock tests
+  S -->> L: Take test defined by instructor to complete first course (or class)

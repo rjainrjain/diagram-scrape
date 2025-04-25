@@ -1,0 +1,54 @@
+graph TD
+    U[User] -->|Interacts with| FE[Frontend Angular SPA]
+    FE -->|API Calls| AG[API Gateway]
+    
+    subgraph "Data Ingestion"
+        AG -->|Routes Requests| PIS[Platform Integration Service]
+        PIS -->|Fetches Data| TC[Telegram API Client]
+        PIS -->|Fetches Data| SC[Slack API Client]
+    end
+    
+    subgraph "Data Processing"
+        PIS -->|Sends Raw Data| DPS[Data Processing Service]
+        DPS -->|Cleans & Normalizes| PP[Preprocessing Pipeline]
+    end
+    
+    subgraph "AI Analysis"
+        PP -->|Processed Data| AAS[AI Analysis Service]
+        AAS -->|Uses| LLM[Language Model]
+        AAS -->|Uses| SAM[Sentiment Analysis Model]
+        AAS -->|Uses| TM[Topic Modeling]
+        AAS -->|Uses| NER[Named Entity Recognition Model]
+    end
+    
+    subgraph "Data Storage"
+        AAS -->|Stores Vectors| VDB[(Vector DB)]
+        AAS -->|Stores Structured Data| MDB[(MongoDB)]
+    end
+    
+    subgraph "Query Processing"
+        AG -->|Routes Queries| QS[Query Service]
+        QS -->|Uses| RAG[RAG System]
+        RAG -->|Retrieves Vectors| VDB
+        RAG -->|Retrieves Documents| MDB
+        RAG -->|Generates Responses| LLM
+    end
+    
+    QS -->|Returns Results| AG
+    AG -->|Sends Response| FE
+
+    classDef userInterface fill:#f9f,stroke:#333,stroke-width:4px;
+    classDef apiGateway fill:#ff9,stroke:#333,stroke-width:4px;
+    classDef dataIngestion fill:#9ff,stroke:#333,stroke-width:2px;
+    classDef dataProcessing fill:#f96,stroke:#333,stroke-width:2px;
+    classDef aiAnalysis fill:#9f9,stroke:#333,stroke-width:2px;
+    classDef dataStorage fill:#69f,stroke:#333,stroke-width:2px;
+    classDef queryProcessing fill:#f69,stroke:#333,stroke-width:2px;
+    
+    class U,FE userInterface;
+    class AG apiGateway;
+    class PIS,TC,SC dataIngestion;
+    class DPS,PP dataProcessing;
+    class AAS,LLM,SAM,TM,NER aiAnalysis;
+    class VDB,MDB dataStorage;
+    class QS,RAG queryProcessing;

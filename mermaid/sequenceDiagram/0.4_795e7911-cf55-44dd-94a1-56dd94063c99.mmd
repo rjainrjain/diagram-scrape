@@ -1,0 +1,27 @@
+sequenceDiagram
+
+participant b as browser
+participant s as server
+
+b->>s: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note <br /> Form Data: note: Hello, World
+s-->>b: HTTP status code 302 Found <br > Location: /exampleapp/notes
+note over b: browser refreshes the page
+
+b->>s: HTTP GET https://studies.cs.helsinki.fi/exampleapp/notes
+s-->>b: Status code 304 Not Modified
+note over b: browser loads html-code from the cache
+
+b->>s: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.css
+s-->>b: Status code 304 Not Modified
+note over b: browser loads main.css from the cache
+
+b->>s: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.js
+s-->>b: Status code 304 Not Modified
+note over b: browser loads main.js from the cache
+
+note over b: browser starts executing js-code <br /> that requests JSON data from server
+
+b->>s: HTTP GET https://studies.cs.helsinki.fi/exampleapp/data.json
+s-->>b: [..., { content: "Hello, World", date: "2022-11-08T13:48:55.388Z" }]
+
+note over b: browser executes the event handler <br /> that renders notes to display

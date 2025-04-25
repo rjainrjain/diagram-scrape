@@ -1,0 +1,16 @@
+graph TD
+    User[User] -->|Access| APIGateway[Amazon API Gateway]
+    APIGateway -->|Route Requests| Lambda[AWS Lambda]
+    
+    Lambda -->|Store/Retrieve Data| DynamoDB[Amazon DynamoDB]
+    Lambda -->|Store Files| S3[Amazon S3]
+    
+    Developer[Developer] -->|Deploy| Lambda
+    Developer -->|Configure| APIGateway
+    
+    Cognito[Amazon Cognito] -->|Authenticate| APIGateway
+    
+    CloudWatch[Amazon CloudWatch] -->|Monitor| Lambda
+    CloudWatch -->|Monitor| APIGateway
+    
+    User -->|Interact with App| APIGateway

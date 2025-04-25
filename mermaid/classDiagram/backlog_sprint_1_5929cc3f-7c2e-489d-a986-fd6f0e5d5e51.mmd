@@ -1,0 +1,19 @@
+classDiagram
+
+class Workout {
++Int id
++String description
+}
+
+class exercise {
++Int id
++String category
++String muscle_group
++String equipment_needed
++String desciption
++Int reps
++Int time
+}
+
+%% Relations
+Workout "*" -- "*" exercise : "has"

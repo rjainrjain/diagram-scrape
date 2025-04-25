@@ -1,0 +1,31 @@
+sequenceDiagram
+    participant Main
+    participant Frame1 as inOrderTraversal(1)
+    participant Frame2 as inOrderTraversal(2)
+    participant Frame3 as inOrderTraversal(4)
+    participant Frame4 as inOrderTraversal(5)
+    participant Frame5 as inOrderTraversal(3)
+
+    Main->>Frame1: call(1)
+    
+    Frame1->>Frame2: visit left(2)
+    Frame2->>Frame3: visit left(4)
+    Note over Frame3: Print: 4
+    Frame3-->>Frame2: return (left: null)
+    Frame3-->>Frame2: return (right: null)
+    
+    Note over Frame2: Print: 2
+    
+    Frame2->>Frame4: visit right(5)
+    Note over Frame4: Print: 5
+    Frame4-->>Frame2: return (left: null)
+    Frame4-->>Frame2: return (right: null)
+    Frame2-->>Frame1: return
+    
+    Note over Frame1: Print: 1
+    
+    Frame1->>Frame5: visit right(3)
+    Note over Frame5: Print: 3
+    Frame5-->>Frame1: return (left: null)
+    Frame5-->>Frame1: return (right: null)
+    Frame1-->>Main: return

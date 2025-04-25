@@ -1,0 +1,81 @@
+classDiagram
+
+namespace pkg_competences {
+  class Competence 
+  %% Description d'un niveau de compétence
+  class NiveauCompetence 
+  class Technologie 
+  class CategorieTechnologie 
+  class Appreciation
+  class Module
+  class Filiere
+}
+
+Competence "1" -- "*" NiveauCompetence
+Competence "1" --> "*" Technologie 
+Technologie "*" --> "1" CategorieTechnologie
+Appreciation "*" --> "1" NiveauCompetence
+Competence "*" --> "1" Module
+Module "*" --> "1" Filiere
+
+%% Relations avec les packages
+TransfertCompetence "*" -- "1" Competence 
+TransfertCompetence "*" -- "*" Technologie
+TransfertCompetence "*" -- "1" Appreciation
+Validation "*" --> "1" Appreciation
+
+namespace pkg_rh {
+  class Formateur 
+}
+namespace pkg_creation_projets {
+  class TransfertCompetence
+}
+namespace pkg_validations {
+class Validation 
+}
+Validation "*" --> "1" TransfertCompetence : "1"
+
+class Competence {
+  id : Integer
+  code: String
+  nom: String
+  description: Text
+}
+class NiveauCompetence {
+  id : int
+  nom : string
+  description : string
+}
+class Technologie {
+  id : int
+  nom : string
+  description : string
+}
+
+class CategorieTechnologie {
+  id : int
+  nom : string
+  description : string
+}
+
+class Appreciation{
+  id : int
+  nom : string
+  description : string
+  noteMin : float
+  noteMax : float
+}
+
+class Module {
+  id : int
+  N : string
+  nom : string
+  description : string
+  Masse_horaire : string
+}
+
+class Filiere {
+  id : int
+  nom : string
+  description : string 
+}

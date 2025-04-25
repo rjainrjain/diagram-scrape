@@ -1,0 +1,38 @@
+graph TD
+    CEO[Chief Executive Officer] --> COO[Chief Operating Officer]
+    CEO --> CFO[Chief Financial Officer]
+    CEO --> CTO[Chief Technology Officer]
+    CEO --> CMO[Chief Marketing Officer]
+    CEO --> CHRO[Chief Human Resources Officer]
+
+    COO --> OPS[Operations Department]
+    COO --> PROD[Production Department]
+    COO --> LOGIS[Logistics Department]
+
+    CFO --> ACC[Accounting Department]
+    CFO --> FIN[Finance Department]
+    CFO --> TAX[Tax Department]
+
+    CTO --> IT[IT Department]
+    CTO --> RD[Research & Development]
+    CTO --> INFRA[Infrastructure Department]
+
+    CMO --> MKTG[Marketing Department]
+    CMO --> SALES[Sales Department]
+    CMO --> PR[Public Relations]
+
+    CHRO --> REC[Recruitment]
+    CHRO --> TRAIN[Training & Development]
+    CHRO --> COMP[Compensation & Benefits]
+
+    subgraph Executive Leadership
+    CEO
+    COO
+    CFO
+    CTO
+    CMO
+    CHRO
+    end
+
+    classDef executive fill:#f9f,stroke:#333,stroke-width:4px;
+    class CEO,COO,CFO,CTO,CMO,CHRO executive;

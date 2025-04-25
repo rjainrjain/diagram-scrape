@@ -1,0 +1,11 @@
+graph TD
+    A[1. Gradio Interface] -->|Upload Photo| B[RabbitMQ]
+    B -->|Photo| C[2. Celebrity Recognition]
+    C -->|Celebrity Name| B
+    B -->|Name| D[3. Bio Retrieval]
+    B -->|Name| E[4. Recent Pictures Retrieval]
+    D -->|Bio| B
+    E -->|Recent Pictures| B
+    B -->|Bio & Pictures| F[5. Information Assembler]
+    F -->|Assembled Info| B
+    B -->|Results| A

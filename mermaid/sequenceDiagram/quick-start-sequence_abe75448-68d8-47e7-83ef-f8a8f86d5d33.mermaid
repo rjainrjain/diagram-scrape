@@ -1,0 +1,33 @@
+```mermaid
+sequenceDiagram
+    participant AppHost as App: Host
+    participant VideoSDK as Video SDK
+    participant AppAudience as App: Audience
+
+    AppHost->>VideoSDK: Create and initialize the engine
+    VideoSDK->>AppAudience: Create and initialize the engine
+
+    AppHost->>VideoSDK: Enable the video module
+    VideoSDK->>AppAudience: Enable the video module
+
+    AppHost->>VideoSDK: Initialize local view
+    AppHost->>AppHost: Display local video preview
+
+    AppHost->>VideoSDK: Join channel, set host role
+    VideoSDK->>AppAudience: Join channel, set audience role
+
+    AppHost->>+VideoSDK: Send audio and video
+    VideoSDK->>+AppAudience: Receive audio and video
+
+    AppAudience->>-VideoSDK: Receive audio and video
+    VideoSDK->>-AppHost: Send audio and video
+
+    AppHost->>VideoSDK: Leave channel
+    AppHost->>AppHost: Notify host left channel
+    VideoSDK->>AppAudience: Leave channel
+
+    AppHost->>VideoSDK: Destroy engine
+    VideoSDK->>AppAudience: Destroy engine
+    AppAudience->>AppAudience: Notify audience left channel
+    AppAudience->>AppAudience: Destroy engine
+```

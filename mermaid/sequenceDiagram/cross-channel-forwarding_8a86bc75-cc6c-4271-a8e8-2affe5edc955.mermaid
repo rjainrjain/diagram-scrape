@@ -1,0 +1,68 @@
+sequenceDiagram
+    participant App_Host as App: Host
+    participant SDK
+    participant Agora_SD_RTN as Agora SD-RTN
+
+    rect rgb(255, 255, 255)
+        note right of App_Host: Create and initialize the engine
+        App_Host ->> SDK: Initialize engine
+        SDK -->> App_Host: Engine initialized
+    end
+
+    rect rgb(255, 255, 255)
+        note right of App_Host: Join the channel and set the user role as the host
+        App_Host ->> SDK: Join channel as host
+        SDK ->> Agora_SD_RTN: Request to join the live channel as a host
+        Agora_SD_RTN -->> SDK: Joined channel as host
+        SDK -->> App_Host: Channel joined
+    end
+
+    rect rgb(255, 255, 255)
+        note right of App_Host: Start cross-channel media stream forwarding
+        App_Host ->> SDK: Start forwarding
+        SDK ->> Agora_SD_RTN: Request forwarding flow
+        Agora_SD_RTN -->> SDK: Forwarding started
+        SDK -->> App_Host: Forwarding to target channel started
+    end
+
+    rect rgb(255, 255, 255)
+        note right of App_Host: Update the target channel for media stream forwarding
+        App_Host ->> SDK: Update forwarding channel
+        SDK ->> Agora_SD_RTN: Request an update to the forwarding channel
+        Agora_SD_RTN -->> SDK: Forwarding channel updated
+        SDK -->> App_Host: Target channels have been updated
+    end
+
+    rect rgb(255, 255, 255)
+        note right of App_Host: Pause forwarding of media streams to all target channels
+        App_Host ->> SDK: Pause forwarding
+        SDK ->> Agora_SD_RTN: Request to pause forwarding flow
+        Agora_SD_RTN -->> SDK: Forwarding paused
+        SDK -->> App_Host: Pause forwarding media stream to target channel successful
+    end
+
+    rect rgb(255, 255, 255)
+        note right of App_Host: Resume forwarding media streams to all target channels
+        App_Host ->> SDK: Resume forwarding
+        SDK ->> Agora_SD_RTN: Request to resume forwarding flow
+        Agora_SD_RTN -->> SDK: Forwarding resumed
+        SDK -->> App_Host: Resume forwarding media streams to the target channel successful
+    end
+
+    rect rgb(255, 255, 255)
+        note right of App_Host: Stop cross-channel media stream forwarding
+        App_Host ->> SDK: Stop forwarding
+        SDK ->> Agora_SD_RTN: Request to stop forwarding flow
+        Agora_SD_RTN -->> SDK: Forwarding stopped
+        SDK -->> App_Host: Stopped media stream forwarding
+    end
+
+    rect rgb(255, 255, 255)
+        note right of App_Host: Leave channel and destroy the engine
+        App_Host ->> SDK: Leave channel
+        SDK ->> Agora_SD_RTN: Request to leave channel
+        Agora_SD_RTN -->> SDK: Channel left
+        SDK -->> App_Host: Channel left, destroying engine
+        App_Host ->> SDK: Destroy engine
+        SDK -->> App_Host: Engine destroyed
+    end

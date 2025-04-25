@@ -1,0 +1,183 @@
+classDiagram
+    class InstancePlatform {
+        <<enumeration>>
+        LINUX
+        WINDOWS
+        UNKNOWN
+    }
+
+    class InstanceTypeCpu {
+        <<interface>>
+        number cores
+        number threadsPerCore
+        number vCpus
+        string manufacturer
+        number clockSpeedInGhz
+    }
+
+    class InstanceTypeRam {
+        <<interface>>
+        number sizeInMb
+    }
+
+    class InstanceTypeGpuDevice {
+        <<interface>>
+        number count
+        string name
+        string manufacturer
+        number memoryInMb
+    }
+
+    class InstanceTypeGpu {
+        <<interface>>
+        number totalGpuMemoryInMb
+        InstanceTypeGpuDevice[] devices
+    }
+
+    InstanceTypeGpu -- InstanceTypeGpuDevice
+
+    class InstanceType {
+        <<interface>>
+        string name
+        InstanceTypeCpu cpu
+        InstanceTypeRam ram
+        InstanceTypeGpu gpu
+        boolean hibernationSupport
+        string networkPerformance
+    }
+
+    InstanceType --  InstanceTypeCpu
+    InstanceType --  InstanceTypeRam
+    InstanceType --  InstanceTypeGpu
+
+    class InstanceData {
+        <<interface>>
+        string id
+        string virtualId
+        string productId
+        string machineImageId
+        string ownerId
+        string launchToken
+        string name
+        string description
+        string connectionType
+        boolean canHibernate
+        InstancePlatform platform
+        string distribution
+        InstanceType instanceType
+        string storageInGb
+        Date createdAt
+        Date updatedAt
+        Date lastConnectionAt
+        string state
+    }
+
+    InstanceData -- InstancePlatform
+    InstanceData -- InstanceType
+    
+    class Instance {
+        -InstanceData data
+        -constructor(data: InstanceData): Instance
+        getData(): InstanceData
+        create(data: Partial~InstanceData~)$: Instance
+        restore(data: InstanceData)$: Instance
+        get id(): string
+        set id(id: string): void
+        update(data: Partial~InstanceData~): void
+        onStateRetrieved(state: string): void
+        onUserConnected(): void
+        hasBeenLaunched(): boolean
+        isReadyToConnect(): boolean
+        isReadyToTurnOn(): boolean
+        isReadyToTurnOff(): boolean
+        isReadyToReboot(): boolean
+        isOwnedBy(userId: string): boolean
+        canHibernate(): boolean
+    }
+
+    Instance -- InstanceData
+
+    class Role {
+        <<enumeration>>
+        NONE
+        PENDING
+        USER
+        ADMIN
+    }
+
+    class UserQuota {
+        <<interface>>
+        number maxInstances
+        InstanceType[] allowedInstanceTypes
+        boolean canLaunchInstanceWithHibernation
+    }
+
+    UserQuota -- InstanceType
+
+    class UserData {
+        <<interface>>
+        string id
+        string username
+        string name
+        string preferredUsername
+        Role role
+        Date createdAt
+        Date updatedAt
+        Date lastLoginAt
+        UserQuota quotas
+    }
+
+    UserData -- Role
+    UserData -- UserQuota
+    
+    class User {
+        -UserData data
+        -constructor(data: UserData): User
+        getData(): UserData
+        create(data: Partial~UserData~)$: User
+        restore(data: UserData)$: User
+        get id(): string
+        set id(id: string): void
+        update(data: Partial~UserData~): void
+        onSignIn(): void
+        canUseInstanceType(instanceType: InstanceType): boolean
+    }
+
+    User -- UserData
+
+    class InstanceTemplateData {
+        <<interface>>
+        string id
+        string createdBy
+        string name
+        string description
+        string productId
+        string machineImageId
+        InstancePlatform platform
+        string distribution
+        number storageInGb
+        Date createdAt
+        Date updatedAt
+    }
+
+    InstanceTemplateData -- InstancePlatform
+
+    class InstanceTemplate {
+        -InstanceTemplateData data
+        -constructor(data: InstanceTemplateData): InstanceTemplate
+        getData(): InstanceTemplateData
+        create(data: Partial~InstanceTemplateData~)$: InstanceTemplate
+        restore(data: InstanceTemplateData)$: InstanceTemplate
+        get id(): string
+        set id(id: string): void
+        update(data: Partial~InstanceTemplateData~): void
+        wasCreatedBy(userId: string): boolean
+    }
+
+    InstanceTemplate -- InstanceTemplateData
+
+    %% Relationships
+
+    %% An user can have multiple
+    User "1" *-- "0..*" Instance : belongsTo
+    User "1" o-- "0..*" InstanceTemplate : createdBy

@@ -1,0 +1,45 @@
+classDiagram
+    class Cassa {
+        -double parziale
+        -double totale
+        +mantieneParziale()
+        +mantieneTotale()
+        +calcolaResto(double importo): double
+        +erogaMonete(double importo)
+        +notificaCassaPiena()
+    }
+    class Erogatore {
+        -Map~String, int~ consumabili
+        +verificaConsumabili(): Map~String, int~
+        +verificaParziale(): double
+        +erogaBevanda(String tipo, int quantita)
+        +inviaMessaggioErrore(String messaggio)
+        +inviaMessaggioFineErogazione()
+    }
+    class Tastierino {
+        +inviaInput(String input)
+    }
+    class Gettoniera {
+        -double parziale
+        +aggiornaParziale(double importo)
+        +erogaParziale()
+        +chiediErogazioneParziale()
+    }
+    class GestoreConsumabili {
+        -Map~String, int~ consumabili
+        +monitoraggioConsumabili()
+        +comunicaConServer()
+        +aggiornaConsumabili(Map~String, int~ nuoviConsumabili)
+    }
+    class MQTTClient {
+        +connect()
+        +disconnect()
+        +publish(String topic, String message)
+        +subscribe(String topic)
+    }
+
+    Cassa --> MQTTClient
+    Erogatore --> MQTTClient
+    Tastierino --> MQTTClient
+    Gettoniera --> MQTTClient
+    GestoreConsumabili --> MQTTClient

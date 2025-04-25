@@ -1,0 +1,66 @@
+classDiagram
+    class User {
+        +id: string
+        +displayName: string
+        +keyPair: KeyPair
+    }
+
+    class Message {
+        +id: string
+        +sender: User
+        +receiver: User
+        +content: string
+        +timestamp: int64
+    }
+
+    class Channel {
+        +id: string
+        +name: string
+        +isPrivate: bool
+        +members: List<User>
+        +messages: List<Message>
+    }
+
+    class KeyPair {
+        +publicKey: string
+        +privateKey: string
+    }
+
+    class ChannelPermissions {
+        +canSendMessage: bool
+        +canInviteUsers: bool
+    }
+
+    class Chat {
+        +users: List<User>
+        +channels: List<Channel>
+    }
+
+    class CommunicationSession {
+        +participants: List<User>
+        +isActive: bool
+    }
+
+    class MessagingService {
+        +sendMessage(sender, receiver, content): Message
+        +broadcastMessage(sender, channel, content): Message
+    }
+
+    class ChannelService {
+        +createChannel(name, isPrivate): Channel
+        +joinChannel(user, channel): bool
+        +leaveChannel(user, channel): bool
+    }
+
+    class MediaService {
+        +startVoiceCall(participants): CommunicationSession
+        +startVideoCall(participants): CommunicationSession
+    }
+
+    User --> KeyPair
+    Channel --> ChannelPermissions
+    Chat --> Channel
+    CommunicationSession --> User
+    MessagingService --> Message
+    ChannelService --> Channel
+    MediaService --> CommunicationSession

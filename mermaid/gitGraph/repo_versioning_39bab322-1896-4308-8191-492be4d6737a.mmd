@@ -1,0 +1,17 @@
+gitGraph TB:
+    commit
+    branch Develop
+    checkout Develop
+    commit tag:"v3.0.0-Alpha"
+    commit tag:"v3.0.0-Alpha"
+    commit tag:"v3.0.0-Beta"
+    commit tag:"v3.0.0-Beta"
+    commit tag:"v3.0.0-Beta"
+    commit tag:"v3.0.0-Gamma"
+    commit tag:"v3.0.0-Gamma"
+    commit tag:"v3.0.0-Gold"
+    checkout main
+    merge Develop
+    commit tag:"v3.0.0-Stable"
+    checkout Develop
+    commit tag:"v3.0.1-Alpha"  

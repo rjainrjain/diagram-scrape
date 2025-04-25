@@ -1,0 +1,477 @@
+---
+title: Auto Chess Class Diagram
+---
+
+classDiagram
+
+%% ----- Player Set -----
+Player ..|> IPlayer : implements
+Piece ..> Position : uses
+BountyHunter --|> Piece : extends
+%%BountyHunter ..|> IAssassin : implements
+%%BountyHunter ..|> IGoblin : implements
+QueenOfPain --|> Piece : extends
+%%QueenOfPain ..|> IAssassin : implements
+%%QueenOfPain ..|> IDemon : implements
+Juggernaut --|> Piece : extends
+%%Juggernaut ..|> IWarrior : implements
+%%Juggernaut ..|> IOrc : implements
+Sven --|> Piece : extends
+%%Sven ..|> IWarrior : implements
+%%Sven ..|> IDemon : implements
+Tinker --|> Piece : extends
+%%Tinker ..|> IMech : implements
+%%Tinker ..|> IGoblin : implements
+
+Piece ..> ClassType : uses
+Piece ..> SpeciesType : uses
+Piece ..> PieceStatus : uses
+
+%% ----- Game Controller -----
+GameController ..> GameStatus : uses
+Board"1" --o "1"GameController
+GameController"1" --o "1"Board
+CountDownTimer"1" o.. "1"GameController
+IPlayer"2" --o "1"GameController
+PlayerData"2" --* "1"GameController
+%%GameController ..> Piece : uses
+Piece"2..n" --* "1" GameController
+Piece"2..n" --* "2" PlayerData
+
+
+class GameStatus{
+    <<Enumeration>>
+    NOT_STARTED
+    PLAYER_REGISTER
+    PLACE_PIECES
+    ROUND_STARTED
+    ROUND_ONGOING
+    ROUND_FINISHED
+    GAME_FINISHED
+}
+
+%% Game Runner
+class GameController{
+    +GameController(int numberOfRounds, int maxNumPieces)
+    %% GameController constructor initializes the number of rounds in 1 game
+    %% and the maximum number of pieces that a player can have
+
+    %% Board & Pieces
+    -List~Piece~ DefaultPieces
+    %% A list of default pieces that the Players can receive randomly
+    %% by calling the GetRandomPieces method
+
+    -Board _board
+    -CountDownTimer _timer
+
+    %% Human players
+    -Dictionary~IPlayer.PlayerData~ _playerDataDict
+    -IPlayer _currentPlayer
+    %% the current player who's turn it is to place pieces
+
+    +AddPlayer(IPlayer player) bool
+    %% Add players to List of players in the _playerDataDict key
+    
+    +GetNextPlayer() IPlayer
+    %% Get the next player to place pieces
+    
+    +GetPlayers() List~IPlayer~
+    %% return all players
+
+    +GetRandomPieces(IPlayer player) Piece
+    %% Get random 8 pieces from a list of available pieces
+
+    +PlacePiece(IPlayer player, Piece piece, Position position) bool
+    %% return true if can place Piece there
+
+     %% Rounds
+    -readonly int _numberOfRounds 
+    -int$ _currentRound
+    +GetCurrentRound() int
+    +GoToNextRound() bool
+
+    %% Game Status & States
+    -GameStatus _gameStatus
+    +CheckGameStatus() GameStatus
+    +GoToNextGameStatus() bool
+    
+    +DisplayPlayerState(IPlayer player) void
+    %% Display the current states (HP, armor, etc.) of the player
+
+    +OnChangeStatus() Action~IPlayer.Piece~
+    %% display Piece status only when there is a change in the Piece's status
+
+    +GetPlayerData(IPlayer player) PlayerData
+    %% returns the PlayerData of the current player from the _playerDataDict
+    
+    +RemoveDeadPiece(IPlayer player) bool
+    %% Removes dead pieces from the board
+
+    +CheckForSurvivors(IPlayer player) bool
+    %% returns true if there is at least 1 alive piece
+
+    +GetRoundWinner() IPlayer
+    %% Get the player who wins in the current round
+
+    +AddRoundPoints(IPlayer player, int addPoints) bool
+    %% Add the points into the winner player's _roundPoints
+
+    +GetGameWinner() IPlayer
+    %% Get the player who wins after the total rounds (game)
+
+    +ResetRound() bool
+    %% Clear the pieces on the board for players to place pieces
+    %% by resetting the values in _playerDataDict
+
+    +DisplayBoard() bool
+    %% Redisplay the board only after when there is a change in player states
+
+    %%+ClearDisplay() void
+    %%%% Clears console display 
+   
+}
+
+
+class PlayerData{
+    -bool[,] _placeableTiles
+    %% Set position of tiles available to be placed at the start of each round
+
+    -List~Piece~ _piecesToPlace
+    %% List of pieces to place on to board
+
+    -List~Piece~ _alivePieces
+    %% List of pieces that are still alive
+    
+    -readonly int _maxNumPieces
+    %% usually 8 pieces per player, but to make it easier for console game, 
+    %% maybe set it to only 4
+    
+    -bool _isThereSurvivor
+    %% true if there is at least 1 piece on the board
+
+    -int _roundPoints
+    %% increase points if Player wins the round
+
+    +PlayerData(int maxNumPieces)
+
+    +SetPlaceableTiles(bool[,] tiles) bool
+    +GetPlaceableTiles() bool[,]
+
+    +SetPiecesToPlace(List~Piece~ pieces) bool
+    +GetPiecesToPlace() List~Piece~
+
+    +AddPieceToAliveList(Piece piece) bool
+    +RemovePieceFromAliveList(Piece piece) bool
+    +GetAlivePieces() List~Piece~
+
+    +GetMaxNumPieces() int
+
+    +SetIsThereSurvivor(bool survivor) void
+    +GetIsThereSurvivor() bool
+
+    +SetRoundPoints(int points) bool
+    +GetRoundPoints() int
+}
+
+class Player{
+    -int _playerId
+    -string _name
+
+    +Player(int playerId, string name)
+}
+
+class IPlayer{
+    <<Interface>>
+    +SetId(int id) bool
+    +GetId() int
+    +SetName(string name) bool
+    +GetName() string
+}   
+
+class Board{
+    -readonly int _sizeX
+    -readonly int _sizeY
+    -char[,] _piecesChar
+    %% The char/letter representing the Piece name to be displayed on the Board
+
+    +Board(int sizeX, int sizeY)
+    +GetSizeX() int
+    +GetSizeY() int
+    +SetPiecesChar(GameController gameController) bool
+    %% Set the char on the board from the Pieces' _pieceChar
+}
+
+class CountDownTimer{
+    -int _remainingTimeSeconds
+    +CountdownTimer(int timeSeconds)
+    +GetRemainingTime() int
+    +StartCountDown() bool
+    +StopCountDown() bool
+    +ResetCountDown() bool
+}
+
+class Position{
+    <<Struct>>
+    -int _x
+    -int _y
+    +GetX() int
+    +SetX(int x) bool
+    +GetY() int
+    +SetY(int y) bool
+}
+
+class SpeciesType{
+    <<Enumeration>>
+    DEMON
+    GOBLIN
+    ORC
+}
+
+class ClassType{
+    <<Enumeration>>
+    ASSASSIN
+    MECH
+    WARRIOR
+}
+
+class PieceStatus{
+    <<Enumeration>>
+    INITIALIZED
+    MOVING
+    ARMOR_UPGRADE
+    ATTACKING
+    DAMAGED
+    DEAD
+}
+
+class Piece{
+    <<Abstract>>
+    -readonly string _pieceName
+    %% the name of the Piece. Ex: "BountyHunter"
+
+    -readonly char _pieceChar
+    %% the first character of the _pieceName. 'B' for "BountyHunter"
+
+    -readonly ClassType _classType
+    %% enum of ClassType
+
+    -readonly SpeciesType _speciesType
+    %% enum of SpeciesType
+    
+    +Piece(string pieceName, ClassType ct, SpeciesType st)
+    +GetClassType() ClassType
+    +GetSpeciesType() SpeciesType
+    
+    -bool _isAlive
+
+    -PieceStatus _currentStatus
+
+    -Position _currentPosition
+    
+    -bool _isEnemyInAttackRange
+
+    -bool[,] _attackRange
+    %% global coordinate of tiles that the Piece can launch its attack
+
+    -int _maxMoveTile
+    %% the maximum distance of tiles the Piece can move automatically
+
+    -int _healthPoints
+
+    -int _damage
+    %% damage inflicted on the enemy piece
+
+    -int _coolDownTurns
+    %% the number of turns the Piece cannot execute its special attack
+
+    -int _turnsAfterCoolDown
+    %% the number of turns passed while cooldown phase is true
+
+    -bool _isCoolDown
+    %% true if Piece is in cooldown phase after special attack
+
+    -int _armor
+
+    -bool _isStatusChanged
+    %% true if there is a value change between _currentPieceStatus & _previousPieceStatus
+
+    %%+OnChangeHP() bool
+    %%+OnAttack() bool
+    %%+OnSetArmor() bool
+    %%+OnDead() bool
+
+    +GetAliveStatus() bool
+    %% returns the value of _isAlive
+
+    +Ability()* bool
+    %% The distinct ability that the Piece can regularly excute.
+    %% It is an abstract method because every Piece must have this ability.
+
+    +virtual SpeciesClassCombo() bool
+    %% The ability due to a combination of its class & species.
+    %% This ability is affected by the cooldown turns.
+    %% It is a virtual method because it is optional. It may be difficult to realize in the Console game.
+
+    +GetAttackRange() bool[,]
+    %% Get the global coordinates of attack range 
+    
+    +SetAttackRange(int addRange) bool
+    %% addRange: number of tiles in all directions from local position
+
+    +GetHP() int
+    +SetHP(int addHP) bool
+
+    +GetDamage() int
+    +SetDamage(int addDamage) bool
+
+    +GetArmor() int
+    +SetArmor(int addArmor) bool
+
+    +GetCurrentPosition() Position
+    %% Get the current position of this Piece 
+
+    +MoveToTile(Position destination) bool
+    %% Move to destination if enemy is not within attack range
+
+    +ChangeStatus(PieceStatus status) bool
+    %% change _currentStatus and _isStatusChanged is true if 
+    %% _currentStatus != status
+
+    +GetIsStatusChanged() bool
+    %% return _isStatusChanged
+
+    +FindClosestEnemy(GameController gameController) Piece
+    %% Find the closest enemy within attack range by accessing the
+    %% _playerDataDict of the GameController
+
+    %%+FindClosestEnemy(PlayerData playerData) Piece
+    %% Find the closest enemy within attack range by accessing the
+    %% PlayerData of the enemy player
+    
+    +Attack(Piece piece) bool
+    %% Attack the piece that is within the range
+}
+
+%% Concrete Pieces
+class BountyHunter{
+    +BountyHunter(string pieceName, ClassType ct, SpeciesType st)
+    +override Ability() bool 
+    +override SpeciesClassCombo() bool
+}
+    %%-const int _cost = 1
+    %%Ability: Shuriken Toss
+    %%Hurls a deadly shuriken at an enemy unit, dealing damage and mini-stunning the target. The shuriken will bounce between any Tracked units who are within a 1200 radius of each other.
+    %% DAMAGE: 300/500/700
+    %% TRACK BOUNCE RANGE: 1200
+    %% COOLDOWN: 5
+
+class Juggernaut{ 
+    +Juggernaut(string pieceName, ClassType ct, SpeciesType st)
+    +override Ability() bool
+    +override SpeciesClassCombo() bool
+}
+    %%-const int _cost = 2
+    %% Ability: Blade Fury
+    %% Causes a bladestorm of destructive force around Juggernaut, dealing damage to nearby enemy units and rendering him immune to magical damage
+    %% RADIUS: 250
+    %% DAMAGE: 50/100/150
+    %% DURATION: 5
+    %% COOLDOWN: 12
+
+class QueenOfPain{
+    +QueenOfPain(string pieceName, ClassType ct, SpeciesType st)
+    +override Ability() bool
+    +override SpeciesClassCombo() bool
+}
+    %%-const int _cost = 2
+    %% Ability: Scream of Pain
+    %% The Queen of Pain lets loose a piercing scream around her, damaging nearby enemies 
+    %% RADIUS: 425
+    %% DAMAGE: 200 / 300 / 400
+    %% COOLDOWN: 6
+
+class Sven{
+    +Sven(string pieceName, ClassType ct, SpeciesType st)
+    +override Ability() bool
+    +override SpeciesClassCombo() bool
+}
+    %%-const int _cost = 5
+    %% Ability: Great Cleave
+    %% Sven's attacks can deal 50% Cleave damage to enemy pieces within 2 square. 
+
+
+class Tinker{
+    -int _remainingRockets
+    +Tinker(string pieceName, ClassType ct, SpeciesType st)
+    +override Ability() bool
+    +override SpeciesClassCombo() bool
+}
+    %%-const int _cost = 1
+    %% Heat Seeking Missile
+    %% Launches 3 rockets to hit random enemy chesses.
+    %% DAMAGE TYPE: Magical
+    %% DAMAGE EACH: 200/300/400
+
+%%%% Class
+%%class IAssassin{
+%%    <<interface>>
+%%    +GiveChance(List~IAssassin~ assassin) bool
+%%    %% Active when you have at least (N) different assassin pieces on board.
+%%    %% (3) Assassins: All friendly assassins have 15% chance to critical hit for 350% damage.
+%%    %% (6) Assassins: All friendly assassins have 15% chance to critical hit for 450% damage.
+%%    %% 3 Assassins have 15% to deal 350%. 37.5% attack damage output increase.
+%%    %% 6 Assassins have 15% to deal 450% and 12.75% to deal 350%. 84.375% attack damage output increase.
+%%    +GetAssassins(List~Piece~ pieces) List~IAssassin~
+%%    %% Retrieve a list of assassins
+%%    
+%%}
+%%
+%%class IWarrior{
+%%    <<interface>>
+%%    +GiveArmor(List~IWarrior~ warriors) bool
+%%    %%     Active when you have at least (N) different warrior pieces on board.
+%%    %% (3) Warriors: All friendly warriors have +5 armor.
+%%    %% (6) Warriors: All friendly warriors have an additional +9 armor.
+%%    %% (9) Warriors: All friendly pieces reflect pure damage depends on armor.
+%%    
+%%    +GetWarriors(List~Piece~ pieces) List~IWarrior~
+%%    %% Retrieve a list of warriors
+%%}
+%%
+%%%% Species
+%%class IDemon{
+%%    <<interface>>
+%%    +PaybackDamage(List~IDemon~ demons) bool
+%%    %% Fel Power
+%%    %% Active when you control only one demon on the chessboard.
+%%    %% (1) Demon: Physical damage dealth by all friendly Demon pieces is converted to Pure damage at 100% effectiveness. 
+%%    %% +5% extra effectiveness for each demon if more than one on board.
+%%
+%%    +GetDemons(List~Piece~ pieces) List~IDemon~
+%%    %% Retrieve a list of demons
+%%
+%%}
+%%
+%%class IGoblin{
+%%    <<interface>>
+%%    +GiveArmor(Piece ally) bool
+%%    +GiveHP(Piece ally) bool
+%%    %% Grants a random ally +15 armor and +10 HP regeneration.
+%%}
+%%
+%%class IOrc{
+%%    <<interface>>
+%%    +GiveAllHP(List~Piece~ allies) bool
+%%    %%     Active when you have at least (N) different orc pieces on board.
+%%    %% (2) Orcs: All allies have +100 max HP.
+%%    %% (4) Orcs: All allies have an additional +300 max HP.
+%%    %% (6) Orcs: All allies have and additional HP bonus that equals the amount of courier missed HP multiplied x8.
+%%}
+%%
+%%class IMech{
+%%    <<interface>>
+%%    +SelfRepair() bool
+%%    Active when you have at least (N) different mech pieces on board.
+%%    (3) Mechs: If allied mech survive during winning round you would obtain the Heart of Machine.
+%%    (6) Mechs: If allied mech survive during winning round you would obtain the Golden Heart of Machine.
+%%}

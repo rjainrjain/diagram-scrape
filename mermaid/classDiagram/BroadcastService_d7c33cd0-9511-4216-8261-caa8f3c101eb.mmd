@@ -1,0 +1,26 @@
+classDiagram
+  BroadcastService -- BroadcastService
+  BroadcastService -- BroadcastFrequencySpecification
+  BroadcastService -- Language
+  BroadcastService -- BroadcastChannel
+  BroadcastService -- Organization
+  BroadcastService -- Place
+
+
+class BroadcastService {
+
+  BroadcastService parentService
+  string broadcastDisplayName
+  string videoFormat
+  string broadcastTimezone
+  BroadcastFrequencySpecification broadcastFrequency
+  string broadcastFrequency
+  string callSign
+  string inLanguage
+  Language inLanguage
+  BroadcastChannel hasBroadcastChannel
+  Organization broadcaster
+  Organization broadcastAffiliateOf
+  Place area
+
+ }

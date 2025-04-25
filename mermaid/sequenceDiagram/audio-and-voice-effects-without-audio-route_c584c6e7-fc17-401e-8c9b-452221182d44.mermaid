@@ -1,0 +1,48 @@
+sequenceDiagram
+  participant User as User
+  participant YourApp as Your app
+  participant VideoSDK as Video SDK
+  participant Agora as Agora
+  participant SDRTN as SD-RTN
+  
+  User ->>+ YourApp: Open App
+  YourApp ->>+ VideoSDK: Create an Agora Engine instance
+  YourApp ->> VideoSDK: Enable audio and video in Agora Engine
+  
+  rect rgb(255, 255, 255)
+    note over VideoSDK: Join
+    VideoSDK ->>+ Agora: Join a channel
+    Agora -->>- VideoSDK: Retrieve authentication token to join a channel
+    VideoSDK ->> Agora: Join the channel
+  end
+  
+  rect rgb(255, 255, 255)
+    note over VideoSDK: Play audio effect
+      VideoSDK ->> Agora: Trigger sound effect
+      Agora ->> VideoSDK: Play effect
+      VideoSDK ->> Agora: Pause and resume effect
+      VideoSDK ->> Agora: Set effect position
+      VideoSDK ->> Agora: Set effect volume
+      Agora -->>- VideoSDK: On audio effect finished
+  end
+  
+  rect rgb(255, 255, 255)
+    note over VideoSDK: Audio mixing
+      VideoSDK ->> Agora: Control audio mixing
+      Agora ->> VideoSDK: Start audio mixing
+      VideoSDK ->> Agora: Stop audio mixing
+  end
+  
+  rect rgb(255, 255, 255)
+    note over VideoSDK: Voice effects
+      VideoSDK ->> Agora: Apply a voice effect
+      Agora ->> VideoSDK: Set preset voice effect
+      VideoSDK ->> Agora: Disable the voice effect
+  end
+
+  rect rgb(255, 255, 255)
+    note over VideoSDK: Leave the channel
+      VideoSDK ->> Agora: Leave the channel
+  end
+
+  VideoSDK -->>- User: Data flows back to User

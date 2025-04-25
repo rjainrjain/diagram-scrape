@@ -1,0 +1,18 @@
+graph LR
+A[const express] --> B(require('express'))
+C[const Groq] --> D(require("groq-sdk"))
+E[const path] --> F(require('path'))
+
+B --> G(app = express())
+D --> H(groq = new Groq())
+
+G --> I(app.use(express.json()))
+G --> J(app.use(express.static('public')))
+
+H --> K(app.post('/generate-diagram', async (req, res) => {...}))
+
+K --> L[const { query } = req.body]
+K --> M(try {...})
+M --> N(const response = await groq.chat.completions.create({...}))
+N --> O(const assistantResponse = response.choices[0].message.content))
+O --> P(const mermaidCodeMatch = assistantResponse.match(/

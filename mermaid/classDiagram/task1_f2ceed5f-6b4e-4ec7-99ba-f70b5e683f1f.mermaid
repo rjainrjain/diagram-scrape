@@ -1,0 +1,34 @@
+classDiagram
+    class User {
+        +UUID4 id
+        +String name
+        +String email
+        +create_user()
+        +update_user()
+    }
+
+    class Place {
+        +UUID4 id
+        +String name
+        +String location
+        +create_place()
+        +update_place()
+    }
+
+    class Review {
+        +UUID4 id
+        +String text
+        +int rating
+        +create_review()
+        +update_review()
+    }
+
+    class Amenity {
+        +UUID4 id
+        +String name
+        +create_amenity()
+        +update_amenity()
+    }
+
+    User -- Review: "writes"
+    Place -- Amenity: "has"

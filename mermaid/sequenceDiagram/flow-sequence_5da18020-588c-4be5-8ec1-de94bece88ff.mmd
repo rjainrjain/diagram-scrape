@@ -1,0 +1,17 @@
+sequenceDiagram
+    participant Alice
+    participant Bank
+    participant Bob
+
+    Alice ->> Bank: Compose message
+    Alice ->> Alice: Encrypt + Sign message with private key
+    Bank -->> Alice: Obtain certificate from Bank
+    Alice ->> Bob: Send message + certificate to Bob
+    Bob -->> Bob: Verify certificate with Bank's public key
+    Bob -->> Bob: Verify Alice's signature with Alice's public key
+    Bob -->> Bob: Bob decrypts message with Alice's public key
+    alt If all validations pass
+        Bob -->> Bob: Trust message and act accordingly
+    else Else
+        Bob -->> Bank: Reject message and investigate
+    end

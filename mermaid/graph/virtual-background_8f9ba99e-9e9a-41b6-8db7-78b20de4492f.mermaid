@@ -1,0 +1,6 @@
+flowchart LR
+    subgraph Agora_Web_SDK ["Agora Web SDK"]
+        Capture --> Pre-Process --> Encode --> Transmit --> Decode --> Post-Process --> Play
+    end
+    Extensions(["Agora Extensions &lt;br&gt; (Virtual Background, AI Denoiser)"])
+    Data["Audio and Video Data"] --> Extensions

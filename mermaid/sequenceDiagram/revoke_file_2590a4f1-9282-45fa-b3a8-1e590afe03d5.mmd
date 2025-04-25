@@ -1,0 +1,26 @@
+sequenceDiagram
+    actor C as Client
+    participant S as Server
+
+    note over C,S: Assume the user has already logged in <br> and is in possession of the parent folder key and file key
+
+    C->>C: Decrypt the file's encrypted name with the file's key
+    C->>C: Decrypt the file's encrypted data with the file's key
+
+    C->>C: Genereate 3 new random nonces (nonce_data, nonce_key, nonce_name)
+
+    C->>C: Derive a new key from the folder's decrypted key and the nonce_key using argon2id
+
+    C->>C: Encrypt the file's data with the key and the nonce_data using AEGIS256
+    C->>C: Encrypt the file's name with the key and the nonce_name using AEGIS256
+
+    C->>C: Encrypt the file key with the user's public key using X25519
+
+    C->>S: Send the encrypted file's data, the encrypted file's name, <br> the 3 nonces and the encrypted file key
+
+    loop for each user to whom the file is shared
+        C->>S: Ask the server for the user's public key
+        S-->>C: Return the user's public key
+        C->>C: Encrypt the file's key with the user's <br> public key using X25519
+        C->>S: Send the user's encrypted file's key to the server
+    end

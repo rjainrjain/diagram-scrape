@@ -1,0 +1,82 @@
+flowchart LR
+    subgraph "`**CMS**`"
+        lux
+        er
+        magazin-cms
+    end
+
+    subgraph "`**External**`"
+        DPA:::external
+        Comyan:::external
+    end
+
+
+    subgraph "`**lido**`"
+        lido:::livingdocs
+    end
+
+    lux & er & magazin-cms & DPA --> lido
+
+    lido --> online-api
+    datascience --> article & homepage
+
+    subgraph "`**SZ.de-Welt**`"
+        online-api --> article & homepage & delivery
+    end
+
+    Comyan --> delivery & lido
+    article -.-> Pay
+
+    subgraph "`**Piano-Welt**`"
+        Pay
+        ID
+        Pay & ID .-> Piano:::external
+
+        ID --> Spotify:::external
+    end
+
+    ID --> article & homepage & magazin-delivery & er
+
+    delivery .-> ID
+    online-api --> ID
+
+    subgraph "`**Magazin**`"
+        magazin-cms --> magazin-delivery
+    end
+
+    subgraph "`**Digi**`"
+        digi
+    end
+    lido --> digi
+
+    subgraph "`**Datascience**`"
+        datascience
+    end
+
+    lido --> datascience
+
+    subgraph "`**App**`"
+        app
+
+        datascience & online-api & lido & Pay & ID & Piano --> app
+    end
+
+    classDef web fill:deepskyblue;
+    classDef livingdocs fill:lime;
+    classDef external fill:coral;
+    classDef infrastructure fill:white;
+
+    click app "https://github.com/sueddeutsche/szdm-architecture/blob/main/app.md"
+    click digi "https://github.com/sueddeutsche/szdm-architecture/blob/main/digi.md"
+    click magazin-cms "https://github.com/sueddeutsche/szdm-architecture/blob/main/magazin.md"
+    click magazin-delivery "https://github.com/sueddeutsche/szdm-architecture/blob/main/magazin.md"
+    click online-api "https://github.com/sueddeutsche/szdm-architecture/blob/main/online-api.md"
+    click article "https://github.com/sueddeutsche/szdm-architecture/blob/main/article.md"
+    click homepage "https://github.com/sueddeutsche/szdm-architecture/blob/main/homepage.md"
+    click delivery "https://github.com/sueddeutsche/szdm-architecture/blob/main/delivery.md"
+    click Pay "https://github.com/sueddeutsche/szdm-architecture/blob/main/piano-welt.md"
+    click ID "https://github.com/sueddeutsche/szdm-architecture/blob/main/piano-welt.md"
+    click datascience "https://github.com/sueddeutsche/szdm-architecture/blob/main/datascience.md"
+    click lido "https://github.com/sueddeutsche/szdm-architecture/blob/main/lido.md"
+    click er "https://github.com/sueddeutsche/szdm-architecture/blob/main/er.md"
+    click magazin "https://github.com/sueddeutsche/szdm-architecture/blob/main/magazin.md"

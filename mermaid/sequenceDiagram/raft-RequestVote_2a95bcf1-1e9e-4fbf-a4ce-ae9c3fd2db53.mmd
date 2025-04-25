@@ -1,0 +1,44 @@
+sequenceDiagram
+    leader->>+follower(s): HeartBeat
+    leader->>+follower1: HeartBeat
+    destroy leader
+    follower(s)-->>+leader: ok
+    follower1-->>+leader: ok
+    Note over leader: 挂了
+    Note over follower1,follower(s): 心跳超时
+    create participant candidate1
+    follower1->>+candidate1: 角色转换
+    destroy follower1
+    candidate1-->>+follower1: ok
+    create participant candidate(s)
+    follower(s)->>+candidate(s): 角色转换
+    destroy follower(s)
+    candidate(s)-->>+follower(s): ok
+    alt 正常流程，先来后到
+        candidate1->>+candidate(s): PreVote
+        candidate(s)-->>+candidate1: ok
+        candidate1->>+candidate(s): RequestVote:<br>{term,id,<br>lastlogterm,lastlogindex}
+        Note over candidate(s): 检查term>currentTerm
+        Note over candidate(s): 检查log的term是不是最新的
+        candidate(s)-->>+candidate1: Response:<br>{term,voteGranted}
+    else 如果已经有节点成为了leader
+        candidate1->>+candidate1: 收到AppendEntity，判断term
+        alt term不大于当前term
+           Note over candidate1: 拒绝，继续选举
+        else term大于当前term
+            Note over candidate1: 成为follower
+        end
+    else 选举超时
+        candidate1->>+candidate1: 随机选择超时时间(2RTT),term++，重新发起选举
+    end
+
+    create participant newLeader as leader
+    candidate1->>+newLeader: 角色转换
+    create participant newFollower as follower(s)
+    candidate(s)->>+newFollower: 角色转换
+    destroy candidate1
+    newLeader-->>+candidate1: ok
+    destroy candidate(s)
+    newFollower-->>+candidate(s): ok
+    newLeader->>+newFollower: HeartBeat
+    newFollower-->>+newLeader: ok

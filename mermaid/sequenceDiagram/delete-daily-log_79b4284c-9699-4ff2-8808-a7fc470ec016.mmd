@@ -1,0 +1,14 @@
+sequenceDiagram
+    participant User
+    participant App
+    participant Database
+
+    User ->> App: Selecciona el hábito del cual desea eliminar un registro diario
+    App ->> Database: Solicita los registros diarios del hábito seleccionado
+    Database -->> App: Retorna los registros diarios del hábito
+    App ->> User: Muestra los registros diarios para que seleccione uno para eliminar
+    User ->> App: Selecciona el registro diario que desea eliminar
+    App ->> Database: Solicita la eliminación del registro diario seleccionado
+    Database -->> App: Confirma la eliminación del registro diario
+    App ->> User: Muestra un mensaje de confirmación de eliminación
+

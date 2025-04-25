@@ -1,0 +1,16 @@
+erDiagram
+    
+    %% Entities
+    player {
+        player_id int PK
+        team_id int FK
+        player_name varchar
+        player_dob Date
+        player_city_of_birth varchar
+        player_country_of_birth varchar
+    }
+    team {
+        team_id int PK
+        stadium_id int FK
+        team_name varchar
+    }

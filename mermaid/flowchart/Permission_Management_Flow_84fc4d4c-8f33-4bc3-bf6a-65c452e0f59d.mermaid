@@ -1,0 +1,19 @@
+flowchart TD
+    A[시작] --> B[역할 Role 생성]
+    B --> C[권한 Permission 생성]
+    C --> D{관리자 Admin 존재?}
+    D -->|Yes| E[AdminRole 생성<br>관리자에게 역할 할당]
+    D -->|No| F[관리자 Admin 생성]
+    F --> E
+    E --> G[RolePermission 생성<br>역할에 권한 할당]
+    G --> H{수정 필요?}
+    H -->|Yes| I[수정 작업 수행]
+    I --> H
+    H -->|No| J[종료]
+
+    subgraph "수정 작업"
+        I --> K[역할 수정]
+        I --> L[권한 수정]
+        I --> M[관리자-역할 관계 수정]
+        I --> N[역할-권한 관계 수정]
+    end

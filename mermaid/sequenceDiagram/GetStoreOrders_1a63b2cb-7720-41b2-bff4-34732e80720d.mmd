@@ -1,0 +1,34 @@
+
+sequenceDiagram
+  actor Penjual
+  participant V_DS as View #10095; DashboardSellerPage
+  participant C_O as Controller #10095; OrderController
+  participant M_O as Model #10095; Order
+  participant V_OP as View #10095; SellerOrderPage
+
+  Penjual->>V_DS: klik tombl "Pesanan"
+
+  activate Penjual
+  activate V_DS
+
+  V_DS->>C_O: index()
+
+  deactivate V_DS
+  activate C_O
+
+  C_O->>M_O: get()
+
+  activate M_O
+
+  M_O-->>C_O: data
+
+  deactivate M_O
+
+  activate V_OP
+
+  C_O-->>V_OP: return view with data
+
+  deactivate C_O
+  deactivate V_OP
+
+  deactivate Penjual

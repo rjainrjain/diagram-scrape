@@ -1,0 +1,16 @@
+
+
+sequenceDiagram
+    participant browser
+    participant server
+    
+    browser->>server: HTTP POST https://fullstack-exampleapp.herokuapp.com/new_note
+    server->>browser:redirect to /notes
+    browser->>server: HTTP GET /notes
+    server->>browser: main.css
+    browser->>server: HTTP GET /notes
+    server->>browser: main.js
+    browser->>server: HTTP GET /notes
+    server->>browser: data.json
+    browser->>server: HTTP POST /new_note
+

@@ -1,0 +1,18 @@
+sequenceDiagram
+    User->>Library: Request
+
+    activate Library
+    Library-->>Internal: Request
+    Library-->>User: Promise
+    Library-->>EventLoop: RegisterCallback
+    deactivate Library
+
+    Note right of Internal: aio, async task, poll
+    Internal-->>Internal: Do something internally.
+    Internal-->>EventLoop: Operation Complete
+    EventLoop-->>Library: Trigger Callback
+    Library-->>User: Resolve a Promise
+
+    opt Promise callback
+        User-->>User: Promise.then or Promise.catch
+    end

@@ -1,0 +1,17 @@
+sequenceDiagram
+  Caller          ->>+ Resolvers: QueryResolver(repo, commit, file)
+  Resolvers       ->>+ DB store: FindClosestDumps(repo, commit, file)
+  DB store       -->>- Resolvers: dumps
+  Resolvers      -->>- Caller: QueryResolver
+  Caller          ->>+ QueryResolver: Hover(repo, commit, file, position)
+
+  loop for each dumps[i]
+    QueryResolver     -->>+ Position adjuster: AdjustPosition(file, position, from: commit, to: dumps[i].commit)
+    Position adjuster -->>- QueryResolver: adjusted file, adjusted position
+    QueryResolver      ->>+ LSIF store: Hover(dumps[i], adjusted file, adjusted position)
+    LSIF store        -->>- QueryResolver: text, range
+
+    QueryResolver     -->>+ Position adjuster: AdjustRange(range)
+    Position adjuster -->>- QueryResolver: adjusted range
+    QueryResolver     -->>- Caller: text, adjusted range
+  end

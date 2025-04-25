@@ -1,0 +1,46 @@
+stateDiagram-v2
+    [*] --> CriacaoQuiz: Admin/Root inicia criação
+    
+    state CriacaoQuiz {
+        [*] --> Rascunho
+        state "Rascunho" as Rascunho
+        state "ComQuestoes" as ComQuestoes
+        state "ProntoParaPublicar" as ProntoParaPublicar
+        state "Publicado" as Publicado
+        state "Despublicado" as Despublicado
+        Rascunho --> ComQuestoes: Adicionar questões
+        ComQuestoes --> Rascunho: Editar quiz
+        ComQuestoes --> ProntoParaPublicar: Todas questões adicionadas
+        ProntoParaPublicar --> Publicado: Publicar quiz
+        Publicado --> Despublicado: Despublicar
+        Despublicado --> Publicado: Republicar
+    }
+    state TentativaQuiz {
+        [*] --> Iniciado
+        state "Iniciado" as Iniciado
+        state "EmProgresso" as EmProgresso
+        state "Completo" as Completo
+        state "Abandonado" as Abandonado
+        Iniciado --> EmProgresso: Respondendo questões
+        EmProgresso --> EmProgresso: Próxima questão
+        EmProgresso --> Completo: Todas questões respondidas
+        EmProgresso --> Abandonado: Usuário abandona
+        Completo --> [*]: Finalizar tentativa
+        Abandonado --> [*]: Cancelar tentativa
+    }
+    state RespostaQuestao {
+        [*] --> Objetiva
+        
+        state Objetiva {
+            [*] --> AguardandoEscolha
+            state "AguardandoEscolha" as AguardandoEscolha
+            state "Selecionada" as Selecionada
+            state "Confirmada" as Confirmada
+            AguardandoEscolha --> Selecionada: Selecionar resposta
+            Selecionada --> Confirmada: Confirmar escolha
+            Selecionada --> AguardandoEscolha: Mudar escolha
+        }
+    }
+    CriacaoQuiz --> TentativaQuiz: Quiz publicado
+    TentativaQuiz --> RespostaQuestao: Para cada questão
+    RespostaQuestao --> TentativaQuiz: Resposta registrada

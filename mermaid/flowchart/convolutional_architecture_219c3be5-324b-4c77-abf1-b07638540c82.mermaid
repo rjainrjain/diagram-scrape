@@ -1,0 +1,21 @@
+flowchart TD
+    classDef blue fill:#66ccff
+    classDef yellow fill:yellow
+    classDef orange fill:#ff9900
+    classDef green fill:#a5e973
+
+    A["Obrázek: 224(šířka) x 224(výška) x 3(RGB kanály)"]:::yellow --> B
+    B[Vstupní vrstva: Konvoluce 3x3, 16 filtrů, ReLU aktivace]:::blue -->  C
+    C[1. skrytá vrstva: Maxpool s jádrem 2x2, ReLU aktivace]:::orange -->  D
+    D[2. skrytá vrstva: Konvoluce 3x3, 32 filtrů, ReLU aktivace]:::blue -->  E
+    E[3. skrytá vrstva: Maxpool s jádrem 2x2, ReLU aktivace]:::orange -->  F 
+    F[4. skrytá vrstva: Konvoluce 3x3, 64 filtrů, ReLU aktivace]:::blue -->  G
+    G[5. skrytá vrstva: Maxpool s jádrem 2x2, ReLU aktivace]:::orange -->  H 
+    H[6. skrytá vrstva: Konvoluce 3x3, 128 filtrů, ReLU aktivace]:::blue -->  I
+    I[7. skrytá vrstva: Maxpool s jádrem 2x2, ReLU aktivace]:::orange -->  J 
+    J[8. skrytá vrstva: Konvoluce 3x3, 256 filtrů, ReLU aktivace]:::blue -->  K
+    K[9. skrytá vrstva: Maxpool s jádrem 2x2, ReLU aktivace]:::orange --> |přeskládání do vektoru| L 
+    L[10. skrytá vrstva: 128 neuronů, ReLU aktivace]:::green --> M
+    M[11. skrytá vrstva: 128 neuronů, ReLU aktivace]:::green --> N
+    N[Výstupní vrstva: 3 neurony, Softmax aktivace]:::green --> O
+    O[Výstup - predikce modelu]:::yellow

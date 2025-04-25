@@ -1,0 +1,12 @@
+sequenceDiagram
+	participant User
+	participant API
+	participant BusinessLogic
+	participant Database
+
+	User->>API: POST | Add review (place_id, rating, comment)
+	API->>BusinessLogic: createReview()
+	BusinessLogic->>Database: Save Review
+	Database-->>BusinessLogic: Confirm Save
+	BusinessLogic-->>API: Return Response
+	API-->>User: Return Success/Failure

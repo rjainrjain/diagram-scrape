@@ -1,0 +1,14 @@
+sequenceDiagram
+    participant Client
+    participant API
+    participant Database
+
+    Client ->> API: POST /register (user details)
+    API ->> Database: INSERT INTO users (user details)
+    Database ->> API: [Confirmation]
+    API ->> Client: 201 Created (user ID)
+
+    Client ->> API: POST /login (username, password)
+    API ->> Database: SELECT * FROM users WHERE username = ? AND password = ?
+    Database ->> API: User data
+    API ->> Client: 200 OK (session token)

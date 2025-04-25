@@ -1,0 +1,119 @@
+erDiagram
+%% @config(../.vscode/settings.json)
+apd_events {
+  varchar event_id
+  varchar user_id
+  integer apd_id
+  varchar event_type
+  timestamp event_at
+  json metadata
+}
+apd_files {
+  varchar id
+  integer apd_id
+  integer size
+  json metadata
+}
+auth_activities {
+  integer id
+  varchar name
+}
+auth_affiliations_audit {
+  integer id
+  timestamp created_at
+  timestamp updated_at
+  varchar changed_by
+  varchar user_id
+  integer original_role_id
+  interger new_role_id
+  varchar original_status
+  varchar new_status
+}
+auth_affiliations {
+  integer id
+  varchar user_id
+  varchar state_id
+  integer role_id
+  timestamp created_at
+  timestamp updated_at
+  varchar updated_by
+}
+auth_role_activity_mapping {
+  integer role_id
+  integer activity_id
+}
+auth_roles {
+  integer id
+  varchar name
+  boolean isActive
+}
+okta_user_audit {
+  varchar user_id
+  varchar username
+  varchar name
+  varchar state_id
+  integer role_id
+  varchar affiliation_status
+  timestamp logged_in_at
+}
+okta_users {
+  varchar user_id
+  varchar email
+  json metadata
+  varchar displayName
+  varchar secondEmail
+  varchar primaryPhone
+  varchar mobilePhone
+  varchar login
+}
+state_admin_certifications {
+  integer id
+  varchar state
+  integer ffy
+  varchar name
+  varchar email
+  varchar phone
+  varchar fileUrl
+  varchar uploadedBy
+  timestamp uploadedOn
+  integer affiliationId
+  varchar status
+}
+state_admin_certifications_audit {
+  integer id
+  timestamp changeDate
+  varchar changedBy
+  varchar changeType
+  integer certificationId
+}
+states {
+  varchar id
+  varchar name
+  json medicaid_office
+}
+knex_migrations {
+  integer id
+  varchar name
+  integer batch
+  timestamp migration_time
+}
+knex_migrations_lock {
+  integer index
+  integer is_locked
+}
+
+state_admin_certifications ||--o{ states : contains
+state_admin_certifications ||--o{ okta_users : contains
+state_admin_certifications ||--o{ auth_affiliations : contains
+state_admin_certifications_audit ||--o{ state_admin_certifications : records
+okta_user_audit ||--o{ states : contains
+okta_user_audit ||--o{ okta_users : contains
+auth_affiliations ||--o{ auth_roles : contains
+auth_affiliations ||--o{ states : contains
+auth_affiliations ||--o{ okta_users : contains
+auth_affiliations_audit ||--o{ auth_roles : contains
+auth_affiliations_audit ||--o{ okta_users : contains
+auth_role_activity_mapping ||--o{ auth_activities : connects
+auth_role_activity_mapping ||--o{ auth_roles : connects
+apd_events ||--o{ okta_users : contains
+

@@ -1,0 +1,18 @@
+sequenceDiagram
+    participant Client
+    participant Server
+    participant Database
+
+    Client->>Server: Request page
+    Server-->>Client: Send initial HTML shell
+    Note over Client: Begin rendering
+    Server->>Database: Fetch data for component 1
+    Database-->>Server: Return data for component 1
+    Server-->>Client: Stream component 1
+    Note over Client: Render component 1
+    Server->>Database: Fetch data for component 2
+    Database-->>Server: Return data for component 2
+    Server-->>Client: Stream component 2
+    Note over Client: Render component 2
+    Note over Client: Continue for remaining components...
+

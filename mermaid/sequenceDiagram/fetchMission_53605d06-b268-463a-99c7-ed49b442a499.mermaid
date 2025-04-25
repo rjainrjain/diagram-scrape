@@ -1,0 +1,47 @@
+sequenceDiagram
+    title: API: Fetch mission
+    participant Client as Web
+    participant API as API Server
+    participant Auth as Auth Middleware
+    participant Routing
+    participant Service as Service Layer
+    participant Formatter as Formatter Layer
+    participant DB as PostgreSQL DB
+
+    Client->>API: Send request
+    API->>Auth: Validate if the JWT in the request headers is correctly signed and has required scopes.<br>NOTE: outside the scope of hackathon implementation
+
+    break If auth validation error
+        Auth -->> API: Return error
+        API-->>Client: Return error response
+    end
+
+    note over Auth: Internal parameters set
+
+    Auth ->> Routing: Route specific logic execution starts
+
+    note over Routing: Only forward following external parameters to service:<br>mission_id [path] [mandatory]
+
+    Routing ->> Service: Call respective service class with above mentioned<br>internal and external parameters.
+
+    note over Service: Validate mandatory parameters' presence and ensure correct types for all parameters.
+
+    break If mandatory checks or type checks fail
+        Service -->> Routing: Return error
+        Routing ->> Formatter: Call the Formatter passing service response
+        Formatter-->>Client: Return error response
+    end
+
+    Service ->> DB: Fetch record from missions table using mission_id.
+    DB -->> Service: Query response
+
+    break If record not found
+        Auth -->> API: Return error
+        API-->>Client: Return error response
+    end
+
+    note over Service: Assign variable mission with the record JSON
+
+    Service -->> Routing: Return service response
+    Routing ->> Formatter: Call the Formatter passing service response
+    Formatter-->>Client: Return response

@@ -1,0 +1,85 @@
+graph TD
+    %% Main ProofJSON Format
+    ProofJSON["ProofJSON Format"] -->|Contains| Theorem["Theorem"]:::theoremColor
+    ProofJSON -->|Contains| Define["Define"]:::defineColor
+    ProofJSON -->|Contains| Assert["Assert"]:::assertColor
+    ProofJSON -->|Contains| Assume["Assume"]:::assumeColor
+    ProofJSON -->|Contains| Let["Let"]:::letColor
+    ProofJSON -->|Contains| Proof["Proof"]:::proofColor
+    ProofJSON -->|Contains| Cases["Cases"]:::casesColor
+    ProofJSON -->|Contains| Induction["Induction"]:::inductionColor
+    ProofJSON -->|Contains| Contradiction["Contradiction"]:::contradictionColor
+    ProofJSON -->|Contains| Conclude["Conclude"]:::concludeColor
+    ProofJSON -->|Contains| Remark["Remark"]:::remarkColor
+
+    Assume --> Statement:::sharedColor
+    Remark --> Statement:::sharedColor
+
+    %% Define Node and Subfields
+    Define --> Term["Term"]:::defineColor
+    Define --> Statement:::sharedColor
+
+    %% Let Node and Subfields
+    Let --> Variable["Variable"]:::letColor
+    Let -->|optional| Value["Value"]:::letColor
+    Let -->|optional| Kind["Kind"]:::letColor
+    Let -->|optional| Property["Property"]:::letColor
+
+    %% Assert Node and Subfields
+    Assert --> Claim["Claim"]:::assertColor
+    Assert -->|optional| DeducedFrom["Deduced From"]:::sharedColor
+    Assert -->|optional| ProofMethod["Proof Method"]:::assertColor
+    Assert -->|optional| Calculation["Calculation"]:::assertColor
+    Assert -->|optional| Missing["Missing Steps"]:::assertColor
+    Assert -->|optional| Errors["Errors"]:::sharedColor
+
+    %% DeducedFrom subfields (shared for Assert and other cases if needed)
+    DeducedFrom -->|optional| FromContext["From Context"]:::sharedColor
+    DeducedFrom -->|optional| KnownResults["Known Results"]:::sharedColor
+
+    %% Theorem Node and Subfields
+    Theorem --> Hypothesis["Hypothesis: List of Assumptions"]:::theoremColor
+    Theorem --> Conclusion["Conclusion"]:::theoremColor
+    Theorem --> Status["Status of Proof"]:::theoremColor
+    Theorem --> Statement["Statement"]:::sharedColor
+    Theorem -->|optional| Proof:::sharedColor
+    Theorem -->|optional| Ref["Reference to earlier/later proof"]:::sharedColor
+    Theorem -->|optional| Cite["Citation"]:::sharedColor
+    Theorem -->|optional| Errors:::sharedColor
+    Theorem -->|optional| Missing:::sharedColor
+
+    %% Proof Node and Subfields
+    Proof --> Steps["List of Steps"]:::proofColor
+
+    %% Induction Node and Subfields
+    Induction --> On["Variable being inducted on"]:::inductionColor
+    Induction --> ProofCases["List of Induction Cases"]:::inductionColor
+
+    %% Cases Node and Subfields
+    Cases --> OnCondition["Variable/Condition"]:::casesColor
+    Cases --> SplitKind["Type of Split"]:::casesColor
+    Cases -->|optional| Exhaustiveness["Proof of Exhaustiveness"]:::casesColor
+    Cases --> ProofCases:::casesColor
+
+    %% Contradiction Node and Subfields
+    Contradiction --> Assumption["Assumed for Contradiction"]:::contradictionColor
+    Contradiction --> Proof:::sharedColor
+
+    %% Conclude Node and Subfields
+    Conclude -->|optional| Missing:::sharedColor
+    Conclude -->|optional| Errors:::sharedColor
+    Conclude --> Statement:::sharedColor
+
+    %% Styling for edges and nodes
+    classDef theoremColor stroke:#3498db,stroke-width:2px;
+    classDef defineColor stroke:#e74c3c,stroke-width:2px;
+    classDef assertColor stroke:#f1c40f,stroke-width:2px;
+    classDef assumeColor stroke:#2ecc71,stroke-width:2px;
+    classDef letColor stroke:#9b59b6,stroke-width:2px;
+    classDef proofColor stroke:#34495e,stroke-width:2px;
+    classDef casesColor stroke:#1abc9c,stroke-width:2px;
+    classDef inductionColor stroke:#e67e22,stroke-width:2px;
+    classDef contradictionColor stroke:#8e44ad,stroke-width:2px;
+    classDef concludeColor stroke:#d35400,stroke-width:2px;
+    classDef remarkColor stroke:#16a085,stroke-width:2px;
+    classDef sharedColor stroke:#95a5a6,stroke-width:2px,stroke-dasharray: 5 5;

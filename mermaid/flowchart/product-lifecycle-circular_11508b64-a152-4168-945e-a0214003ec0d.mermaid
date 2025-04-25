@@ -1,0 +1,20 @@
+flowchart LR
+    A[Ideation] --> B[Research]
+    B --> C[Development]
+    C --> D[Testing]
+    D --> E[Launch]
+    E --> F[Growth]
+    F --> G[Maturity]
+    G --> H[Decline]
+    H --> I[Reinvention/Discontinuation]
+    I --> A
+
+    A --> |Feedback Loop| G
+    B --> |Market Insights| F
+    C --> |Product Improvements| G
+    D --> |User Feedback| F
+    E --> |Performance Data| G
+
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style E fill:#ff9,stroke:#333,stroke-width:2px
+    style I fill:#f99,stroke:#333,stroke-width:2px

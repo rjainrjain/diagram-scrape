@@ -1,0 +1,23 @@
+flowchart TD
+    VirtualEnvs[Python Virtual Environments]
+    ExecutionEnvs[Ansible Execution Environments]
+    VirtualEnvs --> |Replaced by| Modern
+
+    subgraph Legacy
+        VirtualEnvs
+    end
+
+    subgraph Modern
+        ExecutionEnvs
+    end
+
+    style Legacy fill:#f9d5e5,stroke:#b1a7a6
+    style Modern fill:#d5e8d4,stroke:#82b366
+
+    %% Detail the components and tools
+    ExecutionEnvs -.->|Built with| Builder[ansible-builder]
+    ExecutionEnvs -.->|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Utilized by| Runner[ansible-runner]
+
+    style Builder fill:#f8cecc,stroke:#b85450
+    style Runner fill:#f8cecc,stroke:#b85450
+

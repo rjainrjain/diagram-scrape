@@ -1,0 +1,13 @@
+sequenceDiagram
+    participant browser
+    participant server
+
+    Note right of browser: User types in input
+
+    browser->>server: POST /new_note
+    Note right of browser: body contains user input
+    server-->>browser: 302 Found /notes
+    Note left of server: Server saves received note
+
+    browser->>server: GET /notes
+    Note right of browser: loads notes page again

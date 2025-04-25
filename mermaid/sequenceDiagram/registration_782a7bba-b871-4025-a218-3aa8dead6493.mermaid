@@ -1,0 +1,68 @@
+sequenceDiagram
+    actor User
+    participant Frontend
+    participant System
+    participant EmailService
+    participant GoogleAuthAPI
+    participant Database
+
+    activate User
+    User->>Frontend: Choose Role
+    activate Frontend
+    
+    alt Standard Registration
+        User->>Frontend: Fill in required fields
+        Frontend->>System: register(registerRequest)
+        activate System
+        System->>Database: checkEmailExists(email)
+        activate Database
+        Database-->>System: Email availability status
+        deactivate Database
+        
+        alt Email not registered
+            System->>Database: storeUserData(userData)
+            activate Database
+            deactivate Database
+            
+            System->>EmailService: sendVerificationEmail(email)
+            activate EmailService
+            EmailService-->>User: Verification email delivered
+            deactivate EmailService
+            
+            System-->>Frontend: Registration successful
+            Frontend-->>User: Display success message
+        else Email already registered
+            System-->>Frontend: Email already registered
+            deactivate System
+            Frontend-->>User: Display error message
+        end
+    else Google Registration
+        User->>Frontend: Click "Continue with Google"
+        Frontend->>GoogleAuthAPI: requestGoogleAuthentication()
+        activate GoogleAuthAPI
+        GoogleAuthAPI-->>Frontend: Google Token
+        deactivate GoogleAuthAPI
+        
+        Frontend->>System: registerWithGoogle(token)
+        activate System
+        System->>Database: checkGoogleUserExists(googleUserId)
+        activate Database
+        Database-->>System: Google user exists status
+        deactivate Database
+        
+        alt Google account not registered
+            System->>Database: storeUserData(userData)
+            activate Database
+            deactivate Database
+            
+            System-->>Frontend: Registration successful
+            Frontend-->>User: Display success message
+        else Google account already registered
+            System-->>Frontend: Google account already registered
+            deactivate System
+            Frontend-->>User: Display error message
+        end
+    end
+    
+    deactivate Frontend
+    deactivate User

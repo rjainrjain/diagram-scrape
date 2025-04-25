@@ -1,0 +1,14 @@
+stateDiagram-v2
+    [*] --> Pending: CSV Uploaded
+    Pending --> Processing: Start Image Processing
+    Processing --> Completed: All Images Processed
+    Processing --> Failed: Error Occurs
+    Completed --> [*]
+    Failed --> [*]
+
+    state Processing {
+        [*] --> ProcessingProduct1
+        ProcessingProduct1 --> ProcessingProduct2
+        ProcessingProduct2 --> ProcessingProduct3
+        ProcessingProduct3 --> [*]
+    }

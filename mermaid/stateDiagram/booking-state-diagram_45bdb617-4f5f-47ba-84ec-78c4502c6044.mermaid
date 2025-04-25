@@ -1,0 +1,18 @@
+stateDiagram-v2
+    [*] --> FlightSearch
+    FlightSearch --> FlightSelected: User selects flight
+    FlightSelected --> PriceConfirmed: Price checked and confirmed
+    PriceConfirmed --> OrderCreated: User initiates booking
+    OrderCreated --> PaymentPending: Payment order created
+    PaymentPending --> PaymentAuthorized: User authorizes payment
+    PaymentAuthorized --> BookingConfirmed: Flight order created in Amadeus
+    BookingConfirmed --> PaymentCaptured: Payment captured
+    PaymentCaptured --> [*]
+
+    FlightSearch --> [*]: User cancels
+    FlightSelected --> [*]: User cancels
+    PriceConfirmed --> [*]: User cancels
+    OrderCreated --> [*]: Order creation fails
+    PaymentPending --> [*]: Payment fails
+    PaymentAuthorized --> [*]: Booking fails
+    BookingConfirmed --> [*]: Payment capture fails

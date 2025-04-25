@@ -1,0 +1,14 @@
+sequenceDiagram
+    participant User
+    participant App
+    participant Database
+    
+    User->>+App: Seleccionar hábito a editar
+    App->>+Database: Buscar hábito en la base de datos
+    Database-->>-App: Devolver información del hábito
+    App->>+User: Mostrar información del hábito
+    User->>+App: Editar nombre y descripción del hábito
+    App->>+Database: Actualizar información del hábito en la base de datos
+    Database-->>-App: Confirmar actualización del hábito
+    App->>+User: Mostrar mensaje de éxito
+

@@ -1,0 +1,83 @@
+flowchart LR
+    subgraph CI[GitHub Actions : CI Targeting Production Environment for v0.3.1 of API Service]
+        subgraph pb[Pre-Build : GitHub Ubuntu 20.04 Runners]
+        direction TB
+            subgraph tc[Test Coverage]
+                tc1[Codecov : GitHub Action]
+            end
+            subgraph ff[Security & Compliance]
+                direction TB
+                f1[license scan : Fossa GitHub Action] --> f2[CVE dependency scan : Fossa GitHub Action] 
+            end
+            tc --> ff
+        end
+        subgraph b[Build : GitHub Ubuntu 20.04 Runners]
+            direction TB
+            subgraph b2[Binaries]
+                b2a[statically compiled and linked using\ngo ldflags]
+            end
+            subgraph b3[Container Images]
+                b3a[docker buildkit : GitHub Actions]
+            end
+            b2 --> b3
+        end
+        subgraph pbb[Post-Build : GitHub Ubuntu 20.04 Runners]
+            direction TB
+            subgraph sc[Static Compilation Check ]
+                sc1[static-check : GitHub Action]
+            end
+            subgraph sb[SBOM Generation]
+                s1[Anchore Syft : Cyclone DX formatted SBOM]
+            end
+            subgraph ff1[Container Image Scan]
+                f3[analyze container : Fossa]
+            end
+            subgraph pbb1[Unit Testing]
+                pbb1a[Standard Go Unit Tests]
+            end
+            subgraph vt[Validation Testing]
+                vt1[Struct and Field Validation\n'go-playground/validator']
+            end
+            subgraph it[Integration Testing]
+                direction TB
+                it1[In-House Go Framework]
+                it1a[Deploy Container Images from Pipeline Context]
+                it1b[Provision and Run Isolated API Backend\nVerify Authentication to API\nVerify features and plugins\nVerify return codes from all API endpoints]
+                it2[Validate: Kubernetes Version Support using internal Version Skew Policy]
+                it3[Validate: Application Logging using Automated Synthetic Load]
+                it4[Validate: Error Handling works as expected]
+                it1 --> it1a --> it1b --> it2 --> it3 --> it4
+            end          
+            subgraph rp[Publish Artifacts : GitHub Release : GitHub Ubuntu 20.04 Runners]
+            direction TB
+                rp1[release-action : Github Action]
+                subgraph s[Secure Software Supply Chain]
+                direction TB
+                    s2[SigStore cosign]
+                    s2a[SBOM : Cyclone DX format] --> s2aa[External SBOM Distributor : RKVST]
+                    s2b[Container Image : OCI Compliant] --> s2c[Production Registry :\nAzure Container Registry ]
+                    end
+                    s2d[Go Dependency Submission : GitHub Action] --> s2e[Dependabot - Automatic Dependency Updates]
+                    s1a[Application Binaries : Multi-Platform]
+                    s1b[Artifact Upload : GitHub Action]
+                    s2 --> s2a & s2b
+                    rp1 --> s1a & s2d
+                    s1a --> s1b
+                rp1 --> s
+            end
+            sc --> ff1 --> pbb1 --> it --> vt --> sb --> rp
+        end
+        subgraph pd[Deploy to Production]
+            subgraph pd1[Update Workloads]
+                pd1a[Update Application Manifests\n to use v0.3.1 tagged container image]
+                pd1aa['kubectl set image deployment/backend-api-deployment rest-api=rest-api:v0.3.1]
+                pd1b[Rancher verifies v0.3.1 SBOM as part of \ndeployment using a kubernetes admission controller\nand webhook that leverage native \ncosign functionality prior to scheduling]
+                pd1c[Rolling Upgrade : use Rancher Scaling and Upgrade Strategy to deploy v0.3.1\nRollingUpdateStrategy:  10% max unavailable, 15% max surge]
+                pd1d[Update v0.3.0 -> v0.3.1\nwait for health checks to pass]
+                pd1e[worker node is uncordoned\n deployment progress]
+                pd1f[Deployment is complete when 100%\nof API service containers are running v0.3.1]
+                pd1a --> pd1aa --> pd1b --> pd1c --> pd1d --> pd1e --> pd1f
+            end
+        end
+        pb --> b --> pbb --> pd
+    end

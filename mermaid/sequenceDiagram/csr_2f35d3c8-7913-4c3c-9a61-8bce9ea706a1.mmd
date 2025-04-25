@@ -1,0 +1,10 @@
+sequenceDiagram
+    participant Client
+    participant Server
+
+    Client->>Server: Request page
+    Server-->>Client: Send minimal HTML and JavaScript
+    Note over Client: Load JavaScript
+    Note over Client: Render page content
+    Note over Client: Fetch data if needed
+    Note over Client: Update DOM

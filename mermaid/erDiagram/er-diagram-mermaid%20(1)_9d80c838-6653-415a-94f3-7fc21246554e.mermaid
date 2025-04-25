@@ -1,0 +1,93 @@
+erDiagram
+    Customer ||--o{ Account : has
+    Account ||--o{ AccountCarrier : has
+    Account ||--o{ AccountContact : has
+    Account ||--o{ AccountNote : has
+    Account ||--o{ AccountNoteDetail : has
+    Account ||--o{ AccountWorker : has
+    Account ||--o{ AccountXref : has
+    Carrier ||--o{ AccountCarrier : has
+    Contact ||--o{ AccountContact : has
+    User ||--o{ AccountWorker : has
+
+    Account {
+        string accountId
+        string customerId
+        string accountName
+        date effDate
+        date termDate
+        string statusCode
+        string situsState
+        string naicsCode
+        boolean hasCustomProgram
+        string programName
+        boolean hasCustomizedUrl
+        string customUrl
+        string pin
+        string customSurvey
+        boolean isReleased
+        boolean isLinx
+    }
+
+    Customer {
+        string customerId
+    }
+
+    AccountCarrier {
+        string accountId
+        string carrierId
+        string typeCode
+        date effDate
+        date termDate
+    }
+
+    Carrier {
+        string carrierId
+    }
+
+    AccountContact {
+        string accountId
+        string contactId
+        string typeCode
+        string refId
+        date effDate
+        date termDate
+    }
+
+    Contact {
+        string contactId
+    }
+
+    AccountNote {
+        string accountId
+        string noteId
+        string typeCode
+        string note
+        date effDate
+        date termDate
+        boolean isInstruction
+        string instructionCode
+    }
+
+    AccountNoteDetail {
+        string accountId
+        string noteId
+        string noteLineId
+        string note
+    }
+
+    AccountWorker {
+        string accountId
+        string userId
+        string roleCode
+    }
+
+    User {
+        string userId
+    }
+
+    AccountXref {
+        string accountId
+        string altAccountId
+        string systemCode
+    }

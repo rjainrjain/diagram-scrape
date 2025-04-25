@@ -1,0 +1,10 @@
+sequenceDiagram
+participant user
+participant browser
+participant server
+
+user ->>browser: Access SPA page
+browser ->>server: GET HTTP requests (spa, main.css, spa.js and data.json)
+server -->>browser: response status code 200 OK
+browser ->>user: Shows page with slightly different JS code
+Note right of user: Page looks the same as before, but has different behaviour when creating note

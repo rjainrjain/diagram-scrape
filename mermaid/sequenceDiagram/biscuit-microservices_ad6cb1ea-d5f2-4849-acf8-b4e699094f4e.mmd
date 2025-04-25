@@ -1,0 +1,7 @@
+sequenceDiagram
+    participant Client
+    participant Gateway
+    participant Service 1
+
+    Client->>Gateway: Block 0: user(1234)
+    Gateway->>Service 1: Block 0: user(1234) Block 1: check if service(1)

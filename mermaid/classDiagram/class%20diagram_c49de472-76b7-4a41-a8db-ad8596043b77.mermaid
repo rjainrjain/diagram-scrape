@@ -1,0 +1,67 @@
+classDiagram
+
+    class AddressBook{
+        - contacts : List<Contact>
+        + addContactToAddressBook(contact: Contact) void
+        + removeContactByName(criteria: String): List<Contact>
+        + searchName(criteria: String) List<cContact>
+        + getAllContacts(): List<cContact>
+        + editContact(oldContact: Contact, newContact: Contact): void
+    }
+
+    class Contact{
+        - name: String
+        - phoneNumber: String
+        - email: String
+        + getName():String
+        + getPhoneNumber() String
+        + getEmail(): String
+        + setName(name: String): void
+        + setPhoneNumber(PhoneNumber: String) void
+        + setEmail(email: String) void
+    }
+
+    class ContactManager {
+        - Contact (List contact)
+        + addContact(contact: Contact) void
+        + removeContact(contact: Contact): List<Contact>
+        + editContactName(String oldName, String newName)
+        + editContactEmail(String name, String newEmail)
+        + editContactPhone(String name, String newPhone)
+        + removeAllContacts(deleteAllContacts: String): List<cContact>
+        + getContact(): List
+        + findContact(String name)
+
+    }
+
+    class SearchEngine {
+        + searchName(name: String): List<cContact>
+        + searchPhone(PhoneNumber: String): List<cContact>
+        + searchEmail(email: String): List<cContact>
+
+    }
+
+    class UserInterface {
+    + displayMenu(): void
+    + userInput(): String
+    + displayResults(results: List<cContact>): void
+    + displayContacts(contact: List<cContact>): void
+    }
+
+
+
+    class Display {
+        + displayResults(contact:Contact): void
+    }
+    class DangerAllContacts {
+        + deleteAllContacts():
+        + confirmDeleteAllContacts(confirm: String):
+    }
+
+UserInterface --> AddressBook
+AddressBook  --> ContactManager
+AddressBook --> Display
+AddressBook --> SearchEngine
+ContactManager --> Contact
+ContactManager --> DangerAllContacts
+SearchEngine --> Contact

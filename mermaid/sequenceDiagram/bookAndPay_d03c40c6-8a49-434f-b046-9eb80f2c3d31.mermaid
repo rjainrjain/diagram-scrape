@@ -1,0 +1,41 @@
+sequenceDiagram
+    actor Learner
+    participant Frontend
+    participant System
+    participant Database
+    actor Tutor
+
+    activate Learner
+    Learner->>+Frontend: Search for tutors
+    Frontend->>+System: getAvailableSessions(SessionFilter?)
+    System->>+Database: fetchAvailableTutors()
+    Database-->>-System: Tutor list
+    System-->>-Frontend: Available tutors
+    Frontend-->>Learner: Show available tutors
+    Learner->>Frontend: Select a session and book it
+    Frontend->>+System: scheduleSession(sessionId)
+    System->>+Database: checkWalletBalance(learnerId)
+    Database-->>-System: Wallet balance
+    alt Sufficient funds
+        System->>+Database: deductFunds(learnerId, sessionCost)
+        System->>Database: createBookingRecord(sessionId, learnerId, tutorId)
+        Database-->>-System: Booking confirmed
+        System-->>Frontend: Booking confirmed
+        Frontend-->>Learner: Display booking confirmation
+        System->>Tutor: Send booking notification
+        activate Tutor
+        deactivate Tutor
+    else Insufficient funds
+        System-->>Frontend: Insufficient funds error
+        Frontend-->>Learner: Display error and prompt to add funds
+        Learner->>Frontend: Choose to add funds
+
+        Note over Learner, Tutor: Refer to "Add Funds to Wallet" sequence
+
+        alt Payment Successful
+            Note over Learner, Tutor: Automatically retry booking
+        end
+    end
+    deactivate System
+    deactivate Frontend
+    deactivate Learner

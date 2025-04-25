@@ -1,0 +1,23 @@
+sequenceDiagram
+    participant User
+    participant Your_app
+    participant Chat_SDK
+    participant Agora_Chat_Server
+
+    User->>Your_app: Open app
+    Your_app->>Chat_SDK: Init a chat SDK instance: SDKClient.Instance.InitWithOptions(options);
+    Chat_SDK->>Chat_SDK: Add message event callbacks: SDKInstance.ChatManager.AddChatManagerDelegate(this);
+    Chat_SDK->>Agora_Chat_Server: Retrieve authentication token for the user
+    
+    Chat_SDK->>Agora_Chat_Server: Log in to the chat server: SDKClient.Instance.LoginWithAgoraToken(...);
+    
+    Chat_SDK->>Chat_SDK: Create a ChatMessage
+    User->>Your_app: Send a message
+    Your_app->>Chat_SDK: Send the ChatMessage: SDKClient.Instance.ChatManager.SendMessage(...);
+    
+    Agora_Chat_Server-->>Chat_SDK: onMessageReceived(messages) callback
+    Chat_SDK-->>Your_app: Display message
+    Your_app-->>User: Display message
+    
+    User->>Your_app: Leave the chat
+    Chat_SDK->>Agora_Chat_Server: Log out: agoraChatClient.Logout(...);

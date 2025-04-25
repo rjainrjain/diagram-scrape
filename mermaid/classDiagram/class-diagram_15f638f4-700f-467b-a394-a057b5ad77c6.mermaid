@@ -1,0 +1,23 @@
+classDiagram
+    class Project {
+        + Int id
+        + String name
+        + String description
+        + String repository_url
+        + String webhook_url
+        + Date created_at
+        + Date updated_at
+    }
+
+    class User {
+        + Int id
+        + String first_name
+        + String last_name
+        + String password
+        + String email
+        + Date email_verified_at
+        + Date created_at
+        + Date updated_at
+    }
+
+    User "1" -- "*" Project

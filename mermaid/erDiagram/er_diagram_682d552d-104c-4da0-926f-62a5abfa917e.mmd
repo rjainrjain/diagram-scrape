@@ -1,0 +1,88 @@
+erDiagram
+
+    BOOK {
+        int BookID PK
+        string BookName
+        float Price
+        int Quantity
+        int AuthorID FK
+        string BookImagePath
+        string Description
+    }
+
+    AUTHOR {
+        int AuthorID PK
+        string AuthorName
+    }
+
+    AUTHOR ||--o{ BOOK : "viết"
+
+    GENRE {
+        int GenreID PK
+        string GenreName
+    }
+
+    BOOK_GENRE {
+        int BookID FK
+        int GenreID FK
+    }
+
+    BOOK }o--o{ GENRE : "thuộc"
+
+    CUSTOMER {
+        int CustomerID PK
+        string FullName
+        string Address
+        string PhoneNumber
+        string Email
+        date BirthDate
+        string Note
+        date CreatedDate 
+    }
+
+    INVOICE {
+        int InvoiceID PK
+        date InvoiceDate
+        float AmountPaid
+        int CustomerID FK
+        int EmployeeID FK
+    }
+
+    CUSTOMER ||--o{ INVOICE : "có"
+
+    EMPLOYEE {
+        int EmployeeID PK
+        string FullName
+        string Address
+        string PhoneNumber
+        string Email
+        int AccountID FK
+        date HireDate
+        date BirthDate
+        string Note
+        string AvatarImagePath
+        string Gender
+    }
+
+    ACCOUNT {
+        int AccountID PK
+        string Username
+        string Password
+        boolean IsAdmin
+    }
+
+    EMPLOYEE ||--|| ACCOUNT : "sở hữu"
+
+    EMPLOYEE ||--o{ INVOICE : "xử lý"
+
+    INVOICEDETAIL {
+        int InvoiceDetailID PK
+        int Quantity
+        float SalePrice
+        int BookID FK
+        int InvoiceID FK
+    }
+
+    INVOICE ||--o{ INVOICEDETAIL : "chứa"
+    BOOK ||--o{ INVOICEDETAIL : "xuất hiện trong"
+

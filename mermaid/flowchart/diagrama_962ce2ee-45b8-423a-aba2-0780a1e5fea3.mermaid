@@ -1,0 +1,83 @@
+flowchart TD
+    subgraph Main[Programa Principal]
+        A[Inicio] --> B[Inicialización]
+        B --> C[Crear ControlTower]
+        C --> D[Inicializar Runways]
+        D --> E[Inicializar Gates]
+        E --> F[Crear WaitGroup]
+        F --> G[Crear array de aviones]
+        G --> H[Iniciar goroutines para cada avión]
+        H --> I[Esperar WaitGroup]
+        I --> Z[Fin - Simulación completada]
+    end
+
+    subgraph PlaneRoutine[Rutina de cada avión]
+        AA[Inicio goroutine] --> BB{Solicitar aterrizaje}
+        BB -->|Éxito| CC[Imprimir mensaje aterrizaje]
+        BB -->|Fallo| DD[Imprimir no hay pistas]
+        CC --> EE[Esperar tiempo uso pista]
+        EE --> FF[Liberar pista]
+        FF --> GG{Solicitar puerta}
+        GG -->|Éxito| HH[Imprimir mensaje puerta]
+        GG -->|Fallo| II[Imprimir no hay puertas]
+        HH --> JJ[Esperar tiempo uso puerta]
+        JJ --> KK[Liberar puerta]
+        KK --> LL[Fin goroutine]
+        DD --> LL
+        II --> LL
+    end
+
+    subgraph ControlTowerMethods[Métodos de Control Tower]
+        M1[requestLanding]
+        M2[releaseRunway]
+        M3[assignGate]
+        M4[releaseGate]
+    end
+
+    subgraph InitializationFunctions[Funciones de Inicialización]
+        IF1[initializeRunway]
+        IF2[initializeGate]
+    end
+
+    %% Conexiones entre el flujo principal y las funciones
+    D --> IF1
+    E --> IF2
+    BB --> M1
+    FF --> M2
+    GG --> M3
+    KK --> M4
+
+    %% Estilo para los diferentes subgrafos
+    classDef mainStyle fill:#e6ffe6,stroke:#333,stroke-width:2px;
+    classDef routineStyle fill:#ffe6e6,stroke:#333,stroke-width:2px;
+    classDef methodStyle fill:#e6e6ff,stroke:#333,stroke-width:2px;
+    classDef initStyle fill:#fff2e6,stroke:#333,stroke-width:2px;
+
+    class Main mainStyle;
+    class PlaneRoutine routineStyle;
+    class ControlTowerMethods methodStyle;
+    class InitializationFunctions initStyle;
+
+    %% Detalle de las funciones
+    subgraph RequestLandingDetail[requestLanding]
+        RL1[Inicio requestLanding] --> RL2{Iterar pistas}
+        RL2 -->|Pista libre| RL3[Bloquear mutex]
+        RL3 --> RL4[Marcar pista ocupada]
+        RL4 --> RL5[Marcar avión aterrizado]
+        RL5 --> RL6[Desbloquear mutex]
+        RL6 --> RL7[Retornar índice pista]
+        RL2 -->|No hay pistas| RL8[Retornar -1]
+    end
+
+    subgraph AssignGateDetail[assignGate]
+        AG1[Inicio assignGate] --> AG2{Iterar puertas}
+        AG2 -->|Puerta libre| AG3[Bloquear mutex]
+        AG3 --> AG4[Marcar puerta ocupada]
+        AG4 --> AG5[Desbloquear mutex]
+        AG5 --> AG6[Retornar índice puerta]
+        AG2 -->|No hay puertas| AG7[Retornar -1]
+    end
+
+    %% Conexiones a los detalles de las funciones
+    M1 --> RequestLandingDetail
+    M3 --> AssignGateDetail

@@ -1,0 +1,11 @@
+%% Diagram đăng nhập
+graph TD
+    I[Bắt đầu] --> J[Nhập email và mật khẩu]
+    J --> K[Gửi yêu cầu đăng nhập tới server]
+    K --> L{Thông tin đúng?}
+    L -->|Có| M[Tạo JWT token]
+    L -->|Không| N[Hiển thị lỗi]
+    N --> J
+    M --> O[Trả về JWT token cho client]
+    O --> P[Lưu token ở client]
+    P --> Q[Kết thúc]

@@ -1,0 +1,13 @@
+flowchart LR
+    subgraph HOST
+        HOST_CONTENT["HOST<br/>with Agora Video SDK"]
+    end
+    subgraph AUDIENCE
+        AUDIENCE_CONTENT["AUDIENCE<br/>with Agora Video SDK"]
+    end
+    AGORA("Agora SD-RTN")
+    
+    HOST_CONTENT -.->|Join a Channel| AGORA
+    HOST_CONTENT -.->|Publish Stream| AGORA
+    AGORA -.->|Join a Channel| AUDIENCE_CONTENT
+    AGORA -.->|Subscribe to a Stream| AUDIENCE_CONTENT

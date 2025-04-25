@@ -1,0 +1,10 @@
+stateDiagram-v2
+    [*] --> Unsorted
+    Unsorted --> FindingMinimum: Start outer loop
+    FindingMinimum --> CompareElements: Start inner loop
+    CompareElements --> UpdateMinimum: If smaller element found
+    CompareElements --> CompareElements: Move to next element
+    CompareElements --> SwapElements: Inner loop complete
+    SwapElements --> FindingMinimum: Move to next position
+    SwapElements --> Sorted: All elements processed
+    Sorted --> [*]

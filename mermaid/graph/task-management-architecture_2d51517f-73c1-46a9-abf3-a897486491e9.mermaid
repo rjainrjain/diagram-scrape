@@ -1,0 +1,7 @@
+graph TB
+    A[Angular Frontend] -->|HTTP/SignalR| B[.NET Core Web API]
+    B -->|Read/Write| C[Azure Cosmos DB]
+    B -->|Real-time updates| D[Azure SignalR Service]
+    B -->|Send notifications| E[Azure Notification Hubs]
+    B -->|Logging| F[Azure Application Insights]
+    A -->|Authentication| G[Azure Active Directory B2C]

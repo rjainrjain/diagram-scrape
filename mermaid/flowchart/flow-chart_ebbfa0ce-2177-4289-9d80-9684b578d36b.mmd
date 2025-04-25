@@ -1,0 +1,33 @@
+flowchart TD
+    subgraph Alice
+        A[Compose message]
+        B[Encrypt + Sign message<br>with private key]
+        C[Obtain certificate<br>from Bank]
+        D[Send message + certificate<br>to Bob]
+    end
+    subgraph Bank
+        E[Verify Alice's identity]
+        F[Generate certificate<br>with private key]
+        G[Sign certificate]
+        H[Send certificate + message<br>to Bob]
+    end
+    subgraph Bob
+        I[Verify certificate<br>with Bank's public key]
+        J[Verify Alice's signature<br>with Alice's public key]
+        K[Bob decrypts message<br>with Alice's public key]
+    end
+
+    A --> B
+    B --> C
+    C --> D
+    D -->|Send message + certificate| I
+    I --> J
+    J --> K
+    K -->|Bob decrypts message| END[Trust message<br>and act accordingly]
+    I -->|If all validations pass| END
+    J -->|Else| L[Reject message<br>and investigate]
+
+    E --> F
+    F --> G
+    G --> H
+    H -->|Send certificate + message| I

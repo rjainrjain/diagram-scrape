@@ -1,0 +1,11 @@
+sequenceDiagram
+    actor User
+    participant DB
+    participant Batch
+    User->>DB: 일괄 지급 이용권 등록 요청
+
+    Batch->>DB: 일괄 지급 이용권 조회
+    activate DB
+    DB->>Batch: 일괄 지급 이용권 응답
+    deactivate DB
+    Batch->>DB: 해당 사용자 이용권 추가

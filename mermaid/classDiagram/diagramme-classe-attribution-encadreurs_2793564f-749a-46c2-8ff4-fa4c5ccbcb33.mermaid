@@ -1,0 +1,64 @@
+classDiagram
+    class Utilisateur {
+        +UUID id_utilisateur
+        +String email
+        +String mot_de_passe
+        +String role
+        +DateTime date_creation
+        +DateTime derniere_connexion
+    }
+
+    class Niveau {
+        +UUID id_niveau
+        +String code_niveau
+        +String libelle
+        +int taille_groupe
+    }
+
+    class Etudiant {
+        +UUID id_etudiant
+        +UUID id_utilisateur
+        +String matricule
+        +String nom
+        +String prenom
+        +UUID id_niveau
+        +String annee_academique
+        +String matricule
+    }
+
+    class Enseignant {
+        +UUID id_enseignant
+        +UUID id_utilisateur
+        +String nom
+        +String prenom
+        +String statut
+        +String specialite
+    }
+
+    class Groupe {
+        +UUID id_groupe
+        +UUID id_niveau
+        +String annee_academique
+    }
+
+    class Encadrement {
+        +UUID id_encadrement
+        +UUID id_groupe
+        +UUID id_enseignant
+        +String annee_academique
+    }
+
+    class Membre_Groupe {
+        +UUID id_membre_groupe
+        +UUID id_groupe
+        +UUID id_etudiant
+    }
+
+    Utilisateur "1" -- "0..1" Etudiant
+    Utilisateur "1" -- "0..1" Enseignant
+    Niveau "1" -- "*" Etudiant
+    Niveau "1" -- "*" Groupe
+    Groupe "1" -- "*" Membre_Groupe
+    Etudiant "1" -- "*" Membre_Groupe
+    Groupe "1" -- "*" Encadrement
+    Enseignant "1" -- "*" Encadrement

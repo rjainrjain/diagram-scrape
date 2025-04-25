@@ -1,0 +1,45 @@
+classDiagram
+    class App {
+        +render()
+    }
+    class Game {
+        -message: string
+        -currentLetterIndex: int
+        -score: int
+        -gameStarted: boolean
+        -gameCompleted: boolean
+        -videoError: boolean
+        -detectedGesture: string
+        +startGame()
+        +checkGesture()
+        +handleVideoError()
+        +render()
+    }
+    class GameService {
+        -current_game: dict
+        +start_game()
+        +end_game()
+        +check_gesture(gesture: string)
+    }
+    class ReconnaissanceGestesTempsReel {
+        -model: AIModel
+        -labels_dict: dict
+        -mp_hands: MediaPipe.Hands
+        +charger_modele(chemin_modele: string)
+        +configurer_mediapipe()
+        +traiter_frame(frame: Image)
+        +gen_frames()
+    }
+    class GameRoutes {
+        +start_game()
+        +end_game()
+        +check_gesture()
+    }
+
+    App --> Game
+    Game ..> axios : uses
+    GameRoutes ..> GameService : uses
+    GameRoutes ..> ReconnaissanceGestesTempsReel : uses
+    ReconnaissanceGestesTempsReel ..> OpenCV : uses
+    ReconnaissanceGestesTempsReel ..> MediaPipe : uses
+    ReconnaissanceGestesTempsReel ..> TensorFlow : uses

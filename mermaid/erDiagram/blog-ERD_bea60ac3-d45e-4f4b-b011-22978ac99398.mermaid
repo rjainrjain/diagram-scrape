@@ -1,0 +1,38 @@
+erDiagram
+    USERS {
+        integer id PK
+        string username
+        string email
+        string password_hash
+        string created_at
+    }
+
+    POSTS {
+        integer id PK
+        integer user_id FK
+        string title
+        text content
+        integer category_id FK
+        string created_at
+        boolean is_published
+    }
+,
+    COMMENTS {
+        integer id PK
+        integer user_id FK
+        integer post_id FK
+        text comment
+        string created_at
+    }
+
+    CATEGORIES {
+        integer id PK
+        string name
+        string description
+    }
+
+
+    USERS ||--o{ POSTS : "has many"
+    USERS ||--o{ COMMENTS : "has many"
+    POSTS ||--o{ COMMENTS : "has many"
+    POSTS ||--o| CATEGORIES : "belongs to"

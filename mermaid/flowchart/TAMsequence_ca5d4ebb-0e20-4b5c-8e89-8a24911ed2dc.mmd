@@ -1,0 +1,45 @@
+---
+title: TAM State Diagram
+---
+
+flowchart LR
+    start("/start")
+    register_question["Am I registered?"]
+    register_yes{Yes}
+    register_no{No}
+    register_users["/register"]
+    tam["TAM: How can I help?"]
+    trade_history["Trade History"]
+    last_trade["Last Trade"]
+    rfq[RFQ]
+    cancel[Cancel RFQ]
+    trade[Trade RFQ]
+    bye[bye]
+
+
+    start --> register_question
+    register_question --> register_yes
+    register_question --> register_no
+    register_no --> register_users
+    register_yes --> tam
+    tam -- I want all my trades --> trade_history
+    trade_history -- Here's all your trades for today --> tam
+    tam -- I want my last trade --> last_trade
+    last_trade -- Here's your most recent execution --> tam
+    tam -- I want a quote --> rfq
+    rfq -- Here's my quote --> tam
+    tam -- I want to cancel the rfq --> cancel
+    cancel -- quote canceled --> tam
+    tam -- I want to trade --> trade
+    trade -- Trade Confirmed --> tam
+    tam --> bye
+
+
+
+
+
+
+
+
+
+

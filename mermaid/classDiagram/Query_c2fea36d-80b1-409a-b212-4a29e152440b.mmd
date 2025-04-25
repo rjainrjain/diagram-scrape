@@ -1,0 +1,18 @@
+classDiagram
+
+    class UserQuery {
+        <<HttpRequestQuery>>
+    }
+
+    class IssueQuery {
+        <<HttpRequestQuery>>
+    }
+
+    class CommentQuery {
+        <<HttpRequestQuery>>
+        string IssueId
+    }
+
+    style UserQuery fill:yellow
+    style IssueQuery fill:yellow
+    style CommentQuery fill:yellow

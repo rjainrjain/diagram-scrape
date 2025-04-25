@@ -1,0 +1,38 @@
+sequenceDiagram
+    title: Async Process: Rover - The Executor
+
+    participant MessageBroker as Message Broker
+    participant Rover as Rover Async Process
+    participant DB as PostgreSQL DB
+    participant Drive as Google Drive
+    participant OpenAI as OpenAI Chat API
+
+    MessageBroker ->> Rover: Task obtained for rovering and extracting info from a resume
+
+    Rover ->> DB: Fetch mission details using mission ID
+    DB -->> Rover: Query response
+
+    break if mission status is not "IN_PROGRESS"
+        Rover -->> MessageBroker: ACK task so that next task can be picked up
+    end
+
+    Rover ->> Drive: Download file from Google Drive uisng resume file ID
+    Drive -->> Rover: Pipe the read stream to a file write stream.
+
+    note over Rover: Read the content of the downloaded file
+
+    note over Rover: Prepare the prompt to be sent to OpenAI Chat API
+
+    Rover ->> OpenAI: Fetch positives and negatives in context of the selection criteria
+    OpenAI -->> Rover: Response
+
+    note over Rover: Parse the OpenAI Chat API response and prepare data to be written in report spreadsheet
+
+    Rover ->> Drive: Append the candidate data to spreadsheet
+    Drive -->> Rover: Response
+
+    Rover ->> DB: Increment the processed count for the mission
+    DB -->> Rover: Query response
+
+    Rover ->> DB: Update mission status to COMPLETED if total count equals processed count
+    DB -->> Rover: Query response

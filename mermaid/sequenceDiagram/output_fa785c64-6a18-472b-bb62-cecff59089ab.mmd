@@ -1,0 +1,9 @@
+sequenceDiagram
+firstMethod ->> secondMethod: call
+secondMethod ->> testingService.callA: call
+testingService.callA -->> secondMethod: return
+secondMethod -->> firstMethod: return
+firstMethod ->> fourthMethod: call
+fourthMethod ->> testingService.callC: call
+testingService.callC -->> fourthMethod: return
+fourthMethod -->> firstMethod: return

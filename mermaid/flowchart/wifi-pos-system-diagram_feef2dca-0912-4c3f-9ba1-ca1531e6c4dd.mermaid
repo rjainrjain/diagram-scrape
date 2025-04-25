@@ -1,0 +1,20 @@
+flowchart TD
+    A[Customer] -->|Makes Purchase| B[Point of Sale Terminal]
+    B -->|Generates| C[QR Code]
+    B -->|Sends Transaction Data| D[Backend Server]
+    C -->|Printed on| E[Receipt]
+    A -->|Connects to| F[Wi-Fi Access Point]
+    F -->|Redirects to| G[Captive Portal]
+    A -->|Scans QR Code on| E
+    G -->|Sends QR Data| D
+    D -->|Validates QR Code| D
+    D -->|Grants Access| F
+    D <-->|Stores/Retrieves Data| H[(Database)]
+    I[Admin] -->|Manages| D
+    I -->|Configures| F
+    J[Firewall/Router] -->|Secures| F
+    J -->|Secures| D
+    K[Network Switch] -->|Connects| B
+    K -->|Connects| D
+    K -->|Connects| F
+    K -->|Connects| J

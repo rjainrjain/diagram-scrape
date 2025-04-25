@@ -1,0 +1,46 @@
+sequenceDiagram
+  participant o as Origin
+  participant id as Identity
+  participant au as Authenticator
+  participant lo as Loader
+
+  o->>id:LoginUser
+  rect rgba(160, 160, 160, .2)
+    Note over id,au:start/watch Authenticator
+    activate au
+    id->>au:AuthUser
+    Note over au,lo:start/watch Loader
+    activate lo
+    au->>lo:LoadUserByUsernameForAuth
+    alt Error in Login
+      rect rgba(255, 0, 0, .2)
+        lo->>au:UserLoadForAuthError
+        Note over au,lo:unwatch/stop
+        deactivate lo
+        Note over lo:crash
+        activate lo
+        lo->>au:Terminated
+        deactivate lo
+        au->>id:UserAuthError
+        Note over id,au:unwatch/stop
+        deactivate au
+        Note over au:crash
+        activate au
+        au->>id:Terminated
+        deactivate au
+        id->>o:UserLoginError
+      end
+    else Successfull Login
+      rect rgba(0, 255, 0, .2)
+        activate au
+        activate lo
+        lo->>au:UserLoadForAuthSuccess
+        au->>id:UserAuthSuccess
+        id->>o:UserLoginSuccess
+        Note over au,lo:unwatch/stop
+        deactivate lo
+        Note over id,au:unwatch/stop
+        deactivate au
+      end
+    end
+  end

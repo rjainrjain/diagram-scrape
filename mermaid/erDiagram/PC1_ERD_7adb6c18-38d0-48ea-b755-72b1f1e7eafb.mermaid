@@ -1,0 +1,303 @@
+erDiagram
+    CUSTOMER {
+        int Id PK
+        string(100) Name
+        string(100) Email
+        DateTime CreatedAt
+        string(50) HtsApiId
+        string(50) HtsApiPassword
+        string(50) HtsCertPassword
+        string(20) AccountType
+        string(20) KYCStatus
+        DateTime KYCLastUpdated
+        string(50) CustomerCategory
+    }
+    ACCOUNT {
+        int Id PK
+        string(20) AccountNumber
+        string(50) Password
+        int CustomerId FK
+        string(20) AccountStatus
+        DateTime LastLoginTimestamp
+    }
+    RISK_MANAGEMENT {
+        int Id PK
+        int AccountId FK
+        int MaxLossLimit
+        int DailyLossLimit
+        int PositionLimit
+        int LeverageLimit
+        DateTime LastUpdated
+    }
+    SERIES_TYPE {
+        int Code PK
+        string(50) Name
+        string(255) Description
+        int MonthType
+        int ExpiryWeek
+        int ExpiryDay
+        int ExpiryWeekday
+        bool IsLastWeek
+        bool AdjustToNextBusinessDay
+        string(100) SpecialCondition
+        int InitialMarginRate
+        int MaintenanceMarginRate
+        int DecimalPlaces
+    }
+    SERIES {
+        int Id PK
+        string(10) Code
+        int SeriesTypeCode FK
+        string(2) YearCode
+        string(2) MonthCode
+        DateTime ExpiryDate
+        bool IsActive
+    }
+    CALENDAR {
+        Date Date PK
+        bool IsTradingDay
+        bool IsHoliday
+        string(255) Description
+    }
+    HOGA_DATA {
+        int Id PK
+        int SeriesId FK
+        DateTime Timestamp
+        int AskPrice1
+        int AskPrice2
+        int AskPrice3
+        int AskPrice4
+        int AskPrice5
+        int BidPrice1
+        int BidPrice2
+        int BidPrice3
+        int BidPrice4
+        int BidPrice5
+        int AskQuantity1
+        int AskQuantity2
+        int AskQuantity3
+        int AskQuantity4
+        int AskQuantity5
+        int BidQuantity1
+        int BidQuantity2
+        int BidQuantity3
+        int BidQuantity4
+        int BidQuantity5
+        int ExpectedPrice
+        int TotalAskQuantity
+        int TotalBidQuantity
+        string(50) PartitionKey
+    }
+    DEAL_DATA {
+        int Id PK
+        int SeriesId FK
+        DateTime Timestamp
+        string(8) TimeH
+        string(6) Time
+        int Price
+        int Quantity
+        string(1) Confirmation
+        int AccumulatedQuantity
+        int AskPrice
+        int BidPrice
+        int UnfilledQuantity
+        string(1) Sign
+        string(50) PartitionKey
+    }
+    ORDER_DATA {
+        int Id PK
+        int SeriesId FK
+        int AccountId FK
+        string(8) TimeH
+        string(6) Time
+        int SequenceNumber
+        string(9) TimeS
+        DateTime DT
+        string(6) ContractMonth
+        string(1) Test
+        string(20) AccountNumber
+        int OrderQuantity
+        int RemainingQuantity
+        int OrderPrice
+        int ConditionPrice
+        string(1) BuySellType
+        string(1) PriceType
+        string(1) ExecutionType
+        string(1) ConditionType
+        string(2) HTSType
+        string(8) UserID
+        string(2) FullExecutionType
+        string(50) PartitionKey
+    }
+    MODI_DATA {
+        int Id PK
+        int SeriesId FK
+        int AccountId FK
+        string(8) TimeH
+        string(6) Time
+        int SequenceNumber
+        string(9) TimeS
+        DateTime DT
+        string(6) ContractMonth
+        string(1) Test
+        string(1) OrderType
+        string(10) OrderNumber
+        int OrderQuantity
+        int RemainingQuantity
+        int OriginalRemainingQuantity
+        int OrderPrice
+        string(1) BuySellType
+        string(1) PriceType
+        string(6) TradeTime
+        string(10) OriginalOrderNumber
+        int CancelQuantity
+        string(50) PartitionKey
+    }
+    CANC_DATA {
+        int Id PK
+        int SeriesId FK
+        int AccountId FK
+        string(8) TimeH
+        string(6) Time
+        int SequenceNumber
+        string(9) TimeS
+        DateTime DT
+        string(6) ContractMonth
+        string(1) Test
+        string(20) AccountNumber
+        string(10) OriginalOrderNumber
+        string(10) CancelOrderNumber
+        int CancelQuantity
+        int OriginalRemainingQuantity
+        int OriginalExecutedQuantity
+        int OriginalModifiedQuantity
+        int OriginalCancelledQuantity
+        string(1) BuySellType
+        string(1) PriceType
+        string(1) ExecutionType
+        string(6) TradeTime
+        string(8) UserID
+        string(50) PartitionKey
+    }
+    FILLED_DATA {
+        int Id PK
+        int SeriesId FK
+        int AccountId FK
+        string(8) TimeH
+        string(6) Time
+        int SequenceNumber
+        string(9) TimeS
+        DateTime DT
+        string(6) ContractMonth
+        string(1) Test
+        string(1) OrderType
+        string(10) OrderNumber
+        int OrderQuantity
+        int RemainingQuantity
+        int OriginalRemainingQuantity
+        int OrderPrice
+        string(1) BuySellType
+        string(1) PriceType
+        string(6) TradeTime
+        string(10) OriginalOrderNumber
+        int ExecutedQuantity
+        int ExecutionPrice
+        string(50) PartitionKey
+    }
+    ACCOUNT_STATUS_LOG {
+        int Id PK
+        int AccountId FK
+        DateTime Timestamp
+        int Balance
+        int AvailableBalance
+        int MarginUsed
+        int UnrealizedPnL
+        string(50) PartitionKey
+    }
+    TRADE_PERFORMANCE_LOG {
+        int Id PK
+        int AccountId FK
+        int DealId FK
+        DateTime Timestamp
+        int TradeAmount
+        int TradePrice
+        int RealizedPnL
+        int CommissionFees
+        string(50) PartitionKey
+    }
+    ACCOUNT_DAILY_SUMMARY {
+        int Id PK
+        int AccountId FK
+        Date SummaryDate
+        int OpeningBalance
+        int ClosingBalance
+        int NetDailyPnL
+        int TotalTrades
+        int TotalVolume
+        int TotalCommissionFees
+        int DailyReturnRate
+        int CumulativeReturnRate
+        string(50) PartitionKey
+    }
+    ACCOUNT_POSITION_SNAPSHOT {
+        int Id PK
+        int AccountId FK
+        int SeriesId FK
+        DateTime Timestamp
+        int Quantity
+        int AverageEntryPrice
+        int CurrentPrice
+        int UnrealizedPnL
+        int RealizedPnL
+        int ReturnRate
+        string(50) PartitionKey
+    }
+    DATA_TABLE_METADATA {
+        int Id PK
+        string(50) TableType
+        string(50) TableName
+        int SeriesId FK
+        Date TableDate
+        bool IsActive
+        bool IsArchived
+        string(255) ArchiveLocation
+        int RetentionDaysSSD1
+        DateTime LastBackupSSD2
+        string(255) BackupLocationSSD2
+        DateTime LastBackupHDD
+        string(255) BackupLocationHDD
+        string(20) BackupStatus
+        int RetentionDaysSSD2
+        int RetentionDaysHDD
+        int BackupIntervalSSD2
+        int BackupIntervalHDD
+        DateTime CreatedAt
+        DateTime ExpiresAt
+        string(50) DataStatus
+    }
+
+    CUSTOMER ||--o{ ACCOUNT : "Has"
+    ACCOUNT ||--o{ RISK_MANAGEMENT : "Has"
+    ACCOUNT ||--o{ ORDER_DATA : "Places"
+    ACCOUNT ||--o{ MODI_DATA : "Modifies"
+    ACCOUNT ||--o{ CANC_DATA : "Cancels"
+    ACCOUNT ||--o{ FILLED_DATA : "Has"
+    ACCOUNT ||--o{ ACCOUNT_STATUS_LOG : "Generates"
+    ACCOUNT ||--o{ TRADE_PERFORMANCE_LOG : "Has"
+    ACCOUNT ||--o{ ACCOUNT_DAILY_SUMMARY : "Summarizes"
+    ACCOUNT ||--o{ ACCOUNT_POSITION_SNAPSHOT : "Tracks"
+    SERIES_TYPE ||--o{ SERIES : "Defines"
+    SERIES ||--o{ HOGA_DATA : "HasQuotes"
+    SERIES ||--o{ DEAL_DATA : "HasDeals"
+    SERIES ||--o{ ORDER_DATA : "HasOrders"
+    SERIES ||--o{ MODI_DATA : "HasModifications"
+    SERIES ||--o{ CANC_DATA : "HasCancellations"
+    SERIES ||--o{ FILLED_DATA : "HasFills"
+    CALENDAR ||--o{ SERIES : "AffectsExpiry"
+    DEAL_DATA ||--o{ TRADE_PERFORMANCE_LOG : "Triggers"
+    DATA_TABLE_METADATA ||--o{ HOGA_DATA : "Manages"
+    DATA_TABLE_METADATA ||--o{ DEAL_DATA : "Manages"
+    DATA_TABLE_METADATA ||--o{ ORDER_DATA : "Manages"
+    DATA_TABLE_METADATA ||--o{ MODI_DATA : "Manages"
+    DATA_TABLE_METADATA ||--o{ CANC_DATA : "Manages"
+    DATA_TABLE_METADATA ||--o{ FILLED_DATA : "Manages"

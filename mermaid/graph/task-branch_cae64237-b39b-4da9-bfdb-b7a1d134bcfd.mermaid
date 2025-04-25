@@ -1,0 +1,26 @@
+%%{init: {
+    'theme': 'base',
+    'gitGraph': {
+        'showCommitLabel': false,
+        'mainBranchName': 'main'
+    }
+}}%%
+gitGraph LR:
+    commit
+    commit
+    branch T1-task1
+    checkout T1-task1
+    commit
+    checkout main
+    commit
+    branch T2-task2
+    checkout T2-task2
+    commit
+    checkout T1-task1
+    commit
+    checkout main
+    merge T1-task1
+    checkout T2-task2
+    commit
+    checkout main
+    merge T2-task2

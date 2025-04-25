@@ -1,0 +1,17 @@
+sequenceDiagram
+    participant User
+    participant System
+    participant EmailService
+    User->>System: Create account
+    activate System
+    System->>System: Generates verification link
+    System->>EmailService: Send verification email with link
+    deactivate System
+    activate EmailService
+    EmailService->>User: Verification email with link
+    deactivate EmailService
+    User->>System: Click verification link
+    activate System
+    System->>System: Verify account
+    System->>User: Account activated
+    deactivate System

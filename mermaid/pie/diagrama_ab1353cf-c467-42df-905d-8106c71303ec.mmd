@@ -1,0 +1,59 @@
+classDiagram
+direction LR
+Usuario *-- Propietario
+Usuario o-- Transferencia
+Usuario --> Futbolista
+Propietario *-- Futbolista
+Transferencia *-- Futbolista
+Futbolista *-- Skill
+Futbolista --> Habilidad
+Skill *-- Habilidad
+Futbolista *-- Posicion
+
+    class Usuario
+    Usuario: +idUsuario int
+    Usuario: +User string
+    Usuario: +Contrasena string
+    Usuario: +Nombre string
+    Usuario: +Apellido string
+    Usuario: +Monedas uint
+    Usuario: +Futbolistas List~Futbolista~
+
+    class Propietario
+    Propietario: +idUsuario int
+    Propietario: +idFutbolista int
+
+    class Futbolista
+    Futbolista: +idUsuario int
+    Futbolista: +idFutbolista int
+    Futbolista: +idPosicion int
+    Futbolista: +idHabilidad int
+    Futbolista: +Nombre string
+    Futbolista: +Apellido string
+    Futbolista: +Naciomiento DateTime
+    Futbolista: +Velocidad byte
+    Futbolista: +Remate byte
+    Futbolista: +Pase byte
+    Futbolista: +Defensa byte
+    Futbolista: +Habilidades List~Habilidad~
+
+    class Transferencia
+    Transferencia: +idVendedor int
+    Transferencia: +idComprador int
+    Transferencia: +idFutbolista int
+    Transferencia: +Publicacion DateTime
+    Transferencia: +Confirmacion DateTime
+    Transferencia: +PrecioMonedas uint
+
+    class Posicion
+    Posicion: +idPosicion int
+    Posicion: +Nombre string
+
+    class Skill
+    Skill: +idHabilidad int
+    Skill: +idFutbolista int
+
+    class Habilidad
+    Habilidad: +idHabilidad int
+    Habilidad: +Nombre string
+    Habilidad: +Descripcion string

@@ -1,0 +1,53 @@
+graph LR
+
+  subgraph Sub-App Entry
+    rootReducer[Root Reducer]-->createAppOpt["createApp's options"]
+    middlewares[Action Middlewares]-->createAppOpt
+    enhancers[Store Enhancers]-->createAppOpt
+    initialState[Initial States]-->createAppOpt
+    createAppOpt-->createApp["createApp()"]
+    plugins["Redux Cube's Plugins"]-->createApp
+    createApp--store-->subApp["Sub-App's Root Component"]
+
+    createHub["createHub()"]-->hub
+  end
+
+  subgraph Ducks / Reducer Bundles
+    add["hub.add() statements"]-->actionCreators[Action Creators]
+    add-->actionTypes[Action Types]
+
+    hub-->add
+    hub-->handle
+
+    handle["hub.handle() statements"]-->actionTypes
+    handle-->actionCreators
+    handle-->reducers[Slice Reducers]
+    reducers-->rootReducer
+  end
+
+
+  subgraph Components
+    actionCreators-->actions['actions' option]
+    actions-->connectOpt
+    select["Select Object / Input Selectors"]-->connectOpt["connect's options"]
+    transform[Transform Function]-->connectOpt
+    connectOpt-->connect["connect()"]
+    connect--props-->containers["Container Components"]
+    containers--store-->connect
+  end
+
+  subApp--store-->containers
+
+style createApp fill:#9ff,stroke:#333,stroke-width:4px;
+style createHub fill:#9ff,stroke:#333,stroke-width:4px;
+style connect fill:#9ff,stroke:#333,stroke-width:4px;
+style plugins fill:#9ff,stroke:#333,stroke-width:4px;
+style add fill:#ff0,stroke:#333,stroke-width:4px;
+style handle fill:#ff0,stroke:#333,stroke-width:4px;
+style createAppOpt fill:#ff0,stroke:#333,stroke-width:4px;
+style initialState fill:#ff0,stroke:#333,stroke-width:4px;
+style subApp fill:#ff0,stroke:#333,stroke-width:4px;
+style select fill:#ff0,stroke:#333,stroke-width:4px;
+style transform fill:#ff0,stroke:#333,stroke-width:4px;
+style containers fill:#ff0,stroke:#333,stroke-width:4px;
+style connectOpt fill:#ff0,stroke:#333,stroke-width:4px;

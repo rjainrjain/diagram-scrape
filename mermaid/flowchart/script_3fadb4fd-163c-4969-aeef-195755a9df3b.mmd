@@ -1,0 +1,24 @@
+flowchart TD
+    %% Do You have a Tuya / SmartLife Account?
+    
+    1[Do You have a Tuya / SmartLife Account?]
+    2[Is Your Email Same as Your Tuya / SmartLife Account?]
+    21[Please Enter Your Tuya Email]
+    3[Sorry! this app is only for SmartLife Users]
+    4[Check Tuya Email]
+    41[Sorry! Email already Exists in YatuDashboard]
+    5[Great! Please Proceed with Registering]
+
+
+    1 -->|Yes| 2
+    1 -->|No| 3
+
+    2 -->|Yes| 4
+    2 -->|No| 21
+    21 --> 4
+
+    4 -->|Exists| 41
+    4 -->|Not Exists| 5
+
+
+    

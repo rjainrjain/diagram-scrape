@@ -1,0 +1,70 @@
+classDiagram
+  Service -- Review
+  Service -- Audience
+  Service -- PhysicalActivityCategory
+  Service -- Thing
+  Service -- CategoryCode
+  Service -- OpeningHoursSpecification
+  Service -- Offer
+  Service -- Demand
+  Service -- Organization
+  Service -- Person
+  Service -- AggregateRating
+  Service -- Service
+  Service -- Product
+  Service -- ServiceChannel
+  Service -- Brand
+  Service -- ImageObject
+  Service -- GeoShape
+  Service -- AdministrativeArea
+  Service -- Place
+  Service -- GovernmentBenefitsType
+  Service -- OfferCatalog
+
+
+class Service {
+
+  Review review
+  string award
+  Audience serviceAudience
+  string category
+  string category
+  PhysicalActivityCategory category
+  Thing category
+  CategoryCode category
+  OpeningHoursSpecification hoursAvailable
+  Audience audience
+  Offer offers
+  Demand offers
+  Thing serviceOutput
+  Organization provider
+  Person provider
+  string termsOfService
+  string termsOfService
+  string providerMobility
+  Person broker
+  Organization broker
+  AggregateRating aggregateRating
+  Service isSimilarTo
+  Product isSimilarTo
+  ServiceChannel availableChannel
+  string slogan
+  Organization brand
+  Brand brand
+  string logo
+  ImageObject logo
+  Thing produces
+  GeoShape serviceArea
+  AdministrativeArea serviceArea
+  Place serviceArea
+  GovernmentBenefitsType serviceType
+  string serviceType
+  AdministrativeArea areaServed
+  GeoShape areaServed
+  string areaServed
+  Place areaServed
+  Service isRelatedTo
+  Product isRelatedTo
+  OfferCatalog hasOfferCatalog
+
+ }

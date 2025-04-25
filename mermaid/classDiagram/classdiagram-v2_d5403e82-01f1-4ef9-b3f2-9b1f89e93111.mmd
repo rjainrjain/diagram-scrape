@@ -1,0 +1,42 @@
+classDiagram
+      class LogicComponent {
+          -input: LogicComponent[]
+          -output: LogicComponent
+          -propagationDelay: PropagationDelay
+          +performLogic(): bool
+      }
+
+      class Input {
+          +generateOutput(): bool
+      }
+
+      class Probe {
+          +displayOutput(): void
+      }
+
+      class Circuit {
+          -components: LogicComponent[]
+          +addComponent(component: LogicComponent): void
+          +checkFeedback(): bool
+          +simulate(): void
+      }
+
+      class Simulator {
+          +loadFile(filepath: String): void
+          +runSimulation(): void
+          +saveOutput(outputPath: String): void
+      }
+
+      class FileHandler {
+          +readFile(filepath: String): String
+          +writeFile(filepath: String, content: String): void
+      }
+
+      class PropagationDelay {
+          -delayTime: int
+      }
+
+      LogicComponent <|-- Input
+      LogicComponent <|-- Probe
+      Circuit "1" *-- "many" LogicComponent : contains
+      Simulator ..> FileHandler : uses

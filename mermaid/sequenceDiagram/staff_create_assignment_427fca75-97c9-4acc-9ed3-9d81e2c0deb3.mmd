@@ -1,0 +1,41 @@
+%%! spec: 23/11/2021
+
+sequenceDiagram
+    autonumber
+
+    participant C as Client
+    participant API as API # controller
+    participant VL as Validation # using Joi
+    participant M as O2O Mapper # using @automapper/nestjs
+    participant App as Domain # service
+    participant Db as Database # repository
+
+    C ->>+ API : POST /assignments
+    activate API
+    Note right of C : body: CreateAssignmentDto shape
+
+    API ->>+ VL : parse (validate & transform) the JSON
+    VL -->>- API : payload data parsed
+    Note right of API : CreateAssignmentDto
+
+    API ->>+ App : create a new assignment
+
+    App ->> App : do business logic stuff with DTO object
+    activate App
+    deactivate App
+
+    App ->>+ M : map the DTO to DAO
+    M ->>- App : data access object
+    Note right of M: AssignmentDao
+
+    App ->>+ Db : create a new assignment
+    Db -->>- App : AssignmentEntity
+
+    App -->>- API : AssignmentEntity
+    API ->>+ M : map the BO to DTO
+    M -->>- API : AssignmentRoDto
+
+    API -->>+ C : 201 OK
+    Note right of C : body: AssignmentRoDto
+
+    deactivate API

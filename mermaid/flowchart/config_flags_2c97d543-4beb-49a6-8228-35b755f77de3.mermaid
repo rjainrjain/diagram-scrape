@@ -1,0 +1,50 @@
+flowchart TD
+    A[Start] --> B[ParseFlags]
+    B --> C[Create Flags struct]
+    C --> D[setupFlags]
+    D --> E[flag.Parse]
+    E --> F[Create Config struct]
+    F --> G[Return Flags and Config]
+
+    subgraph setupFlags Function
+        H[Set DebugLevel flag]
+        I[Set Concurrency flag]
+        J[Set ConfigFile flag]
+        K[Set SecretsFile flag]
+        L[Set HostnameFilter flag]
+        M[Set Verbose flag]
+        N[Set NoPanorama flag]
+        O[Set ReportOnly flag]
+    end
+
+    D --> H
+    H --> I
+    I --> J
+    J --> K
+    K --> L
+    L --> M
+    M --> N
+    N --> O
+
+    subgraph Flags struct
+        P[DebugLevel]
+        Q[Concurrency]
+        R[ConfigFile]
+        S[SecretsFile]
+        T[HostnameFilter]
+        U[Verbose]
+        V[NoPanorama]
+        W[ReportOnly]
+    end
+
+    subgraph Config struct
+        X[HostnameFilter]
+        Y[ReportOnly]
+    end
+
+    C -.-> P
+    F -.-> X
+
+    style setupFlags Function fill:#f9f,stroke:#333,stroke-width:2px
+    style Flags struct fill:#ccf,stroke:#333,stroke-width:2px
+    style Config struct fill:#cfc,stroke:#333,stroke-width:2px

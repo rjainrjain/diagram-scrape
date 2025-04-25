@@ -1,0 +1,22 @@
+---
+config:
+  flowchart:
+    nodeSpacing: 8
+    rankSpacing: 8
+---
+graph LR
+    T[Type ID]
+
+    subgraph Size header
+    S0[Byte size for field 0]
+    ETC[...]
+    SN[Byte size for field n]
+    end
+
+    subgraph Data section
+    D0[Data for field 0]
+    DETC[...]
+    DN[Data for field n]
+    end
+
+    T ~~~ S0 ~~~ ETC ~~~ SN ~~~ D0 ~~~ DETC ~~~ DN

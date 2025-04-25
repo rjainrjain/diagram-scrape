@@ -1,0 +1,23 @@
+classDiagram
+    Usuario <|-- Cliente
+    Usuario <|-- Funcionario
+    Funcionario <|-- Gerente
+
+    class Usuario {
+        -String nome
+        -String senha
+        +toString() String
+    }
+    class Cliente {
+        -String endereco
+        -String telefone
+        +comprarProduto()
+        +toString() String
+    }
+    class Funcionario {
+        +exibirProduto()
+        +venderProduto()
+    }
+    class Gerente {
+        +fechamentoCaixa()
+    }

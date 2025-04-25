@@ -1,0 +1,34 @@
+erDiagram
+    ACTIVITIES {
+        string PartitionKey "PK = STORE#<StoreID>"
+        string SortKey "SK = STORE#<StoreID>ACTIVITY#<CorrelationID>"
+        string CorrelationID "If this is still required for logs"
+        string Details "This is a standin for out-of-scope details"
+        string GSI1PK "USER#<UserID>"
+        string GSI1SK "ACTIVITY#<CorrelationID>"
+        string EntityType "STORE#<StoreID>#ACTIVITY"
+    } 
+
+    USERS {
+        string PartitionKey "PK = USER#<UserID>"
+        string SortKey "SK = USER#<UserID>"
+        string UserID
+        string FirstName
+        string LastName
+        string Email
+        string GSI1PK "USER#SearchableFirstName"
+        string GSI1SK "<lowercase FirstName>"
+        string GSI2PK "USER#SearchableLastName"
+        string GSI2SK "<lowercase LastName>"
+        string GSI3PK "USER#SearchableEmail"
+        string GSI3SK "<lowercase Email>"
+        string EntityType "USER - maybe unnecessary"
+    }
+
+    STORE {
+        string PartitionKey "PK = STORE#<StoreID>"
+        string SortKey "SK = STORE#<StoreID>"
+        string StoreID
+        string Name
+        string EntityType "STORE - maybe unnecessary"
+    }

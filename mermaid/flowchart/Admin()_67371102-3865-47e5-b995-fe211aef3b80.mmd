@@ -1,0 +1,14 @@
+flowchart TD
+    A[Start] --> B{Permission contains Admin}
+    B --> |Yes| C{Level > 55}
+    B --> |No| D{Permission contains Manager}
+    C --> |Yes| E[Welcome, Super Admin user.]
+    C --> |No| F[Welcome, Admin user.]
+    D --> |Yes| G{Level >= 20}
+    D --> |No| H[You do not have sufficient privileges.]
+    G --> |Yes| I[Contact an Admin for access.]
+    G --> |No| H
+    E --> J[End]
+    F --> J
+    I --> J
+    H --> J

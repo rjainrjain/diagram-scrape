@@ -1,0 +1,13 @@
+sequenceDiagram
+    participant User
+    participant Slack
+    participant ShopSearch
+    participant RAG
+    participant Annoy
+    User->>Slack: Submit query
+    Slack->>ShopSearch: Relay query
+    ShopSearch->>RAG: Query understanding
+    RAG->>Annoy: Retrieve similar items
+    Annoy->>ShopSearch: Return results
+    ShopSearch->>Slack: Display response
+    Slack->>User: Show response

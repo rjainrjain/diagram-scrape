@@ -1,0 +1,35 @@
+flowchart TB
+    A[Start] --> B[Define Problem]
+    B --> C[Collect Data]
+    C --> D[Data Preprocessing]
+    D --> E[Exploratory Data Analysis]
+    E --> F[Feature Engineering]
+    F --> G[Split Data]
+    G --> H[Choose Model]
+    H --> I[Train Model]
+    I --> J[Evaluate Model]
+    J --> K{Model Performs Well?}
+    K -->|No| L[Hyperparameter Tuning]
+    L --> I
+    K -->|Yes| M[Validate on Test Set]
+    M --> N{Meets Requirements?}
+    N -->|No| O[Refine Model]
+    O --> H
+    N -->|Yes| P[Deploy Model]
+    P --> Q[Monitor Performance]
+    Q --> R{Performance Degraded?}
+    R -->|Yes| S[Retrain Model]
+    S --> C
+    R -->|No| Q
+    P --> T[A/B Testing]
+    T --> U[Analyze Results]
+    U --> V{Improvement?}
+    V -->|Yes| W[Full Deployment]
+    V -->|No| X[Iterate on Model]
+    X --> H
+    W --> Y[Continuous Monitoring]
+    Y --> Z{Need Update?}
+    Z -->|Yes| AA[Plan Update]
+    AA --> B
+    Z -->|No| Y
+    Y --> AB[End]

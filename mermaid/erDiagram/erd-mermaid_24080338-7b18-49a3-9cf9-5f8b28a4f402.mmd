@@ -1,0 +1,126 @@
+erDiagram
+    %% Entities
+    Admin {
+        int ID PK
+        string Name
+        string Email
+        string Phone
+        string Role
+        int TaskForceID FK
+    }
+
+    TaskForce {
+        int ID PK
+        string Name
+        datetime EstablishedDate
+        string Function
+        string Size
+    }
+
+    %% SpecificTaskForce {
+    %%     int ID PK
+    %%     string Name
+    %%     datetime EstablishedDate
+    %%     string Function
+    %%     int TaskForceID FK
+    %%     int PandemicID FK
+    %% }
+
+    Pandemic {
+        int ID PK
+        string Name
+        datetime StartDate
+        string AffectedRegions
+        int InfectedCases
+    }
+
+    Vaccine {
+        int ID PK
+        string Name
+        datetime ApprovalDate
+        string Type
+        string BatchNumber
+        int PandemicID FK
+    }
+
+    CityProvince {
+        int ID PK
+        string Name
+        int Population
+        int Area
+        string Coordinates
+    }
+
+    Statistics {
+        int ID PK
+        datetime UpdatedAt
+        int InfectedCases
+        int Deaths
+        int Recoveries
+        int TodayCases
+        int CityID FK
+    }
+
+    TreatmentArea {
+        int ID PK
+        string Name
+        int Capacity
+        string Address
+        string TreatmentType
+        int CityID FK
+    }
+
+    Patient {
+        int ID PK
+        string Name
+        int Age
+        string Gender
+        string Status
+    }
+
+    Relative {
+        int ID PK
+        string Name
+        string Relationship
+        string Phone
+        int PatientID FK
+    }
+
+    vaccine_city {
+        int ID PK
+        int VaccineID FK
+        int CityID FK
+        int Amount
+    }
+
+    vaccine_city_treatmentarea {
+        int ID PK
+        int VaccineCityId FK
+        int TreatmentAreaId FK
+        int Amount
+    }
+
+    vaccine_patient {
+        int ID PK
+        int VaccineCityTreatmentAreaId FK
+        int PatientId FK
+        datetime VaccinatedOn not null
+    }
+    %% Relationships
+    Vaccine ||--o{ vaccine_city: allocate
+    Admin ||--o{ TaskForce : manages
+    %%TaskForce ||--o{ SpecificTaskForce : has_specific_task_forces
+    TaskForce ||--|{ Pandemic : responds_to
+    Pandemic ||--o{ Vaccine : includes_vaccine
+    Pandemic ||--o{ CityProvince : impacts
+    
+    CityProvince ||--o{ TreatmentArea : has
+    CityProvince ||--o{ Statistics : reports_statistics
+    CityProvince ||--o{ vaccine_city : receives
+    
+    vaccine_city ||--o{ vaccine_city_treatmentarea : allocates_to
+    TreatmentArea ||--o{ vaccine_city_treatmentarea : receives
+    TreatmentArea ||--o{ Patient : treats
+    Patient ||--o{ Relative : has
+    vaccine_city_treatmentarea ||--o{ vaccine_patient: allocates_to
+    Patient ||--o{ vaccine_patient : has_vaccination_history

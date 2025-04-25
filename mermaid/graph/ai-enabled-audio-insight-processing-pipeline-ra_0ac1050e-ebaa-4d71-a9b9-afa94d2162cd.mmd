@@ -1,0 +1,36 @@
+graph TD
+    Users((Users upload)) -->|1| s3:s31[S3 raw audio]
+    s3:raw -->|2| lambda:lambda1[Lambda transcribe audio job]
+    lambda:transcribe -->|3| transcribe:transcribe1[Amazon Transcribe]
+    transcribe:service -->|4| s3:s32[S3 transcribed audio]
+    s3:transcribed -->|5| lambda:lambda2[Lambda translate text job]
+    lambda:translate -->|6| translate:translate1[Amazon Translate]
+    translate:service -->|7| s3:s33[S3 translated text]
+    s3:translated -->|8| lambda:lambda3[Lambda text insights job]
+    lambda:insights -->|9| comprehend:comprehend1[Amazon Comprehend]
+    
+    lambda:transcribe -->|4| dynamodb:dynamodb1[DynamoDB]
+    lambda:translate -->|7| dynamodb:metadata
+    lambda:insights -->|10| dynamodb:metadata
+    
+    Users2((Users query)) -->|11| apigateway:apigateway1[API Gateway GET match API]
+    apigateway:get -->|12| lambda:lambda4[Lambda GET match function]
+    lambda:match -->|13| 
+    kendra:search --> s3:translated
+    lambda:match --> dynamodb:metadata
+    
+    subgraph AWS Cloud
+        s3:raw
+        lambda:transcribe
+        transcribe:service
+        s3:transcribed
+        lambda:translate
+        translate:service
+        s3:translated
+        lambda:insights
+        comprehend:service
+        dynamodb:metadata
+        apigateway:get
+        lambda:match
+        kendra:search
+    end

@@ -1,0 +1,5 @@
+flowchart TD
+    A[Run test] --> B
+    B[Generate Component screenshot] --> C{Screenshot has changed?}
+    C -->|Yes| D[Error]
+    C ---->|No| E[Success]

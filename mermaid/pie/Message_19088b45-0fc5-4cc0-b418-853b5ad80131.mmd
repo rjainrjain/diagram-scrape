@@ -1,0 +1,36 @@
+classDiagram
+  Message -- Person
+  Message -- ContactPoint
+  Message -- Organization
+  Message -- Audience
+  Message -- dateTime
+  Message -- CreativeWork
+  Message -- date
+
+
+class Message {
+
+  Person bccRecipient
+  ContactPoint bccRecipient
+  Organization bccRecipient
+  Person recipient
+  Audience recipient
+  ContactPoint recipient
+  Organization recipient
+  dateTime dateReceived
+  Person ccRecipient
+  Organization ccRecipient
+  ContactPoint ccRecipient
+  CreativeWork messageAttachment
+  ContactPoint toRecipient
+  Person toRecipient
+  Audience toRecipient
+  Organization toRecipient
+  dateTime dateSent
+  date dateRead
+  dateTime dateRead
+  Person sender
+  Audience sender
+  Organization sender
+
+ }

@@ -1,0 +1,62 @@
+erDiagram
+    PATIENT ||--o{ APPOINTMENT : "has"
+    DOCTOR ||--o{ APPOINTMENT : "attends"
+    NURSE ||--o{ APPOINTMENT : "assists"
+    DOCTOR ||--o{ PRESCRIPTION : "prescribe"
+    PATIENT ||--o{ PRESCRIPTION : "receive"
+    MEDICATION ||--o{ PRESCRIPTION : "is prescribed"
+    DEPARTMENT ||--o{ DOCTOR : "employs"
+    DEPARTMENT ||--o{ NURSE : "employs"
+    DEPARTMENT ||--o{ ROOM : "has"
+    ROOM ||--o{ APPOINTMENT : "takes place in"
+    PATIENT {
+        int id
+        string first_name
+        string last_name
+        date birthdate
+        boolean is_insured
+    }
+    DOCTOR {
+        int id
+        string first_name
+        string last_name
+        string specialty
+        int department_id
+    }
+    NURSE {
+        int id
+        string first_name
+        string last_name
+        int department_id
+    }
+    APPOINTMENT {
+        int id
+        int patient_id
+        int doctor_id
+        int nurse_id
+        int room_id
+        date appointment_date
+    }
+    DEPARTMENT {
+        int id
+        string name
+    }
+    ROOM {
+        int id
+        string room_type
+        int department_id
+    }
+    MEDICATION {
+        int id
+        string name
+        string description
+        boolean requires_prescription
+    }
+    PRESCRIPTION {
+        int id
+        int doctor_id
+        int patient_id
+        int medication_id
+        string dosage
+        int duration_days
+    }

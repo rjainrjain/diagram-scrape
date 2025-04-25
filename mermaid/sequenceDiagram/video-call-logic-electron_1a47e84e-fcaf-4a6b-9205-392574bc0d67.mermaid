@@ -1,0 +1,39 @@
+sequenceDiagram
+    participant User as User
+    participant App as Your app
+    participant SDK as Video SDK
+    participant SDRTN as SD-RTN
+
+    User->>App: open app
+    App->>SDK: createAgoraRtcEngine
+    SDK-->>App: agoraEngine
+    App->>SDK: initialize
+    SDK-->>App: initialization successful
+    App->>SDK: setClientRole(ClientRoleType.ClientRoleBroadcaster)
+    SDK-->>App: role set
+    App->>SDK: registerEventHandler
+    SDK-->>App: callback registered
+    
+    rect rgb(238, 238, 238)
+    note right of App: Start call
+    App->>SDK: getAuthToken
+    SDK-->>App: token
+    App->>SDK: setupLocalVideo
+    App->>SDK: enableVideo
+    App->>SDK: startPreview
+    App->>SDK: joinChannel
+    SDK->>SDRTN: join request
+    SDRTN-->>SDK: join accepted
+    SDK-->>App: channel joined
+    App->>SDK: setupRemoteVideo
+    SDK-->>App: streaming started
+    end
+    
+    rect rgb(238, 238, 238)
+    note right of App: Leave call
+    App->>SDK: stopPreview
+    App->>SDK: leaveChannel
+    SDK-->>App: channel left
+    end
+    
+    User->>App: close app

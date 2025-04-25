@@ -1,0 +1,36 @@
+stateDiagram-v2
+    [*] --> Publicador
+    Publicador --> MemoriaCompartida : Cargar imagen
+    MemoriaCompartida --> Desenfocador : Señal de inicio
+    MemoriaCompartida --> Realzador : Señal de inicio
+    Desenfocador --> FinDesenfocador : Procesar primera mitad
+    Realzador --> FinRealizador : Procesar segunda mitad
+    FinDesenfocador --> Combinador
+    FinRealizador --> Combinador
+    Combinador --> GuardarImagen : Combinar mitades
+    GuardarImagen --> [*]
+
+    state Publicador {
+        [*] --> SolicitarRuta
+        SolicitarRuta --> LeerImagen
+        LeerImagen --> CargarEnMemoria
+        CargarEnMemoria --> SignalProcesadores
+        SignalProcesadores --> [*]
+    }
+
+    state fork_state <<fork>>
+    SignalProcesadores --> fork_state
+    fork_state --> Desenfocador
+    fork_state --> Realzador
+
+    state join_state <<join>>
+    FinDesenfocador --> join_state
+    FinRealizador --> join_state
+    join_state --> Combinador
+
+    state Combinador {
+        [*] --> EsperarFinalizacion
+        EsperarFinalizacion --> CombinarImagenes
+        CombinarImagenes --> GuardarEnDisco
+        GuardarEnDisco --> [*]
+    }

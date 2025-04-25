@@ -1,0 +1,172 @@
+classDiagram
+    class Main {
+        +main() void
+    }
+
+    class Game {
+        -startingPlayerIndex : int
+        -instance : Game$
+        -round : int
+        +init() void
+        -placeTwoShip() Cell
+        -phase1() bool
+        -microPhase2() bool
+        -phase2() bool
+        -phase3() bool
+        -endGame() void
+        +playRound() bool
+        +getInstance() Game
+        +getPlayer(id : int) Player
+        +initNeighbors() void
+        +initShipsCell() void
+        +initSectorsCells() void
+        +playGame() void
+        +getAlivePlayer() Player[]
+        -cyclePlayers(n : int) Player
+        -cycleStartingPlayer() void
+    }
+    class Player {
+        -idCounter : int$
+        -input : IOHandler
+        -id : int
+        -name : String
+        -score : int
+        -commandsOrder : List~Command~
+        -ships : Ship[]
+        -dead : bool
+        +Expand() void
+        +Explore() void
+        +Exterminate() void
+        +score() void
+        +getAvailableShips(n : int) Ship[]
+    }
+    class Command{
+        <<enumeration>>
+        EXPAND
+        EXPLORE
+        EXTERMINATE
+    }
+    Player ..> Command
+    class Area {
+        -grid
+        +setNeighbors() void
+        +getCell(id : int) Cell
+    }
+    class Sector {
+        <<abstract>>
+        -id : int
+        -used : bool
+        -cells : Cell[]
+        -cellIds : int[]
+        +generateSystems() void*
+    }
+    class BorderSector {
+        +generateSystems() void
+    }
+    class MiddleSector {
+        +generateSystem() void
+    }
+    class TriPrimeSector {
+        +generateSystem() void
+    }
+    class System {
+        -used : bool
+        -id : int
+        -idCounter : int$
+        -level : int
+    }
+    class Ship {
+        -idCounter : int$
+        -used : bool
+        -id : int
+        -cellIds : Integer
+        -cell : Cell
+        +getPlayer() Player
+        +initCell() void
+        +isAvailable() bool
+        +getPlayer() Player
+    }
+    class Cell {
+        -id : int
+        -neighbors : Cell[]
+        -neighborsId: int[]
+        -system : System
+        +getSystem() System[]
+        +getShips() Ship[]
+        +getControlPlayer() Player
+        +initNeighbor() Cell[]
+        +isEmpty() bool
+        +isNeighbor(cell : Cell) bool
+    }
+
+    Game *--> "2..*" Player
+    Game *--> "1" Area
+    Main *--> "1" Game
+    Area "1" o--> "46" Cell
+    Sector "1" o--> "1,4,5" Cell
+    Sector <|-- BorderSector
+    Sector <|-- MiddleSector
+    Sector <|-- TriPrimeSector
+    Cell "1" *--> "*" System
+    Player *--> "15" Ship
+    Area *--> "9" Sector
+    Ship "1" o--> "0,1" Cell
+    Cell "1" o--> "2..*" Cell
+
+    class IOHandler {
+        <<interface>>
+        +displayError(message : String) void*
+        +getStartingCellId() int*
+        +getCommandOrders() HashMap~Integer, Command[]~*
+        +expand(playerId : int, nShips : int) int[][]*
+        %% [[CellId, nShips], ...]
+        +explore(playerId : int, nFleets : int) int[][]*
+        %% [[CellId, ship1Id, ship2Id, ...], ...]
+        +exterminate(playerId : int, nSystems : int) int[][]*
+        %% [[SystemId, ship1Id, ship2Id, ...], ...]
+        +score(playerId : int) int*
+    }
+
+
+    class GameDataConverter {
+        +fromJson(json : String) Game$
+        +toJson(game : Game) String$
+        -gson : Gson$
+    }
+    class DataManipulator {
+        -mapProperties : Properties$
+        -configProperties : Properties$
+        +getMapProperties() Properties$
+        +getConfigProperties() Properties$
+        -defaultMapProperties : String$
+        -writeDefaultProperties() Properties$
+        -loadMapProperties() Properties$
+        -loadConfig() Properties$
+        +getSavesList() String[]$
+        +loadSave() Game$
+        +writeSave(game : Game) void$
+    }
+    class CLI {
+        +displayError(message : String) void
+        +getStartingCellId() int
+        +getCommandOrders() HashMap~Integer, Command[]~
+        +expand(playerId : int, nShips : int) int[][]
+        +explore(playerId : int, nFleets : int) int[][]
+        +exterminate(playerId : int, nSystems : int) int[][]
+        +score(playerId : int) int
+    }
+    class GUI {
+        +displayError(message : String) void
+        +getStartingCellId() int
+        +getCommandOrders() HashMap~Integer, Command[]~
+        +expand(playerId : int, nShips : int) int[][]
+        +explore(playerId : int, nFleets : int) int[][]
+        +exterminate(playerId : int, nSystems : int) int[][]
+        +score(playerId : int) int
+    }
+    Game *--> "1" IOHandler
+    Main ..> DataManipulator
+    DataManipulator ..> GameDataConverter
+    IOHandler ..> GameDataConverter
+    CLI --> IOHandler : implements
+    GUI --> IOHandler : implements
