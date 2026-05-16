@@ -11,6 +11,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/svg', express.static(path.join(__dirname, 'svg')));
 app.use('/svg_repaired', express.static(path.join(__dirname, 'svg_repaired')));
 
+app.get('/example.svg', (_req, res) => {
+    res.sendFile(path.join(__dirname, 'example.svg'));
+});
+
 // Endpoint to get all SVG files
 app.get('/mermaidsvg', (req, res) => {
     const svgDir = path.join(__dirname, 'svg');
