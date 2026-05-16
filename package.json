@@ -3,14 +3,20 @@
   "version": "1.0.0",
   "main": "script.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "repair:example": "node repairSvgWithBloom.js --input example.svg",
+    "repair:example:no-model": "node repairSvgWithBloom.js --input example.svg --no-model",
+    "repair:tail-report": "tail -n 5 reports/repair-report.jsonl"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@mermaid-js/parser": "^0.3.0",
+    "@penrose/bloom": "^3.3.0",
+    "@penrose/core": "^3.3.0",
     "axios": "^1.7.7",
+    "canvas": "^2.11.2",
     "csv-writer": "^1.6.0",
     "express": "^4.21.1",
     "fs": "^0.0.1-security",

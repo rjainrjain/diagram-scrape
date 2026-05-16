@@ -9,6 +9,18 @@
     <div id="svgContainer"></div>
     <button id="processButton">Process SVGs</button>
     <button id="downloadCSV">Download CSV</button>
+    <button id="repairExampleButton">Repair example.svg</button>
+    <div id="repairStatus"></div>
+    <div style="display:flex; gap: 16px; margin-top: 12px; align-items:flex-start;">
+        <div>
+            <h3>Before</h3>
+            <img id="exampleBefore" src="/example.svg" alt="Original example.svg" style="max-width: 380px; border: 1px solid #ddd;" />
+        </div>
+        <div>
+            <h3>After</h3>
+            <img id="exampleAfter" src="/svg_repaired/example.repaired.svg" alt="Repaired example.svg" style="max-width: 380px; border: 1px solid #ddd;" />
+        </div>
+    </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
     <script src="detectTextOverlap.js"></script>

@@ -170,3 +170,26 @@ document.getElementById('processButton').addEventListener('click', () => {
 });
 
 document.getElementById('downloadCSV').addEventListener('click', downloadCSV);
+
+document.getElementById('repairExampleButton').addEventListener('click', async () => {
+    const status = document.getElementById('repairStatus');
+    const afterImage = document.getElementById('exampleAfter');
+    status.textContent = 'Running repair for example.svg...';
+
+    try {
+        const response = await fetch('/api/repair/example', { method: 'POST' });
+        const result = await response.json();
+
+        if (!response.ok || !result.ok) {
+            const details = result.details || result.error || 'Unknown error';
+            throw new Error(details);
+        }
+
+        const timestamp = Date.now();
+        afterImage.src = `/svg_repaired/example.repaired.svg?t=${timestamp}`;
+        const report = result.report || {};
+        status.textContent = `Repair done. overlapsBefore=${report.overlapsBefore ?? 'n/a'}, overlapsAfter=${report.overlapsAfter ?? 'n/a'}`;
+    } catch (error) {
+        status.textContent = `Repair failed: ${error.message}`;
+    }
+});
