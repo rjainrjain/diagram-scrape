@@ -1,0 +1,15 @@
+{
+  "name": "@diagram-scrape/legacy-server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx server.js",
+    "build": "node -c server.js",
+    "check": "node -c server.js"
+  },
+  "dependencies": {
+    "@diagram-scrape/svg-repair": "0.1.0",
+    "express": "^4.21.1"
+  }
+}

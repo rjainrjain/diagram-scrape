@@ -1,32 +1,52 @@
 {
-  "name": "text-overlap",
+  "name": "diagram-scrape",
   "version": "1.0.0",
-  "main": "script.js",
+  "private": true,
+  "packageManager": "npm@11.6.2",
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "repair:example": "node repairSvgWithBloom.js --input example.svg",
-    "repair:example:no-model": "node repairSvgWithBloom.js --input example.svg --no-model",
+    "dev:editor": "vp dev apps/svg-editor",
+    "dev:legacy": "npm run dev --workspace @diagram-scrape/legacy-server",
+    "dev:all": "vp run -r --parallel dev",
+    "build": "vp run -r build",
+    "check": "vp check --no-fmt && vp run --filter \"./apps/*\" --filter \"./packages/*\" check",
+    "lint": "vp check --no-fmt",
+    "repair": "npm run repair --workspace @diagram-scrape/svg-repair -- --workspaceRoot ../..",
+    "test": "vp run -r test",
+    "repair:example": "npm run repair:example --workspace @diagram-scrape/svg-repair",
+    "repair:example:no-model": "npm run repair:example:no-model --workspace @diagram-scrape/svg-repair",
     "repair:tail-report": "tail -n 5 reports/repair-report.jsonl"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "description": "Utilities and apps for collecting, previewing, detecting overlap in, and repairing SVG diagrams.",
   "dependencies": {
     "@mermaid-js/parser": "^0.3.0",
-    "@penrose/bloom": "^3.3.0",
-    "@penrose/core": "^3.3.0",
     "axios": "^1.7.7",
-    "canvas": "^2.11.2",
     "csv-writer": "^1.6.0",
     "express": "^4.21.1",
-    "fs": "^0.0.1-security",
     "fs-extra": "^11.2.0",
     "jsdom": "^25.0.1",
     "mermaid": "^11.4.0",
-    "node": "^18.20.5",
     "puppeteer": "^23.5.2",
     "uuid": "^11.0.2",
     "xml2js": "^0.6.2"
   },
-  "description": ""
+  "devDependencies": {
+    "@types/jsdom": "^21.1.7",
+    "@types/node": "^24.10.1",
+    "@vitejs/plugin-react": "^6.0.2",
+    "tsx": "^4.22.3",
+    "typescript": "^6.0.3",
+    "vite": "^8.0.13",
+    "vite-plus": "^0.1.22",
+    "vitest": "^4.1.7"
+  }
 }

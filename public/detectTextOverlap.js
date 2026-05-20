@@ -40,7 +40,7 @@ function getIntersectionPoints(bbox1, bbox2) {
     return points;
 }
 
-function processSVG(svgDoc, file, fileIndex) {
+function processSVG(svgDoc, file) {
     const textElements = svgDoc.querySelectorAll("text");
     const boundingBoxes = [];
 
