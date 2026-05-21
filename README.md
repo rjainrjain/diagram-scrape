@@ -65,13 +65,15 @@ npm run dev:editor
 
 Open the Vite+ URL printed by the command. The editor starts collapsed, so the preview is shown first.
 
-For the legacy Express-backed overlap UI:
+For the legacy Express-backed overlap UI from `public/index.html`:
 
 ```bash
 npm run dev:legacy
 ```
 
 Open `http://localhost:3000`.
+
+`npm run dev:old-web` is an alias for the same old web app. The legacy server explicitly serves `public/index.html` at both `/` and `/old-web`, while preserving the existing static assets and SVG endpoints.
 
 UI actions:
 

@@ -13,6 +13,7 @@
   "scripts": {
     "dev:editor": "vp dev apps/svg-editor",
     "dev:legacy": "npm run dev --workspace @diagram-scrape/legacy-server",
+    "dev:old-web": "npm run dev:legacy",
     "dev:all": "vp run -r --parallel dev",
     "build": "vp run -r build",
     "check": "vp check --no-fmt && vp run --filter \"./apps/*\" --filter \"./packages/*\" check",

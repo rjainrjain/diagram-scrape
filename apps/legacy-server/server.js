@@ -11,7 +11,11 @@ const workspaceRoot = path.resolve(__dirname, "../..");
 
 export function createApp() {
   const app = express();
+  const legacyIndexPath = path.join(workspaceRoot, "public", "index.html");
 
+  app.get(["/", "/old-web"], (_req, res) => {
+    res.sendFile(legacyIndexPath);
+  });
   app.use(express.static(path.join(workspaceRoot, "public")));
   app.use("/svg", express.static(path.join(workspaceRoot, "svg")));
   app.use("/svg_repaired", express.static(path.join(workspaceRoot, "svg_repaired")));
