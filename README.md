@@ -1,6 +1,6 @@
 # diagram-scrape
 
-Utilities and experiments for collecting Mermaid diagrams, converting them to SVG, detecting text overlap, and repairing label placement using direct Penrose Bloom optimization with fallback behavior.
+Utilities and experiments for collecting Mermaid diagrams, converting them to SVG, detecting text overlap, and repairing label placement using direct Penrose Bloom optimization.
 
 ## What this repo does
 
@@ -9,7 +9,7 @@ This workspace currently supports four related workflows:
 1. Scrape Mermaid source files from GitHub.
 2. Convert Mermaid source (`.mmd` / `.mermaid`) to SVG.
 3. Detect text overlap in SVGs from a browser UI and export CSV.
-4. Repair text label placement in SVG with a Bloom-first pipeline.
+4. Repair text label placement in SVG with a Bloom-only pipeline.
 
 The repository also includes pre-collected Mermaid sources in `mermaid/` and compiled SVGs in `svg/`.
 
@@ -17,25 +17,17 @@ The repository also includes pre-collected Mermaid sources in `mermaid/` and com
 
 - The repair pipeline is implemented and validated on `example.svg`.
 - Placement constraints are now applied generally across Mermaid and Vega-Lite-like SVGs.
-- The web app provides a one-click `Repair example.svg` action with before/after preview.
+- The legacy web app provides a one-click `Repair example.svg` action with before/after preview.
+- The Vite+ React app provides a client-only SVG editor/preview with file/URL loading, repair, and download.
 
 ## Requirements
 
 ### Base
 
-- Node.js 18+
+- Node.js 20.19+ or 22.12+
 - npm
 
-### For direct Bloom in Node (macOS)
-
-Direct `@penrose/bloom` usage in Node requires browser-like globals and canvas text measurement support. On macOS:
-
-```bash
-brew install pkg-config cairo pango libpng jpeg giflib librsvg pixman
-npm install canvas
-```
-
-Then install project dependencies:
+### Install dependencies
 
 ```bash
 npm install
@@ -57,13 +49,31 @@ This writes:
 
 Use `npm run repair:example:no-model` to skip model JSON generation.
 
-### 2) Run the web app
+For another SVG from the repository root:
 
 ```bash
-node server.js
+npm run repair -- --input path/to/diagram.svg
+```
+
+### 2) Run the web app
+
+For the client-only SVG editor:
+
+```bash
+npm run dev:editor
+```
+
+Open the Vite+ URL printed by the command. The editor starts collapsed, so the preview is shown first.
+
+For the legacy Express-backed overlap UI from `public/index.html`:
+
+```bash
+npm run dev:legacy
 ```
 
 Open `http://localhost:3000`.
+
+`npm run dev:old-web` is an alias for the same old web app. The legacy server explicitly serves `public/index.html` at both `/` and `/old-web`, while preserving the existing static assets and SVG endpoints.
 
 UI actions:
 
@@ -73,13 +83,14 @@ UI actions:
 
 ## Repair pipeline behavior
 
-Core implementation is in `repairSvgWithBloom.js`.
+Core implementation and CLI ownership live in `packages/svg-repair`. Root repair scripts delegate to that workspace package; there is no root compatibility wrapper.
+
+The client app statically imports the Bloom solver through the shared repair package. That makes the initial client bundle larger, but keeps the repair action from paying an extra dynamic-import cost after the user clicks `Repair`.
 
 ### Solver strategy
 
-1. Attempt direct Bloom optimization (`@penrose/bloom`).
-2. Run local iterative fallback solver.
-3. Compare overlap counts and keep the better result.
+1. Run direct Bloom optimization (`@penrose/bloom`).
+2. If Bloom cannot run, fail the repair instead of applying a local heuristic.
 
 ### Constraint strategy (global, not provisional)
 
@@ -120,7 +131,7 @@ node -e "const fs=require('fs');const {JSDOM}=require('jsdom');const svg=fs.read
 
 ## Web/API endpoints
 
-Served by `server.js` on port `3000`:
+Served by the `apps/legacy-server` Express workspace on port `3000`:
 
 - `GET /mermaidsvg`: returns SVG filenames from `svg/`.
 - `GET /api/example-diagram`: returns input/repaired example paths.
@@ -151,13 +162,16 @@ Note: both scripts currently contain machine-specific absolute paths and are int
 - `svg/` source SVG corpus
 - `svg_repaired/` repaired SVG outputs
 - `public/` browser UI and overlap detection code
+- `apps/svg-editor/` client-only Vite+ React SVG editor
+- `apps/legacy-server/` Express-backed legacy app package
+- `packages/svg-repair/` shared TypeScript SVG repair library
 - `reports/` repair reports and model snapshots
 
 ## Known limitations
 
 - Validation is currently centered on `example.svg`; broad Mermaid corpus benchmarking is still pending.
 - Bounding boxes use approximation in Node-side repair logic.
-- No automated test suite is defined in `package.json` yet.
+- `packages/svg-repair` exports TypeScript source for this private workspace; plain Node consumers would need a future built-JS package target.
 
 ## Next recommended steps
 

@@ -1,0 +1,32 @@
+{
+  "name": "@diagram-scrape/svg-repair",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts"
+    },
+    "./node": {
+      "types": "./src/node.ts",
+      "import": "./src/node.ts"
+    },
+    "./cli": {
+      "types": "./src/cli.ts",
+      "import": "./src/cli.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json --noEmit",
+    "check": "tsc -p tsconfig.json --noEmit",
+    "repair": "tsx src/cli.ts",
+    "repair:example": "npm run repair -- --workspaceRoot ../.. --input example.svg",
+    "repair:example:no-model": "npm run repair -- --workspaceRoot ../.. --input example.svg --no-model",
+    "test": "vp test"
+  },
+  "dependencies": {
+    "@penrose/bloom": "^3.3.0",
+    "jsdom": "^25.0.1"
+  }
+}

@@ -45,7 +45,7 @@ function convertFile(index) {
   const outputFilePath = path.join(outputDirectory, path.basename(filePath, path.extname(filePath)) + '.svg');
 
   const command = `mmdc -i "${filePath}" -o "${outputFilePath}"`;
-  exec(command, (error, stdout, stderr) => {
+  exec(command, (error) => {
     if (error) {
       fs.appendFileSync(errorLog, `Error converting file ${filePath}: ${error}\n`);
       console.error(`Error converting file ${filePath}:`, error);
